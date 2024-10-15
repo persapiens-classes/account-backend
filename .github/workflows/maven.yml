@@ -33,4 +33,4 @@ jobs:
         run: ./mvnw -B clean validate
 
       - name: Tests
-        run: ./mvnw -B -DwebDriverType=chrome verify
+        run: ./mvnw -B verify
