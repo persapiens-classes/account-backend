@@ -14,11 +14,15 @@ import lombok.EqualsAndHashCode;
 @SuperBuilder
 @Getter
 @Setter
-public class Category {
+public class Category implements Comparable<Category> {
 
     private String description;
 
     @Singular
     private Set<Account> accounts;
 
+    @Override
+    public int compareTo(Category o) {
+        return this.description.compareTo(o.getDescription());
+    }
 }

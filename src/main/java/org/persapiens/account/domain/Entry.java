@@ -2,6 +2,7 @@ package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @SuperBuilder
 @Getter
 @Setter
-public class Entry {
+public class Entry implements Comparable<Entry> {
 
     private Owner owner;
 
@@ -35,5 +36,13 @@ public class Entry {
         if (this.outAccount instanceof DebitAccount) {
             throw new IllegalArgumentException("Out account cannot be of type DebitAccount: " + this.outAccount);
         }
+    }
+
+    @Override
+    public int compareTo(Entry o) {
+        return Comparator.comparing(Entry::getDate)
+                .thenComparing(Entry::getValue)
+                .thenComparing(Entry::getOwner)
+                .compare(this, o);
     }
 }

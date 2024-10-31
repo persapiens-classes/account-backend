@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @SuperBuilder
 @Getter
 @Setter
-public class Owner {
+public class Owner implements Comparable<Owner> {
 
     private String name;
 
@@ -24,4 +24,9 @@ public class Owner {
     @Singular
     private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
 
+    @Override
+    public int compareTo(Owner o) {
+        return this.name.compareTo(o.name);
+    }
+    
 }
