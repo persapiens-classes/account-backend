@@ -1,5 +1,8 @@
 package org.persapiens.account.domain;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -43,5 +46,21 @@ public class CreditAccountTests {
 		});
 		assertThat(thrown)
 			.isNotNull();
+	}
+
+	@Test
+	public void compareTo() {
+		Set<CreditAccount> creditAccounts = new TreeSet<>();
+
+		CreditAccount work = CreditAccount.builder().description(WORK)
+			.category(Category.builder().description(SALARY).build())
+			.build();
+		creditAccounts.add(work);
+		CreditAccount donation = CreditAccount.builder().description(DONATION)
+			.category(Category.builder().description(SALARY).build())
+			.build();
+		creditAccounts.add(donation);
+
+		assertThat(creditAccounts.iterator().next()).isEqualTo(donation);
 	}
 }

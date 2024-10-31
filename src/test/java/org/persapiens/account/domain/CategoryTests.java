@@ -2,6 +2,7 @@ package org.persapiens.account.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,4 +41,15 @@ public class CategoryTests {
 		assertThat(Category.builder().description(TRANSPORT).build())
 			.isNotEqualTo(Category.builder().description(HOUSING).build());
 	}
-}
+
+	@Test
+	public void compareTo() {
+		Set<Category> categories = new TreeSet<>();
+
+		Category transport = Category.builder().description(TRANSPORT).build();
+		categories.add(transport);
+		Category housing = Category.builder().description(HOUSING).build();
+		categories.add(housing);
+
+		assertThat(categories.iterator().next()).isEqualTo(housing);
+	}}

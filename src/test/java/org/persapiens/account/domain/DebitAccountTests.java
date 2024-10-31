@@ -1,5 +1,8 @@
 package org.persapiens.account.domain;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +47,25 @@ public class DebitAccountTests {
 		});
 		assertThat(thrown)
 			.isNotNull();
+	}
+
+	@Test
+	public void compareTo() {
+		Set<DebitAccount> debitAccounts = new TreeSet<>();
+
+		DebitAccount bus = DebitAccount.builder().description(BUS)
+			.category(Category.builder().description(TRANSPORT).build())
+			.build();
+		debitAccounts.add(bus);
+		DebitAccount airplane = DebitAccount.builder().description(AIRPLANE)
+			.category(Category.builder().description(TRANSPORT).build())
+			.build();
+		debitAccounts.add(airplane);
+		DebitAccount gasoline = DebitAccount.builder().description(GASOLINE)
+			.category(Category.builder().description(TRANSPORT).build())
+			.build();
+		debitAccounts.add(gasoline);
+
+		assertThat(debitAccounts.iterator().next()).isEqualTo(airplane);
 	}
 }

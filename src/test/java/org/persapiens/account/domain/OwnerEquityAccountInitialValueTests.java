@@ -1,6 +1,8 @@
 package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -47,5 +49,50 @@ public class OwnerEquityAccountInitialValueTests {
 	public void equalEquityAccountValueAndDifferentOwner() {
 		assertThat(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)))
 			.isNotEqualTo(ownerEquityAccountInitialValue(POCKET, MOTHER, new BigDecimal(100)));
+	}
+
+	@Test
+	public void compareToWithDifferentOwners() {
+		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
+
+		OwnerEquityAccountInitialValue initialMother = ownerEquityAccountInitialValue(
+			POCKET, MOTHER, new BigDecimal(100));
+		initialValues.add(initialMother);
+
+		OwnerEquityAccountInitialValue initialFather = ownerEquityAccountInitialValue(
+			POCKET, FATHER, new BigDecimal(100));
+		initialValues.add(initialFather);
+
+		assertThat(initialValues.iterator().next()).isEqualTo(initialFather);
+	}
+
+	@Test
+	public void compareToWithDifferentValues() {
+		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
+
+		OwnerEquityAccountInitialValue initial999 = ownerEquityAccountInitialValue(
+			POCKET, FATHER, new BigDecimal(999));
+		initialValues.add(initial999);
+
+		OwnerEquityAccountInitialValue initial100 = ownerEquityAccountInitialValue(
+			POCKET, FATHER, new BigDecimal(100));
+		initialValues.add(initial100);
+
+		assertThat(initialValues.iterator().next()).isEqualTo(initial100);
+	}
+
+	@Test
+	public void compareToWithDifferentEquityAccounts() {
+		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
+
+		OwnerEquityAccountInitialValue pocketInitial = ownerEquityAccountInitialValue(
+			POCKET, FATHER, new BigDecimal(100));
+		initialValues.add(pocketInitial);
+
+		OwnerEquityAccountInitialValue bankInitial = ownerEquityAccountInitialValue(
+			BANK, FATHER, new BigDecimal(100));
+		initialValues.add(bankInitial);
+
+		assertThat(initialValues.iterator().next()).isEqualTo(bankInitial);
 	}
 }

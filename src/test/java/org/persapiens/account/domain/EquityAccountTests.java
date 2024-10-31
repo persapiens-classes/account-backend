@@ -54,14 +54,14 @@ public class EquityAccountTests {
 			.value(new BigDecimal(100))
 			.build();
 
-        EquityAccount carteira1 = EquityAccount.builder().description(WALLET)
+        EquityAccount pocket1 = EquityAccount.builder().description(WALLET)
 			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
 			.ownerEquityAccountInitialValue(ownerEquityAccountInitialValue)
 			.build();
 
-        EquityAccount carteira2 = EquityAccount.builder().description(WALLET)
+        EquityAccount pocket2 = EquityAccount.builder().description(WALLET)
 			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
 			.build();
 
-        assertThat(carteira1).isEqualTo(carteira2);
+        assertThat(pocket1).isEqualTo(pocket2);
     }}

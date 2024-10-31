@@ -2,6 +2,8 @@ package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntryTests {
 
 	private static final String FATHER = "father";
+	private static final String MOTHER = "mother";
 	private static final String TRANSPORT = "transport";
 	private static final String INDIVIDUAL_ASSET = "individual asset";
 	private static final String GASOLINE = "gasoline";
@@ -31,21 +34,61 @@ public class EntryTests {
 
 	@Test
 	public void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
-		LocalDateTime hoje = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 
-		Entry entryGasolina1 = entry(hoje, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
-		Entry entryGasolina2 = entry(hoje, new BigDecimal(100), FATHER, "outra descrição qualquer");
+		Entry entryGasoline1 = entry(now, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline2 = entry(now, new BigDecimal(100), FATHER, "outra descrição qualquer");
 
-		assertThat(entryGasolina1).isEqualTo(entryGasolina2);
+		assertThat(entryGasoline1).isEqualTo(entryGasoline2);
 	}
 
 	@Test
 	public void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
-		LocalDateTime hoje = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now();
 
-		Entry entryGasolina1 = entry(hoje, new BigDecimal(200), FATHER, GAS_DESCRIPTION);
-		Entry entryGasolina2 = entry(hoje, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline1 = entry(now, new BigDecimal(200), FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline2 = entry(now, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
 
-		assertThat(entryGasolina1).isNotEqualTo(entryGasolina2);
+		assertThat(entryGasoline1).isNotEqualTo(entryGasoline2);
+	}
+
+	@Test
+	public void compareToWithDifferentDates() {
+		Set<Entry> entries = new TreeSet<>();
+
+		Entry entryGasoline1 = entry(LocalDateTime.now(), new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline2 = entry(LocalDateTime.now(), new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline2);
+		entries.add(entryGasoline1);
+
+		assertThat(entries.iterator().next()).isEqualTo(entryGasoline1);
+	}
+
+	@Test
+	public void compareToWithDifferentValues() {
+		LocalDateTime now = LocalDateTime.now();
+
+		Set<Entry> entries = new TreeSet<>();
+
+		Entry entryGasoline1 = entry(now, new BigDecimal(200), FATHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline1);
+		Entry entryGasoline2 = entry(now, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline2);
+
+		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);
+	}
+
+	@Test
+	public void compareToWithDifferentOwners() {
+		LocalDateTime now = LocalDateTime.now();
+
+		Set<Entry> entries = new TreeSet<>();
+
+		Entry entryGasoline1 = entry(now, new BigDecimal(100), MOTHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline1);
+		Entry entryGasoline2 = entry(now, new BigDecimal(100), FATHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline2);
+
+		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);
 	}
 }

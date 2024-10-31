@@ -1,6 +1,8 @@
 package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,5 +57,17 @@ public class OwnerTests {
 	public void differentNames() {
 		assertThat(Owner.builder().name(FATHER).build())
 			.isNotEqualTo(Owner.builder().name(MOTHER).build());
+	}
+
+	@Test
+	public void compareTo() {
+		Set<Owner> owners = new TreeSet<>();
+
+		Owner mother = Owner.builder().name(MOTHER).build();
+		owners.add(mother);
+		Owner father = Owner.builder().name(FATHER).build();
+		owners.add(father);
+
+		assertThat(owners.iterator().next()).isEqualTo(father);
 	}
 }
