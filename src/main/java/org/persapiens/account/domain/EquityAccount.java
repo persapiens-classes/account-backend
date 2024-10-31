@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
+import lombok.Singular;
 
 @ToString(callSuper = true, exclude= "ownerEquityAccountInitialValues")
 @SuperBuilder
@@ -13,6 +14,7 @@ import lombok.ToString;
 @Setter
 public class EquityAccount extends Account {
     
+    @Singular
     private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
 
 }

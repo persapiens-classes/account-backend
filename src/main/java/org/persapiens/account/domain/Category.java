@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
+import lombok.Singular;
 
 @ToString(of = "description")
 @SuperBuilder
@@ -15,6 +16,7 @@ public class Category {
 
     private String description;
 
+    @Singular
     private Set<Account> accounts;
 
 }
