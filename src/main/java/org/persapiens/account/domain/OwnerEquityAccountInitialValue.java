@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(of={"value", "owner", "equityAccount"} )
 @ToString
 @SuperBuilder
 @Getter
@@ -17,6 +19,6 @@ public class OwnerEquityAccountInitialValue {
 
     private Owner owner;
 
-    private EquityAccount EquityAccount;
+    private EquityAccount equityAccount;
 
 }

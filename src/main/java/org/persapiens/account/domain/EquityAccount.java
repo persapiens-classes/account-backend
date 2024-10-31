@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.Singular;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true, exclude = "ownerEquityAccountInitialValues")
 @ToString(callSuper = true, exclude= "ownerEquityAccountInitialValues")
 @SuperBuilder
 @Getter

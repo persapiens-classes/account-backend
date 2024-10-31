@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(of = {"owner", "inAccount", "outAccount", "value", "date"})
 @ToString
 @SuperBuilder
 @Getter

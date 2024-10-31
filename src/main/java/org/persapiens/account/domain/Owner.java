@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.Singular;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(of = "name")
 @ToString(of = "name")
 @SuperBuilder
 @Getter
