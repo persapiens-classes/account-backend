@@ -7,13 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.persapiens.account.common.CreditAccountConstants.STOCK;
+import static org.persapiens.account.common.CreditAccountConstants.DONATION;
+import static org.persapiens.account.common.CreditAccountConstants.SALARY;
+import static org.persapiens.account.common.CreditAccountConstants.WORK;
 
 public class CreditAccountTests {
-
-	private static final String STOCK = "stock";
-	private static final String DONATION = "donation";
-	private static final String WORK = "work";
-	private static final String SALARY = "salary";
 
 	public void equalDescriptionAndCategory() {
 		assertThat(CreditAccount.builder().description(STOCK)
