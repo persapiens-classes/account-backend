@@ -28,6 +28,9 @@ import lombok.NoArgsConstructor;
 @Setter
 public class Category implements Comparable<Category> {
 
+    public final static String EXPENSE_TRANSFER_CATEGORY = "expense transfer category";
+    public final static String INCOME_TRANSFER_CATEGORY = "income transfer category";
+
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
     @Id
     private Long id;

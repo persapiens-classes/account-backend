@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 @ToString(callSuper = true)
 @SuperBuilder
 public class CreditAccount extends Account {
+    public final static String INCOME_TRANSFER = "income transfer";
 }
