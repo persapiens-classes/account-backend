@@ -19,7 +19,9 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_entry", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
 @EqualsAndHashCode(of = {"owner", "inAccount", "outAccount", "value", "date"})

@@ -4,16 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import static org.persapiens.account.common.CategoryConstants.GASOLINE;
+import static org.persapiens.account.common.CategoryConstants.HOUSING;
+import static org.persapiens.account.common.CategoryConstants.TAX;
+import static org.persapiens.account.common.CategoryConstants.TRANSPORT;
 
 public class CategoryTests {
 
-	private static final String TRANSPORT = "transport";
-	private static final String GASOLINE = "gasoline";
-	private static final String TAX = "tax";
-	private static final String HOUSING = "housing";
 
 	@Test
 	public void equalDescriptions() {

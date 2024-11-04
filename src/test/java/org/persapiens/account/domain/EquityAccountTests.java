@@ -6,13 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.persapiens.account.common.EquityAccountConstants.WALLET;
+import static org.persapiens.account.common.EquityAccountConstants.INDIVIDUAL_ASSETS;
+import static org.persapiens.account.common.EquityAccountConstants.OTHER_ASSETS;
+import static org.persapiens.account.common.EquityAccountConstants.CHECKING;
 
 public class EquityAccountTests {
-
-    private static final String WALLET = "wallet";
-    private static final String INDIVIDUAL_ASSETS = "individual assets";
-    private static final String OTHER_ASSETS = "other assets";
-    private static final String BANK = "bank";
 
     @Test
     public void equalDescriptionAndCategory() {
@@ -34,14 +33,14 @@ public class EquityAccountTests {
     public void differentDescriptionAndEqualCategory() {
         assertThat(EquityAccount.builder().description(WALLET)
                 .category(Category.builder().description(OTHER_ASSETS).build()).build())
-			.isNotEqualTo(EquityAccount.builder().description(BANK)
+			.isNotEqualTo(EquityAccount.builder().description(CHECKING)
 				.category(Category.builder().description(OTHER_ASSETS).build()).build());
     }
 
     @Test
     public void equalDescriptionWithoutCategory() {
         NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-            EquityAccount.builder().description(WALLET).build().equals(EquityAccount.builder().description(BANK).build());
+            EquityAccount.builder().description(WALLET).build().equals(EquityAccount.builder().description(CHECKING).build());
         });
         assertThat(thrown)
                 .isNotNull();

@@ -7,13 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.persapiens.account.common.DebitAccountConstants.GASOLINE;
+import static org.persapiens.account.common.DebitAccountConstants.TRANSPORT;
+import static org.persapiens.account.common.DebitAccountConstants.AIRPLANE;
+import static org.persapiens.account.common.DebitAccountConstants.BUS;
 
 public class DebitAccountTests {
-
-	private static final String GASOLINE = "gasoline";
-	private static final String TRANSPORT = "transport";
-	private static final String BUS = "bus";
-	private static final String AIRPLANE = "airplane";
 
 	@Test
 	public void equalsDescriptionAndCategory() {

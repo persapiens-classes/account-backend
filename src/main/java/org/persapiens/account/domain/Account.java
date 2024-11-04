@@ -19,8 +19,10 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @SequenceGenerator(sequenceName = "seq_account", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
