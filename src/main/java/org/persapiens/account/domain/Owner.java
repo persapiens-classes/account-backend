@@ -16,7 +16,9 @@ import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.Singular;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_owner", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
 @EqualsAndHashCode(of = "name")

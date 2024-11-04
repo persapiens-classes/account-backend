@@ -11,7 +11,9 @@ import lombok.experimental.SuperBuilder;
 import lombok.ToString;
 import lombok.Singular;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = "ownerEquityAccountInitialValues")
 @ToString(callSuper = true, exclude= "ownerEquityAccountInitialValues")
