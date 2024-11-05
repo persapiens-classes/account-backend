@@ -26,8 +26,8 @@ public class OwnerTests {
 
 	@Test
 	public void equalDescriptionWithDifferentEntries() {
-		Entry lancamentoGasolina = Entry.builder().note(GASOLINE).build();
-		Entry lancamentoIpva = Entry.builder().note(TAX).build();
+		Entry gasolineEntry = Entry.builder().note(GASOLINE).build();
+		Entry taxEntry = Entry.builder().note(TAX).build();
 
 		OwnerEquityAccountInitialValue valorInicialNaCarteira = OwnerEquityAccountInitialValue.builder()
 			.equityAccount(EquityAccount.builder().description(WALLET)
@@ -42,8 +42,8 @@ public class OwnerTests {
 			.build();
 
 		Owner papai1 = Owner.builder().name(FATHER)
-			.entry(lancamentoGasolina)
-			.entry(lancamentoIpva)
+			.entry(gasolineEntry)
+			.entry(taxEntry)
 			.ownerEquityAccountInitialValue(valorInicialNaCarteira)
 			.ownerEquityAccountInitialValue(valorInicialNoBanco)
 			.build();
