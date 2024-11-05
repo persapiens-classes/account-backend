@@ -17,8 +17,8 @@ public class OwnerFactory {
     public Owner owner(String name) {
         Optional<Owner> findByName = this.ownerRepository.findByName(name);
         if (findByName.isEmpty()) {
-            Owner categoria = Owner.builder().name(name).build();
-            return this.ownerRepository.save(categoria);
+            Owner category = Owner.builder().name(name).build();
+            return this.ownerRepository.save(category);
         } else {
             return findByName.get();
         }

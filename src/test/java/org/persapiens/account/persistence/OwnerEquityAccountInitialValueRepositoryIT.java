@@ -36,7 +36,7 @@ public class OwnerEquityAccountInitialValueRepositoryIT {
 	}
 
     @Test
-    public void findByDonoAndContaPatrimonio() {
+    public void findByOwnerAndEquityAccount() {
 		// create test environment
         Owner father = this.ownerFactory.father();
 

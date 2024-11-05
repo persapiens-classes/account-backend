@@ -20,8 +20,8 @@ public class CategoryFactory {
     public Category category(String description) {
         Optional<Category> findByDescription = this.categoryRepository.findByDescription(description);
         if (findByDescription.isEmpty()) {
-            Category categoria = Category.builder().description(description).build();
-            return this.categoryRepository.save(categoria);
+            Category category = Category.builder().description(description).build();
+            return this.categoryRepository.save(category);
         } else {
             return findByDescription.get();
         }
