@@ -22,7 +22,7 @@ public class TransferController {
     @Autowired
     private EquityAccountService equityAccountService;
     
-    @PostMapping("/balance")
+    @PostMapping("/transfer")
     public void transfer(@RequestBody TransferDTO transferDTO) {
         transferService.transfer(transferDTO.getValue(),
             ownerService.findByName(transferDTO.getDebitOwner()).get(),
