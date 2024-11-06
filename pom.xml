@@ -22,7 +22,7 @@
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <spring-javaformat.version>0.0.43</spring-javaformat.version>
         <checkstyle.version>10.20.0</checkstyle.version>
-        <checkstyle.configLocation>io/spring/javaformat/checkstyle/checkstyle.xml</checkstyle.configLocation>
+        <checkstyle.configLocation>src/checkconfig/checkstyle/checkstyle.xml</checkstyle.configLocation>
     </properties>
 
     <dependencyManagement>
