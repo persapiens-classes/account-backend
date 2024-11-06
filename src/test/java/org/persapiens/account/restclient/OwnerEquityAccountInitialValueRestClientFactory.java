@@ -4,7 +4,7 @@ import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SuperBuilder
 @Data
@@ -16,16 +16,16 @@ public class OwnerEquityAccountInitialValueRestClientFactory {
 
     private int port;
 
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     public OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
         return OwnerEquityAccountInitialValueRestClient.builder()
-                .entityRestHelper(RestClientHelper.<OwnerEquityAccountInitialValueDTO>builder()
+                .restClientHelper(RestClientHelper.<OwnerEquityAccountInitialValueDTO>builder()
                     .endpoint("ownerEquityAccountInitialValue")
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restTemplate(restTemplate)
+                    .restClient(restClient)
                     .build())
                 .build();
     }

@@ -6,7 +6,7 @@ import java.util.Optional;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SuperBuilder
 @Data
@@ -18,18 +18,18 @@ public class EquityAccountRestClientFactory {
 
     private int port;
 
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     private CategoryRestClientFactory categoryRestClientFactory;
 
     public EquityAccountRestClient equityAccountRestClient() {
         return EquityAccountRestClient.builder()
-            .entityRestHelper(RestClientHelper.<EquityAccountDTO>builder()
+            .restClientHelper(RestClientHelper.<EquityAccountDTO>builder()
                 .endpoint("equityAccount")
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(restTemplate)
+                .restClient(restClient)
                 .build())
             .build();
     }

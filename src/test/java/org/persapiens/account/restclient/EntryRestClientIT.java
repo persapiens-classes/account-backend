@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestClient;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -39,7 +40,7 @@ public class EntryRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
+                .restClient(RestClient.create(testRestTemplate.getRestTemplate()))
                 .build().entryRestClient();
     }
 
@@ -48,7 +49,7 @@ public class EntryRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
+                .restClient(RestClient.create(testRestTemplate.getRestTemplate()))
                 .build();
     }
 
@@ -57,7 +58,7 @@ public class EntryRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
+                .restClient(RestClient.create(testRestTemplate.getRestTemplate()))
                 .build();
     }
 
@@ -66,7 +67,7 @@ public class EntryRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
+                .restClient(RestClient.create(testRestTemplate.getRestTemplate()))
                 .categoryRestClientFactory(categoryRestClientFactory())
                 .build();
     }    
@@ -76,7 +77,7 @@ public class EntryRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
+                .restClient(RestClient.create(testRestTemplate.getRestTemplate()))
                 .categoryRestClientFactory(categoryRestClientFactory())
                 .build();
     }    

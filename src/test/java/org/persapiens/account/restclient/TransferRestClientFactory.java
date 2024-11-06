@@ -4,7 +4,7 @@ import org.persapiens.account.dto.TransferDTO;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SuperBuilder
 @Data
@@ -16,16 +16,16 @@ public class TransferRestClientFactory {
 
     private int port;
 
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     public TransferRestClient transferRestClient() {
         return TransferRestClient.builder()
-                .entityRestHelper(RestClientHelper.<TransferDTO>builder()
+                .restClientHelper(RestClientHelper.<TransferDTO>builder()
                     .endpoint("")
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restTemplate(restTemplate)
+                    .restClient(restClient)
                     .build())
                 .build();
     }

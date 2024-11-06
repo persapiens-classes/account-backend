@@ -5,7 +5,7 @@ import java.util.Optional;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SuperBuilder
 @Data
@@ -17,16 +17,16 @@ public class OwnerRestClientFactory {
 
     private int port;
 
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     public OwnerRestClient ownerRestClient() {
         return OwnerRestClient.builder()
-                .entityRestHelper(RestClientHelper.<OwnerDTO>builder()
+                .restClientHelper(RestClientHelper.<OwnerDTO>builder()
                     .endpoint("owner")
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restTemplate(restTemplate)
+                    .restClient(restClient)
                     .build())
                 .build();
     }

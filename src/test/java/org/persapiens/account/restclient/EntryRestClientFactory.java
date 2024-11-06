@@ -4,7 +4,7 @@ import org.persapiens.account.dto.EntryDTO;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SuperBuilder
 @Data
@@ -16,16 +16,16 @@ public class EntryRestClientFactory {
 
     private int port;
 
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     public EntryRestClient entryRestClient() {
         return EntryRestClient.builder()
-                .entityRestHelper(RestClientHelper.<EntryDTO>builder()
+                .restClientHelper(RestClientHelper.<EntryDTO>builder()
                     .endpoint("entry")
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restTemplate(restTemplate)
+                    .restClient(restClient)
                     .build())
                 .build();
     }
