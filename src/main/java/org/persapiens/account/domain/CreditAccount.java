@@ -1,11 +1,10 @@
 package org.persapiens.account.domain;
 
 import jakarta.persistence.Entity;
-
-import lombok.experimental.SuperBuilder;
-import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @Entity
@@ -13,5 +12,10 @@ import lombok.NoArgsConstructor;
 @ToString(callSuper = true)
 @SuperBuilder
 public class CreditAccount extends Account {
-    public final static String INCOME_TRANSFER = "income transfer";
+
+	/**
+	 * Income transfer. Credit transfer.
+	 */
+	public static final String INCOME_TRANSFER = "income transfer";
+
 }

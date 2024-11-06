@@ -1,11 +1,10 @@
 package org.persapiens.account.restclient;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.dto.CreditAccountDTO;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,49 +16,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CreditAccountRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	@Value("${local.server.port}")
+	private int port;
 
-    private CreditAccountRestClient creditAccountRestClient() {
-        return CreditAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().creditAccountRestClient();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String description = "New job";
-        String categoryDescription = CategoryConstants.SALARY;
+	private CreditAccountRestClient creditAccountRestClient() {
+		return CreditAccountRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build()
+			.creditAccountRestClient();
+	}
 
-        CreditAccountDTO creditAccount = CreditAccountDTO.builder()
-            .description(description)
-            .category(categoryRestClientFactory().category(categoryDescription))
-            .build();
+	@Test
+	public void saveOne() {
+		String description = "New job";
+		String categoryDescription = CategoryConstants.SALARY;
 
-        // verify save operation
-        assertThat(creditAccountRestClient().save(creditAccount))
-        	.isNotNull();
+		CreditAccountDTO creditAccount = CreditAccountDTO.builder()
+			.description(description)
+			.category(categoryRestClientFactory().category(categoryDescription))
+			.build();
 
-        // verify findByDescription operation
-        assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
-                .isEqualTo(creditAccount.getDescription());
-        
-        // verify findAll operation
-        assertThat(creditAccountRestClient().findAll())
-                .isNotEmpty();        
-    }
+		// verify save operation
+		assertThat(creditAccountRestClient().save(creditAccount)).isNotNull();
+
+		// verify findByDescription operation
+		assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(creditAccount.getDescription());
+
+		// verify findAll operation
+		assertThat(creditAccountRestClient().findAll()).isNotEmpty();
+	}
 
 }

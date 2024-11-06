@@ -1,44 +1,45 @@
 package org.persapiens.account.restclient;
 
+import java.util.Optional;
+
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.DebitAccountDTO;
-import java.util.Optional;
-import lombok.experimental.SuperBuilder;
-import lombok.Data;
 
 @SuperBuilder
 @Data
 public class DebitAccountRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    private CategoryRestClientFactory categoryRestClientFactory;
+	private int port;
 
-    public DebitAccountRestClient debitAccountRestClient() {
-        return DebitAccountRestClient.builder()
-            .restClientHelper(RestClientHelper.<DebitAccountDTO>builder()
-                .endpoint("debitAccount")
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build())
-            .build();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory;
 
-    public DebitAccountDTO debitAccount(String description, String categoryDescription) {
-        Optional<DebitAccountDTO> findByDescription = debitAccountRestClient().findByDescription(description);
-        if (findByDescription.isEmpty()) {
-            CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
-            DebitAccountDTO result = DebitAccountDTO.builder().description(description)
-                .category(category).build();
-            return debitAccountRestClient().save(result);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public DebitAccountRestClient debitAccountRestClient() {
+		return DebitAccountRestClient.builder()
+			.restClientHelper(RestClientHelper.<DebitAccountDTO>builder()
+				.endpoint("debitAccount")
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
+				.build())
+			.build();
+	}
+
+	public DebitAccountDTO debitAccount(String description, String categoryDescription) {
+		Optional<DebitAccountDTO> findByDescription = debitAccountRestClient().findByDescription(description);
+		if (findByDescription.isEmpty()) {
+			CategoryDTO category = this.categoryRestClientFactory.category(categoryDescription);
+			DebitAccountDTO result = DebitAccountDTO.builder().description(description).category(category).build();
+			return debitAccountRestClient().save(result);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
 }

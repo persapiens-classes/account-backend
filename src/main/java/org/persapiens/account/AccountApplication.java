@@ -7,9 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class AccountApplication {
 
 	public static void main(String[] args) {
-		new SpringApplicationBuilder()
-			.sources(AccountApplication.class)
-			.run(args);
+		new SpringApplicationBuilder().sources(AccountApplication.class).run(args);
 	}
 
 }

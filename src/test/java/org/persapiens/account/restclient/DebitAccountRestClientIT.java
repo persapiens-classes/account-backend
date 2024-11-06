@@ -1,11 +1,10 @@
 package org.persapiens.account.restclient;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.dto.DebitAccountDTO;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,49 +16,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DebitAccountRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	@Value("${local.server.port}")
+	private int port;
 
-    private DebitAccountRestClient debitAccountRestClient() {
-        return DebitAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().debitAccountRestClient();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String description = "Uber";
-        String categoryDescription = CategoryConstants.TRANSPORT;
+	private DebitAccountRestClient debitAccountRestClient() {
+		return DebitAccountRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build()
+			.debitAccountRestClient();
+	}
 
-        DebitAccountDTO debitAccount = DebitAccountDTO.builder()
-            .description(description)
-            .category(categoryRestClientFactory().category(categoryDescription))
-            .build();
+	@Test
+	public void saveOne() {
+		String description = "Uber";
+		String categoryDescription = CategoryConstants.TRANSPORT;
 
-        // verify save operation
-        assertThat(debitAccountRestClient().save(debitAccount))
-        	.isNotNull();
+		DebitAccountDTO debitAccount = DebitAccountDTO.builder()
+			.description(description)
+			.category(categoryRestClientFactory().category(categoryDescription))
+			.build();
 
-        // verify findByDescription operation
-        assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
-                .isEqualTo(debitAccount.getDescription());
-        
-        // verify findAll operation
-        assertThat(debitAccountRestClient().findAll())
-                .isNotEmpty();        
-    }
+		// verify save operation
+		assertThat(debitAccountRestClient().save(debitAccount)).isNotNull();
+
+		// verify findByDescription operation
+		assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(debitAccount.getDescription());
+
+		// verify findAll operation
+		assertThat(debitAccountRestClient().findAll()).isNotEmpty();
+	}
 
 }

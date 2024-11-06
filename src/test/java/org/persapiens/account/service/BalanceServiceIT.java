@@ -2,7 +2,6 @@ package org.persapiens.account.service;
 
 import java.math.BigDecimal;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
@@ -16,57 +15,57 @@ import org.persapiens.account.persistence.EntryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueFactory;
 import org.persapiens.account.persistence.OwnerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class BalanceServiceIT {
-    @Autowired
-    private EntryFactory entryFactory;
 
-    @Autowired
-    private OwnerFactory ownerFactory;
+	@Autowired
+	private EntryFactory entryFactory;
 
-    @Autowired
-    private BalanceService balanceService;
+	@Autowired
+	private OwnerFactory ownerFactory;
 
-    @Autowired
-    private OwnerEquityAccountInitialValueFactory ownerEquityAccountInitialValueFactory;
+	@Autowired
+	private BalanceService balanceService;
 
-    @Autowired
-    private EquityAccountFactory equityAccountFactory;
+	@Autowired
+	private OwnerEquityAccountInitialValueFactory ownerEquityAccountInitialValueFactory;
 
-    @Autowired
-    private CreditAccountFactory creditAccountFactory;
+	@Autowired
+	private EquityAccountFactory equityAccountFactory;
 
-    @Autowired
-    private DebitAccountFactory debitAccountFactory;
+	@Autowired
+	private CreditAccountFactory creditAccountFactory;
 
-    @Test
-    public void balance800() {
-        // create test environment
-        Owner father = this.ownerFactory.father();
+	@Autowired
+	private DebitAccountFactory debitAccountFactory;
 
-        EquityAccount wallet
-                = this.equityAccountFactory.wallet();
+	@Test
+	public void balance800() {
+		// create test environment
+		Owner father = this.ownerFactory.father();
 
-        DebitAccount gasoline
-                = this.debitAccountFactory.gasoline();
+		EquityAccount wallet = this.equityAccountFactory.wallet();
 
-        CreditAccount internship
-                = this.creditAccountFactory.internship();
+		DebitAccount gasoline = this.debitAccountFactory.gasoline();
 
-        this.ownerEquityAccountInitialValueFactory.ownerEquityAccountInitialValue(
-                father, wallet, new BigDecimal(1000));
+		CreditAccount internship = this.creditAccountFactory.internship();
 
-        this.entryFactory.entry(father, gasoline, wallet, new BigDecimal(500));
-        this.entryFactory.entry(father, wallet, internship, new BigDecimal(300));
+		this.ownerEquityAccountInitialValueFactory.ownerEquityAccountInitialValue(father, wallet, new BigDecimal(1000));
 
-        // run the operation to be tested
-        // verify the results
-        assertThat(this.balanceService.balance(father, wallet))
-                .isEqualTo(new BigDecimal(800).setScale(2));
-    }
+		this.entryFactory.entry(father, gasoline, wallet, new BigDecimal(500));
+		this.entryFactory.entry(father, wallet, internship, new BigDecimal(300));
+
+		// run the operation to be tested
+		// verify the results
+		assertThat(this.balanceService.balance(father, wallet)).isEqualTo(new BigDecimal(800).setScale(2));
+	}
+
 }

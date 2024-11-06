@@ -1,39 +1,41 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.OwnerDTO;
 import java.util.Optional;
-import lombok.experimental.SuperBuilder;
+
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.OwnerDTO;
 
 @SuperBuilder
 @Data
 public class OwnerRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    public OwnerRestClient ownerRestClient() {
-        return OwnerRestClient.builder()
-                .restClientHelper(RestClientHelper.<OwnerDTO>builder()
-                    .endpoint("owner")
-                    .protocol(protocol)
-                    .servername(servername)
-                    .port(port)
-                    .build())
-                .build();
-    }
+	private int port;
 
-    public OwnerDTO owner(String name) {
-        Optional<OwnerDTO> findByDescription = ownerRestClient().findByName(name);
-        if (findByDescription.isEmpty()) {
-            OwnerDTO result = OwnerDTO.builder().name(name).build();
-            return ownerRestClient().save(result);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public OwnerRestClient ownerRestClient() {
+		return OwnerRestClient.builder()
+			.restClientHelper(RestClientHelper.<OwnerDTO>builder()
+				.endpoint("owner")
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
+				.build())
+			.build();
+	}
+
+	public OwnerDTO owner(String name) {
+		Optional<OwnerDTO> findByDescription = ownerRestClient().findByName(name);
+		if (findByDescription.isEmpty()) {
+			OwnerDTO result = OwnerDTO.builder().name(name).build();
+			return ownerRestClient().save(result);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
 }

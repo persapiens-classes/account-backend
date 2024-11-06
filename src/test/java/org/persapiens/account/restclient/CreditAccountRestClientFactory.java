@@ -1,44 +1,45 @@
 package org.persapiens.account.restclient;
 
+import java.util.Optional;
+
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
-import java.util.Optional;
-import lombok.experimental.SuperBuilder;
-import lombok.Data;
 
 @SuperBuilder
 @Data
 public class CreditAccountRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    private CategoryRestClientFactory categoryRestClientFactory;
+	private int port;
 
-    public CreditAccountRestClient creditAccountRestClient() {
-        return CreditAccountRestClient.builder()
-            .restClientHelper(RestClientHelper.<CreditAccountDTO>builder()
-                .endpoint("creditAccount")
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build())
-            .build();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory;
 
-    public CreditAccountDTO creditAccount(String description, String categoryDescription) {
-        Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
-        if (findByDescription.isEmpty()) {
-            CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
-            CreditAccountDTO result = CreditAccountDTO.builder().description(description)
-                .category(category).build();
-            return creditAccountRestClient().save(result);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public CreditAccountRestClient creditAccountRestClient() {
+		return CreditAccountRestClient.builder()
+			.restClientHelper(RestClientHelper.<CreditAccountDTO>builder()
+				.endpoint("creditAccount")
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
+				.build())
+			.build();
+	}
+
+	public CreditAccountDTO creditAccount(String description, String categoryDescription) {
+		Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
+		if (findByDescription.isEmpty()) {
+			CategoryDTO category = this.categoryRestClientFactory.category(categoryDescription);
+			CreditAccountDTO result = CreditAccountDTO.builder().description(description).category(category).build();
+			return creditAccountRestClient().save(result);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
 }

@@ -1,10 +1,9 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.AccountApplication;
-import org.persapiens.account.dto.OwnerDTO;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.persapiens.account.AccountApplication;
+import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,51 +15,49 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OwnerRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private OwnerRestClient ownerRestClient() {
-        return OwnerRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().ownerRestClient();
-    }
+	@Value("${local.server.port}")
+	private int port;
 
-    @Test
-    public void saveOne() {        
-        String name = "Free income";
-        
-        OwnerDTO owner = OwnerDTO.builder().name(name).build();
+	private OwnerRestClient ownerRestClient() {
+		return OwnerRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build()
+			.ownerRestClient();
+	}
 
-        // verify save operation
-        assertThat(ownerRestClient().save(owner))
-        	.isNotNull();
+	@Test
+	public void saveOne() {
+		String name = "Free income";
 
-        // verify findByName operation
-        assertThat(ownerRestClient().findByName(name).get().getName())
-                .isEqualTo(owner.getName());
-        
-        // verify findAll operation
-        assertThat(ownerRestClient().findAll())
-                .isNotEmpty();        
-    }
+		OwnerDTO owner = OwnerDTO.builder().name(name).build();
 
-    @Test
-    public void deleteOne() {
-        // create test environment
-        String name = "Fantastic owner";
-        ownerRestClient().save(OwnerDTO.builder().name(name).build());
-        assertThat(ownerRestClient().findByName(name).get().getName())
-        	.isEqualTo(name);
-        
-        // execute deleteByName operation
-        ownerRestClient().deleteByName(name);
-        // verify the results
-        assertThat(ownerRestClient().findByName(name))
-        	.isEmpty();
-    }    
+		// verify save operation
+		assertThat(ownerRestClient().save(owner)).isNotNull();
+
+		// verify findByName operation
+		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(owner.getName());
+
+		// verify findAll operation
+		assertThat(ownerRestClient().findAll()).isNotEmpty();
+	}
+
+	@Test
+	public void deleteOne() {
+		// create test environment
+		String name = "Fantastic owner";
+		ownerRestClient().save(OwnerDTO.builder().name(name).build());
+		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(name);
+
+		// execute deleteByName operation
+		ownerRestClient().deleteByName(name);
+		// verify the results
+		assertThat(ownerRestClient().findByName(name)).isEmpty();
+	}
+
 }

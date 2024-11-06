@@ -4,34 +4,38 @@ import java.math.BigDecimal;
 
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BalanceService {
 
-    private final EntryService entryService;
-    private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
+	private final EntryService entryService;
 
-    @Autowired
-    public BalanceService(EntryService entryService, OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
-        super();
-        this.entryService = entryService;
-        this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;
-    }
+	private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
-    public BigDecimal balance(Owner owner, EquityAccount equityAccount) {
-        // get initial value of owner and equity account
-        BigDecimal result = this.ownerEquityAccountInitialValueService
-            .findByOwnerAndEquityAccount(owner, equityAccount)
-            .get().getValue();
+	@Autowired
+	public BalanceService(EntryService entryService,
+			OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
+		super();
+		this.entryService = entryService;
+		this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;
+	}
 
-        // sum credits of owner and equity account
-        BigDecimal credits = this.entryService.creditSum(owner, equityAccount);
+	public BigDecimal balance(Owner owner, EquityAccount equityAccount) {
+		// get initial value of owner and equity account
+		BigDecimal result = this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(owner, equityAccount)
+			.get()
+			.getValue();
 
-        // subtract debits of owner and equity account
-        BigDecimal debits = this.entryService.debitSum(owner, equityAccount);
+		// sum credits of owner and equity account
+		BigDecimal credits = this.entryService.creditSum(owner, equityAccount);
 
-        return result.add(credits).subtract(debits);
-    }
+		// subtract debits of owner and equity account
+		BigDecimal debits = this.entryService.debitSum(owner, equityAccount);
+
+		return result.add(credits).subtract(debits);
+	}
+
 }

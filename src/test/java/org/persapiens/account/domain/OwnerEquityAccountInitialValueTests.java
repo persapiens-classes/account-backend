@@ -5,23 +5,22 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
+import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OwnerEquityAccountInitialValueTests {
 
-	private static final String POCKET = "pocket";
 	private static final String INDIVIDUAL_ASSET = "individual asset";
-	private static final String BANK = "bank";
 
-	private static final String FATHER = "father";
-	private static final String MOTHER = "mother";
-
-	private OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(
-		String categoryDescription, String ownerName, BigDecimal value) {
+	private OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(String categoryDescription, String ownerName,
+			BigDecimal value) {
 		return OwnerEquityAccountInitialValue.builder()
-			.equityAccount(EquityAccount.builder().description(categoryDescription)
-				.category(Category.builder().description(INDIVIDUAL_ASSET).build()).build())
+			.equityAccount(EquityAccount.builder()
+				.description(categoryDescription)
+				.category(Category.builder().description(INDIVIDUAL_ASSET).build())
+				.build())
 			.owner(Owner.builder().name(ownerName).build())
 			.value(value)
 			.build();
@@ -29,38 +28,46 @@ public class OwnerEquityAccountInitialValueTests {
 
 	@Test
 	public void equalOwnerEquityAccountValue() {
-		assertThat(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)))
-			.isEqualTo(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)));
+		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+				new BigDecimal(100)))
+			.isEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+					new BigDecimal(100)));
 	}
 
 	@Test
 	public void equalOwnerEquityAccountAndDifferenteValue() {
-		assertThat(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(999)));
+		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+				new BigDecimal(100)))
+			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+					new BigDecimal(999)));
 	}
 
 	@Test
 	public void equalOwnerValueAndDifferentEquityAccount() {
-		assertThat(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(BANK, FATHER, new BigDecimal(100)));
+		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+				new BigDecimal(100)))
+			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.CHECKING, OwnerConstants.FATHER,
+					new BigDecimal(100)));
 	}
 
 	@Test
 	public void equalEquityAccountValueAndDifferentOwner() {
-		assertThat(ownerEquityAccountInitialValue(POCKET, FATHER, new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(POCKET, MOTHER, new BigDecimal(100)));
+		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
+				new BigDecimal(100)))
+			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.MOTHER,
+					new BigDecimal(100)));
 	}
 
 	@Test
 	public void compareToWithDifferentOwners() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
-		OwnerEquityAccountInitialValue initialMother = ownerEquityAccountInitialValue(
-			POCKET, MOTHER, new BigDecimal(100));
+		OwnerEquityAccountInitialValue initialMother = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
+				OwnerConstants.MOTHER, new BigDecimal(100));
 		initialValues.add(initialMother);
 
-		OwnerEquityAccountInitialValue initialFather = ownerEquityAccountInitialValue(
-			POCKET, FATHER, new BigDecimal(100));
+		OwnerEquityAccountInitialValue initialFather = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
+				OwnerConstants.FATHER, new BigDecimal(100));
 		initialValues.add(initialFather);
 
 		assertThat(initialValues.iterator().next()).isEqualTo(initialFather);
@@ -70,12 +77,12 @@ public class OwnerEquityAccountInitialValueTests {
 	public void compareToWithDifferentValues() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
-		OwnerEquityAccountInitialValue initial999 = ownerEquityAccountInitialValue(
-			POCKET, FATHER, new BigDecimal(999));
+		OwnerEquityAccountInitialValue initial999 = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
+				OwnerConstants.FATHER, new BigDecimal(999));
 		initialValues.add(initial999);
 
-		OwnerEquityAccountInitialValue initial100 = ownerEquityAccountInitialValue(
-			POCKET, FATHER, new BigDecimal(100));
+		OwnerEquityAccountInitialValue initial100 = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
+				OwnerConstants.FATHER, new BigDecimal(100));
 		initialValues.add(initial100);
 
 		assertThat(initialValues.iterator().next()).isEqualTo(initial100);
@@ -85,14 +92,15 @@ public class OwnerEquityAccountInitialValueTests {
 	public void compareToWithDifferentEquityAccounts() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
-		OwnerEquityAccountInitialValue pocketInitial = ownerEquityAccountInitialValue(
-			POCKET, FATHER, new BigDecimal(100));
+		OwnerEquityAccountInitialValue pocketInitial = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
+				OwnerConstants.FATHER, new BigDecimal(100));
 		initialValues.add(pocketInitial);
 
-		OwnerEquityAccountInitialValue bankInitial = ownerEquityAccountInitialValue(
-			BANK, FATHER, new BigDecimal(100));
-		initialValues.add(bankInitial);
+		OwnerEquityAccountInitialValue checkingInitial = ownerEquityAccountInitialValue(EquityAccountConstants.CHECKING,
+				OwnerConstants.FATHER, new BigDecimal(100));
+		initialValues.add(checkingInitial);
 
-		assertThat(initialValues.iterator().next()).isEqualTo(bankInitial);
+		assertThat(initialValues.iterator().next()).isEqualTo(checkingInitial);
 	}
+
 }

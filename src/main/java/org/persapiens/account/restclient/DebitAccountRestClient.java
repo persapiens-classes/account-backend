@@ -1,37 +1,38 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.DebitAccountDTO;
 import java.util.Optional;
+
 import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.DebitAccountDTO;
 
 @SuperBuilder
 public class DebitAccountRestClient {
 
-    private RestClientHelper<DebitAccountDTO> restClientHelper;
+	private RestClientHelper<DebitAccountDTO> restClientHelper;
 
-    public Iterable<DebitAccountDTO> findAll() {
-        return this.restClientHelper.findAll();
-    }
+	public Iterable<DebitAccountDTO> findAll() {
+		return this.restClientHelper.findAll();
+	}
 
-    public DebitAccountDTO save(DebitAccountDTO entity) {
-        return this.restClientHelper.getRestClient()
-            .post()
-            .uri(restClientHelper.saveUri())
-            .body(entity)
-            .retrieve()
-            .body(DebitAccountDTO.class);
-    }
+	public DebitAccountDTO save(DebitAccountDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.post()
+			.uri(this.restClientHelper.saveUri())
+			.body(entity)
+			.retrieve()
+			.body(DebitAccountDTO.class);
+	}
 
-    public Optional<DebitAccountDTO> findByDescription(String description) {
-        return Optional.ofNullable(this.restClientHelper.getRestClient()
-            .get()
-            .uri(restClientHelper.findByDescriptionUri(description))
-            .retrieve()
-            .body(DebitAccountDTO.class));
-    }
+	public Optional<DebitAccountDTO> findByDescription(String description) {
+		return Optional.ofNullable(this.restClientHelper.getRestClient()
+			.get()
+			.uri(this.restClientHelper.findByDescriptionUri(description))
+			.retrieve()
+			.body(DebitAccountDTO.class));
+	}
 
-    public void deleteByDescription(String description) {
-        restClientHelper.deleteByDescription(description);
-    }
+	public void deleteByDescription(String description) {
+		this.restClientHelper.deleteByDescription(description);
+	}
 
 }

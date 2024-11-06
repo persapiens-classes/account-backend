@@ -1,7 +1,5 @@
 package org.persapiens.account.persistence;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +10,12 @@ import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -41,14 +42,12 @@ public class EntryRepositoryIT {
 	@BeforeEach
 	public void deleteAll() {
 		this.entryRepository.deleteAll();
-		assertThat(this.entryRepository.findAll())
-			.isEmpty();
+		assertThat(this.entryRepository.findAll()).isEmpty();
 	}
 
 	@Test
 	public void repositoryNaoEhNulo() {
-		assertThat(this.entryRepository)
-			.isNotNull();
+		assertThat(this.entryRepository).isNotNull();
 	}
 
 	@Test
@@ -65,7 +64,7 @@ public class EntryRepositoryIT {
 		// execute the operation to be tested
 		// verify the results
 		assertThat(this.entryRepository.creditSum(father, savings).getValue())
-				.isEqualTo(new BigDecimal(300).setScale(2));
+			.isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
 	@Test
@@ -84,4 +83,5 @@ public class EntryRepositoryIT {
 		assertThat(this.entryRepository.debitSum(father, savings).getValue())
 			.isEqualTo(new BigDecimal(500).setScale(2));
 	}
+
 }
