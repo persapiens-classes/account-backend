@@ -4,19 +4,18 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-import lombok.ToString;
-import lombok.Singular;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_category", name = "ID_SEQUENCE", allocationSize = 1)
@@ -28,9 +27,15 @@ import lombok.NoArgsConstructor;
 @Setter
 public class Category implements Comparable<Category> {
 
-	public final static String EXPENSE_TRANSFER_CATEGORY = "expense transfer category";
+	/**
+	 * Expense transfer category. It is a debit category.
+	 */
+	public static final String EXPENSE_TRANSFER_CATEGORY = "expense transfer category";
 
-	public final static String INCOME_TRANSFER_CATEGORY = "income transfer category";
+	/**
+	 * Income transfer category. It is a credit category.
+	 */
+	public static final String INCOME_TRANSFER_CATEGORY = "income transfer category";
 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
 	@Id

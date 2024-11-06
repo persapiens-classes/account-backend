@@ -1,9 +1,9 @@
 package org.persapiens.account.controller;
 
-import org.persapiens.account.service.TransferService;
 import org.persapiens.account.dto.TransferDTO;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerService;
+import org.persapiens.account.service.TransferService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +26,11 @@ public class TransferController {
 
 	@PostMapping("/transfer")
 	public void transfer(@RequestBody TransferDTO transferDTO) {
-		transferService.transfer(transferDTO.getValue(), ownerService.findByName(transferDTO.getDebitOwner()).get(),
-				equityAccountService.findByDescription(transferDTO.getDebitAccount()).get(),
-				ownerService.findByName(transferDTO.getCreditOwner()).get(),
-				equityAccountService.findByDescription(transferDTO.getCreditAccount()).get());
+		this.transferService.transfer(transferDTO.getValue(),
+				this.ownerService.findByName(transferDTO.getDebitOwner()).get(),
+				this.equityAccountService.findByDescription(transferDTO.getDebitAccount()).get(),
+				this.ownerService.findByName(transferDTO.getCreditOwner()).get(),
+				this.equityAccountService.findByDescription(transferDTO.getCreditAccount()).get());
 	}
 
 }

@@ -2,15 +2,10 @@ package org.persapiens.account.restclient;
 
 import java.net.URI;
 
-import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties;
-
-import lombok.experimental.SuperBuilder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -31,7 +26,7 @@ public class RestClientHelper<T> {
 	}
 
 	public String url() {
-		return protocol + "://" + servername + ":" + port + "/" + endpoint;
+		return this.protocol + "://" + this.servername + ":" + this.port + "/" + this.endpoint;
 	}
 
 	private URI uri() {

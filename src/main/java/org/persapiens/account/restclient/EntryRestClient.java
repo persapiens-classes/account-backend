@@ -1,10 +1,11 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.EntryDTO;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.math.BigDecimal;
+
 import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.EntryDTO;
+
+import org.springframework.web.util.UriComponentsBuilder;
 
 @SuperBuilder
 public class EntryRestClient {
@@ -18,7 +19,7 @@ public class EntryRestClient {
 	public EntryDTO save(EntryDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(restClientHelper.saveUri())
+			.uri(this.restClientHelper.saveUri())
 			.body(entity)
 			.retrieve()
 			.body(EntryDTO.class);
@@ -27,7 +28,7 @@ public class EntryRestClient {
 	public BigDecimal creditSum(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/creditSum")
+			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/creditSum")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()
@@ -40,7 +41,7 @@ public class EntryRestClient {
 	public BigDecimal debitSum(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/debitSum")
+			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/debitSum")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()

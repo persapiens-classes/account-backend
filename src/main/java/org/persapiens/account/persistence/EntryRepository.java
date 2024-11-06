@@ -3,6 +3,7 @@ package org.persapiens.account.persistence;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

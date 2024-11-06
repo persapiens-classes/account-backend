@@ -1,9 +1,11 @@
 package org.persapiens.account.controller;
 
-import org.persapiens.account.dto.CategoryDTO;
-import org.persapiens.account.domain.Category;
-import org.persapiens.account.service.CategoryService;
 import java.util.Optional;
+
+import org.persapiens.account.domain.Category;
+import org.persapiens.account.dto.CategoryDTO;
+import org.persapiens.account.service.CategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +31,7 @@ public class CategoryController extends CrudController<CategoryDTO, Category, Lo
 
 	@GetMapping("/findByDescription")
 	public Optional<CategoryDTO> findByDescription(@RequestParam String description) {
-		return toDTOOptional(categoryService.findByDescription(description));
+		return toDTOOptional(this.categoryService.findByDescription(description));
 	}
 
 }

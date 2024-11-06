@@ -4,14 +4,13 @@ import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-import lombok.ToString;
-import lombok.Singular;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @Entity

@@ -1,17 +1,18 @@
 package org.persapiens.account.controller;
 
+import java.math.BigDecimal;
+
+import org.persapiens.account.domain.Account;
+import org.persapiens.account.domain.Entry;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.OwnerDTO;
-import org.persapiens.account.domain.Account;
-import org.persapiens.account.domain.Entry;
 import org.persapiens.account.service.AccountService;
 import org.persapiens.account.service.EntryService;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerService;
 
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +37,9 @@ public class EntryController extends CrudController<EntryDTO, Entry, Long> {
 	@Override
 	protected Entry toEntity(EntryDTO dto) {
 		return Entry.builder()
-			.inAccount(accountService.findByDescription(dto.getInAccount().getDescription()).get())
-			.outAccount(accountService.findByDescription(dto.getOutAccount().getDescription()).get())
-			.owner(ownerService.findByName(dto.getOwner().getName()).get())
+			.inAccount(this.accountService.findByDescription(dto.getInAccount().getDescription()).get())
+			.outAccount(this.accountService.findByDescription(dto.getOutAccount().getDescription()).get())
+			.owner(this.ownerService.findByName(dto.getOwner().getName()).get())
 			.date(dto.getDate())
 			.value(dto.getValue())
 			.note(dto.getNote())
@@ -68,14 +69,14 @@ public class EntryController extends CrudController<EntryDTO, Entry, Long> {
 
 	@GetMapping("/creditSum")
 	public BigDecimal creditSum(String owner, String equityAccount) {
-		return entryService.creditSum(ownerService.findByName(owner).get(),
-				equityAccountService.findByDescription(equityAccount).get());
+		return this.entryService.creditSum(this.ownerService.findByName(owner).get(),
+				this.equityAccountService.findByDescription(equityAccount).get());
 	}
 
 	@GetMapping("/debitSum")
 	public BigDecimal debitSum(String owner, String equityAccount) {
-		return entryService.debitSum(ownerService.findByName(owner).get(),
-				equityAccountService.findByDescription(equityAccount).get());
+		return this.entryService.debitSum(this.ownerService.findByName(owner).get(),
+				this.equityAccountService.findByDescription(equityAccount).get());
 	}
 
 }

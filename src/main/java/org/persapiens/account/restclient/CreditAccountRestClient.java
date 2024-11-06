@@ -1,8 +1,9 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.CreditAccountDTO;
 import java.util.Optional;
+
 import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.CreditAccountDTO;
 
 @SuperBuilder
 public class CreditAccountRestClient {
@@ -16,7 +17,7 @@ public class CreditAccountRestClient {
 	public CreditAccountDTO save(CreditAccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(restClientHelper.saveUri())
+			.uri(this.restClientHelper.saveUri())
 			.body(entity)
 			.retrieve()
 			.body(CreditAccountDTO.class);
@@ -25,13 +26,13 @@ public class CreditAccountRestClient {
 	public Optional<CreditAccountDTO> findByDescription(String description) {
 		return Optional.ofNullable(this.restClientHelper.getRestClient()
 			.get()
-			.uri(restClientHelper.findByDescriptionUri(description))
+			.uri(this.restClientHelper.findByDescriptionUri(description))
 			.retrieve()
 			.body(CreditAccountDTO.class));
 	}
 
 	public void deleteByDescription(String description) {
-		restClientHelper.deleteByDescription(description);
+		this.restClientHelper.deleteByDescription(description);
 	}
 
 }

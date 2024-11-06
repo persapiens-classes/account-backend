@@ -1,10 +1,11 @@
 package org.persapiens.account.controller;
 
+import java.math.BigDecimal;
+
 import org.persapiens.account.service.BalanceService;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerService;
 
-import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,8 @@ public class BalanceController {
 
 	@GetMapping("/balance")
 	public BigDecimal balance(@RequestParam String owner, @RequestParam String equityAccount) {
-		return balanceService.balance(ownerService.findByName(owner).get(),
-				equityAccountService.findByDescription(equityAccount).get());
+		return this.balanceService.balance(this.ownerService.findByName(owner).get(),
+				this.equityAccountService.findByDescription(equityAccount).get());
 	}
 
 }

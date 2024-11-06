@@ -1,9 +1,10 @@
 package org.persapiens.account.restclient;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.math.BigDecimal;
+
 import lombok.experimental.SuperBuilder;
+
+import org.springframework.web.util.UriComponentsBuilder;
 
 @SuperBuilder
 public class BalanceRestClient {
@@ -13,7 +14,7 @@ public class BalanceRestClient {
 	public BigDecimal balance(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/balance")
+			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/balance")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()

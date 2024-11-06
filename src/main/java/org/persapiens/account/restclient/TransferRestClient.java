@@ -1,9 +1,9 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.TransferDTO;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.TransferDTO;
+
+import org.springframework.web.util.UriComponentsBuilder;
 
 @SuperBuilder
 public class TransferRestClient {
@@ -13,7 +13,7 @@ public class TransferRestClient {
 	public void transfer(TransferDTO transferDTO) {
 		this.restClientHelper.getRestClient()
 			.post()
-			.uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/transfer").build().encode().toUri())
+			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/transfer").build().encode().toUri())
 			.body(transferDTO)
 			.retrieve()
 			.toBodilessEntity();

@@ -1,14 +1,15 @@
 package org.persapiens.account.controller;
 
+import java.util.Optional;
+
+import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
-import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerEquityAccountInitialValueService;
 import org.persapiens.account.service.OwnerService;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +34,8 @@ public class OwnerEquityAccountInitialValueController
 	protected OwnerEquityAccountInitialValue toEntity(OwnerEquityAccountInitialValueDTO dto) {
 		return OwnerEquityAccountInitialValue.builder()
 			.value(dto.getValue())
-			.owner(ownerService.findByName(dto.getOwner().getName()).get())
-			.equityAccount(equityAccountService.findByDescription(dto.getEquityAccount().getDescription()).get())
+			.owner(this.ownerService.findByName(dto.getOwner().getName()).get())
+			.equityAccount(this.equityAccountService.findByDescription(dto.getEquityAccount().getDescription()).get())
 			.build();
 	}
 
@@ -50,8 +51,9 @@ public class OwnerEquityAccountInitialValueController
 	@GetMapping("/findByOwnerAndEquityAccount")
 	public Optional<OwnerEquityAccountInitialValueDTO> findByOwnerAndEquityAccount(@RequestParam String owner,
 			@RequestParam String equityAccount) {
-		return toDTOOptional(ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(
-				ownerService.findByName(owner).get(), equityAccountService.findByDescription(equityAccount).get()));
+		return toDTOOptional(this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(
+				this.ownerService.findByName(owner).get(),
+				this.equityAccountService.findByDescription(equityAccount).get()));
 	}
 
 }

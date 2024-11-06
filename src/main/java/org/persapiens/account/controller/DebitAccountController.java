@@ -1,10 +1,12 @@
 package org.persapiens.account.controller;
 
-import org.persapiens.account.dto.DebitAccountDTO;
+import java.util.Optional;
+
 import org.persapiens.account.domain.DebitAccount;
+import org.persapiens.account.dto.DebitAccountDTO;
 import org.persapiens.account.service.CategoryService;
 import org.persapiens.account.service.DebitAccountService;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ public class DebitAccountController extends CrudController<DebitAccountDTO, Debi
 	protected DebitAccount toEntity(DebitAccountDTO dto) {
 		return DebitAccount.builder()
 			.description(dto.getDescription())
-			.category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
+			.category(this.categoryService.findByDescription(dto.getCategory().getDescription()).get())
 			.build();
 	}
 
@@ -36,7 +38,7 @@ public class DebitAccountController extends CrudController<DebitAccountDTO, Debi
 
 	@GetMapping("/findByDescription")
 	public Optional<DebitAccountDTO> findByDescription(@RequestParam String description) {
-		return toDTOOptional(debitAccountService.findByDescription(description));
+		return toDTOOptional(this.debitAccountService.findByDescription(description));
 	}
 
 }

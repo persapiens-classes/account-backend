@@ -1,11 +1,10 @@
 package org.persapiens.account.domain;
 
 import jakarta.persistence.Entity;
-
-import lombok.experimental.SuperBuilder;
-import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @Entity
@@ -14,6 +13,9 @@ import lombok.NoArgsConstructor;
 @SuperBuilder
 public class DebitAccount extends Account {
 
-	public final static String EXPENSE_TRANSFER = "expense transfer";
+	/**
+	 * Expense transfer. Debit transfer.
+	 */
+	public static final String EXPENSE_TRANSFER = "expense transfer";
 
 }

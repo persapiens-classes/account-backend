@@ -1,8 +1,10 @@
 package org.persapiens.account.service;
 
+import java.util.Optional;
+
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.persistence.CategoryRepository;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ public class CategoryService extends CrudService<Category, Long> {
 	private CategoryRepository categoryRepository;
 
 	public Optional<Category> findByDescription(String description) {
-		return categoryRepository.findByDescription(description);
+		return this.categoryRepository.findByDescription(description);
 	}
 
 	private Category category(String description) {

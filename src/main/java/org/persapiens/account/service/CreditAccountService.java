@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import org.persapiens.account.domain.CreditAccount;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class CreditAccountService extends AccountService<CreditAccount> {
 		if (findByDescription.isEmpty()) {
 			CreditAccount result = CreditAccount.builder()
 				.description(CreditAccount.INCOME_TRANSFER)
-				.category(categoryService.incomeTransfer())
+				.category(this.categoryService.incomeTransfer())
 				.build();
 			return save(result);
 		}

@@ -3,11 +3,12 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.Owner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +35,8 @@ public class TransferService {
 	public void transfer(BigDecimal value, Owner ownerDebito, EquityAccount debitEquityAccount, Owner ownerCredito,
 			EquityAccount creditEquityAccount) {
 
-		DebitAccount debitAccount = debitAccountService.expenseTransfer();
-		CreditAccount creditAccount = creditAccountService.incomeTransfer();
+		DebitAccount debitAccount = this.debitAccountService.expenseTransfer();
+		CreditAccount creditAccount = this.creditAccountService.incomeTransfer();
 
 		if (ownerCredito.equals(ownerDebito)) {
 			throw new IllegalArgumentException("Owners should be different: " + ownerDebito + " = " + ownerCredito);
@@ -51,7 +52,7 @@ public class TransferService {
 			.date(date)
 			.note("Transfer debit entry")
 			.build();
-		entryService.save(debitEntry);
+		this.entryService.save(debitEntry);
 
 		Entry creditEntry = Entry.builder()
 			.inAccount(creditEquityAccount)
@@ -61,7 +62,7 @@ public class TransferService {
 			.date(date)
 			.note("Transfer credit entry")
 			.build();
-		entryService.save(creditEntry);
+		this.entryService.save(creditEntry);
 	}
 
 }

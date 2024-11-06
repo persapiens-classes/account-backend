@@ -1,6 +1,7 @@
 package org.persapiens.account.service;
 
 import org.persapiens.account.domain.EquityAccount;
+
 import org.springframework.stereotype.Service;
 
 @Service
