@@ -7,24 +7,31 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class DebitAccountRestClient {
 
-    private RestClientHelper<DebitAccountDTO> entityRestHelper;
+    private RestClientHelper<DebitAccountDTO> restClientHelper;
 
     public Iterable<DebitAccountDTO> findAll() {
-        return this.entityRestHelper.findAll();
+        return this.restClientHelper.findAll();
     }
 
     public DebitAccountDTO save(DebitAccountDTO entity) {
-        return this.entityRestHelper.getRestTemplate().postForObject(
-                entityRestHelper.saveUri(), entity, DebitAccountDTO.class);
-    }
-
-    public void deleteByDescription(String description) {
-        entityRestHelper.deleteByDescription( description);
+        return this.restClientHelper.getRestClient()
+            .post()
+            .uri(restClientHelper.saveUri())
+            .body(entity)
+            .retrieve()
+            .body(DebitAccountDTO.class);
     }
 
     public Optional<DebitAccountDTO> findByDescription(String description) {
-        return Optional.ofNullable(this.entityRestHelper.getRestTemplate().getForObject(
-                entityRestHelper.findByDescriptionUri(description), DebitAccountDTO.class));
+        return Optional.ofNullable(this.restClientHelper.getRestClient()
+            .get()
+            .uri(restClientHelper.findByDescriptionUri(description))
+            .retrieve()
+            .body(DebitAccountDTO.class));
+    }
+
+    public void deleteByDescription(String description) {
+        restClientHelper.deleteByDescription(description);
     }
 
 }

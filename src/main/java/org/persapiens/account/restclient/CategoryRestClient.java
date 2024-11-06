@@ -7,20 +7,27 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class CategoryRestClient {
 
-    private RestClientHelper<CategoryDTO> entityRestHelper;
+    private RestClientHelper<CategoryDTO> restClientHelper;
 
     public Iterable<CategoryDTO> findAll() {
-        return this.entityRestHelper.findAll();
+        return this.restClientHelper.findAll();
     }
 
     public CategoryDTO save(CategoryDTO entity) {
-        return this.entityRestHelper.getRestTemplate().postForObject(
-                entityRestHelper.saveUri(), entity, CategoryDTO.class);
+        return this.restClientHelper.getRestClient()
+            .post()
+            .uri(restClientHelper.saveUri())
+            .body(entity)
+            .retrieve()
+            .body(CategoryDTO.class);
     }
 
     public Optional<CategoryDTO> findByDescription(String description) {
-        return Optional.ofNullable(this.entityRestHelper.getRestTemplate().getForObject(
-                entityRestHelper.findByDescriptionUri(description), CategoryDTO.class));
+        return Optional.ofNullable(this.restClientHelper.getRestClient()
+            .get()
+            .uri(restClientHelper.findByDescriptionUri(description))
+            .retrieve()
+            .body(CategoryDTO.class));
     }
 
 }
