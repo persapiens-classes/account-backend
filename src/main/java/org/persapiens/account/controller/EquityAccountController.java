@@ -15,30 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/equityAccount")
 public class EquityAccountController extends CrudController<EquityAccountDTO, EquityAccount, Long> {
 
-    @Autowired
-    private EquityAccountService equityAccountService;
-    
-    @Autowired
-    private CategoryService categoryService;
+	@Autowired
+	private EquityAccountService equityAccountService;
 
-    @Override
-    protected EquityAccount toEntity(EquityAccountDTO dto) {
-        return EquityAccount.builder()
-           .description(dto.getDescription())
-           .category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
-           .build();
-    }
+	@Autowired
+	private CategoryService categoryService;
 
-    @Override
-    protected EquityAccountDTO toDTO(EquityAccount entity) {
-        return EquityAccountDTO.builder()
-           .description(entity.getDescription())
-           .build();
-    }
-    
-    @GetMapping("/findByDescription")
-    public Optional<EquityAccountDTO> findByDescription(@RequestParam String description) {
-        return toDTOOptional(equityAccountService.findByDescription(description));
-    }
+	@Override
+	protected EquityAccount toEntity(EquityAccountDTO dto) {
+		return EquityAccount.builder()
+			.description(dto.getDescription())
+			.category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
+			.build();
+	}
+
+	@Override
+	protected EquityAccountDTO toDTO(EquityAccount entity) {
+		return EquityAccountDTO.builder().description(entity.getDescription()).build();
+	}
+
+	@GetMapping("/findByDescription")
+	public Optional<EquityAccountDTO> findByDescription(@RequestParam String description) {
+		return toDTOOptional(equityAccountService.findByDescription(description));
+	}
 
 }

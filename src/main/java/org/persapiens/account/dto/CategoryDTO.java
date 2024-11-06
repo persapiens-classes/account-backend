@@ -10,5 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CategoryDTO {
-    private String description;
+
+	private String description;
+
 }

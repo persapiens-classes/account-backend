@@ -22,65 +22,62 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class EntryServiceIT {
 
-    @Autowired
-    private EntryService entryService;
+	@Autowired
+	private EntryService entryService;
 
-    @Autowired
-    private OwnerFactory ownerFactory;
+	@Autowired
+	private OwnerFactory ownerFactory;
 
-    @Autowired
-    private EquityAccountFactory equityAccountFactory;
+	@Autowired
+	private EquityAccountFactory equityAccountFactory;
 
-    @Autowired
-    private CreditAccountFactory creditAccountFactory;
+	@Autowired
+	private CreditAccountFactory creditAccountFactory;
 
-    @Autowired
-    private DebitAccountFactory debitAccountFactory;
+	@Autowired
+	private DebitAccountFactory debitAccountFactory;
 
-    @Test
-    public void repositoryNotNull() {
-        assertThat(this.entryService).isNotNull();
-    }
+	@Test
+	public void repositoryNotNull() {
+		assertThat(this.entryService).isNotNull();
+	}
 
-    @BeforeEach
-    public void deletarTodos() {
-        this.entryService.deleteAll();
-        assertThat(this.entryService.findAll())
-                .isEmpty();
-    }
+	@BeforeEach
+	public void deletarTodos() {
+		this.entryService.deleteAll();
+		assertThat(this.entryService.findAll()).isEmpty();
+	}
 
-    @Test
-    public void entryWithInvalidInAccount() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Entry entry = Entry.builder()
-                    .inAccount(this.creditAccountFactory.internship())
-                    .outAccount(this.equityAccountFactory.savings())
-                    .value(BigDecimal.TEN)
-                    .date(LocalDateTime.now())
-                    .owner(this.ownerFactory.father())
-                    .build();
+	@Test
+	public void entryWithInvalidInAccount() {
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Entry entry = Entry.builder()
+				.inAccount(this.creditAccountFactory.internship())
+				.outAccount(this.equityAccountFactory.savings())
+				.value(BigDecimal.TEN)
+				.date(LocalDateTime.now())
+				.owner(this.ownerFactory.father())
+				.build();
 
-            this.entryService.save(entry);
-        });
-        assertThat(thrown)
-                .isNotNull();
-    }
+			this.entryService.save(entry);
+		});
+		assertThat(thrown).isNotNull();
+	}
 
-    @Test
-    public void entryWithInvalidOutAccount() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Entry entry = Entry.builder()
-                    .inAccount(this.equityAccountFactory.savings())
-                    .outAccount(this.debitAccountFactory.gasoline())
-                    .value(BigDecimal.TEN)
-                    .date(LocalDateTime.now())
-                    .owner(this.ownerFactory.father())
-                    .build();
+	@Test
+	public void entryWithInvalidOutAccount() {
+		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Entry entry = Entry.builder()
+				.inAccount(this.equityAccountFactory.savings())
+				.outAccount(this.debitAccountFactory.gasoline())
+				.value(BigDecimal.TEN)
+				.date(LocalDateTime.now())
+				.owner(this.ownerFactory.father())
+				.build();
 
-            this.entryService.save(entry);
-        });
-        assertThat(thrown)
-                .isNotNull();
-    }
+			this.entryService.save(entry);
+		});
+		assertThat(thrown).isNotNull();
+	}
 
 }

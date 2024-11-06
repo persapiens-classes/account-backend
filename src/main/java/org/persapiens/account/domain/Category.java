@@ -28,22 +28,24 @@ import lombok.NoArgsConstructor;
 @Setter
 public class Category implements Comparable<Category> {
 
-    public final static String EXPENSE_TRANSFER_CATEGORY = "expense transfer category";
-    public final static String INCOME_TRANSFER_CATEGORY = "income transfer category";
+	public final static String EXPENSE_TRANSFER_CATEGORY = "expense transfer category";
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
-    @Id
-    private Long id;
+	public final static String INCOME_TRANSFER_CATEGORY = "income transfer category";
 
-    @Column(nullable = false, unique = true)
-    private String description;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
+	@Id
+	private Long id;
 
-    @OneToMany(mappedBy = "category")
-    @Singular
-    private Set<Account> accounts;
+	@Column(nullable = false, unique = true)
+	private String description;
 
-    @Override
-    public int compareTo(Category o) {
-        return this.description.compareTo(o.getDescription());
-    }
+	@OneToMany(mappedBy = "category")
+	@Singular
+	private Set<Account> accounts;
+
+	@Override
+	public int compareTo(Category o) {
+		return this.description.compareTo(o.getDescription());
+	}
+
 }

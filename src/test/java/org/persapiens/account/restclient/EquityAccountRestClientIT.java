@@ -17,49 +17,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EquityAccountRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private EquityAccountRestClient equityAccountRestClient() {
-        return EquityAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().equityAccountRestClient();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String description = "Super bank account";
-        String categoryDescription = CategoryConstants.BANK;
+	private EquityAccountRestClient equityAccountRestClient() {
+		return EquityAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.equityAccountRestClient();
+	}
 
-        EquityAccountDTO equityAccount = EquityAccountDTO.builder()
-            .description(description)
-            .category(categoryRestClientFactory().category(categoryDescription))
-            .build();
+	@Test
+	public void saveOne() {
+		String description = "Super bank account";
+		String categoryDescription = CategoryConstants.BANK;
 
-        // verify save operation
-        assertThat(equityAccountRestClient().save(equityAccount))
-        	.isNotNull();
+		EquityAccountDTO equityAccount = EquityAccountDTO.builder()
+			.description(description)
+			.category(categoryRestClientFactory().category(categoryDescription))
+			.build();
 
-        // verify findByDescription operation
-        assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
-                .isEqualTo(equityAccount.getDescription());
-        
-        // verify findAll operation
-        assertThat(equityAccountRestClient().findAll())
-                .isNotEmpty();        
-    }
+		// verify save operation
+		assertThat(equityAccountRestClient().save(equityAccount)).isNotNull();
+
+		// verify findByDescription operation
+		assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(equityAccount.getDescription());
+
+		// verify findAll operation
+		assertThat(equityAccountRestClient().findAll()).isNotEmpty();
+	}
 
 }

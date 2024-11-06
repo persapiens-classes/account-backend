@@ -17,49 +17,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DebitAccountRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private DebitAccountRestClient debitAccountRestClient() {
-        return DebitAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().debitAccountRestClient();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String description = "Uber";
-        String categoryDescription = CategoryConstants.TRANSPORT;
+	private DebitAccountRestClient debitAccountRestClient() {
+		return DebitAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.debitAccountRestClient();
+	}
 
-        DebitAccountDTO debitAccount = DebitAccountDTO.builder()
-            .description(description)
-            .category(categoryRestClientFactory().category(categoryDescription))
-            .build();
+	@Test
+	public void saveOne() {
+		String description = "Uber";
+		String categoryDescription = CategoryConstants.TRANSPORT;
 
-        // verify save operation
-        assertThat(debitAccountRestClient().save(debitAccount))
-        	.isNotNull();
+		DebitAccountDTO debitAccount = DebitAccountDTO.builder()
+			.description(description)
+			.category(categoryRestClientFactory().category(categoryDescription))
+			.build();
 
-        // verify findByDescription operation
-        assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
-                .isEqualTo(debitAccount.getDescription());
-        
-        // verify findAll operation
-        assertThat(debitAccountRestClient().findAll())
-                .isNotEmpty();        
-    }
+		// verify save operation
+		assertThat(debitAccountRestClient().save(debitAccount)).isNotNull();
+
+		// verify findByDescription operation
+		assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(debitAccount.getDescription());
+
+		// verify findAll operation
+		assertThat(debitAccountRestClient().findAll()).isNotEmpty();
+	}
 
 }

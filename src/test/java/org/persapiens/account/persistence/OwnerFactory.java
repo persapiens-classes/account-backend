@@ -11,24 +11,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class OwnerFactory {
 
-    @Autowired
-    private OwnerRepository ownerRepository;
+	@Autowired
+	private OwnerRepository ownerRepository;
 
-    public Owner owner(String name) {
-        Optional<Owner> findByName = this.ownerRepository.findByName(name);
-        if (findByName.isEmpty()) {
-            Owner category = Owner.builder().name(name).build();
-            return this.ownerRepository.save(category);
-        } else {
-            return findByName.get();
-        }
-    }
+	public Owner owner(String name) {
+		Optional<Owner> findByName = this.ownerRepository.findByName(name);
+		if (findByName.isEmpty()) {
+			Owner category = Owner.builder().name(name).build();
+			return this.ownerRepository.save(category);
+		}
+		else {
+			return findByName.get();
+		}
+	}
 
-    public Owner father() {
-        return owner(FATHER);
-    }
+	public Owner father() {
+		return owner(FATHER);
+	}
 
-    public Owner mother() {
-        return owner(MOTHER);
-    }
+	public Owner mother() {
+		return owner(MOTHER);
+	}
+
 }

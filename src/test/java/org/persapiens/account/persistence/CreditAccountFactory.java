@@ -11,26 +11,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreditAccountFactory {
 
-    @Autowired
-    private CreditAccountRepository creditAccountRepository;
+	@Autowired
+	private CreditAccountRepository creditAccountRepository;
 
-    @Autowired
-    private CategoryFactory categoryFactory;
+	@Autowired
+	private CategoryFactory categoryFactory;
 
-    public CreditAccount creditAccount(String description, Category category) {
-        Optional<CreditAccount> findByDescription = this.creditAccountRepository.findByDescription(description);
-        if (findByDescription.isEmpty()) {
-            CreditAccount creditAccount = CreditAccount.builder()
-                    .description(description)
-                    .category(category)
-                    .build();
-            return this.creditAccountRepository.save(creditAccount);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public CreditAccount creditAccount(String description, Category category) {
+		Optional<CreditAccount> findByDescription = this.creditAccountRepository.findByDescription(description);
+		if (findByDescription.isEmpty()) {
+			CreditAccount creditAccount = CreditAccount.builder().description(description).category(category).build();
+			return this.creditAccountRepository.save(creditAccount);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
-    public CreditAccount internship() {
-        return creditAccount(INTERNSHIP, this.categoryFactory.salary());
-    }
+	public CreditAccount internship() {
+		return creditAccount(INTERNSHIP, this.categoryFactory.salary());
+	}
+
 }

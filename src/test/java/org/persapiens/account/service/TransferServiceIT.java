@@ -16,30 +16,28 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class TransferServiceIT {
 
-        @Autowired
-        private OwnerFactory ownerFactory;
+	@Autowired
+	private OwnerFactory ownerFactory;
 
-        @Autowired
-        private TransferService transferService;
+	@Autowired
+	private TransferService transferService;
 
-        @Autowired
-        private EquityAccountFactory equityAccountFactory;
+	@Autowired
+	private EquityAccountFactory equityAccountFactory;
 
-        @Autowired
-        private EntryService entryService;
-    
-        @Test
-        public void transferDe10DePapaiParaMamae() {
-            this.transferService.transfer(BigDecimal.TEN, 
-                this.ownerFactory.father(), this.equityAccountFactory.checking(),
-                this.ownerFactory.mother(), this.equityAccountFactory.savings());
-                
-            assertThat(entryService.debitSum(this.ownerFactory.father(), 
-                this.equityAccountFactory.checking()))
-                .isEqualTo(BigDecimal.TEN.setScale(2));
-    
-            assertThat(entryService.creditSum(this.ownerFactory.mother(), 
-                this.equityAccountFactory.savings()))
-                .isEqualTo(BigDecimal.TEN.setScale(2));
-        }
+	@Autowired
+	private EntryService entryService;
+
+	@Test
+	public void transferDe10DePapaiParaMamae() {
+		this.transferService.transfer(BigDecimal.TEN, this.ownerFactory.father(), this.equityAccountFactory.checking(),
+				this.ownerFactory.mother(), this.equityAccountFactory.savings());
+
+		assertThat(entryService.debitSum(this.ownerFactory.father(), this.equityAccountFactory.checking()))
+			.isEqualTo(BigDecimal.TEN.setScale(2));
+
+		assertThat(entryService.creditSum(this.ownerFactory.mother(), this.equityAccountFactory.savings()))
+			.isEqualTo(BigDecimal.TEN.setScale(2));
+	}
+
 }

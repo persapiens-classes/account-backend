@@ -13,7 +13,6 @@ import static org.persapiens.account.common.CategoryConstants.TRANSPORT;
 
 public class CategoryTests {
 
-
 	@Test
 	public void equalDescriptions() {
 		assertThat(Category.builder().description(TRANSPORT).build())
@@ -22,8 +21,7 @@ public class CategoryTests {
 
 	@Test
 	public void equalDescriptionsWithDifferentAccounts() {
-		Category CategoryTransporte1 = Category.builder().description(TRANSPORT)
-			.build();
+		Category CategoryTransporte1 = Category.builder().description(TRANSPORT).build();
 
 		Set<Account> Accounts = new HashSet<>();
 		Accounts.add(DebitAccount.builder().description(GASOLINE).category(CategoryTransporte1).build());
@@ -51,4 +49,6 @@ public class CategoryTests {
 		categories.add(housing);
 
 		assertThat(categories.iterator().next()).isEqualTo(housing);
-	}}
+	}
+
+}

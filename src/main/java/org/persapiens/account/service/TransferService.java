@@ -15,54 +15,53 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TransferService {
 
-    private final EntryService entryService;
+	private final EntryService entryService;
 
-    private final DebitAccountService debitAccountService;
+	private final DebitAccountService debitAccountService;
 
-    private final CreditAccountService creditAccountService;
-    
-    @Autowired
-    public TransferService(EntryService entryService,
-            DebitAccountService debitAccountService, CreditAccountService creditAccountService) {
-        super();
-        this.entryService = entryService;
-        this.debitAccountService = debitAccountService;
-        this.creditAccountService = creditAccountService;
-    }
-    
-    @Transactional
-    public void transfer(BigDecimal value, 
-            Owner ownerDebito, EquityAccount debitEquityAccount, 
-            Owner ownerCredito, EquityAccount creditEquityAccount) {
+	private final CreditAccountService creditAccountService;
 
-        DebitAccount debitAccount = debitAccountService.expenseTransfer();
-        CreditAccount creditAccount = creditAccountService.incomeTransfer();
-        
-        if (ownerCredito.equals(ownerDebito)) {
-            throw new IllegalArgumentException("Owners should be different: "
-                    + ownerDebito + " = " + ownerCredito);
-        }
+	@Autowired
+	public TransferService(EntryService entryService, DebitAccountService debitAccountService,
+			CreditAccountService creditAccountService) {
+		super();
+		this.entryService = entryService;
+		this.debitAccountService = debitAccountService;
+		this.creditAccountService = creditAccountService;
+	}
 
-        LocalDateTime date = LocalDateTime.now();
+	@Transactional
+	public void transfer(BigDecimal value, Owner ownerDebito, EquityAccount debitEquityAccount, Owner ownerCredito,
+			EquityAccount creditEquityAccount) {
 
-        Entry debitEntry = Entry.builder()
-                .inAccount(debitAccount)
-                .outAccount(debitEquityAccount)
-                .owner(ownerDebito)
-                .value(value)
-                .date(date)
-                .note("Transfer debit entry")
-                .build();
-        entryService.save(debitEntry);
+		DebitAccount debitAccount = debitAccountService.expenseTransfer();
+		CreditAccount creditAccount = creditAccountService.incomeTransfer();
 
-        Entry creditEntry = Entry.builder()
-                .inAccount(creditEquityAccount)
-                .outAccount(creditAccount)
-                .owner(ownerCredito)
-                .value(value)
-                .date(date)
-                .note("Transfer credit entry")
-                .build();
-        entryService.save(creditEntry);
-    }
+		if (ownerCredito.equals(ownerDebito)) {
+			throw new IllegalArgumentException("Owners should be different: " + ownerDebito + " = " + ownerCredito);
+		}
+
+		LocalDateTime date = LocalDateTime.now();
+
+		Entry debitEntry = Entry.builder()
+			.inAccount(debitAccount)
+			.outAccount(debitEquityAccount)
+			.owner(ownerDebito)
+			.value(value)
+			.date(date)
+			.note("Transfer debit entry")
+			.build();
+		entryService.save(debitEntry);
+
+		Entry creditEntry = Entry.builder()
+			.inAccount(creditEquityAccount)
+			.outAccount(creditAccount)
+			.owner(ownerCredito)
+			.value(value)
+			.date(date)
+			.note("Transfer credit entry")
+			.build();
+		entryService.save(creditEntry);
+	}
+
 }

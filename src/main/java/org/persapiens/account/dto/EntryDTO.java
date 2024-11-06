@@ -14,10 +14,17 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class EntryDTO {
-    private LocalDateTime date;
-    private BigDecimal value;
-    private AccountDTO inAccount;
-    private AccountDTO outAccount;
-    private OwnerDTO owner;
-    private String note;
+
+	private LocalDateTime date;
+
+	private BigDecimal value;
+
+	private AccountDTO inAccount;
+
+	private AccountDTO outAccount;
+
+	private OwnerDTO owner;
+
+	private String note;
+
 }

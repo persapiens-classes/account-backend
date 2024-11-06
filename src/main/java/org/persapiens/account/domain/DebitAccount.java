@@ -13,5 +13,7 @@ import lombok.NoArgsConstructor;
 @ToString(callSuper = true)
 @SuperBuilder
 public class DebitAccount extends Account {
-    public final static String EXPENSE_TRANSFER = "expense transfer";
+
+	public final static String EXPENSE_TRANSFER = "expense transfer";
+
 }

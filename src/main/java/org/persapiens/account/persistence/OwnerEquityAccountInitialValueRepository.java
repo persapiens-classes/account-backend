@@ -9,6 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface OwnerEquityAccountInitialValueRepository extends CrudRepository<OwnerEquityAccountInitialValue, Long> {
 
-    Optional<OwnerEquityAccountInitialValue> findByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount);
+	Optional<OwnerEquityAccountInitialValue> findByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount);
 
 }

@@ -16,14 +16,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true, exclude = "ownerEquityAccountInitialValues")
-@ToString(callSuper = true, exclude= "ownerEquityAccountInitialValues")
+@ToString(callSuper = true, exclude = "ownerEquityAccountInitialValues")
 @SuperBuilder
 @Getter
 @Setter
 public class EquityAccount extends Account {
-    
-    @OneToMany(mappedBy = "equityAccount")
-    @Singular
-    private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
+
+	@OneToMany(mappedBy = "equityAccount")
+	@Singular
+	private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
 
 }

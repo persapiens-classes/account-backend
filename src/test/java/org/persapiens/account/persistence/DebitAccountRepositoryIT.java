@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.persapiens.account.common.CategoryConstants.TRANSPORT;
 import static org.persapiens.account.common.DebitAccountConstants.GASOLINE;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class DebitAccountRepositoryIT {
@@ -34,14 +33,14 @@ public class DebitAccountRepositoryIT {
 		// create test environment
 		DebitAccount debitAccount = this.debitAccountFactory.gasoline();
 
-		DebitAccount debitAccountExemplo = DebitAccount.builder().description(GASOLINE)
+		DebitAccount debitAccountExemplo = DebitAccount.builder()
+			.description(GASOLINE)
 			.category(Category.builder().description(TRANSPORT).build())
 			.build();
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.debitAccountRepository.findOne(Example.of(debitAccountExemplo)).get())
-			.isEqualTo(debitAccount);
+		assertThat(this.debitAccountRepository.findOne(Example.of(debitAccountExemplo)).get()).isEqualTo(debitAccount);
 	}
 
 }

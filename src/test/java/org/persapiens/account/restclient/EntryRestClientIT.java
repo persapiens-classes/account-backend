@@ -23,78 +23,70 @@ import java.time.LocalDateTime;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EntryRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private EntryRestClient entryRestClient() {
-        return EntryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().entryRestClient();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private OwnerRestClientFactory ownerRestClientFactory() {
-        return OwnerRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private EntryRestClient entryRestClient() {
+		return EntryRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.entryRestClient();
+	}
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private OwnerRestClientFactory ownerRestClientFactory() {
+		return OwnerRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-        return EquityAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private CreditAccountRestClientFactory creditAccountRestClientFactory() {
-        return CreditAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
+		return EquityAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String mother = OwnerConstants.MOTHER;
-        String internship = CreditAccountConstants.INTERNSHIP;
-        String salary = CategoryConstants.SALARY;
-        String savings = EquityAccountConstants.SAVINGS;
-        String bank = CategoryConstants.BANK;
-        
-        EntryDTO entry = EntryDTO.builder()
-            .value(new BigDecimal(543))
-            .date(LocalDateTime.now())
-            .note("saving the internship")
-            .owner(ownerRestClientFactory().owner(mother))
-            .inAccount(equityAccountRestClientFactory().equityAccount(savings, bank))
-            .outAccount(creditAccountRestClientFactory().creditAccount(internship, salary))
-            .build();
+	private CreditAccountRestClientFactory creditAccountRestClientFactory() {
+		return CreditAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-        // verify save operation
-        assertThat(entryRestClient().save(entry))
-        	.isNotNull();
-        
-        // verify findAll operation
-        assertThat(entryRestClient().findAll())
-                .isNotEmpty();        
-    }
+	@Test
+	public void saveOne() {
+		String mother = OwnerConstants.MOTHER;
+		String internship = CreditAccountConstants.INTERNSHIP;
+		String salary = CategoryConstants.SALARY;
+		String savings = EquityAccountConstants.SAVINGS;
+		String bank = CategoryConstants.BANK;
+
+		EntryDTO entry = EntryDTO.builder()
+			.value(new BigDecimal(543))
+			.date(LocalDateTime.now())
+			.note("saving the internship")
+			.owner(ownerRestClientFactory().owner(mother))
+			.inAccount(equityAccountRestClientFactory().equityAccount(savings, bank))
+			.outAccount(creditAccountRestClientFactory().creditAccount(internship, salary))
+			.build();
+
+		// verify save operation
+		assertThat(entryRestClient().save(entry)).isNotNull();
+
+		// verify findAll operation
+		assertThat(entryRestClient().findAll()).isNotEmpty();
+	}
 
 }

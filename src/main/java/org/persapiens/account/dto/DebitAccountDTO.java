@@ -12,4 +12,5 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class DebitAccountDTO extends AccountDTO {
+
 }

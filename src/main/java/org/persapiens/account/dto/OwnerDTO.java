@@ -10,5 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class OwnerDTO {
-    private String name;
+
+	private String name;
+
 }

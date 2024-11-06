@@ -14,38 +14,36 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class OwnerServiceIT {
 
-    @Autowired
-    private OwnerService ownerService;
+	@Autowired
+	private OwnerService ownerService;
 
-    @Autowired
-    private OwnerFactory ownerFactory;
+	@Autowired
+	private OwnerFactory ownerFactory;
 
-    @Test
-    public void repositoryNotNull() {
-        assertThat(this.ownerService).isNotNull();
-    }
+	@Test
+	public void repositoryNotNull() {
+		assertThat(this.ownerService).isNotNull();
+	}
 
-    @Test
-    public void saveOne() {
-        // create test environment
-        Owner owner = this.ownerFactory.mother();
+	@Test
+	public void saveOne() {
+		// create test environment
+		Owner owner = this.ownerFactory.mother();
 
 		// verify the results
-        assertThat(this.ownerService.findById(owner.getId()).get())
-                .isEqualTo(owner);
-    }
+		assertThat(this.ownerService.findById(owner.getId()).get()).isEqualTo(owner);
+	}
 
-    @Test
-    public void deleteOne() {
-        // create test environment
-        Owner owner = this.ownerFactory.owner("UNIQUE Owner");
+	@Test
+	public void deleteOne() {
+		// create test environment
+		Owner owner = this.ownerFactory.owner("UNIQUE Owner");
 
 		// execute the operation to be tested
-        this.ownerService.delete(owner);
+		this.ownerService.delete(owner);
 
 		// verify the results
-        assertThat(this.ownerService.findById(owner.getId()).isPresent())
-                .isFalse();
-    }
+		assertThat(this.ownerService.findById(owner.getId()).isPresent()).isFalse();
+	}
 
 }

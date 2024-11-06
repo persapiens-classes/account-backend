@@ -15,42 +15,40 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CreditAccountServiceIT {
 
-    @Autowired
-    private CreditAccountService creditAccountService;
+	@Autowired
+	private CreditAccountService creditAccountService;
 
-    @Autowired
-    private CreditAccountFactory creditAccountFactory;
+	@Autowired
+	private CreditAccountFactory creditAccountFactory;
 
-    @Autowired
-    private CategoryFactory categoryFactory;
+	@Autowired
+	private CategoryFactory categoryFactory;
 
-    @Test
-    public void repositoryNotNull() {
-        assertThat(this.creditAccountService).isNotNull();
-    }
+	@Test
+	public void repositoryNotNull() {
+		assertThat(this.creditAccountService).isNotNull();
+	}
 
-    @Test
-    public void saveOne() {
-        // create test environment
-        CreditAccount creditAccount = this.creditAccountFactory.internship();
+	@Test
+	public void saveOne() {
+		// create test environment
+		CreditAccount creditAccount = this.creditAccountFactory.internship();
 
 		// verify the results
-        assertThat(this.creditAccountService.findById(creditAccount.getId()).get())
-                .isEqualTo(creditAccount);
-    }
+		assertThat(this.creditAccountService.findById(creditAccount.getId()).get()).isEqualTo(creditAccount);
+	}
 
-    @Test
-    public void deleteOne() {
-        // create test environment
-        CreditAccount creditAccount = this.creditAccountFactory.creditAccount("UNIQUE CreditAccount",
-            this.categoryFactory.bank());
+	@Test
+	public void deleteOne() {
+		// create test environment
+		CreditAccount creditAccount = this.creditAccountFactory.creditAccount("UNIQUE CreditAccount",
+				this.categoryFactory.bank());
 
 		// execute the operation to be tested
-        this.creditAccountService.delete(creditAccount);
+		this.creditAccountService.delete(creditAccount);
 
 		// verify the results
-        assertThat(this.creditAccountService.findById(creditAccount.getId()).isPresent())
-                .isFalse();
-    }
+		assertThat(this.creditAccountService.findById(creditAccount.getId()).isPresent()).isFalse();
+	}
 
 }

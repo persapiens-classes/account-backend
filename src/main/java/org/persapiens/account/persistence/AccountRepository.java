@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 public interface AccountRepository<T extends Account> extends CrudRepository<T, Long>, QueryByExampleExecutor<T> {
 
-    Optional<T> findByDescription(String description);
+	Optional<T> findByDescription(String description);
 
 }

@@ -9,22 +9,21 @@ import lombok.Data;
 @Data
 public class BalanceRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    public BalanceRestClient balanceRestClient() {
-        return BalanceRestClient.builder()
-                .restClientHelper(RestClientHelper.<BigDecimal>builder()
-                    .endpoint("")
-                    .protocol(protocol)
-                    .servername(servername)
-                    .port(port)
-                    .build())
-                .build();
-    }
+	private int port;
 
+	public BalanceRestClient balanceRestClient() {
+		return BalanceRestClient.builder()
+			.restClientHelper(RestClientHelper.<BigDecimal>builder()
+				.endpoint("")
+				.protocol(protocol)
+				.servername(servername)
+				.port(port)
+				.build())
+			.build();
+	}
 
 }

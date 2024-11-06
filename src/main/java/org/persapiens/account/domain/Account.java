@@ -26,29 +26,28 @@ import lombok.NonNull;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @SequenceGenerator(sequenceName = "seq_account", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
-@EqualsAndHashCode(of = {"description", "category"})
+@EqualsAndHashCode(of = { "description", "category" })
 @ToString
 @SuperBuilder
 @Getter
 @Setter
-public class Account implements Comparable<Account>{
+public class Account implements Comparable<Account> {
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
-    @Id
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
+	@Id
+	private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String description;
+	@Column(nullable = false, unique = true)
+	private String description;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
-    @NonNull
-    private Category category;
+	@ManyToOne
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
+	@NonNull
+	private Category category;
 
-    @Override
-    public int compareTo(Account o) {
-        return Comparator.comparing(Account::getDescription)
-                .thenComparing(Account::getCategory)
-                .compare(this, o);
-    }
+	@Override
+	public int compareTo(Account o) {
+		return Comparator.comparing(Account::getDescription).thenComparing(Account::getCategory).compare(this, o);
+	}
+
 }

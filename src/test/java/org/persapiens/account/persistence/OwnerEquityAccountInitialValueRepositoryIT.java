@@ -31,23 +31,23 @@ public class OwnerEquityAccountInitialValueRepositoryIT {
 
 	@Test
 	public void repositoryNotNull() {
-		assertThat(this.ownerEquityAccountInitialValueRepository)
-			.isNotNull();
+		assertThat(this.ownerEquityAccountInitialValueRepository).isNotNull();
 	}
 
-    @Test
-    public void findByOwnerAndEquityAccount() {
+	@Test
+	public void findByOwnerAndEquityAccount() {
 		// create test environment
-        Owner father = this.ownerFactory.father();
+		Owner father = this.ownerFactory.father();
 
-        EquityAccount savings = this.equityAccountFactory.savings();
+		EquityAccount savings = this.equityAccountFactory.savings();
 
-        OwnerEquityAccountInitialValue ownerEquityAccountInitialValue
-            = this.ownerEquityAccountInitialValueFactory.ownerEquityAccountInitialValue(father, savings, new BigDecimal(100));
+		OwnerEquityAccountInitialValue ownerEquityAccountInitialValue = this.ownerEquityAccountInitialValueFactory
+			.ownerEquityAccountInitialValue(father, savings, new BigDecimal(100));
 
 		// execute the operation to be tested
 		// verify the results
-        assertThat(this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(father, savings).get())
-            .isEqualTo(ownerEquityAccountInitialValue);
-    }
+		assertThat(this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(father, savings).get())
+			.isEqualTo(ownerEquityAccountInitialValue);
+	}
+
 }

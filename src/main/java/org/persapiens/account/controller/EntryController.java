@@ -21,59 +21,61 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/entry")
 public class EntryController extends CrudController<EntryDTO, Entry, Long> {
 
-    @Autowired
-    private EntryService entryService;
-    
-    @Autowired
-    private OwnerService ownerService;
+	@Autowired
+	private EntryService entryService;
 
-    @Autowired
-    private EquityAccountService equityAccountService;
+	@Autowired
+	private OwnerService ownerService;
 
-    @Autowired
-    private AccountService<Account> accountService;
+	@Autowired
+	private EquityAccountService equityAccountService;
 
-    @Override
-    protected Entry toEntity(EntryDTO dto) {
-        return Entry.builder()
-            .inAccount(accountService.findByDescription(dto.getInAccount().getDescription()).get())
-            .outAccount(accountService.findByDescription(dto.getOutAccount().getDescription()).get())
-            .owner(ownerService.findByName(dto.getOwner().getName()).get())
-            .date(dto.getDate())
-            .value(dto.getValue())
-            .note(dto.getNote())
-            .build();
-    }
+	@Autowired
+	private AccountService<Account> accountService;
 
-    @Override
-    protected EntryDTO toDTO(Entry entity) {
-        return EntryDTO.builder()
-            .inAccount(AccountDTO.builder()
-                .description(entity.getInAccount().getDescription())
-                .category(CategoryDTO.builder().description(
-                    entity.getInAccount().getCategory().getDescription()).build())
-                .build())
-            .outAccount(AccountDTO.builder()
-                .description(entity.getOutAccount().getDescription())
-                .category(CategoryDTO.builder().description(
-                    entity.getOutAccount().getCategory().getDescription()).build())
-                .build())
-            .owner(OwnerDTO.builder().name(entity.getOwner().getName()).build())
-            .date(entity.getDate())
-            .value(entity.getValue())
-            .note(entity.getNote())
-            .build();
-    }
+	@Override
+	protected Entry toEntity(EntryDTO dto) {
+		return Entry.builder()
+			.inAccount(accountService.findByDescription(dto.getInAccount().getDescription()).get())
+			.outAccount(accountService.findByDescription(dto.getOutAccount().getDescription()).get())
+			.owner(ownerService.findByName(dto.getOwner().getName()).get())
+			.date(dto.getDate())
+			.value(dto.getValue())
+			.note(dto.getNote())
+			.build();
+	}
 
-    @GetMapping("/creditSum")
-    public BigDecimal creditSum(String owner, String equityAccount) {
-        return entryService.creditSum(ownerService.findByName(owner).get(), 
-            equityAccountService.findByDescription(equityAccount).get());
-    }
-    
-    @GetMapping("/debitSum")
-    public BigDecimal debitSum(String owner, String equityAccount) {
-        return entryService.debitSum(ownerService.findByName(owner).get(), 
-            equityAccountService.findByDescription(equityAccount).get());
-    }
+	@Override
+	protected EntryDTO toDTO(Entry entity) {
+		return EntryDTO.builder()
+			.inAccount(AccountDTO.builder()
+				.description(entity.getInAccount().getDescription())
+				.category(
+						CategoryDTO.builder().description(entity.getInAccount().getCategory().getDescription()).build())
+				.build())
+			.outAccount(AccountDTO.builder()
+				.description(entity.getOutAccount().getDescription())
+				.category(CategoryDTO.builder()
+					.description(entity.getOutAccount().getCategory().getDescription())
+					.build())
+				.build())
+			.owner(OwnerDTO.builder().name(entity.getOwner().getName()).build())
+			.date(entity.getDate())
+			.value(entity.getValue())
+			.note(entity.getNote())
+			.build();
+	}
+
+	@GetMapping("/creditSum")
+	public BigDecimal creditSum(String owner, String equityAccount) {
+		return entryService.creditSum(ownerService.findByName(owner).get(),
+				equityAccountService.findByDescription(equityAccount).get());
+	}
+
+	@GetMapping("/debitSum")
+	public BigDecimal debitSum(String owner, String equityAccount) {
+		return entryService.debitSum(ownerService.findByName(owner).get(),
+				equityAccountService.findByDescription(equityAccount).get());
+	}
+
 }

@@ -9,10 +9,11 @@ import jakarta.transaction.Transactional;
 
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
 
-    Optional<Owner> findByName(String name);
+	Optional<Owner> findByName(String name);
 
-    long countByNameContains(String name);
+	long countByNameContains(String name);
 
-    @Transactional
-    void deleteByName(String name);
+	@Transactional
+	void deleteByName(String name);
+
 }

@@ -8,22 +8,21 @@ import lombok.Data;
 @Data
 public class TransferRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    public TransferRestClient transferRestClient() {
-        return TransferRestClient.builder()
-                .restClientHelper(RestClientHelper.<TransferDTO>builder()
-                    .endpoint("")
-                    .protocol(protocol)
-                    .servername(servername)
-                    .port(port)
-                    .build())
-                .build();
-    }
+	private int port;
 
+	public TransferRestClient transferRestClient() {
+		return TransferRestClient.builder()
+			.restClientHelper(RestClientHelper.<TransferDTO>builder()
+				.endpoint("")
+				.protocol(protocol)
+				.servername(servername)
+				.port(port)
+				.build())
+			.build();
+	}
 
 }

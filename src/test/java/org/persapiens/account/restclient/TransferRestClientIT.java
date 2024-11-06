@@ -23,78 +23,72 @@ import java.math.BigDecimal;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TransferRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private TransferRestClient transferRestClient() {
-        return TransferRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().transferRestClient();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private OwnerRestClientFactory ownerRestClientFactory() {
-        return OwnerRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private TransferRestClient transferRestClient() {
+		return TransferRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.transferRestClient();
+	}
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private OwnerRestClientFactory ownerRestClientFactory() {
+		return OwnerRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-        return EquityAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private EntryRestClient entryRestClient() {
-        return EntryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build()
-                .entryRestClient();
-    }    
+	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
+		return EquityAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-    @Test
-    public void transfer50FromCheckingsAuntToInvestimentUncle() {
-        OwnerDTO aunt = ownerRestClientFactory().owner(OwnerConstants.AUNT);
-        OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
+	private EntryRestClient entryRestClient() {
+		return EntryRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.entryRestClient();
+	}
 
-        EquityAccountDTO checkings = equityAccountRestClientFactory().equityAccount(
-            EquityAccountConstants.CHECKING, CategoryConstants.BANK);
-        EquityAccountDTO investiment = equityAccountRestClientFactory().equityAccount(
-            EquityAccountConstants.INVESTIMENT, CategoryConstants.BANK);
-        
-        // execute transfer operation
-        transferRestClient().transfer(TransferDTO.builder()
-            .debitOwner(aunt.getName())
-            .creditOwner(uncle.getName())
-            .debitAccount(checkings.getDescription())
-            .creditAccount(investiment.getDescription())
-            .value(new BigDecimal(50))
-            .build());
-        
-        assertThat(entryRestClient().debitSum(aunt.getName(), checkings.getDescription()))
-            .isEqualTo(new BigDecimal(50).setScale(2));
-        
-        assertThat(entryRestClient().creditSum(uncle.getName(), investiment.getDescription()))
-            .isEqualTo(new BigDecimal(50).setScale(2));
-    }
+	@Test
+	public void transfer50FromCheckingsAuntToInvestimentUncle() {
+		OwnerDTO aunt = ownerRestClientFactory().owner(OwnerConstants.AUNT);
+		OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
+
+		EquityAccountDTO checkings = equityAccountRestClientFactory().equityAccount(EquityAccountConstants.CHECKING,
+				CategoryConstants.BANK);
+		EquityAccountDTO investiment = equityAccountRestClientFactory()
+			.equityAccount(EquityAccountConstants.INVESTIMENT, CategoryConstants.BANK);
+
+		// execute transfer operation
+		transferRestClient().transfer(TransferDTO.builder()
+			.debitOwner(aunt.getName())
+			.creditOwner(uncle.getName())
+			.debitAccount(checkings.getDescription())
+			.creditAccount(investiment.getDescription())
+			.value(new BigDecimal(50))
+			.build());
+
+		assertThat(entryRestClient().debitSum(aunt.getName(), checkings.getDescription()))
+			.isEqualTo(new BigDecimal(50).setScale(2));
+
+		assertThat(entryRestClient().creditSum(uncle.getName(), investiment.getDescription()))
+			.isEqualTo(new BigDecimal(50).setScale(2));
+	}
 
 }

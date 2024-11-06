@@ -15,30 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/debitAccount")
 public class DebitAccountController extends CrudController<DebitAccountDTO, DebitAccount, Long> {
 
-    @Autowired
-    private DebitAccountService debitAccountService;
-    
-    @Autowired
-    private CategoryService categoryService;
+	@Autowired
+	private DebitAccountService debitAccountService;
 
-    @Override
-    protected DebitAccount toEntity(DebitAccountDTO dto) {
-        return DebitAccount.builder()
-           .description(dto.getDescription())
-           .category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
-           .build();
-    }
+	@Autowired
+	private CategoryService categoryService;
 
-    @Override
-    protected DebitAccountDTO toDTO(DebitAccount entity) {
-        return DebitAccountDTO.builder()
-           .description(entity.getDescription())
-           .build();
-    }
-    
-    @GetMapping("/findByDescription")
-    public Optional<DebitAccountDTO> findByDescription(@RequestParam String description) {
-        return toDTOOptional(debitAccountService.findByDescription(description));
-    }
+	@Override
+	protected DebitAccount toEntity(DebitAccountDTO dto) {
+		return DebitAccount.builder()
+			.description(dto.getDescription())
+			.category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
+			.build();
+	}
+
+	@Override
+	protected DebitAccountDTO toDTO(DebitAccount entity) {
+		return DebitAccountDTO.builder().description(entity.getDescription()).build();
+	}
+
+	@GetMapping("/findByDescription")
+	public Optional<DebitAccountDTO> findByDescription(@RequestParam String description) {
+		return toDTOOptional(debitAccountService.findByDescription(description));
+	}
 
 }

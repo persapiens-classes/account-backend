@@ -10,35 +10,35 @@ import lombok.Data;
 @Data
 public class EquityAccountRestClientFactory {
 
-    private String protocol;
-    
-    private String servername;
+	private String protocol;
 
-    private int port;
+	private String servername;
 
-    private CategoryRestClientFactory categoryRestClientFactory;
+	private int port;
 
-    public EquityAccountRestClient equityAccountRestClient() {
-        return EquityAccountRestClient.builder()
-            .restClientHelper(RestClientHelper.<EquityAccountDTO>builder()
-                .endpoint("equityAccount")
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build())
-            .build();
-    }
+	private CategoryRestClientFactory categoryRestClientFactory;
 
-    public EquityAccountDTO equityAccount(String description, String categoryDescription) {
-        Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
-        if (findByDescription.isEmpty()) {
-            CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
-            EquityAccountDTO result = EquityAccountDTO.builder().description(description)
-                .category(category).build();
-            return equityAccountRestClient().save(result);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public EquityAccountRestClient equityAccountRestClient() {
+		return EquityAccountRestClient.builder()
+			.restClientHelper(RestClientHelper.<EquityAccountDTO>builder()
+				.endpoint("equityAccount")
+				.protocol(protocol)
+				.servername(servername)
+				.port(port)
+				.build())
+			.build();
+	}
+
+	public EquityAccountDTO equityAccount(String description, String categoryDescription) {
+		Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
+		if (findByDescription.isEmpty()) {
+			CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
+			EquityAccountDTO result = EquityAccountDTO.builder().description(description).category(category).build();
+			return equityAccountRestClient().save(result);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
 }

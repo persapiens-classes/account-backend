@@ -11,15 +11,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OwnerService extends CrudService<Owner, Long> {
-    @Autowired
-    private OwnerRepository ownerRepository;
-    
-    public Optional<Owner> findByName(String name) {
-        return ownerRepository.findByName(name);
-    }
-    
-    @Transactional
-    public void deleteByName(String name) {
-        ownerRepository.deleteByName(name);
-    }
+
+	@Autowired
+	private OwnerRepository ownerRepository;
+
+	public Optional<Owner> findByName(String name) {
+		return ownerRepository.findByName(name);
+	}
+
+	@Transactional
+	public void deleteByName(String name) {
+		ownerRepository.deleteByName(name);
+	}
+
 }

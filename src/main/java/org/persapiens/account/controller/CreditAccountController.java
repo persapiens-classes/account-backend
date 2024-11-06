@@ -15,30 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/creditAccount")
 public class CreditAccountController extends CrudController<CreditAccountDTO, CreditAccount, Long> {
 
-    @Autowired
-    private CreditAccountService creditAccountService;
-    
-    @Autowired
-    private CategoryService categoryService;
+	@Autowired
+	private CreditAccountService creditAccountService;
 
-    @Override
-    protected CreditAccount toEntity(CreditAccountDTO dto) {
-        return CreditAccount.builder()
-           .description(dto.getDescription())
-           .category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
-           .build();
-    }
+	@Autowired
+	private CategoryService categoryService;
 
-    @Override
-    protected CreditAccountDTO toDTO(CreditAccount entity) {
-        return CreditAccountDTO.builder()
-           .description(entity.getDescription())
-           .build();
-    }
-    
-    @GetMapping("/findByDescription")
-    public Optional<CreditAccountDTO> findByDescription(@RequestParam String description) {
-        return toDTOOptional(creditAccountService.findByDescription(description));
-    }
+	@Override
+	protected CreditAccount toEntity(CreditAccountDTO dto) {
+		return CreditAccount.builder()
+			.description(dto.getDescription())
+			.category(categoryService.findByDescription(dto.getCategory().getDescription()).get())
+			.build();
+	}
+
+	@Override
+	protected CreditAccountDTO toDTO(CreditAccount entity) {
+		return CreditAccountDTO.builder().description(entity.getDescription()).build();
+	}
+
+	@GetMapping("/findByDescription")
+	public Optional<CreditAccountDTO> findByDescription(@RequestParam String description) {
+		return toDTOOptional(creditAccountService.findByDescription(description));
+	}
 
 }

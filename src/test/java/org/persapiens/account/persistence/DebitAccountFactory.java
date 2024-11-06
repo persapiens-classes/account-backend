@@ -11,26 +11,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class DebitAccountFactory {
 
-    @Autowired
-    private DebitAccountRepository debitAccountRepository;
+	@Autowired
+	private DebitAccountRepository debitAccountRepository;
 
-    @Autowired
-    private CategoryFactory categoryFactory;
+	@Autowired
+	private CategoryFactory categoryFactory;
 
-    public DebitAccount debitAccount(String description, Category category) {
-        Optional<DebitAccount> findByDescription = this.debitAccountRepository.findByDescription(description);
-        if (findByDescription.isEmpty()) {
-            DebitAccount debitAccount = DebitAccount.builder()
-                    .description(description)
-                    .category(category)
-                    .build();
-            return this.debitAccountRepository.save(debitAccount);
-        } else {
-            return findByDescription.get();
-        }
-    }
+	public DebitAccount debitAccount(String description, Category category) {
+		Optional<DebitAccount> findByDescription = this.debitAccountRepository.findByDescription(description);
+		if (findByDescription.isEmpty()) {
+			DebitAccount debitAccount = DebitAccount.builder().description(description).category(category).build();
+			return this.debitAccountRepository.save(debitAccount);
+		}
+		else {
+			return findByDescription.get();
+		}
+	}
 
-    public DebitAccount gasoline() {
-        return debitAccount(GASOLINE, this.categoryFactory.transport());
-    }
+	public DebitAccount gasoline() {
+		return debitAccount(GASOLINE, this.categoryFactory.transport());
+	}
+
 }

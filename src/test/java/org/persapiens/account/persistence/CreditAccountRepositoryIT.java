@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.persapiens.account.common.CategoryConstants.SALARY;
 import static org.persapiens.account.common.CreditAccountConstants.INTERNSHIP;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CreditAccountRepositoryIT {
@@ -34,7 +33,8 @@ public class CreditAccountRepositoryIT {
 		// create test environment
 		CreditAccount creditAccount = this.creditAccountFactory.internship();
 
-		CreditAccount creditAccountExemplo = CreditAccount.builder().description(INTERNSHIP)
+		CreditAccount creditAccountExemplo = CreditAccount.builder()
+			.description(INTERNSHIP)
 			.category(Category.builder().description(SALARY).build())
 			.build();
 

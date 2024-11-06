@@ -15,20 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class TransferController {
 
-    @Autowired
-    private TransferService transferService;
-    @Autowired
-    private OwnerService ownerService;
-    @Autowired
-    private EquityAccountService equityAccountService;
-    
-    @PostMapping("/transfer")
-    public void transfer(@RequestBody TransferDTO transferDTO) {
-        transferService.transfer(transferDTO.getValue(),
-            ownerService.findByName(transferDTO.getDebitOwner()).get(),
-            equityAccountService.findByDescription(transferDTO.getDebitAccount()).get(),
-            ownerService.findByName(transferDTO.getCreditOwner()).get(),
-            equityAccountService.findByDescription(transferDTO.getCreditAccount()).get());
-    }
+	@Autowired
+	private TransferService transferService;
+
+	@Autowired
+	private OwnerService ownerService;
+
+	@Autowired
+	private EquityAccountService equityAccountService;
+
+	@PostMapping("/transfer")
+	public void transfer(@RequestBody TransferDTO transferDTO) {
+		transferService.transfer(transferDTO.getValue(), ownerService.findByName(transferDTO.getDebitOwner()).get(),
+				equityAccountService.findByDescription(transferDTO.getDebitAccount()).get(),
+				ownerService.findByName(transferDTO.getCreditOwner()).get(),
+				equityAccountService.findByDescription(transferDTO.getCreditAccount()).get());
+	}
 
 }

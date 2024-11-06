@@ -23,34 +23,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_ownerEquityAccountInitialValue", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
-@EqualsAndHashCode(of={"value", "owner", "equityAccount"} )
+@EqualsAndHashCode(of = { "value", "owner", "equityAccount" })
 @ToString
 @SuperBuilder
 @Getter
 @Setter
-public class OwnerEquityAccountInitialValue implements Comparable<OwnerEquityAccountInitialValue>{
+public class OwnerEquityAccountInitialValue implements Comparable<OwnerEquityAccountInitialValue> {
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
-    @Id
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
+	@Id
+	private Long id;
 
-    @Column(nullable = false)
-    private BigDecimal value;
+	@Column(nullable = false)
+	private BigDecimal value;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_owner"))
-    private Owner owner;
+	@ManyToOne
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_owner"))
+	private Owner owner;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_equityAccount"))
-    private EquityAccount equityAccount;
+	@ManyToOne
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_equityAccount"))
+	private EquityAccount equityAccount;
 
-    @Override
-    public int compareTo(OwnerEquityAccountInitialValue o) {
-        return Comparator.comparing(OwnerEquityAccountInitialValue::getValue)
-                .thenComparing(OwnerEquityAccountInitialValue::getOwner)
-                .thenComparing(OwnerEquityAccountInitialValue::getEquityAccount)
-                .compare(this, o);
-    }
+	@Override
+	public int compareTo(OwnerEquityAccountInitialValue o) {
+		return Comparator.comparing(OwnerEquityAccountInitialValue::getValue)
+			.thenComparing(OwnerEquityAccountInitialValue::getOwner)
+			.thenComparing(OwnerEquityAccountInitialValue::getEquityAccount)
+			.compare(this, o);
+	}
 
 }

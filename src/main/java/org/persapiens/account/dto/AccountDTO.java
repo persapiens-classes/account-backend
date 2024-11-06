@@ -10,6 +10,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class AccountDTO {
-    private String description;
-    private CategoryDTO category;
+
+	private String description;
+
+	private CategoryDTO category;
+
 }

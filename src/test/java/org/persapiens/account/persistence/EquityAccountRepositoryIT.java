@@ -13,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.persapiens.account.common.CategoryConstants.BANK;
 import static org.persapiens.account.common.EquityAccountConstants.SAVINGS;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class EquityAccountRepositoryIT {
@@ -34,14 +33,14 @@ public class EquityAccountRepositoryIT {
 		// create test environment
 		EquityAccount equityAccount = this.equityAccountFactory.savings();
 
-		EquityAccount equityAccountExemplo = EquityAccount.builder().description(SAVINGS)
+		EquityAccount equityAccountExemplo = EquityAccount.builder()
+			.description(SAVINGS)
 			.category(Category.builder().description(BANK).build())
 			.build();
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.equityAccountRepository.count(Example.of(equityAccountExemplo)))
-			.isEqualTo(1);
+		assertThat(this.equityAccountRepository.count(Example.of(equityAccountExemplo))).isEqualTo(1);
 	}
 
 }

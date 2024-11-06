@@ -12,11 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntryTests {
 
 	private static final String FATHER = "father";
+
 	private static final String MOTHER = "mother";
+
 	private static final String TRANSPORT = "transport";
+
 	private static final String INDIVIDUAL_ASSET = "individual asset";
+
 	private static final String GASOLINE = "gasoline";
+
 	private static final String POCKET = "pocket";
+
 	private static final String GAS_DESCRIPTION = "buy gas at my gas station";
 
 	private Entry entry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
@@ -26,9 +32,13 @@ public class EntryTests {
 			.value(value)
 			.date(date)
 			.inAccount(DebitAccount.builder()
-				.description(GASOLINE).category(Category.builder().description(TRANSPORT).build()).build())
+				.description(GASOLINE)
+				.category(Category.builder().description(TRANSPORT).build())
+				.build())
 			.outAccount(EquityAccount.builder()
-				.description(POCKET).category(Category.builder().description(INDIVIDUAL_ASSET).build()).build())
+				.description(POCKET)
+				.category(Category.builder().description(INDIVIDUAL_ASSET).build())
+				.build())
 			.build();
 	}
 
@@ -91,4 +101,5 @@ public class EntryTests {
 
 		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);
 	}
+
 }

@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OwnerEquityAccountInitialValueService extends CrudService<OwnerEquityAccountInitialValue, Long> {
-    @Autowired
-    private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
-    
-    public Optional<OwnerEquityAccountInitialValue> findByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount) {
-        return ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(owner, equityAccount);
-    }
+
+	@Autowired
+	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
+
+	public Optional<OwnerEquityAccountInitialValue> findByOwnerAndEquityAccount(Owner owner,
+			EquityAccount equityAccount) {
+		return ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(owner, equityAccount);
+	}
+
 }

@@ -14,26 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/category")
 public class CategoryController extends CrudController<CategoryDTO, Category, Long> {
 
-    @Autowired
-    private CategoryService categoryService;
+	@Autowired
+	private CategoryService categoryService;
 
-    @Override
-    protected Category toEntity(CategoryDTO dto) {
-        return Category.builder()
-           .description(dto.getDescription())
-           .build();
-    }
+	@Override
+	protected Category toEntity(CategoryDTO dto) {
+		return Category.builder().description(dto.getDescription()).build();
+	}
 
-    @Override
-    protected CategoryDTO toDTO(Category entity) {
-        return CategoryDTO.builder()
-           .description(entity.getDescription())
-           .build();
-    }
-    
-    @GetMapping("/findByDescription")
-    public Optional<CategoryDTO> findByDescription(@RequestParam String description) {
-        return toDTOOptional(categoryService.findByDescription(description));
-    }
+	@Override
+	protected CategoryDTO toDTO(Category entity) {
+		return CategoryDTO.builder().description(entity.getDescription()).build();
+	}
+
+	@GetMapping("/findByDescription")
+	public Optional<CategoryDTO> findByDescription(@RequestParam String description) {
+		return toDTOOptional(categoryService.findByDescription(description));
+	}
 
 }

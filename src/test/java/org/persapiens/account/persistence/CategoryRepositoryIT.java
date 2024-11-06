@@ -21,8 +21,7 @@ public class CategoryRepositoryIT {
 
 	@Test
 	public void repositoryNotNull() {
-		assertThat(this.categoryRepository)
-			.isNotNull();
+		assertThat(this.categoryRepository).isNotNull();
 	}
 
 	@Test
@@ -34,8 +33,7 @@ public class CategoryRepositoryIT {
 		this.categoryRepository.delete(category);
 
 		// verify the results
-		assertThat(this.categoryRepository.findById(category.getId()).isPresent())
-			.isFalse();
+		assertThat(this.categoryRepository.findById(category.getId()).isPresent()).isFalse();
 	}
 
 	@Test
@@ -44,8 +42,7 @@ public class CategoryRepositoryIT {
 		Category category = this.categoryFactory.transport();
 
 		// verify the results
-		assertThat(category.getId())
-			.isNotNull();
+		assertThat(category.getId()).isNotNull();
 	}
 
 }

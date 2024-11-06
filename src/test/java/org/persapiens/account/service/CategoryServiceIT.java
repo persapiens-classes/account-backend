@@ -14,38 +14,36 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class CategoryServiceIT {
 
-    @Autowired
-    private CategoryService categoryService;
+	@Autowired
+	private CategoryService categoryService;
 
-    @Autowired
-    private CategoryFactory categoryFactory;
+	@Autowired
+	private CategoryFactory categoryFactory;
 
-    @Test
-    public void repositoryNotNull() {
-        assertThat(this.categoryService).isNotNull();
-    }
+	@Test
+	public void repositoryNotNull() {
+		assertThat(this.categoryService).isNotNull();
+	}
 
-    @Test
-    public void saveOne() {
-        // create test environment
-        Category category = this.categoryFactory.bank();
+	@Test
+	public void saveOne() {
+		// create test environment
+		Category category = this.categoryFactory.bank();
 
 		// verify the results
-        assertThat(this.categoryService.findById(category.getId()).get())
-                .isEqualTo(category);
-    }
+		assertThat(this.categoryService.findById(category.getId()).get()).isEqualTo(category);
+	}
 
-    @Test
-    public void deleteOne() {
-        // create test environment
-        Category category = this.categoryFactory.category("UNIQUE CATEGORY");
+	@Test
+	public void deleteOne() {
+		// create test environment
+		Category category = this.categoryFactory.category("UNIQUE CATEGORY");
 
 		// execute the operation to be tested
-        this.categoryService.delete(category);
+		this.categoryService.delete(category);
 
 		// verify the results
-        assertThat(this.categoryService.findById(category.getId()).isPresent())
-                .isFalse();
-    }
+		assertThat(this.categoryService.findById(category.getId()).isPresent()).isFalse();
+	}
 
 }

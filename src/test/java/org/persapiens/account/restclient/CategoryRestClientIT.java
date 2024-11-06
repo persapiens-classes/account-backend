@@ -16,37 +16,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CategoryRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private CategoryRestClient categoryRestClient() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().categoryRestClient();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    @Test
-    public void saveOne() {        
-        String description = "Free income";
-        
-        CategoryDTO category = CategoryDTO.builder().description(description).build();
+	private CategoryRestClient categoryRestClient() {
+		return CategoryRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.categoryRestClient();
+	}
 
-        // verify save operation
-        assertThat(categoryRestClient().save(category))
-        	.isNotNull();
+	@Test
+	public void saveOne() {
+		String description = "Free income";
 
-        // verify findByDescription operation
-        assertThat(categoryRestClient().findByDescription(description).get().getDescription())
-                .isEqualTo(category.getDescription());
-        
-        // verify findAll operation
-        assertThat(categoryRestClient().findAll())
-                .isNotEmpty();        
-    }
+		CategoryDTO category = CategoryDTO.builder().description(description).build();
+
+		// verify save operation
+		assertThat(categoryRestClient().save(category)).isNotNull();
+
+		// verify findByDescription operation
+		assertThat(categoryRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(category.getDescription());
+
+		// verify findAll operation
+		assertThat(categoryRestClient().findAll()).isNotEmpty();
+	}
 
 }

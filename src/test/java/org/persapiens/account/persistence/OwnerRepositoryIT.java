@@ -23,48 +23,44 @@ public class OwnerRepositoryIT {
 
 	@Test
 	public void repositoryNotNull() {
-		assertThat(this.ownerRepository)
-			.isNotNull();
+		assertThat(this.ownerRepository).isNotNull();
 	}
 
-    @Test
-    public void findByName() {
-        // create test environment
-        Owner father = this.ownerFactory.father();
-        Owner mother = this.ownerFactory.mother();
+	@Test
+	public void findByName() {
+		// create test environment
+		Owner father = this.ownerFactory.father();
+		Owner mother = this.ownerFactory.mother();
 
-        // execute the operation to be tested
-        // verify results
-        assertThat(this.ownerRepository.findByName(FATHER).get())
-                .isEqualTo(father);
-        assertThat(this.ownerRepository.findByName(MOTHER).get())
-                .isEqualTo(mother);
-    }
+		// execute the operation to be tested
+		// verify results
+		assertThat(this.ownerRepository.findByName(FATHER).get()).isEqualTo(father);
+		assertThat(this.ownerRepository.findByName(MOTHER).get()).isEqualTo(mother);
+	}
 
-    @Test
-    public void countByName() {
-        // create test environment
-        this.ownerFactory.father();
-        this.ownerFactory.mother();
+	@Test
+	public void countByName() {
+		// create test environment
+		this.ownerFactory.father();
+		this.ownerFactory.mother();
 
-        // execute the operation to be tested
-        // verify results
-        assertThat(this.ownerRepository.countByNameContains("ther"))
-                .isEqualTo(2);
-    }
+		// execute the operation to be tested
+		// verify results
+		assertThat(this.ownerRepository.countByNameContains("ther")).isEqualTo(2);
+	}
 
-    @Test
-    public void deleteByName() {
-        String uniqueName = "Unique Owner";
+	@Test
+	public void deleteByName() {
+		String uniqueName = "Unique Owner";
 
-        // create test environment
-        this.ownerFactory.owner(uniqueName);
+		// create test environment
+		this.ownerFactory.owner(uniqueName);
 
-        // execute the operation to be tested
-        this.ownerRepository.deleteByName(uniqueName);
+		// execute the operation to be tested
+		this.ownerRepository.deleteByName(uniqueName);
 
-        // verify results
-        assertThat(this.ownerRepository.countByNameContains(uniqueName))
-                .isEqualTo(0);
-    }
+		// verify results
+		assertThat(this.ownerRepository.countByNameContains(uniqueName)).isEqualTo(0);
+	}
+
 }

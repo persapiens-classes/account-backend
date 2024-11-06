@@ -28,24 +28,24 @@ import lombok.NoArgsConstructor;
 @Setter
 public class Owner implements Comparable<Owner> {
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
-    @Id
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
+	@Id
+	private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+	@Column(nullable = false, unique = true)
+	private String name;
 
-    @OneToMany(mappedBy = "owner")
-    @Singular("entry")
-    private Set<Entry> entries;
+	@OneToMany(mappedBy = "owner")
+	@Singular("entry")
+	private Set<Entry> entries;
 
-    @OneToMany(mappedBy = "owner")
-    @Singular
-    private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
+	@OneToMany(mappedBy = "owner")
+	@Singular
+	private Set<OwnerEquityAccountInitialValue> ownerEquityAccountInitialValues;
 
-    @Override
-    public int compareTo(Owner o) {
-        return this.name.compareTo(o.name);
-    }
-    
+	@Override
+	public int compareTo(Owner o) {
+		return this.name.compareTo(o.name);
+	}
+
 }

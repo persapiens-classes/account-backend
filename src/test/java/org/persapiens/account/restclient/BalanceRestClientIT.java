@@ -28,125 +28,117 @@ import java.time.LocalDateTime;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BalanceRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private BalanceRestClient balanceRestClient() {
-        return BalanceRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().balanceRestClient();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private OwnerRestClientFactory ownerRestClientFactory() {
-        return OwnerRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private BalanceRestClient balanceRestClient() {
+		return BalanceRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.balanceRestClient();
+	}
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private OwnerRestClientFactory ownerRestClientFactory() {
+		return OwnerRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-        return EquityAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private CreditAccountRestClientFactory creditAccountRestClientFactory() {
-        return CreditAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
+		return EquityAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-    private DebitAccountRestClientFactory debitAccountRestClientFactory() {
-        return DebitAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private CreditAccountRestClientFactory creditAccountRestClientFactory() {
+		return CreditAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-    private OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
-        return OwnerEquityAccountInitialValueRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build()
-                .ownerEquityAccountInitialValueRestClient();
-    }    
+	private DebitAccountRestClientFactory debitAccountRestClientFactory() {
+		return DebitAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-    private EntryRestClient entryRestClient() {
-        return EntryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build()
-                .entryRestClient();
-    }    
+	private OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
+		return OwnerEquityAccountInitialValueRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.ownerEquityAccountInitialValueRestClient();
+	}
 
-    @Test
-    public void balance500() {
-        OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
-        EquityAccountDTO savings = equityAccountRestClientFactory().equityAccount(
-            EquityAccountConstants.SAVINGS, CategoryConstants.BANK);
+	private EntryRestClient entryRestClient() {
+		return EntryRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.entryRestClient();
+	}
 
-        // initial value 100
-        OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
-                .equityAccount(savings)
-                .owner(uncle)
-                .value(new BigDecimal(100))
-                .build();
-        ownerEquityAccountInitialValueRestClient().save(initialValue);
-        
-        // credit 600
-        CreditAccountDTO internship = creditAccountRestClientFactory().creditAccount(
-            CreditAccountConstants.INTERNSHIP, CategoryConstants.SALARY);        
-        EntryDTO entryCredito = EntryDTO.builder()
-                .value(new BigDecimal(600))
-                .date(LocalDateTime.now())
-                .owner(uncle)
-                .inAccount(savings)
-                .outAccount(internship)
-                .build();
-        entryRestClient().save(entryCredito);
+	@Test
+	public void balance500() {
+		OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
+		EquityAccountDTO savings = equityAccountRestClientFactory().equityAccount(EquityAccountConstants.SAVINGS,
+				CategoryConstants.BANK);
 
-        // debit 200
-        DebitAccountDTO gasoline = debitAccountRestClientFactory().debitAccount(
-            DebitAccountConstants.GASOLINE, CategoryConstants.TRANSPORT);
-        EntryDTO entryDebito = EntryDTO.builder()
-                .value(new BigDecimal(200))
-                .date(LocalDateTime.now())
-                .owner(uncle)
-                .inAccount(gasoline)
-                .outAccount(savings)
-                .build();
-        entryRestClient().save(entryDebito);
-        
-        // executa a operacao a ser testada
-        BigDecimal balance = balanceRestClient().balance(
-            uncle.getName(), savings.getDescription());
-        
-        assertThat(balance).isEqualTo(new BigDecimal(500).setScale(2));
-    }
+		// initial value 100
+		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
+			.equityAccount(savings)
+			.owner(uncle)
+			.value(new BigDecimal(100))
+			.build();
+		ownerEquityAccountInitialValueRestClient().save(initialValue);
 
+		// credit 600
+		CreditAccountDTO internship = creditAccountRestClientFactory().creditAccount(CreditAccountConstants.INTERNSHIP,
+				CategoryConstants.SALARY);
+		EntryDTO entryCredito = EntryDTO.builder()
+			.value(new BigDecimal(600))
+			.date(LocalDateTime.now())
+			.owner(uncle)
+			.inAccount(savings)
+			.outAccount(internship)
+			.build();
+		entryRestClient().save(entryCredito);
+
+		// debit 200
+		DebitAccountDTO gasoline = debitAccountRestClientFactory().debitAccount(DebitAccountConstants.GASOLINE,
+				CategoryConstants.TRANSPORT);
+		EntryDTO entryDebito = EntryDTO.builder()
+			.value(new BigDecimal(200))
+			.date(LocalDateTime.now())
+			.owner(uncle)
+			.inAccount(gasoline)
+			.outAccount(savings)
+			.build();
+		entryRestClient().save(entryDebito);
+
+		// executa a operacao a ser testada
+		BigDecimal balance = balanceRestClient().balance(uncle.getName(), savings.getDescription());
+
+		assertThat(balance).isEqualTo(new BigDecimal(500).setScale(2));
+	}
 
 }

@@ -21,64 +21,56 @@ import java.math.BigDecimal;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OwnerEquityAccountInitialValueRestClientIT {
 
-    private final String protocol = "http";
-    private final String servername = "localhost";
+	private final String protocol = "http";
 
-    @Value(value = "${local.server.port}")
-    private int port;
+	private final String servername = "localhost";
 
-    private OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
-        return OwnerEquityAccountInitialValueRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build().ownerEquityAccountInitialValueRestClient();
-    }
+	@Value(value = "${local.server.port}")
+	private int port;
 
-    private OwnerRestClientFactory ownerRestClientFactory() {
-        return OwnerRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
+		return OwnerEquityAccountInitialValueRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.build()
+			.ownerEquityAccountInitialValueRestClient();
+	}
 
-    private CategoryRestClientFactory categoryRestClientFactory() {
-        return CategoryRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .build();
-    }
+	private OwnerRestClientFactory ownerRestClientFactory() {
+		return OwnerRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-        return EquityAccountRestClientFactory.builder()
-                .protocol(protocol)
-                .servername(servername)
-                .port(port)
-                .categoryRestClientFactory(categoryRestClientFactory())
-                .build();
-    }    
+	private CategoryRestClientFactory categoryRestClientFactory() {
+		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+	}
 
-    @Test
-    public void saveOne() {        
-        String mother = OwnerConstants.MOTHER;
-        String savings = EquityAccountConstants.SAVINGS;
-        String bank = CategoryConstants.BANK;
-        
-        OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-            .value(new BigDecimal(1000))
-            .owner(ownerRestClientFactory().owner(mother))
-            .equityAccount(equityAccountRestClientFactory().equityAccount(savings, bank))
-            .build();
+	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
+		return EquityAccountRestClientFactory.builder()
+			.protocol(protocol)
+			.servername(servername)
+			.port(port)
+			.categoryRestClientFactory(categoryRestClientFactory())
+			.build();
+	}
 
-        // verify save operation
-        assertThat(ownerEquityAccountInitialValueRestClient().save(ownerEquityAccountInitialValue))
-        	.isNotNull();
-        
-        // verify findAll operation
-        assertThat(ownerEquityAccountInitialValueRestClient().findAll())
-                .isNotEmpty();        
-    }
+	@Test
+	public void saveOne() {
+		String mother = OwnerConstants.MOTHER;
+		String savings = EquityAccountConstants.SAVINGS;
+		String bank = CategoryConstants.BANK;
+
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
+			.value(new BigDecimal(1000))
+			.owner(ownerRestClientFactory().owner(mother))
+			.equityAccount(equityAccountRestClientFactory().equityAccount(savings, bank))
+			.build();
+
+		// verify save operation
+		assertThat(ownerEquityAccountInitialValueRestClient().save(ownerEquityAccountInitialValue)).isNotNull();
+
+		// verify findAll operation
+		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
+	}
 
 }

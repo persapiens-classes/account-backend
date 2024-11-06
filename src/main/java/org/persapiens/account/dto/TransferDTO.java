@@ -15,9 +15,15 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class TransferDTO {
-    private BigDecimal value;
-    private String debitOwner;
-    private String debitAccount;
-    private String creditOwner;
-    private String creditAccount;
+
+	private BigDecimal value;
+
+	private String debitOwner;
+
+	private String debitAccount;
+
+	private String creditOwner;
+
+	private String creditAccount;
+
 }

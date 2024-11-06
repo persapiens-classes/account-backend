@@ -41,14 +41,12 @@ public class EntryRepositoryIT {
 	@BeforeEach
 	public void deleteAll() {
 		this.entryRepository.deleteAll();
-		assertThat(this.entryRepository.findAll())
-			.isEmpty();
+		assertThat(this.entryRepository.findAll()).isEmpty();
 	}
 
 	@Test
 	public void repositoryNaoEhNulo() {
-		assertThat(this.entryRepository)
-			.isNotNull();
+		assertThat(this.entryRepository).isNotNull();
 	}
 
 	@Test
@@ -65,7 +63,7 @@ public class EntryRepositoryIT {
 		// execute the operation to be tested
 		// verify the results
 		assertThat(this.entryRepository.creditSum(father, savings).getValue())
-				.isEqualTo(new BigDecimal(300).setScale(2));
+			.isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
 	@Test
@@ -84,4 +82,5 @@ public class EntryRepositoryIT {
 		assertThat(this.entryRepository.debitSum(father, savings).getValue())
 			.isEqualTo(new BigDecimal(500).setScale(2));
 	}
+
 }

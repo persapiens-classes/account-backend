@@ -15,7 +15,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class OwnerEquityAccountInitialValueDTO {
-    private OwnerDTO owner;
-    private EquityAccountDTO equityAccount;
-    private BigDecimal value;
+
+	private OwnerDTO owner;
+
+	private EquityAccountDTO equityAccount;
+
+	private BigDecimal value;
+
 }
