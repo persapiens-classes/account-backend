@@ -5,8 +5,6 @@ import java.util.Optional;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestClient;
-
 @SuperBuilder
 @Data
 public class CategoryRestClientFactory {
@@ -17,8 +15,6 @@ public class CategoryRestClientFactory {
 
     private int port;
 
-    private RestClient restClient;
-
     public CategoryRestClient categoryRestClient() {
         return CategoryRestClient.builder()
                 .restClientHelper(RestClientHelper.<CategoryDTO>builder()
@@ -26,7 +22,6 @@ public class CategoryRestClientFactory {
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restClient(restClient)
                     .build())
                 .build();
     }

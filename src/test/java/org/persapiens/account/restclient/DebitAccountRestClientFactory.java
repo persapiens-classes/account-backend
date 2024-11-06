@@ -6,8 +6,6 @@ import java.util.Optional;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestClient;
-
 @SuperBuilder
 @Data
 public class DebitAccountRestClientFactory {
@@ -18,8 +16,6 @@ public class DebitAccountRestClientFactory {
 
     private int port;
 
-    private RestClient restClient;
-
     private CategoryRestClientFactory categoryRestClientFactory;
 
     public DebitAccountRestClient debitAccountRestClient() {
@@ -29,7 +25,6 @@ public class DebitAccountRestClientFactory {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restClient(restClient)
                 .build())
             .build();
     }

@@ -22,7 +22,10 @@ public class RestClientHelper <T> {
     private String protocol;
     private String servername;
     private int port;
-    private RestClient restClient;
+
+    public RestClient getRestClient() {
+        return RestClient.create();
+    }
 
     public String url() {
         return protocol + "://" + servername + ":" + port + "/" + endpoint;
@@ -40,7 +43,7 @@ public class RestClientHelper <T> {
     }
     
     public void delete(String suffix, String param, String value) {
-        this.restClient
+        getRestClient()
             .delete()
             .uri(uri(suffix, param, value))
             .retrieve()
@@ -52,7 +55,7 @@ public class RestClientHelper <T> {
     }
 
     public Iterable<T> findAll() {
-        return this.restClient
+        return getRestClient()
             .get()
             .uri(findAllUri())
             .retrieve()

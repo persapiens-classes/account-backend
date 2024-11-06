@@ -5,8 +5,6 @@ import java.math.BigDecimal;
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
 
-import org.springframework.web.client.RestClient;
-
 @SuperBuilder
 @Data
 public class BalanceRestClientFactory {
@@ -17,8 +15,6 @@ public class BalanceRestClientFactory {
 
     private int port;
 
-    private RestClient restClient;
-
     public BalanceRestClient balanceRestClient() {
         return BalanceRestClient.builder()
                 .restClientHelper(RestClientHelper.<BigDecimal>builder()
@@ -26,7 +22,6 @@ public class BalanceRestClientFactory {
                     .protocol(protocol)
                     .servername(servername)
                     .port(port)
-                    .restClient(restClient)
                     .build())
                 .build();
     }
