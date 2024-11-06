@@ -1,8 +1,8 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.TransferDTO;
-import lombok.experimental.SuperBuilder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.TransferDTO;
 
 @SuperBuilder
 @Data
@@ -18,9 +18,9 @@ public class TransferRestClientFactory {
 		return TransferRestClient.builder()
 			.restClientHelper(RestClientHelper.<TransferDTO>builder()
 				.endpoint("")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}

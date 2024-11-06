@@ -1,10 +1,11 @@
 package org.persapiens.account.restclient;
 
+import java.util.Optional;
+
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.EquityAccountDTO;
-import java.util.Optional;
-import lombok.experimental.SuperBuilder;
-import lombok.Data;
 
 @SuperBuilder
 @Data
@@ -22,9 +23,9 @@ public class EquityAccountRestClientFactory {
 		return EquityAccountRestClient.builder()
 			.restClientHelper(RestClientHelper.<EquityAccountDTO>builder()
 				.endpoint("equityAccount")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}
@@ -32,7 +33,7 @@ public class EquityAccountRestClientFactory {
 	public EquityAccountDTO equityAccount(String description, String categoryDescription) {
 		Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
-			CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
+			CategoryDTO category = this.categoryRestClientFactory.category(categoryDescription);
 			EquityAccountDTO result = EquityAccountDTO.builder().description(description).category(category).build();
 			return equityAccountRestClient().save(result);
 		}

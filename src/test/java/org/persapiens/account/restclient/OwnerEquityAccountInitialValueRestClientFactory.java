@@ -1,8 +1,8 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
-import lombok.experimental.SuperBuilder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 @SuperBuilder
 @Data
@@ -18,9 +18,9 @@ public class OwnerEquityAccountInitialValueRestClientFactory {
 		return OwnerEquityAccountInitialValueRestClient.builder()
 			.restClientHelper(RestClientHelper.<OwnerEquityAccountInitialValueDTO>builder()
 				.endpoint("ownerEquityAccountInitialValue")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}

@@ -1,10 +1,11 @@
 package org.persapiens.account.restclient;
 
+import java.util.Optional;
+
+import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
-import java.util.Optional;
-import lombok.experimental.SuperBuilder;
-import lombok.Data;
 
 @SuperBuilder
 @Data
@@ -22,9 +23,9 @@ public class CreditAccountRestClientFactory {
 		return CreditAccountRestClient.builder()
 			.restClientHelper(RestClientHelper.<CreditAccountDTO>builder()
 				.endpoint("creditAccount")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}
@@ -32,7 +33,7 @@ public class CreditAccountRestClientFactory {
 	public CreditAccountDTO creditAccount(String description, String categoryDescription) {
 		Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
-			CategoryDTO category = categoryRestClientFactory.category(categoryDescription);
+			CategoryDTO category = this.categoryRestClientFactory.category(categoryDescription);
 			CreditAccountDTO result = CreditAccountDTO.builder().description(description).category(category).build();
 			return creditAccountRestClient().save(result);
 		}

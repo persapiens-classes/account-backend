@@ -1,9 +1,10 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.CategoryDTO;
 import java.util.Optional;
-import lombok.experimental.SuperBuilder;
+
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.CategoryDTO;
 
 @SuperBuilder
 @Data
@@ -19,9 +20,9 @@ public class CategoryRestClientFactory {
 		return CategoryRestClient.builder()
 			.restClientHelper(RestClientHelper.<CategoryDTO>builder()
 				.endpoint("category")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}

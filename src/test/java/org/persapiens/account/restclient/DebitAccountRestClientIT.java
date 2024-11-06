@@ -1,11 +1,10 @@
 package org.persapiens.account.restclient;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.dto.DebitAccountDTO;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,18 +20,22 @@ public class DebitAccountRestClientIT {
 
 	private final String servername = "localhost";
 
-	@Value(value = "${local.server.port}")
+	@Value("${local.server.port}")
 	private int port;
 
 	private CategoryRestClientFactory categoryRestClientFactory() {
-		return CategoryRestClientFactory.builder().protocol(protocol).servername(servername).port(port).build();
+		return CategoryRestClientFactory.builder()
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
+			.build();
 	}
 
 	private DebitAccountRestClient debitAccountRestClient() {
 		return DebitAccountRestClientFactory.builder()
-			.protocol(protocol)
-			.servername(servername)
-			.port(port)
+			.protocol(this.protocol)
+			.servername(this.servername)
+			.port(this.port)
 			.build()
 			.debitAccountRestClient();
 	}

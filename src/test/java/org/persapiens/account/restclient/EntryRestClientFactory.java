@@ -1,8 +1,8 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.dto.EntryDTO;
-import lombok.experimental.SuperBuilder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
+import org.persapiens.account.dto.EntryDTO;
 
 @SuperBuilder
 @Data
@@ -18,9 +18,9 @@ public class EntryRestClientFactory {
 		return EntryRestClient.builder()
 			.restClientHelper(RestClientHelper.<EntryDTO>builder()
 				.endpoint("entry")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}

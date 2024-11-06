@@ -2,8 +2,8 @@ package org.persapiens.account.restclient;
 
 import java.math.BigDecimal;
 
-import lombok.experimental.SuperBuilder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Data
@@ -19,9 +19,9 @@ public class BalanceRestClientFactory {
 		return BalanceRestClient.builder()
 			.restClientHelper(RestClientHelper.<BigDecimal>builder()
 				.endpoint("")
-				.protocol(protocol)
-				.servername(servername)
-				.port(port)
+				.protocol(this.protocol)
+				.servername(this.servername)
+				.port(this.port)
 				.build())
 			.build();
 	}
