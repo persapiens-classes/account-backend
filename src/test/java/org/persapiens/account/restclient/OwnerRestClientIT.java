@@ -6,9 +6,7 @@ import org.persapiens.account.dto.OwnerDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -24,15 +22,11 @@ public class OwnerRestClientIT {
     @Value(value = "${local.server.port}")
     private int port;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
     private OwnerRestClient ownerRestClient() {
         return OwnerRestClientFactory.builder()
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build().ownerRestClient();
     }
 
@@ -67,6 +61,6 @@ public class OwnerRestClientIT {
         ownerRestClient().deleteByName(name);
         // verify the results
         assertThat(ownerRestClient().findByName(name))
-        	.isNotEmpty();
+        	.isEmpty();
     }    
 }

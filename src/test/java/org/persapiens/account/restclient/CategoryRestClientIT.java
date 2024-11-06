@@ -6,9 +6,7 @@ import org.persapiens.account.dto.CategoryDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -24,15 +22,11 @@ public class CategoryRestClientIT {
     @Value(value = "${local.server.port}")
     private int port;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
     private CategoryRestClient categoryRestClient() {
         return CategoryRestClientFactory.builder()
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build().categoryRestClient();
     }
 

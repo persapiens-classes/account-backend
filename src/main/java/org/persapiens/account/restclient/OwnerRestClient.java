@@ -8,24 +8,31 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class OwnerRestClient {
 
-    private RestClientHelper<OwnerDTO> entityRestHelper;
+    private RestClientHelper<OwnerDTO> restClientHelper;
 
     public Iterable<OwnerDTO> findAll() {
-        return this.entityRestHelper.findAll();
+        return this.restClientHelper.findAll();
     }
 
     public OwnerDTO save(OwnerDTO entity) {
-        return this.entityRestHelper.getRestTemplate().postForObject(
-                entityRestHelper.saveUri(), entity, OwnerDTO.class);
-    }
-
-    public void deleteByName(String name) {
-        entityRestHelper.delete("/deleteByName", "name", name);
+        return this.restClientHelper.getRestClient()
+            .post()
+            .uri(restClientHelper.saveUri())
+            .body(entity)
+            .retrieve()
+            .body(OwnerDTO.class);
     }
 
     public Optional<OwnerDTO> findByName(String name) {
-        return Optional.ofNullable(this.entityRestHelper.getRestTemplate().getForObject(
-                entityRestHelper.uri("/findByName", "name", name), OwnerDTO.class));
+        return Optional.ofNullable(this.restClientHelper.getRestClient()
+            .get()
+            .uri(restClientHelper.uri("/findByName", "name", name))
+            .retrieve()
+            .body(OwnerDTO.class));
+    }
+
+    public void deleteByName(String name) {
+        restClientHelper.delete("/deleteByName", "name", name);
     }
 
 }

@@ -9,32 +9,40 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class EntryRestClient {
 
-    private RestClientHelper<EntryDTO> entityRestHelper;
+    private RestClientHelper<EntryDTO> restClientHelper;
 
     public Iterable<EntryDTO> findAll() {
-        return this.entityRestHelper.findAll();
+        return this.restClientHelper.findAll();
     }
 
     public EntryDTO save(EntryDTO entity) {
-        return this.entityRestHelper.getRestTemplate().postForObject(
-                entityRestHelper.saveUri(), entity, EntryDTO.class);
+        return this.restClientHelper.getRestClient()
+            .post()
+            .uri(restClientHelper.saveUri())
+            .body(entity)
+            .retrieve()
+            .body(EntryDTO.class);
     }
 
     public BigDecimal creditSum(String owner, String equityAccount) {
-        return this.entityRestHelper.getRestTemplate().getForObject(
-        UriComponentsBuilder.fromHttpUrl(entityRestHelper.url() + "/creditSum")
-            .queryParam("owner", owner)
-            .queryParam("equityAccount", equityAccount)
-            .build().encode().toUri()
-            , BigDecimal.class);
+        return this.restClientHelper.getRestClient()
+            .get()
+            .uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/creditSum")
+                .queryParam("owner", owner)
+                .queryParam("equityAccount", equityAccount)
+                .build().encode().toUri())
+            .retrieve()
+            .body(BigDecimal.class);
     }
 
     public BigDecimal debitSum(String owner, String equityAccount) {
-        return this.entityRestHelper.getRestTemplate().getForObject(
-        UriComponentsBuilder.fromHttpUrl(entityRestHelper.url() + "/debitSum")
-            .queryParam("owner", owner)
-            .queryParam("equityAccount", equityAccount)
-            .build().encode().toUri()
-            , BigDecimal.class);
+        return this.restClientHelper.getRestClient()
+            .get()
+            .uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/debitSum")
+                .queryParam("owner", owner)
+                .queryParam("equityAccount", equityAccount)
+                .build().encode().toUri())
+            .retrieve()
+            .body(BigDecimal.class);
     }    
 }

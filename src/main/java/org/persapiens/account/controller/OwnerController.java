@@ -5,6 +5,7 @@ import org.persapiens.account.domain.Owner;
 import org.persapiens.account.service.OwnerService;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +17,6 @@ public class OwnerController extends CrudController<OwnerDTO, Owner, Long> {
 
     @Autowired
     private OwnerService ownerService;
-    
-    @GetMapping("/findByName")
-    public Optional<OwnerDTO> findByName(@RequestParam String name) {
-        return toDTOOptional(ownerService.findByName(name));
-    }
 
     @Override
     protected Owner toEntity(OwnerDTO dto) {
@@ -34,6 +30,16 @@ public class OwnerController extends CrudController<OwnerDTO, Owner, Long> {
         return OwnerDTO.builder()
            .name(entity.getName())
            .build();
+    }
+    
+    @GetMapping("/findByName")
+    public Optional<OwnerDTO> findByName(@RequestParam String name) {
+        return toDTOOptional(ownerService.findByName(name));
+    }
+    
+    @DeleteMapping("/deleteByName")
+    public void deleteByName(@RequestParam String name) {
+        ownerService.deleteByName(name);
     }
 
 }

@@ -8,11 +8,14 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class TransferRestClient {
 
-    private RestClientHelper<TransferDTO> entityRestHelper;
+    private RestClientHelper<TransferDTO> restClientHelper;
 
     public void transfer(TransferDTO transferDTO) {
-        this.entityRestHelper.getRestTemplate().postForObject(
-            UriComponentsBuilder.fromHttpUrl(entityRestHelper.url() + "/transfer").build().encode().toUri(),
-            transferDTO, Void.class);
+        this.restClientHelper.getRestClient()
+            .post()
+            .uri(UriComponentsBuilder.fromHttpUrl(restClientHelper.url() + "/transfer").build().encode().toUri())
+            .body(transferDTO)
+            .retrieve()
+            .toBodilessEntity();
     }
 }

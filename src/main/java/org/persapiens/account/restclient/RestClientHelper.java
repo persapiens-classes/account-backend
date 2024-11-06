@@ -1,12 +1,17 @@
 package org.persapiens.account.restclient;
 
 import java.net.URI;
+
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties;
+
 import lombok.experimental.SuperBuilder;
 import lombok.Data;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Data
@@ -17,7 +22,10 @@ public class RestClientHelper <T> {
     private String protocol;
     private String servername;
     private int port;
-    private RestTemplate restTemplate;
+
+    public RestClient getRestClient() {
+        return RestClient.create();
+    }
 
     public String url() {
         return protocol + "://" + servername + ":" + port + "/" + endpoint;
@@ -35,8 +43,11 @@ public class RestClientHelper <T> {
     }
     
     public void delete(String suffix, String param, String value) {
-        this.restTemplate.exchange(uri(suffix, param, value), 
-            HttpMethod.DELETE, null, new ParameterizedTypeReference<T>(){});
+        getRestClient()
+            .delete()
+            .uri(uri(suffix, param, value))
+            .retrieve()
+            .toBodilessEntity();
     }
     
     public void deleteByDescription(String description) {
@@ -44,15 +55,11 @@ public class RestClientHelper <T> {
     }
 
     public Iterable<T> findAll() {
-        return this.restTemplate.exchange(findAllUri(), 
-      HttpMethod.GET, null, 
-            new ParameterizedTypeReference<Iterable<T>>(){})
-                .getBody();
-    }
-
-    public T save(T entity) {
-        return this.restTemplate.exchange(saveUri(), 
-            HttpMethod.POST, new HttpEntity<>(entity), new ParameterizedTypeReference<T>(){}).getBody();
+        return getRestClient()
+            .get()
+            .uri(findAllUri())
+            .retrieve()
+            .body(new ParameterizedTypeReference<Iterable<T>>(){});
     }
     
     public URI findByDescriptionUri(String description) {

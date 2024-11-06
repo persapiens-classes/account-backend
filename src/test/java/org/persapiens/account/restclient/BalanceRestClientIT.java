@@ -15,9 +15,7 @@ import org.persapiens.account.dto.EntryDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -36,15 +34,11 @@ public class BalanceRestClientIT {
     @Value(value = "${local.server.port}")
     private int port;
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
     private BalanceRestClient balanceRestClient() {
         return BalanceRestClientFactory.builder()
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build().balanceRestClient();
     }
 
@@ -53,7 +47,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build();
     }
 
@@ -62,7 +55,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build();
     }
 
@@ -71,7 +63,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .categoryRestClientFactory(categoryRestClientFactory())
                 .build();
     }    
@@ -81,7 +72,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .categoryRestClientFactory(categoryRestClientFactory())
                 .build();
     }    
@@ -91,7 +81,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .categoryRestClientFactory(categoryRestClientFactory())
                 .build();
     }    
@@ -101,7 +90,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build()
                 .ownerEquityAccountInitialValueRestClient();
     }    
@@ -111,7 +99,6 @@ public class BalanceRestClientIT {
                 .protocol(protocol)
                 .servername(servername)
                 .port(port)
-                .restTemplate(testRestTemplate.getRestTemplate())
                 .build()
                 .entryRestClient();
     }    
