@@ -3,7 +3,7 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +52,7 @@ public class EntryServiceIT {
 
 	@Test
 	public void entryWithInvalidInAccount() {
-		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+		Assertions.assertThatThrownBy(() -> {
 			Entry entry = Entry.builder()
 				.inAccount(this.creditAccountFactory.internship())
 				.outAccount(this.equityAccountFactory.savings())
@@ -62,13 +62,12 @@ public class EntryServiceIT {
 				.build();
 
 			this.entryService.save(entry);
-		});
-		assertThat(thrown).isNotNull();
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	public void entryWithInvalidOutAccount() {
-		IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+		Assertions.assertThatThrownBy(() -> {
 			Entry entry = Entry.builder()
 				.inAccount(this.equityAccountFactory.savings())
 				.outAccount(this.debitAccountFactory.gasoline())
@@ -78,8 +77,7 @@ public class EntryServiceIT {
 				.build();
 
 			this.entryService.save(entry);
-		});
-		assertThat(thrown).isNotNull();
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
 }

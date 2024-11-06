@@ -2,62 +2,58 @@ package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.persapiens.account.common.EquityAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.persapiens.account.common.EquityAccountConstants.WALLET;
-import static org.persapiens.account.common.EquityAccountConstants.INDIVIDUAL_ASSETS;
-import static org.persapiens.account.common.EquityAccountConstants.OTHER_ASSETS;
-import static org.persapiens.account.common.EquityAccountConstants.CHECKING;
 
 public class EquityAccountTests {
 
 	@Test
 	public void equalDescriptionAndCategory() {
 		assertThat(EquityAccount.builder()
-			.description(WALLET)
-			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
+			.description(EquityAccountConstants.WALLET)
+			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
 			.build())
 			.isEqualTo(EquityAccount.builder()
-				.description(WALLET)
-				.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
+				.description(EquityAccountConstants.WALLET)
+				.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
 				.build());
 	}
 
 	@Test
 	public void differentDescriptionAndCategory() {
 		assertThat(EquityAccount.builder()
-			.description(WALLET)
-			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
+			.description(EquityAccountConstants.WALLET)
+			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
 			.build())
 			.isNotEqualTo(EquityAccount.builder()
-				.description(WALLET)
-				.category(Category.builder().description(OTHER_ASSETS).build())
+				.description(EquityAccountConstants.WALLET)
+				.category(Category.builder().description(EquityAccountConstants.OTHER_ASSETS).build())
 				.build());
 	}
 
 	@Test
 	public void differentDescriptionAndEqualCategory() {
 		assertThat(EquityAccount.builder()
-			.description(WALLET)
-			.category(Category.builder().description(OTHER_ASSETS).build())
+			.description(EquityAccountConstants.WALLET)
+			.category(Category.builder().description(EquityAccountConstants.OTHER_ASSETS).build())
 			.build())
 			.isNotEqualTo(EquityAccount.builder()
-				.description(CHECKING)
-				.category(Category.builder().description(OTHER_ASSETS).build())
+				.description(EquityAccountConstants.CHECKING)
+				.category(Category.builder().description(EquityAccountConstants.OTHER_ASSETS).build())
 				.build());
 	}
 
 	@Test
 	public void equalDescriptionWithoutCategory() {
-		NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-			EquityAccount.builder()
-				.description(WALLET)
+		Assertions
+			.assertThatThrownBy(() -> EquityAccount.builder()
+				.description(EquityAccountConstants.WALLET)
 				.build()
-				.equals(EquityAccount.builder().description(CHECKING).build());
-		});
-		assertThat(thrown).isNotNull();
+				.equals(EquityAccount.builder().description(EquityAccountConstants.CHECKING).build()))
+			.isInstanceOf(NullPointerException.class);
 	}
 
 	@Test
@@ -68,14 +64,14 @@ public class EquityAccountTests {
 			.build();
 
 		EquityAccount pocket1 = EquityAccount.builder()
-			.description(WALLET)
-			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
+			.description(EquityAccountConstants.WALLET)
+			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
 			.ownerEquityAccountInitialValue(ownerEquityAccountInitialValue)
 			.build();
 
 		EquityAccount pocket2 = EquityAccount.builder()
-			.description(WALLET)
-			.category(Category.builder().description(INDIVIDUAL_ASSETS).build())
+			.description(EquityAccountConstants.WALLET)
+			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
 			.build();
 
 		assertThat(pocket1).isEqualTo(pocket2);

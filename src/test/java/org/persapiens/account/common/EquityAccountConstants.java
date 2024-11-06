@@ -1,6 +1,9 @@
 package org.persapiens.account.common;
 
-public class EquityAccountConstants {
+public final class EquityAccountConstants {
+
+	private EquityAccountConstants() {
+	}
 
 	public static final String WALLET = "wallet";
 

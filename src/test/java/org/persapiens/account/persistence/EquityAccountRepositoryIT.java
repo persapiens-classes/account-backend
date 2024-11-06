@@ -1,17 +1,19 @@
 package org.persapiens.account.persistence;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.EquityAccount;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static org.persapiens.account.common.CategoryConstants.BANK;
-import static org.persapiens.account.common.EquityAccountConstants.SAVINGS;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -34,8 +36,8 @@ public class EquityAccountRepositoryIT {
 		EquityAccount equityAccount = this.equityAccountFactory.savings();
 
 		EquityAccount equityAccountExemplo = EquityAccount.builder()
-			.description(SAVINGS)
-			.category(Category.builder().description(BANK).build())
+			.description(EquityAccountConstants.SAVINGS)
+			.category(Category.builder().description(CategoryConstants.BANK).build())
 			.build();
 
 		// execute the operation to be tested

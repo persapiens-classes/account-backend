@@ -2,9 +2,10 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
-import static org.persapiens.account.common.DebitAccountConstants.GASOLINE;
+import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.DebitAccount;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +30,7 @@ public class DebitAccountFactory {
 	}
 
 	public DebitAccount gasoline() {
-		return debitAccount(GASOLINE, this.categoryFactory.transport());
+		return debitAccount(DebitAccountConstants.GASOLINE, this.categoryFactory.transport());
 	}
 
 }

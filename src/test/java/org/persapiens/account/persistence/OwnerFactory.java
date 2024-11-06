@@ -2,9 +2,9 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
-import static org.persapiens.account.common.OwnerConstants.FATHER;
-import static org.persapiens.account.common.OwnerConstants.MOTHER;
+import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.domain.Owner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +26,11 @@ public class OwnerFactory {
 	}
 
 	public Owner father() {
-		return owner(FATHER);
+		return owner(OwnerConstants.FATHER);
 	}
 
 	public Owner mother() {
-		return owner(MOTHER);
+		return owner(OwnerConstants.MOTHER);
 	}
 
 }

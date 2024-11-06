@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class OwnerEquityAccountInitialValueFactory {
 
 	public OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(Owner owner, EquityAccount equityAccount,
 			BigDecimal value) {
-		Optional<OwnerEquityAccountInitialValue> findBy = ownerEquityAccountInitialValueRepository
+		Optional<OwnerEquityAccountInitialValue> findBy = this.ownerEquityAccountInitialValueRepository
 			.findByOwnerAndEquityAccount(owner, equityAccount);
 
 		OwnerEquityAccountInitialValue ownerEquityAccountInitialValue;

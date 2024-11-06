@@ -2,12 +2,10 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
-import static org.persapiens.account.common.EquityAccountConstants.SAVINGS;
-import static org.persapiens.account.common.EquityAccountConstants.WALLET;
-import static org.persapiens.account.common.EquityAccountConstants.INVESTIMENT;
-import static org.persapiens.account.common.EquityAccountConstants.CHECKING;
+import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.EquityAccount;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,19 +30,19 @@ public class EquityAccountFactory {
 	}
 
 	public EquityAccount wallet() {
-		return equityAccount(WALLET, this.categoryFactory.cash());
+		return equityAccount(EquityAccountConstants.WALLET, this.categoryFactory.cash());
 	}
 
 	public EquityAccount savings() {
-		return equityAccount(SAVINGS, this.categoryFactory.bank());
+		return equityAccount(EquityAccountConstants.SAVINGS, this.categoryFactory.bank());
 	}
 
 	public EquityAccount checking() {
-		return equityAccount(CHECKING, this.categoryFactory.cash());
+		return equityAccount(EquityAccountConstants.CHECKING, this.categoryFactory.cash());
 	}
 
 	public EquityAccount investiment() {
-		return equityAccount(INVESTIMENT, this.categoryFactory.cash());
+		return equityAccount(EquityAccountConstants.INVESTIMENT, this.categoryFactory.cash());
 	}
 
 }

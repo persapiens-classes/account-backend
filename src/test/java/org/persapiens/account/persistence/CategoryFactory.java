@@ -2,12 +2,9 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
-import static org.persapiens.account.common.CategoryConstants.CASH;
-import static org.persapiens.account.common.CategoryConstants.SALARY;
-import static org.persapiens.account.common.CategoryConstants.TAX;
-import static org.persapiens.account.common.CategoryConstants.TRANSPORT;
-import static org.persapiens.account.common.CategoryConstants.BANK;
+import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.domain.Category;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,23 +26,23 @@ public class CategoryFactory {
 	}
 
 	public Category transport() {
-		return category(TRANSPORT);
+		return category(CategoryConstants.TRANSPORT);
 	}
 
 	public Category tax() {
-		return category(TAX);
+		return category(CategoryConstants.TAX);
 	}
 
 	public Category salary() {
-		return category(SALARY);
+		return category(CategoryConstants.SALARY);
 	}
 
 	public Category cash() {
-		return category(CASH);
+		return category(CategoryConstants.CASH);
 	}
 
 	public Category bank() {
-		return category(BANK);
+		return category(CategoryConstants.BANK);
 	}
 
 }

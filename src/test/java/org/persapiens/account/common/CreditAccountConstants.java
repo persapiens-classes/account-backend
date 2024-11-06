@@ -1,6 +1,9 @@
 package org.persapiens.account.common;
 
-public class CreditAccountConstants {
+public final class CreditAccountConstants {
+
+	private CreditAccountConstants() {
+	}
 
 	public static final String STOCK = "stock";
 

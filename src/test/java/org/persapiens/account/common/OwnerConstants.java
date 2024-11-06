@@ -1,6 +1,9 @@
 package org.persapiens.account.common;
 
-public class OwnerConstants {
+public final class OwnerConstants {
+
+	private OwnerConstants() {
+	}
 
 	public static final String FATHER = "father";
 

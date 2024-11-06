@@ -3,61 +3,57 @@ package org.persapiens.account.domain;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.persapiens.account.common.CreditAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.persapiens.account.common.CreditAccountConstants.STOCK;
-import static org.persapiens.account.common.CreditAccountConstants.DONATION;
-import static org.persapiens.account.common.CreditAccountConstants.SALARY;
-import static org.persapiens.account.common.CreditAccountConstants.WORK;
 
 public class CreditAccountTests {
 
 	public void equalDescriptionAndCategory() {
 		assertThat(CreditAccount.builder()
-			.description(STOCK)
-			.category(Category.builder().description(DONATION).build())
+			.description(CreditAccountConstants.STOCK)
+			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
 			.build())
 			.isEqualTo(CreditAccount.builder()
-				.description(STOCK)
-				.category(Category.builder().description(DONATION).build())
+				.description(CreditAccountConstants.STOCK)
+				.category(Category.builder().description(CreditAccountConstants.DONATION).build())
 				.build());
 	}
 
 	@Test
 	public void equalDescriptionAndDifferentCategory() {
 		assertThat(CreditAccount.builder()
-			.description(STOCK)
-			.category(Category.builder().description(DONATION).build())
+			.description(CreditAccountConstants.STOCK)
+			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
 			.build())
 			.isNotEqualTo(CreditAccount.builder()
-				.description(STOCK)
-				.category(Category.builder().description(SALARY).build())
+				.description(CreditAccountConstants.STOCK)
+				.category(Category.builder().description(CreditAccountConstants.SALARY).build())
 				.build());
 	}
 
 	@Test
 	public void differentDescriptionAndEqualCategory() {
 		assertThat(CreditAccount.builder()
-			.description(STOCK)
-			.category(Category.builder().description(DONATION).build())
+			.description(CreditAccountConstants.STOCK)
+			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
 			.build())
 			.isNotEqualTo(CreditAccount.builder()
-				.description(WORK)
-				.category(Category.builder().description(DONATION).build())
+				.description(CreditAccountConstants.WORK)
+				.category(Category.builder().description(CreditAccountConstants.DONATION).build())
 				.build());
 	}
 
 	@Test
 	public void equalDescriptionWithoutCategory() {
-		NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-			CreditAccount.builder()
-				.description(STOCK)
+		Assertions
+			.assertThatThrownBy(() -> CreditAccount.builder()
+				.description(CreditAccountConstants.STOCK)
 				.build()
-				.equals(CreditAccount.builder().description(STOCK).build());
-		});
-		assertThat(thrown).isNotNull();
+				.equals(CreditAccount.builder().description(CreditAccountConstants.STOCK).build()))
+			.isInstanceOf(NullPointerException.class);
 	}
 
 	@Test
@@ -65,13 +61,13 @@ public class CreditAccountTests {
 		Set<CreditAccount> creditAccounts = new TreeSet<>();
 
 		CreditAccount work = CreditAccount.builder()
-			.description(WORK)
-			.category(Category.builder().description(SALARY).build())
+			.description(CreditAccountConstants.WORK)
+			.category(Category.builder().description(CreditAccountConstants.SALARY).build())
 			.build();
 		creditAccounts.add(work);
 		CreditAccount donation = CreditAccount.builder()
-			.description(DONATION)
-			.category(Category.builder().description(SALARY).build())
+			.description(CreditAccountConstants.DONATION)
+			.category(Category.builder().description(CreditAccountConstants.SALARY).build())
 			.build();
 		creditAccounts.add(donation);
 

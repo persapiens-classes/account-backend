@@ -1,6 +1,9 @@
 package org.persapiens.account.common;
 
-public class DebitAccountConstants {
+public final class DebitAccountConstants {
+
+	private DebitAccountConstants() {
+	}
 
 	public static final String GASOLINE = "gasoline";
 
