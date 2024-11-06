@@ -17,6 +17,7 @@
     <properties>
         <springdoc.version>2.6.0</springdoc.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>  
+        <decycle-maven-plugin.version>1.2.1</decycle-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -120,6 +121,71 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>de.obqo.decycle</groupId>
+                    <artifactId>decycle-maven-plugin</artifactId>
+                    <version>${decycle-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>checkMain</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>checkMain</goal>
+                            </goals>
+                            <configuration>
+                                <slicings>
+                                    <slicing>
+                                        <name>branches</name>
+                                        <patterns>org.persapiens.account.*=base, org.persapiens.account.{*}.**</patterns>
+                                        <constraints>
+                                            <allow>controller, service, domain</allow>
+                                            <allow>service, persistence, domain</allow>
+                                            <allow>
+                                                <one-of>controller, persistence</one-of>
+                                            </allow>
+                                            <allow>
+                                                <one-of>dto, domain</one-of>
+                                            </allow>
+                                            <allow>
+                                                <one-of>restclient, controller</one-of>
+                                                <any-of>dto</any-of>
+                                            </allow>
+                                            <allow>
+                                                <one-of>restclient, service</one-of>
+                                            </allow>
+                                            <allow>
+                                                <one-of>restclient, domain</one-of>
+                                            </allow>
+                                        </constraints>
+                                    </slicing>
+                                </slicings>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>checkTest</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>checkTest</goal>
+                            </goals>
+                            <configuration>
+                                <slicings>
+                                    <slicing>
+                                        <name>branches</name>
+                                        <patterns>org.persapiens.account.*=base, org.persapiens.account.{*}.**</patterns>
+                                        <constraints>
+                                            <allow>service, persistence</allow>
+                                            <allow>restclient, common</allow>
+                                            <allow>service, common</allow>
+                                            <allow>persistence, common</allow>
+                                            <allow>domain, common</allow>
+                                        </constraints>
+                                    </slicing>
+                                </slicings>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>                
             </plugins>
         </pluginManagement>        
         <plugins>
@@ -145,6 +211,10 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>de.obqo.decycle</groupId>
+                <artifactId>decycle-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
