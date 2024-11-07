@@ -20,20 +20,20 @@ public class CategoryTests {
 
 	@Test
 	public void equalDescriptionsWithDifferentAccounts() {
-		Category CategoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
+		Category categoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
-		Set<Account> Accounts = new HashSet<>();
-		Accounts.add(DebitAccount.builder()
+		Set<Account> accounts = new HashSet<>();
+		accounts.add(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
-			.category(CategoryTransporte1)
+			.category(categoryTransporte1)
 			.build());
-		Accounts
-			.add(DebitAccount.builder().description(DebitAccountConstants.BUS).category(CategoryTransporte1).build());
-		CategoryTransporte1.setAccounts(Accounts);
+		accounts
+			.add(DebitAccount.builder().description(DebitAccountConstants.BUS).category(categoryTransporte1).build());
+		categoryTransporte1.setAccounts(accounts);
 
-		Category CategoryTransporte2 = Category.builder().description(CategoryConstants.TRANSPORT).build();
+		Category categoryTransporte2 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
-		assertThat(CategoryTransporte1).isEqualTo(CategoryTransporte2);
+		assertThat(categoryTransporte1).isEqualTo(categoryTransporte2);
 	}
 
 	@Test
