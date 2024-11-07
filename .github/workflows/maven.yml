@@ -41,5 +41,8 @@ jobs:
       - name: Cpd
         run: ./mvnw -B -Pcpd validate
 
+      - name: Duplicate
+        run: ./mvnw -B -Pduplicate -DskipTests verify
+
       - name: Tests
         run: ./mvnw -B verify
