@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class TransferServiceIT {
+class TransferServiceIT {
 
 	@Autowired
 	private OwnerFactory ownerFactory;
@@ -31,7 +31,7 @@ public class TransferServiceIT {
 	private EntryService entryService;
 
 	@Test
-	public void transfer10FromFatherToMother() {
+	void transfer10FromFatherToMother() {
 		this.transferService.transfer(BigDecimal.TEN, this.ownerFactory.father(), this.equityAccountFactory.checking(),
 				this.ownerFactory.mother(), this.equityAccountFactory.savings());
 

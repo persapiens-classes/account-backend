@@ -11,20 +11,20 @@ import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OwnerTests {
+class OwnerTests {
 
 	private static final String TAX = "tax";
 
 	private static final String PROPERTY = "property";
 
 	@Test
-	public void equalNames() {
+	void equalNames() {
 		assertThat(Owner.builder().name(OwnerConstants.FATHER).build())
 			.isEqualTo(Owner.builder().name(OwnerConstants.FATHER).build());
 	}
 
 	@Test
-	public void equalDescriptionWithDifferentEntries() {
+	void equalDescriptionWithDifferentEntries() {
 		Entry gasolineEntry = Entry.builder().note(DebitAccountConstants.GASOLINE).build();
 		Entry taxEntry = Entry.builder().note(TAX).build();
 
@@ -58,13 +58,13 @@ public class OwnerTests {
 	}
 
 	@Test
-	public void differentNames() {
+	void differentNames() {
 		assertThat(Owner.builder().name(OwnerConstants.FATHER).build())
 			.isNotEqualTo(Owner.builder().name(OwnerConstants.MOTHER).build());
 	}
 
 	@Test
-	public void compareTo() {
+	void compareTo() {
 		Set<Owner> owners = new TreeSet<>();
 
 		Owner mother = Owner.builder().name(OwnerConstants.MOTHER).build();

@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class CategoryRepositoryIT {
+class CategoryRepositoryIT {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -22,12 +22,12 @@ public class CategoryRepositoryIT {
 	private CategoryFactory categoryFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.categoryRepository).isNotNull();
 	}
 
 	@Test
-	public void deleteOne() {
+	void deleteOne() {
 		// create test environment
 		Category category = this.categoryFactory.category("UNIQUE CATEGORY");
 
@@ -39,7 +39,7 @@ public class CategoryRepositoryIT {
 	}
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		// execute the operation to be tested
 		Category category = this.categoryFactory.transport();
 

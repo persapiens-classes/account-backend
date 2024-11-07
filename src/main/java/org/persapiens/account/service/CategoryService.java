@@ -2,16 +2,16 @@ package org.persapiens.account.service;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.persistence.CategoryRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class CategoryService extends CrudService<Category, Long> {
 
-	@Autowired
 	private CategoryRepository categoryRepository;
 
 	public Optional<Category> findByDescription(String description) {

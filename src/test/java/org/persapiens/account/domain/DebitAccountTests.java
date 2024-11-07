@@ -10,10 +10,10 @@ import org.persapiens.account.common.DebitAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DebitAccountTests {
+class DebitAccountTests {
 
 	@Test
-	public void equalsDescriptionAndCategory() {
+	void equalsDescriptionAndCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
 			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
@@ -25,7 +25,7 @@ public class DebitAccountTests {
 	}
 
 	@Test
-	public void differentDescriptionAndCategory() {
+	void differentDescriptionAndCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.BUS)
 			.category(Category.builder().description(CategoryConstants.HOUSING).build())
@@ -37,7 +37,7 @@ public class DebitAccountTests {
 	}
 
 	@Test
-	public void differentDescriptionAndEqualCategory() {
+	void differentDescriptionAndEqualCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
 			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
@@ -49,7 +49,7 @@ public class DebitAccountTests {
 	}
 
 	@Test
-	public void equalDescriptionWithoutCategory() {
+	void equalDescriptionWithoutCategory() {
 		Assertions
 			.assertThatThrownBy(() -> DebitAccount.builder()
 				.description(DebitAccountConstants.GASOLINE)
@@ -59,7 +59,7 @@ public class DebitAccountTests {
 	}
 
 	@Test
-	public void compareTo() {
+	void compareTo() {
 		Set<DebitAccount> debitAccounts = new TreeSet<>();
 
 		DebitAccount bus = DebitAccount.builder()

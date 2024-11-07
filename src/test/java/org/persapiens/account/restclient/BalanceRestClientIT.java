@@ -25,14 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BalanceRestClientIT extends RestClientIT {
+class BalanceRestClientIT extends RestClientIT {
 
 	private BalanceRestClient balanceRestClient() {
 		return BalanceRestClient.builder().restClientHelper(this.<BigDecimal>restClientHelper("")).build();
 	}
 
 	@Test
-	public void balance500() {
+	void balance500() {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
 				CategoryConstants.BANK);

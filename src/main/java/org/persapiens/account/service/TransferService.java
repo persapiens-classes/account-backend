@@ -3,16 +3,17 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@AllArgsConstructor
 @Service
 public class TransferService {
 
@@ -21,15 +22,6 @@ public class TransferService {
 	private final DebitAccountService debitAccountService;
 
 	private final CreditAccountService creditAccountService;
-
-	@Autowired
-	public TransferService(EntryService entryService, DebitAccountService debitAccountService,
-			CreditAccountService creditAccountService) {
-		super();
-		this.entryService = entryService;
-		this.debitAccountService = debitAccountService;
-		this.creditAccountService = creditAccountService;
-	}
 
 	@Transactional
 	public void transfer(BigDecimal value, Owner ownerDebito, EquityAccount debitEquityAccount, Owner ownerCredito,

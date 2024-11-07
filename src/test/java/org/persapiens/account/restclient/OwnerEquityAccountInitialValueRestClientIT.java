@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
+class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		String mother = OwnerConstants.MOTHER;
 		String savings = EquityAccountConstants.SAVINGS;
 		String bank = CategoryConstants.BANK;

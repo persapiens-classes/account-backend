@@ -10,7 +10,7 @@ import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OwnerEquityAccountInitialValueTests {
+class OwnerEquityAccountInitialValueTests {
 
 	private static final String INDIVIDUAL_ASSET = "individual asset";
 
@@ -27,7 +27,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void equalOwnerEquityAccountValue() {
+	void equalOwnerEquityAccountValue() {
 		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
 				new BigDecimal(100)))
 			.isEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
@@ -35,7 +35,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void equalOwnerEquityAccountAndDifferenteValue() {
+	void equalOwnerEquityAccountAndDifferenteValue() {
 		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
 				new BigDecimal(100)))
 			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
@@ -43,7 +43,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void equalOwnerValueAndDifferentEquityAccount() {
+	void equalOwnerValueAndDifferentEquityAccount() {
 		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
 				new BigDecimal(100)))
 			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.CHECKING, OwnerConstants.FATHER,
@@ -51,7 +51,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void equalEquityAccountValueAndDifferentOwner() {
+	void equalEquityAccountValueAndDifferentOwner() {
 		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
 				new BigDecimal(100)))
 			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.MOTHER,
@@ -59,7 +59,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void compareToWithDifferentOwners() {
+	void compareToWithDifferentOwners() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
 		OwnerEquityAccountInitialValue initialMother = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
@@ -74,7 +74,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void compareToWithDifferentValues() {
+	void compareToWithDifferentValues() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
 		OwnerEquityAccountInitialValue initial999 = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
@@ -89,7 +89,7 @@ public class OwnerEquityAccountInitialValueTests {
 	}
 
 	@Test
-	public void compareToWithDifferentEquityAccounts() {
+	void compareToWithDifferentEquityAccounts() {
 		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
 
 		OwnerEquityAccountInitialValue pocketInitial = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,

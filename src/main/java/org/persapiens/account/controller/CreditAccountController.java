@@ -2,25 +2,24 @@ package org.persapiens.account.controller;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.dto.CreditAccountDTO;
 import org.persapiens.account.service.CategoryService;
 import org.persapiens.account.service.CreditAccountService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/creditAccount")
 public class CreditAccountController extends CrudController<CreditAccountDTO, CreditAccount, Long> {
 
-	@Autowired
 	private CreditAccountService creditAccountService;
 
-	@Autowired
 	private CategoryService categoryService;
 
 	@Override

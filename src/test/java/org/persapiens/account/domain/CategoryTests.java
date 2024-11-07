@@ -10,40 +10,40 @@ import org.persapiens.account.common.DebitAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CategoryTests {
+class CategoryTests {
 
 	@Test
-	public void equalDescriptions() {
+	void equalDescriptions() {
 		assertThat(Category.builder().description(CategoryConstants.TRANSPORT).build())
 			.isEqualTo(Category.builder().description(CategoryConstants.TRANSPORT).build());
 	}
 
 	@Test
-	public void equalDescriptionsWithDifferentAccounts() {
-		Category CategoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
+	void equalDescriptionsWithDifferentAccounts() {
+		Category categoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
-		Set<Account> Accounts = new HashSet<>();
-		Accounts.add(DebitAccount.builder()
+		Set<Account> accounts = new HashSet<>();
+		accounts.add(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
-			.category(CategoryTransporte1)
+			.category(categoryTransporte1)
 			.build());
-		Accounts
-			.add(DebitAccount.builder().description(DebitAccountConstants.BUS).category(CategoryTransporte1).build());
-		CategoryTransporte1.setAccounts(Accounts);
+		accounts
+			.add(DebitAccount.builder().description(DebitAccountConstants.BUS).category(categoryTransporte1).build());
+		categoryTransporte1.setAccounts(accounts);
 
-		Category CategoryTransporte2 = Category.builder().description(CategoryConstants.TRANSPORT).build();
+		Category categoryTransporte2 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
-		assertThat(CategoryTransporte1).isEqualTo(CategoryTransporte2);
+		assertThat(categoryTransporte1).isEqualTo(categoryTransporte2);
 	}
 
 	@Test
-	public void differentDescriptions() {
+	void differentDescriptions() {
 		assertThat(Category.builder().description(CategoryConstants.TRANSPORT).build())
 			.isNotEqualTo(Category.builder().description(CategoryConstants.HOUSING).build());
 	}
 
 	@Test
-	public void compareTo() {
+	void compareTo() {
 		Set<Category> categories = new TreeSet<>();
 
 		Category transport = Category.builder().description(CategoryConstants.TRANSPORT).build();

@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class EquityAccountRepositoryIT {
+class EquityAccountRepositoryIT {
 
 	@Autowired
 	private EquityAccountRepository equityAccountRepository;
@@ -26,12 +26,12 @@ public class EquityAccountRepositoryIT {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.equityAccountRepository).isNotNull();
 	}
 
 	@Test
-	public void countByExample() {
+	void countByExample() {
 		// create test environment
 		EquityAccount equityAccount = this.equityAccountFactory.savings();
 

@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class EntryRepositoryIT {
+class EntryRepositoryIT {
 
 	@Autowired
 	private EntryFactory entryFactory;
@@ -40,18 +40,18 @@ public class EntryRepositoryIT {
 	private EntryRepository entryRepository;
 
 	@BeforeEach
-	public void deleteAll() {
+	void deleteAll() {
 		this.entryRepository.deleteAll();
 		assertThat(this.entryRepository.findAll()).isEmpty();
 	}
 
 	@Test
-	public void repositoryNaoEhNulo() {
+	void repositoryNaoEhNulo() {
 		assertThat(this.entryRepository).isNotNull();
 	}
 
 	@Test
-	public void credit300() {
+	void credit300() {
 		// create test environment
 		Owner father = this.ownerFactory.father();
 
@@ -68,7 +68,7 @@ public class EntryRepositoryIT {
 	}
 
 	@Test
-	public void debit500() {
+	void debit500() {
 		// create test environment
 		Owner father = this.ownerFactory.father();
 

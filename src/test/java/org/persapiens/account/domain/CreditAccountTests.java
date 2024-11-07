@@ -10,9 +10,9 @@ import org.persapiens.account.common.CreditAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CreditAccountTests {
+class CreditAccountTests {
 
-	public void equalDescriptionAndCategory() {
+	void equalDescriptionAndCategory() {
 		assertThat(CreditAccount.builder()
 			.description(CreditAccountConstants.STOCK)
 			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
@@ -24,7 +24,7 @@ public class CreditAccountTests {
 	}
 
 	@Test
-	public void equalDescriptionAndDifferentCategory() {
+	void equalDescriptionAndDifferentCategory() {
 		assertThat(CreditAccount.builder()
 			.description(CreditAccountConstants.INTERNSHIP)
 			.category(Category.builder().description(CategoryConstants.SALARY).build())
@@ -36,7 +36,7 @@ public class CreditAccountTests {
 	}
 
 	@Test
-	public void differentDescriptionAndEqualCategory() {
+	void differentDescriptionAndEqualCategory() {
 		assertThat(CreditAccount.builder()
 			.description(CreditAccountConstants.STOCK)
 			.category(Category.builder().description(CategoryConstants.SALARY).build())
@@ -48,7 +48,7 @@ public class CreditAccountTests {
 	}
 
 	@Test
-	public void equalDescriptionWithoutCategory() {
+	void equalDescriptionWithoutCategory() {
 		Assertions
 			.assertThatThrownBy(() -> CreditAccount.builder()
 				.description(CreditAccountConstants.STOCK)
@@ -58,7 +58,7 @@ public class CreditAccountTests {
 	}
 
 	@Test
-	public void compareTo() {
+	void compareTo() {
 		Set<CreditAccount> creditAccounts = new TreeSet<>();
 
 		CreditAccount work = CreditAccount.builder()
