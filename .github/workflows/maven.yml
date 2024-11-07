@@ -38,5 +38,8 @@ jobs:
       - name: Pmd
         run: ./mvnw -B -Ppmd validate
 
+      - name: Cpd
+        run: ./mvnw -B -Pcpd validate
+
       - name: Tests
         run: ./mvnw -B verify

@@ -18,7 +18,6 @@ import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -26,89 +25,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BalanceRestClientIT {
-
-	private final String protocol = "http";
-
-	private final String servername = "localhost";
-
-	@Value("${local.server.port}")
-	private int port;
+public class BalanceRestClientIT extends RestClientIT {
 
 	private BalanceRestClient balanceRestClient() {
-		return BalanceRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build()
-			.balanceRestClient();
-	}
-
-	private OwnerRestClientFactory ownerRestClientFactory() {
-		return OwnerRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build();
-	}
-
-	private CategoryRestClientFactory categoryRestClientFactory() {
-		return CategoryRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build();
-	}
-
-	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-		return EquityAccountRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.categoryRestClientFactory(categoryRestClientFactory())
-			.build();
-	}
-
-	private CreditAccountRestClientFactory creditAccountRestClientFactory() {
-		return CreditAccountRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.categoryRestClientFactory(categoryRestClientFactory())
-			.build();
-	}
-
-	private DebitAccountRestClientFactory debitAccountRestClientFactory() {
-		return DebitAccountRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.categoryRestClientFactory(categoryRestClientFactory())
-			.build();
-	}
-
-	private OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
-		return OwnerEquityAccountInitialValueRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build()
-			.ownerEquityAccountInitialValueRestClient();
-	}
-
-	private EntryRestClient entryRestClient() {
-		return EntryRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build()
-			.entryRestClient();
+		return BalanceRestClient.builder().restClientHelper(this.<BigDecimal>restClientHelper("")).build();
 	}
 
 	@Test
 	public void balance500() {
-		OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
-		EquityAccountDTO savings = equityAccountRestClientFactory().equityAccount(EquityAccountConstants.SAVINGS,
+		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
+		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
 				CategoryConstants.BANK);
 
 		// initial value 100
@@ -120,7 +46,7 @@ public class BalanceRestClientIT {
 		ownerEquityAccountInitialValueRestClient().save(initialValue);
 
 		// credit 600
-		CreditAccountDTO internship = creditAccountRestClientFactory().creditAccount(CreditAccountConstants.INTERNSHIP,
+		CreditAccountDTO internship = creditAccount(CreditAccountConstants.INTERNSHIP,
 				CategoryConstants.SALARY);
 		EntryDTO entryCredito = EntryDTO.builder()
 			.value(new BigDecimal(600))
@@ -132,7 +58,7 @@ public class BalanceRestClientIT {
 		entryRestClient().save(entryCredito);
 
 		// debit 200
-		DebitAccountDTO gasoline = debitAccountRestClientFactory().debitAccount(DebitAccountConstants.GASOLINE,
+		DebitAccountDTO gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				CategoryConstants.TRANSPORT);
 		EntryDTO entryDebito = EntryDTO.builder()
 			.value(new BigDecimal(200))

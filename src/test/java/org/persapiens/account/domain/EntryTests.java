@@ -74,9 +74,9 @@ public class EntryTests {
 
 		Set<Entry> entries = new TreeSet<>();
 
-		Entry entryGasoline1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline1 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline1);
-		Entry entryGasoline2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		Entry entryGasoline2 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);

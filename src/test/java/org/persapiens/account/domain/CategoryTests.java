@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.DebitAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,9 +23,12 @@ public class CategoryTests {
 		Category CategoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
 		Set<Account> Accounts = new HashSet<>();
+		Accounts.add(DebitAccount.builder()
+			.description(DebitAccountConstants.GASOLINE)
+			.category(CategoryTransporte1)
+			.build());
 		Accounts
-			.add(DebitAccount.builder().description(CategoryConstants.GASOLINE).category(CategoryTransporte1).build());
-		Accounts.add(DebitAccount.builder().description(CategoryConstants.TAX).category(CategoryTransporte1).build());
+			.add(DebitAccount.builder().description(DebitAccountConstants.BUS).category(CategoryTransporte1).build());
 		CategoryTransporte1.setAccounts(Accounts);
 
 		Category CategoryTransporte2 = Category.builder().description(CategoryConstants.TRANSPORT).build();
