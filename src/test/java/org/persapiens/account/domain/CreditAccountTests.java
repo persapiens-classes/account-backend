@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,12 +26,12 @@ public class CreditAccountTests {
 	@Test
 	public void equalDescriptionAndDifferentCategory() {
 		assertThat(CreditAccount.builder()
-			.description(CreditAccountConstants.STOCK)
-			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
+			.description(CreditAccountConstants.INTERNSHIP)
+			.category(Category.builder().description(CategoryConstants.SALARY).build())
 			.build())
 			.isNotEqualTo(CreditAccount.builder()
-				.description(CreditAccountConstants.STOCK)
-				.category(Category.builder().description(CreditAccountConstants.SALARY).build())
+				.description(CreditAccountConstants.INTERNSHIP)
+				.category(Category.builder().description(CategoryConstants.CASH).build())
 				.build());
 	}
 
@@ -38,11 +39,11 @@ public class CreditAccountTests {
 	public void differentDescriptionAndEqualCategory() {
 		assertThat(CreditAccount.builder()
 			.description(CreditAccountConstants.STOCK)
-			.category(Category.builder().description(CreditAccountConstants.DONATION).build())
+			.category(Category.builder().description(CategoryConstants.SALARY).build())
 			.build())
 			.isNotEqualTo(CreditAccount.builder()
 				.description(CreditAccountConstants.WORK)
-				.category(Category.builder().description(CreditAccountConstants.DONATION).build())
+				.category(Category.builder().description(CategoryConstants.SALARY).build())
 				.build());
 	}
 

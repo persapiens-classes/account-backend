@@ -71,7 +71,7 @@ public class EntryServiceIT {
 			Entry entry = Entry.builder()
 				.inAccount(this.equityAccountFactory.savings())
 				.outAccount(this.debitAccountFactory.gasoline())
-				.value(BigDecimal.TEN)
+				.value(BigDecimal.ZERO)
 				.date(LocalDateTime.now())
 				.owner(this.ownerFactory.father())
 				.build();
