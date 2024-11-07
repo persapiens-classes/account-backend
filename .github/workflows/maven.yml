@@ -35,5 +35,8 @@ jobs:
       - name: Checkstyle
         run: ./mvnw -B -Pcheckstyle validate
 
+      - name: Pmd
+        run: ./mvnw -B -Ppmd validate
+
       - name: Tests
         run: ./mvnw -B verify
