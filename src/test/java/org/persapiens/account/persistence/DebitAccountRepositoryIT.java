@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class DebitAccountRepositoryIT {
+class DebitAccountRepositoryIT {
 
 	@Autowired
 	private DebitAccountRepository debitAccountRepository;
@@ -26,12 +26,12 @@ public class DebitAccountRepositoryIT {
 	private DebitAccountFactory debitAccountFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.debitAccountRepository).isNotNull();
 	}
 
 	@Test
-	public void findOneByExample() {
+	void findOneByExample() {
 		// create test environment
 		DebitAccount debitAccount = this.debitAccountFactory.gasoline();
 

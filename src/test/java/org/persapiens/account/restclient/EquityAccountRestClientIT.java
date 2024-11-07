@@ -13,10 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EquityAccountRestClientIT extends RestClientIT {
+class EquityAccountRestClientIT extends RestClientIT {
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		String description = "Super bank account";
 		String categoryDescription = CategoryConstants.BANK;
 

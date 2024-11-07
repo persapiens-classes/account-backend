@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EntryRestClientIT extends RestClientIT {
+class EntryRestClientIT extends RestClientIT {
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		String mother = OwnerConstants.MOTHER;
 		String internship = CreditAccountConstants.INTERNSHIP;
 		String salary = CategoryConstants.SALARY;

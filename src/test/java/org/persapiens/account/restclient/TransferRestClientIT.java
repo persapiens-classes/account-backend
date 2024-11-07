@@ -19,14 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TransferRestClientIT extends RestClientIT {
+class TransferRestClientIT extends RestClientIT {
 
 	private TransferRestClient transferRestClient() {
 		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>restClientHelper("")).build();
 	}
 
 	@Test
-	public void transfer50FromCheckingsAuntToInvestimentUncle() {
+	void transfer50FromCheckingsAuntToInvestimentUncle() {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 

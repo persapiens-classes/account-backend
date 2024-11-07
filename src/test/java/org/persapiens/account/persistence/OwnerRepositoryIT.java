@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class OwnerRepositoryIT {
+class OwnerRepositoryIT {
 
 	@Autowired
 	private OwnerRepository ownerRepository;
@@ -23,12 +23,12 @@ public class OwnerRepositoryIT {
 	private OwnerFactory ownerFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.ownerRepository).isNotNull();
 	}
 
 	@Test
-	public void findByName() {
+	void findByName() {
 		// create test environment
 		Owner father = this.ownerFactory.father();
 		Owner mother = this.ownerFactory.mother();
@@ -40,7 +40,7 @@ public class OwnerRepositoryIT {
 	}
 
 	@Test
-	public void countByName() {
+	void countByName() {
 		// create test environment
 		this.ownerFactory.father();
 		this.ownerFactory.mother();
@@ -51,7 +51,7 @@ public class OwnerRepositoryIT {
 	}
 
 	@Test
-	public void deleteByName() {
+	void deleteByName() {
 		String uniqueName = "Unique Owner";
 
 		// create test environment

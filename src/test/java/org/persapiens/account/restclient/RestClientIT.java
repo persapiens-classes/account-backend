@@ -12,7 +12,7 @@ import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public class RestClientIT {
+class RestClientIT {
 
 	private final String protocol = "http";
 
@@ -21,7 +21,7 @@ public class RestClientIT {
 	@Value("${local.server.port}")
 	private int port;
 
-	public <T> RestClientHelper<T> restClientHelper(String endpoint) {
+	<T> RestClientHelper<T> restClientHelper(String endpoint) {
 		return RestClientHelper.<T>builder()
 			.endpoint(endpoint)
 			.protocol(this.protocol)
@@ -30,11 +30,11 @@ public class RestClientIT {
 			.build();
 	}
 
-	public OwnerRestClient ownerRestClient() {
+	OwnerRestClient ownerRestClient() {
 		return OwnerRestClient.builder().restClientHelper(this.<OwnerDTO>restClientHelper("owner")).build();
 	}
 
-	public OwnerDTO owner(String name) {
+	OwnerDTO owner(String name) {
 		Optional<OwnerDTO> findByDescription = ownerRestClient().findByName(name);
 		if (findByDescription.isEmpty()) {
 			OwnerDTO result = OwnerDTO.builder().name(name).build();
@@ -45,11 +45,11 @@ public class RestClientIT {
 		}
 	}
 
-	public CategoryRestClient categoryRestClient() {
+	CategoryRestClient categoryRestClient() {
 		return CategoryRestClient.builder().restClientHelper(this.<CategoryDTO>restClientHelper("category")).build();
 	}
 
-	public CategoryDTO category(String description) {
+	CategoryDTO category(String description) {
 		Optional<CategoryDTO> findByDescription = categoryRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CategoryDTO result = CategoryDTO.builder().description(description).build();
@@ -60,13 +60,13 @@ public class RestClientIT {
 		}
 	}
 
-	public EquityAccountRestClient equityAccountRestClient() {
+	EquityAccountRestClient equityAccountRestClient() {
 		return EquityAccountRestClient.builder()
 			.restClientHelper(this.<EquityAccountDTO>restClientHelper("equityAccount"))
 			.build();
 	}
 
-	public EquityAccountDTO equityAccount(String description, String categoryDescription) {
+	EquityAccountDTO equityAccount(String description, String categoryDescription) {
 		Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CategoryDTO category = category(categoryDescription);
@@ -78,13 +78,13 @@ public class RestClientIT {
 		}
 	}
 
-	public CreditAccountRestClient creditAccountRestClient() {
+	CreditAccountRestClient creditAccountRestClient() {
 		return CreditAccountRestClient.builder()
 			.restClientHelper(this.<CreditAccountDTO>restClientHelper("creditAccount"))
 			.build();
 	}
 
-	public CreditAccountDTO creditAccount(String description, String categoryDescription) {
+	CreditAccountDTO creditAccount(String description, String categoryDescription) {
 		Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CategoryDTO category = category(categoryDescription);
@@ -96,13 +96,13 @@ public class RestClientIT {
 		}
 	}
 
-	public DebitAccountRestClient debitAccountRestClient() {
+	DebitAccountRestClient debitAccountRestClient() {
 		return DebitAccountRestClient.builder()
 			.restClientHelper(this.<DebitAccountDTO>restClientHelper("debitAccount"))
 			.build();
 	}
 
-	public DebitAccountDTO debitAccount(String description, String categoryDescription) {
+	DebitAccountDTO debitAccount(String description, String categoryDescription) {
 		Optional<DebitAccountDTO> findByDescription = debitAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CategoryDTO category = category(categoryDescription);
@@ -114,14 +114,14 @@ public class RestClientIT {
 		}
 	}
 
-	public OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
+	OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
 		return OwnerEquityAccountInitialValueRestClient.builder()
 			.restClientHelper(
 					this.<OwnerEquityAccountInitialValueDTO>restClientHelper("ownerEquityAccountInitialValue"))
 			.build();
 	}
 
-	public EntryRestClient entryRestClient() {
+	EntryRestClient entryRestClient() {
 		return EntryRestClient.builder().restClientHelper(this.<EntryDTO>restClientHelper("entry")).build();
 	}
 

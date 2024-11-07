@@ -8,10 +8,10 @@ import org.persapiens.account.common.EquityAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EquityAccountTests {
+class EquityAccountTests {
 
 	@Test
-	public void equalDescriptionAndCategory() {
+	void equalDescriptionAndCategory() {
 		assertThat(EquityAccount.builder()
 			.description(EquityAccountConstants.WALLET)
 			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
@@ -23,7 +23,7 @@ public class EquityAccountTests {
 	}
 
 	@Test
-	public void differentDescriptionAndCategory() {
+	void differentDescriptionAndCategory() {
 		assertThat(EquityAccount.builder()
 			.description(EquityAccountConstants.WALLET)
 			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
@@ -35,7 +35,7 @@ public class EquityAccountTests {
 	}
 
 	@Test
-	public void differentDescriptionAndEqualCategory() {
+	void differentDescriptionAndEqualCategory() {
 		assertThat(EquityAccount.builder()
 			.description(EquityAccountConstants.WALLET)
 			.category(Category.builder().description(EquityAccountConstants.OTHER_ASSETS).build())
@@ -47,7 +47,7 @@ public class EquityAccountTests {
 	}
 
 	@Test
-	public void equalDescriptionWithoutCategory() {
+	void equalDescriptionWithoutCategory() {
 		Assertions
 			.assertThatThrownBy(() -> EquityAccount.builder()
 				.description(EquityAccountConstants.WALLET)
@@ -57,7 +57,7 @@ public class EquityAccountTests {
 	}
 
 	@Test
-	public void equalDescriptionAndCategoryAndDifferentOwnerEquityAccountInitialValue() {
+	void equalDescriptionAndCategoryAndDifferentOwnerEquityAccountInitialValue() {
 		OwnerEquityAccountInitialValue ownerEquityAccountInitialValue = OwnerEquityAccountInitialValue.builder()
 			.owner(Owner.builder().name("father").build())
 			.value(new BigDecimal(100))

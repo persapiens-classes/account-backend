@@ -10,16 +10,16 @@ import org.persapiens.account.common.DebitAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CategoryTests {
+class CategoryTests {
 
 	@Test
-	public void equalDescriptions() {
+	void equalDescriptions() {
 		assertThat(Category.builder().description(CategoryConstants.TRANSPORT).build())
 			.isEqualTo(Category.builder().description(CategoryConstants.TRANSPORT).build());
 	}
 
 	@Test
-	public void equalDescriptionsWithDifferentAccounts() {
+	void equalDescriptionsWithDifferentAccounts() {
 		Category categoryTransporte1 = Category.builder().description(CategoryConstants.TRANSPORT).build();
 
 		Set<Account> accounts = new HashSet<>();
@@ -37,13 +37,13 @@ public class CategoryTests {
 	}
 
 	@Test
-	public void differentDescriptions() {
+	void differentDescriptions() {
 		assertThat(Category.builder().description(CategoryConstants.TRANSPORT).build())
 			.isNotEqualTo(Category.builder().description(CategoryConstants.HOUSING).build());
 	}
 
 	@Test
-	public void compareTo() {
+	void compareTo() {
 		Set<Category> categories = new TreeSet<>();
 
 		Category transport = Category.builder().description(CategoryConstants.TRANSPORT).build();

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class EntryServiceIT {
+class EntryServiceIT {
 
 	@Autowired
 	private EntryService entryService;
@@ -40,18 +40,18 @@ public class EntryServiceIT {
 	private DebitAccountFactory debitAccountFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.entryService).isNotNull();
 	}
 
 	@BeforeEach
-	public void deletarTodos() {
+	void deletarTodos() {
 		this.entryService.deleteAll();
 		assertThat(this.entryService.findAll()).isEmpty();
 	}
 
 	@Test
-	public void entryWithInvalidInAccount() {
+	void entryWithInvalidInAccount() {
 		Assertions.assertThatThrownBy(() -> {
 			Entry entry = Entry.builder()
 				.inAccount(this.creditAccountFactory.internship())
@@ -66,7 +66,7 @@ public class EntryServiceIT {
 	}
 
 	@Test
-	public void entryWithInvalidOutAccount() {
+	void entryWithInvalidOutAccount() {
 		Assertions.assertThatThrownBy(() -> {
 			Entry entry = Entry.builder()
 				.inAccount(this.equityAccountFactory.savings())

@@ -13,7 +13,7 @@ import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EntryTests {
+class EntryTests {
 
 	private static final String INDIVIDUAL_ASSET = "individual asset";
 
@@ -37,7 +37,7 @@ public class EntryTests {
 	}
 
 	@Test
-	public void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
+	void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Entry entryGasoline1 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
@@ -47,7 +47,7 @@ public class EntryTests {
 	}
 
 	@Test
-	public void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
+	void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Entry entryGasoline1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER, GAS_DESCRIPTION);
@@ -57,7 +57,7 @@ public class EntryTests {
 	}
 
 	@Test
-	public void compareToWithDifferentDates() {
+	void compareToWithDifferentDates() {
 		Set<Entry> entries = new TreeSet<>();
 
 		Entry entryGasoline1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
@@ -69,7 +69,7 @@ public class EntryTests {
 	}
 
 	@Test
-	public void compareToWithDifferentValues() {
+	void compareToWithDifferentValues() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Set<Entry> entries = new TreeSet<>();
@@ -83,7 +83,7 @@ public class EntryTests {
 	}
 
 	@Test
-	public void compareToWithDifferentOwners() {
+	void compareToWithDifferentOwners() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Set<Entry> entries = new TreeSet<>();

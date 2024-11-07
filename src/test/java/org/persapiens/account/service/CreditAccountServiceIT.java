@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class CreditAccountServiceIT {
+class CreditAccountServiceIT {
 
 	@Autowired
 	private CreditAccountService creditAccountService;
@@ -27,12 +27,12 @@ public class CreditAccountServiceIT {
 	private CategoryFactory categoryFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.creditAccountService).isNotNull();
 	}
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		// create test environment
 		CreditAccount creditAccount = this.creditAccountFactory.internship();
 
@@ -41,7 +41,7 @@ public class CreditAccountServiceIT {
 	}
 
 	@Test
-	public void deleteOne() {
+	void deleteOne() {
 		// create test environment
 		CreditAccount creditAccount = this.creditAccountFactory.creditAccount("UNIQUE CreditAccount",
 				this.categoryFactory.bank());

@@ -12,10 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OwnerRestClientIT extends RestClientIT {
+class OwnerRestClientIT extends RestClientIT {
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		String name = "Free income";
 
 		OwnerDTO owner = OwnerDTO.builder().name(name).build();
@@ -31,7 +31,7 @@ public class OwnerRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	public void deleteOne() {
+	void deleteOne() {
 		// create test environment
 		String name = "Fantastic owner";
 		ownerRestClient().save(OwnerDTO.builder().name(name).build());

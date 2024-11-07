@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class BalanceServiceIT {
+class BalanceServiceIT {
 
 	@Autowired
 	private EntryFactory entryFactory;
@@ -48,7 +48,7 @@ public class BalanceServiceIT {
 	private DebitAccountFactory debitAccountFactory;
 
 	@Test
-	public void balance800() {
+	void balance800() {
 		// create test environment
 		Owner father = this.ownerFactory.father();
 

@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class OwnerServiceIT {
+class OwnerServiceIT {
 
 	@Autowired
 	private OwnerService ownerService;
@@ -23,12 +23,12 @@ public class OwnerServiceIT {
 	private OwnerFactory ownerFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.ownerService).isNotNull();
 	}
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		// create test environment
 		Owner owner = this.ownerFactory.mother();
 
@@ -37,7 +37,7 @@ public class OwnerServiceIT {
 	}
 
 	@Test
-	public void deleteOne() {
+	void deleteOne() {
 		// create test environment
 		Owner owner = this.ownerFactory.owner("UNIQUE Owner");
 

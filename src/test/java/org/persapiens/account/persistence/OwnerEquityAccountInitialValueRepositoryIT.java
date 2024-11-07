@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class OwnerEquityAccountInitialValueRepositoryIT {
+class OwnerEquityAccountInitialValueRepositoryIT {
 
 	@Autowired
 	private OwnerFactory ownerFactory;
@@ -32,12 +32,12 @@ public class OwnerEquityAccountInitialValueRepositoryIT {
 	private OwnerEquityAccountInitialValueFactory ownerEquityAccountInitialValueFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.ownerEquityAccountInitialValueRepository).isNotNull();
 	}
 
 	@Test
-	public void findByOwnerAndEquityAccount() {
+	void findByOwnerAndEquityAccount() {
 		// create test environment
 		Owner father = this.ownerFactory.father();
 

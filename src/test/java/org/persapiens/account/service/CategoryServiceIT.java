@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class CategoryServiceIT {
+class CategoryServiceIT {
 
 	@Autowired
 	private CategoryService categoryService;
@@ -23,12 +23,12 @@ public class CategoryServiceIT {
 	private CategoryFactory categoryFactory;
 
 	@Test
-	public void repositoryNotNull() {
+	void repositoryNotNull() {
 		assertThat(this.categoryService).isNotNull();
 	}
 
 	@Test
-	public void saveOne() {
+	void saveOne() {
 		// create test environment
 		Category category = this.categoryFactory.bank();
 
@@ -37,7 +37,7 @@ public class CategoryServiceIT {
 	}
 
 	@Test
-	public void deleteOne() {
+	void deleteOne() {
 		// create test environment
 		Category category = this.categoryFactory.category("UNIQUE CATEGORY");
 
