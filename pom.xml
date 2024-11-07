@@ -341,5 +341,37 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>cpd</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                            <printFailingErrors>true</printFailingErrors>
+                            <verbose>true</verbose>
+                            <minimumTokens>50</minimumTokens>                            
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>cpd-check</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>cpd-check</goal>
+                                </goals>
+                                <!--
+                                <configuration>
+                                    <excludeFromFailureFile>${cpd.excludeFromFailureFile}</excludeFromFailureFile>
+                                </configuration>
+                                -->
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>    
 </project>
