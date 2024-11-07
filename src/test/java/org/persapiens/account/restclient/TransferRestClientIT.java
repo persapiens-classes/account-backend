@@ -12,7 +12,6 @@ import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.TransferDTO;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -20,67 +19,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TransferRestClientIT {
-
-	private final String protocol = "http";
-
-	private final String servername = "localhost";
-
-	@Value("${local.server.port}")
-	private int port;
+public class TransferRestClientIT extends RestClientIT {
 
 	private TransferRestClient transferRestClient() {
-		return TransferRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build()
-			.transferRestClient();
-	}
-
-	private OwnerRestClientFactory ownerRestClientFactory() {
-		return OwnerRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build();
-	}
-
-	private CategoryRestClientFactory categoryRestClientFactory() {
-		return CategoryRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build();
-	}
-
-	private EquityAccountRestClientFactory equityAccountRestClientFactory() {
-		return EquityAccountRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.categoryRestClientFactory(categoryRestClientFactory())
-			.build();
-	}
-
-	private EntryRestClient entryRestClient() {
-		return EntryRestClientFactory.builder()
-			.protocol(this.protocol)
-			.servername(this.servername)
-			.port(this.port)
-			.build()
-			.entryRestClient();
+		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>restClientHelper("")).build();
 	}
 
 	@Test
 	public void transfer50FromCheckingsAuntToInvestimentUncle() {
-		OwnerDTO aunt = ownerRestClientFactory().owner(OwnerConstants.AUNT);
-		OwnerDTO uncle = ownerRestClientFactory().owner(OwnerConstants.UNCLE);
+		OwnerDTO aunt = owner(OwnerConstants.AUNT);
+		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 
-		EquityAccountDTO checkings = equityAccountRestClientFactory().equityAccount(EquityAccountConstants.CHECKING,
-				CategoryConstants.BANK);
-		EquityAccountDTO investiment = equityAccountRestClientFactory()
-			.equityAccount(EquityAccountConstants.INVESTIMENT, CategoryConstants.BANK);
+		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING, CategoryConstants.BANK);
+		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT, CategoryConstants.BANK);
 
 		// execute transfer operation
 		transferRestClient().transfer(TransferDTO.builder()
