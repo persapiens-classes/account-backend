@@ -2,26 +2,19 @@ package org.persapiens.account.service;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class BalanceService {
 
 	private final EntryService entryService;
 
 	private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
-
-	@Autowired
-	public BalanceService(EntryService entryService,
-			OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
-		super();
-		this.entryService = entryService;
-		this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;
-	}
 
 	public BigDecimal balance(Owner owner, EquityAccount equityAccount) {
 		// get initial value of owner and equity account

@@ -2,6 +2,7 @@ package org.persapiens.account.controller;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.dto.AccountDTO;
@@ -13,25 +14,21 @@ import org.persapiens.account.service.EntryService;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/entry")
 public class EntryController extends CrudController<EntryDTO, Entry, Long> {
 
-	@Autowired
 	private EntryService entryService;
 
-	@Autowired
 	private OwnerService ownerService;
 
-	@Autowired
 	private EquityAccountService equityAccountService;
 
-	@Autowired
 	private AccountService<Account> accountService;
 
 	@Override

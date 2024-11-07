@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public abstract class CrudController<D extends Object, T extends Object, ID extends Serializable> {
 
-	@Autowired
 	private CrudService<T, ID> crudService;
+
+	@Autowired
+	public void setService(CrudService<T, ID> service) {
+		this.crudService = service;
+	}
 
 	@PostMapping
 	public D save(@RequestBody D dto) {
