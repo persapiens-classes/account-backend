@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class CrudController<D extends Object, T extends Object, ID extends Serializable> {
+public abstract class CrudController<D extends Object, T extends Object, I extends Serializable> {
 
-	private CrudService<T, ID> crudService;
+	private CrudService<T, I> crudService;
 
 	@Autowired
-	public void setService(CrudService<T, ID> service) {
+	public void setService(CrudService<T, I> service) {
 		this.crudService = service;
 	}
 

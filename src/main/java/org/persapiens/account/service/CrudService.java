@@ -7,12 +7,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public class CrudService<T extends Object, ID> {
+public class CrudService<T extends Object, I> {
 
-	private CrudRepository<T, ID> repository;
+	private CrudRepository<T, I> repository;
 
 	@Autowired
-	public void setRepository(CrudRepository<T, ID> repository) {
+	public void setRepository(CrudRepository<T, I> repository) {
 		this.repository = repository;
 	}
 
@@ -32,12 +32,12 @@ public class CrudService<T extends Object, ID> {
 	}
 
 	@Transactional
-	public void deleteAllById(Iterable<? extends ID> ids) {
+	public void deleteAllById(Iterable<? extends I> ids) {
 		this.repository.deleteAllById(ids);
 	}
 
 	@Transactional
-	public void deleteById(ID id) {
+	public void deleteById(I id) {
 		this.repository.deleteById(id);
 	}
 
@@ -51,7 +51,7 @@ public class CrudService<T extends Object, ID> {
 		this.repository.deleteAll();
 	}
 
-	public Optional<T> findById(ID id) {
+	public Optional<T> findById(I id) {
 		return this.repository.findById(id);
 	}
 
@@ -59,7 +59,7 @@ public class CrudService<T extends Object, ID> {
 		return this.repository.findAll();
 	}
 
-	public Iterable<T> findAllById(Iterable<ID> ids) {
+	public Iterable<T> findAllById(Iterable<I> ids) {
 		return this.repository.findAllById(ids);
 	}
 
@@ -67,7 +67,7 @@ public class CrudService<T extends Object, ID> {
 		return this.repository.count();
 	}
 
-	public boolean existsById(ID id) {
+	public boolean existsById(I id) {
 		return this.repository.existsById(id);
 	}
 
