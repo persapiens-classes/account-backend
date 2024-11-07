@@ -33,7 +33,7 @@ class EquityAccountRepositoryIT {
 	@Test
 	void countByExample() {
 		// create test environment
-		EquityAccount equityAccount = this.equityAccountFactory.savings();
+		this.equityAccountFactory.savings();
 
 		EquityAccount equityAccountExemplo = EquityAccount.builder()
 			.description(EquityAccountConstants.SAVINGS)

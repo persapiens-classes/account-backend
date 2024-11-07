@@ -61,7 +61,7 @@ class OwnerRepositoryIT {
 		this.ownerRepository.deleteByName(uniqueName);
 
 		// verify results
-		assertThat(this.ownerRepository.countByNameContains(uniqueName)).isEqualTo(0);
+		assertThat(this.ownerRepository.countByNameContains(uniqueName)).isZero();
 	}
 
 }

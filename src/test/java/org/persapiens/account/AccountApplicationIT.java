@@ -10,11 +10,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class AccountApplicationIT {
 
-	/**
-	 * Smoke test to check if application starts up.
-	 */
 	@Test
 	void contextLoads() {
+		// Smoke test to check if application starts up.
 	}
 
 }
