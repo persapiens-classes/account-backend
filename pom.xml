@@ -389,11 +389,6 @@
                                 <goals>
                                     <goal>cpd-check</goal>
                                 </goals>
-                                <!--
-                                <configuration>
-                                    <excludeFromFailureFile>${cpd.excludeFromFailureFile}</excludeFromFailureFile>
-                                </configuration>
-                                -->
                             </execution>
                         </executions>
                     </plugin>
