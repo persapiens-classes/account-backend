@@ -2,6 +2,7 @@ package org.persapiens.account.restclient;
 
 import java.util.Optional;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
 import org.persapiens.account.dto.DebitAccountDTO;
@@ -14,8 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 class RestClientIT {
 
+	@SuppressFBWarnings("SS_SHOULD_BE_STATIC")
 	private final String protocol = "http";
 
+	@SuppressFBWarnings("SS_SHOULD_BE_STATIC")
 	private final String servername = "localhost";
 
 	@Value("${local.server.port}")
