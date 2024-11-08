@@ -31,6 +31,10 @@
         <duplicate-finder-maven-plugin.version>2.0.1</duplicate-finder-maven-plugin.version>
         <duplicate.ignoredResourcePattern>()</duplicate.ignoredResourcePattern>
         <duplicate.ignoredClassPattern>()</duplicate.ignoredClassPattern>
+
+        <spotbugs-maven-plugin.version>4.8.6.4</spotbugs-maven-plugin.version>
+        <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
+        <spotbugs.excludeFilterFile>${project.basedir}/src/checkconfig/spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile> 
     </properties>
 
     <dependencyManagement>
@@ -44,6 +48,12 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-common</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${spotbugs-annotations.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -95,6 +105,12 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -268,6 +284,19 @@
                         <quiet>false</quiet>
                     </configuration>
                 </plugin>                     
+
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven-plugin.version}</version>
+                    <configuration>
+                        <includeTests>true</includeTests>
+                        <xmlOutput>true</xmlOutput>
+                        <effort>Max</effort>
+                        <failOnError>true</failOnError>
+                        <excludeFilterFile>${spotbugs.excludeFilterFile}</excludeFilterFile>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>        
         <plugins>
@@ -407,6 +436,26 @@
                             <execution>
                                 <id>check-duplicate</id>
                                 <phase>verify</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>spotbugs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>process-test-classes</phase>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
