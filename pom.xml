@@ -32,7 +32,7 @@
         <duplicate.ignoredResourcePattern>()</duplicate.ignoredResourcePattern>
         <duplicate.ignoredClassPattern>()</duplicate.ignoredClassPattern>
 
-        <spotbugs-maven-plugin.version>4.8.6.4</spotbugs-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.8.6.6</spotbugs-maven-plugin.version>
         <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
         <spotbugs.excludeFilterFile>${project.basedir}/src/checkconfig/spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile> 
         <findsecbugs-plugin.version>1.13.0</findsecbugs-plugin.version>
