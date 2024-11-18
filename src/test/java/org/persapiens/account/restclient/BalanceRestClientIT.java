@@ -34,8 +34,7 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balance500() {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
-		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
-				CategoryConstants.BANK);
+		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS, CategoryConstants.BANK);
 
 		// initial value 100
 		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
@@ -46,8 +45,7 @@ class BalanceRestClientIT extends RestClientIT {
 		ownerEquityAccountInitialValueRestClient().save(initialValue);
 
 		// credit 600
-		CreditAccountDTO internship = creditAccount(CreditAccountConstants.INTERNSHIP,
-				CategoryConstants.SALARY);
+		CreditAccountDTO internship = creditAccount(CreditAccountConstants.INTERNSHIP, CategoryConstants.SALARY);
 		EntryDTO entryCredito = EntryDTO.builder()
 			.value(new BigDecimal(600))
 			.date(LocalDateTime.now())
@@ -58,8 +56,7 @@ class BalanceRestClientIT extends RestClientIT {
 		entryRestClient().save(entryCredito);
 
 		// debit 200
-		DebitAccountDTO gasoline = debitAccount(DebitAccountConstants.GASOLINE,
-				CategoryConstants.TRANSPORT);
+		DebitAccountDTO gasoline = debitAccount(DebitAccountConstants.GASOLINE, CategoryConstants.TRANSPORT);
 		EntryDTO entryDebito = EntryDTO.builder()
 			.value(new BigDecimal(200))
 			.date(LocalDateTime.now())

@@ -158,37 +158,6 @@
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${maven-checkstyle-plugin.version}</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>io.spring.javaformat</groupId>
-                            <artifactId>spring-javaformat-checkstyle</artifactId>
-                            <version>${spring-javaformat.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <failsOnError>true</failsOnError>
-                        <failOnViolation>true</failOnViolation>
-                        <configLocation>${checkstyle.configLocation}</configLocation>
-                        <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-                        <consoleOutput>true</consoleOutput>
-                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    </configuration>
-                </plugin>  
-                <plugin>
-                    <groupId>io.spring.javaformat</groupId>
-                    <artifactId>spring-javaformat-maven-plugin</artifactId>
-                    <version>${spring-javaformat.version}</version>
-                </plugin>      
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
                     <version>${maven-pmd-plugin.version}</version>
                     <configuration>
@@ -277,6 +246,15 @@
         <profile>
             <id>format</id>
             <build>
+                <pluginManagement>
+                    <plugins>                        
+                        <plugin>
+                            <groupId>io.spring.javaformat</groupId>
+                            <artifactId>spring-javaformat-maven-plugin</artifactId>
+                            <version>${spring-javaformat.version}</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>io.spring.javaformat</groupId>
@@ -297,6 +275,35 @@
         <profile>
             <id>checkstyle</id>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-checkstyle-plugin</artifactId>
+                            <version>${maven-checkstyle-plugin.version}</version>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>com.puppycrawl.tools</groupId>
+                                    <artifactId>checkstyle</artifactId>
+                                    <version>${checkstyle.version}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>io.spring.javaformat</groupId>
+                                    <artifactId>spring-javaformat-checkstyle</artifactId>
+                                    <version>${spring-javaformat.version}</version>
+                                </dependency>
+                            </dependencies>
+                            <configuration>
+                                <failsOnError>true</failsOnError>
+                                <failOnViolation>true</failOnViolation>
+                                <configLocation>${checkstyle.configLocation}</configLocation>
+                                <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+                                <consoleOutput>true</consoleOutput>
+                                <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
