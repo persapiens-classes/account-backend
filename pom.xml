@@ -157,21 +157,6 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pmd-plugin</artifactId>
-                    <version>${maven-pmd-plugin.version}</version>
-                    <configuration>
-                        <targetJdk>${java.source}</targetJdk>
-                        <includeTests>true</includeTests>
-                        <rulesets>
-                            <ruleset>${pmd.ruleset}</ruleset>
-                        </rulesets>
-                        <analysisCache>true</analysisCache>
-                        <linkXRef>false</linkXRef>
-                    </configuration>
-                </plugin>     
-
-                <plugin>
                     <groupId>org.basepom.maven</groupId>
                     <artifactId>duplicate-finder-maven-plugin</artifactId>
                     <version>${duplicate-finder-maven-plugin.version}</version>
@@ -367,16 +352,32 @@
         <profile>
             <id>cpd</id>
             <build>
+                <pluginManagement>
+                    <plugins>                        
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <version>${maven-pmd-plugin.version}</version>
+                            <configuration>
+                                <targetJdk>${java.source}</targetJdk>
+                                <includeTests>true</includeTests>
+                                <rulesets>
+                                    <ruleset>${pmd.ruleset}</ruleset>
+                                </rulesets>
+                                <analysisCache>true</analysisCache>
+                                <linkXRef>false</linkXRef>
+                                <skip>false</skip>
+                                <printFailingErrors>true</printFailingErrors>
+                                <verbose>true</verbose>
+                                <minimumTokens>50</minimumTokens>                            
+                            </configuration>
+                        </plugin>     
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
-                        <configuration>
-                            <skip>false</skip>
-                            <printFailingErrors>true</printFailingErrors>
-                            <verbose>true</verbose>
-                            <minimumTokens>50</minimumTokens>                            
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>cpd-check</id>
