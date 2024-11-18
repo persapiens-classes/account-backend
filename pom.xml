@@ -36,6 +36,9 @@
         <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
         <spotbugs.excludeFilterFile>${project.basedir}/src/checkconfig/spotbugs/spotbugs-exclude.xml</spotbugs.excludeFilterFile> 
         <findsecbugs-plugin.version>1.13.0</findsecbugs-plugin.version>
+
+        <plantuml-generator-maven-plugin.version>3.0.1</plantuml-generator-maven-plugin.version>
+        <plantuml-maven-plugin.version>0.2.12</plantuml-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -467,6 +470,67 @@
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>plantuml</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>plantuml-generator-maven-plugin</artifactId>
+                        <groupId>de.elnarion.maven</groupId>
+                        <version>${plantuml-generator-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-simple-diagram</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <phase>generate-test-sources</phase>
+                                <configuration>
+                                    <outputFilename>domain-classes-diagram.puml</outputFilename>
+                                    <scanPackages>
+                                        <scanPackage>
+                                            org.persapiens.account.domain
+                                        </scanPackage>
+                                    </scanPackages>
+                                    <hideFields>false</hideFields>
+                                    <hideMethods>true</hideMethods>
+                                    <blacklistRegexp>.*Builder.*</blacklistRegexp>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.davidmoten</groupId>
+                        <artifactId>plantuml-maven-plugin</artifactId>
+                        <version>${plantuml-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-diagrams</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <phase>generate-test-sources</phase>
+                                <configuration>
+                                    <sources>
+                                        <directory>target/generated-docs</directory>
+                                        <includes>
+                                            <include>**/*.puml</include>
+                                        </includes>
+                                    </sources>
+                                    <outputDirectory>${project.build.directory}/generated-diagrams</outputDirectory>
+                                    <formats>
+                                        <format>png</format>
+                                    </formats>
+                                    <verbose>true</verbose>
+                                    <preserveDirectoryStructure>false</preserveDirectoryStructure>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
