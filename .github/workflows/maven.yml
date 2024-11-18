@@ -29,6 +29,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Set up Graphviz
+        uses: ts-graphviz/setup-graphviz@v2.0.2
+
       - name: Validate
         run: ./mvnw -B clean validate
 
@@ -40,6 +43,9 @@ jobs:
 
       - name: Cpd
         run: ./mvnw -B -Pcpd validate
+
+      - name: Plantuml
+        run: ./mvnw -B -Pplantuml generate-test-sources
 
       - name: Duplicate
         run: ./mvnw -B -Pduplicate -DskipTests verify
