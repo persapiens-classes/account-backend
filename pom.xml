@@ -157,29 +157,6 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.basepom.maven</groupId>
-                    <artifactId>duplicate-finder-maven-plugin</artifactId>
-                    <version>${duplicate-finder-maven-plugin.version}</version>
-                    <configuration>
-                        <printEqualFiles>false</printEqualFiles>
-                        <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
-                        <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
-                        <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
-                        <checkCompileClasspath>true</checkCompileClasspath>
-                        <checkRuntimeClasspath>true</checkRuntimeClasspath>
-                        <checkTestClasspath>true</checkTestClasspath>
-                        <ignoredResourcePatterns>
-                            <ignoredResourcePattern>${duplicate.ignoredResourcePattern}</ignoredResourcePattern>
-                        </ignoredResourcePatterns>
-                        <ignoredClassPatterns>
-                            <ignoredClassPattern>${duplicate.ignoredClassPattern}</ignoredClassPattern>
-                        </ignoredClassPatterns>
-                        <skip>false</skip>
-                        <quiet>false</quiet>
-                    </configuration>
-                </plugin>                     
-
-                <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
                     <version>${spotbugs-maven-plugin.version}</version>
@@ -395,6 +372,32 @@
         <profile>
             <id>duplicate</id>
             <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.basepom.maven</groupId>
+                            <artifactId>duplicate-finder-maven-plugin</artifactId>
+                            <version>${duplicate-finder-maven-plugin.version}</version>
+                            <configuration>
+                                <printEqualFiles>false</printEqualFiles>
+                                <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+                                <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                                <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+                                <checkCompileClasspath>true</checkCompileClasspath>
+                                <checkRuntimeClasspath>true</checkRuntimeClasspath>
+                                <checkTestClasspath>true</checkTestClasspath>
+                                <ignoredResourcePatterns>
+                                    <ignoredResourcePattern>${duplicate.ignoredResourcePattern}</ignoredResourcePattern>
+                                </ignoredResourcePatterns>
+                                <ignoredClassPatterns>
+                                    <ignoredClassPattern>${duplicate.ignoredClassPattern}</ignoredClassPattern>
+                                </ignoredClassPatterns>
+                                <skip>false</skip>
+                                <quiet>false</quiet>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
                 <plugins>
                     <plugin>
                         <groupId>org.basepom.maven</groupId>
