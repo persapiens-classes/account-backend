@@ -47,6 +47,9 @@ jobs:
       - name: Plantuml
         run: ./mvnw -B -Pplantuml generate-test-sources
 
+      - name: Decycle
+        run: ./mvnw -B -Pdecycle -DskipTests verify
+
       - name: Duplicate
         run: ./mvnw -B -Pduplicate -DskipTests verify
 
