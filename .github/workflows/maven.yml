@@ -35,8 +35,17 @@ jobs:
       - name: Validate
         run: ./mvnw -B clean validate
 
-      - name: Checkstyle
+      - name: Checkstyle run
         run: ./mvnw -B -Pcheckstyle validate
+
+      - name: Cpd upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: checkstyle
+          path: |
+            target/checkstyle-cachefile
+            target/checkstyle-checker.xml
+            target/checkstyle-result.xml
 
       - name: Pmd run
         run: ./mvnw -B -Ppmd validate
