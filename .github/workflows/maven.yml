@@ -81,8 +81,15 @@ jobs:
             target/generated-docs
             target/generated-diagrams
 
-      - name: Decycle
+      - name: Decycle run
         run: ./mvnw -B -Pdecycle -DskipTests verify
+
+      - name: Decycle upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: decycle
+          path: |
+            target/site/decycle
 
       - name: Duplicate
         run: ./mvnw -B -Pduplicate -DskipTests verify
