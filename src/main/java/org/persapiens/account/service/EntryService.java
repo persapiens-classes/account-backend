@@ -19,7 +19,7 @@ public class EntryService extends CrudService<Entry, Long> {
 
 	@Override
 	@Transactional
-	public Entry save(Entry entry) {
+	public <S extends Entry> S save(S entry) {
 		entry.verifyAttributes();
 
 		return super.save(entry);
