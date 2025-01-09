@@ -113,5 +113,15 @@ jobs:
             target/spotbugsXml.xml
             target/spotbugs-exclude.xml
 
-      - name: Tests
+      - name: Tests run
         run: ./mvnw -B verify
+
+      - name: Tests upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: tests
+          path: |
+            target/jacoco.exec
+            target/site/jacoco
+            target/failsafe-reports
+            target/surefire-reports
