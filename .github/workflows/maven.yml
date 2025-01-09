@@ -38,8 +38,17 @@ jobs:
       - name: Checkstyle
         run: ./mvnw -B -Pcheckstyle validate
 
-      - name: Pmd
+      - name: Pmd run
         run: ./mvnw -B -Ppmd validate
+
+      - name: Pmd upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: pmd
+          path: |
+            target/pmd.xml
+            target/pmd
+            target/reports
 
       - name: Cpd
         run: ./mvnw -B -Pcpd validate
