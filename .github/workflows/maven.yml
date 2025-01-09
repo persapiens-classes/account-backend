@@ -50,8 +50,16 @@ jobs:
             target/pmd
             target/reports
 
-      - name: Cpd
+      - name: Cpd run
         run: ./mvnw -B -Pcpd validate
+
+      - name: Cpd upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: cpd
+          path: |
+            target/cpd.xml
+            target/reports
 
       - name: Plantuml
         run: ./mvnw -B -Pplantuml generate-test-sources
