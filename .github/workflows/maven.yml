@@ -70,8 +70,16 @@ jobs:
             target/cpd.xml
             target/reports
 
-      - name: Plantuml
+      - name: Plantuml run
         run: ./mvnw -B -Pplantuml generate-test-sources
+
+      - name: Plantuml upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: plantuml
+          path: |
+            target/generated-docs
+            target/generated-diagrams
 
       - name: Decycle
         run: ./mvnw -B -Pdecycle -DskipTests verify
