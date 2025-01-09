@@ -38,7 +38,7 @@ jobs:
       - name: Checkstyle run
         run: ./mvnw -B -Pcheckstyle validate
 
-      - name: Cpd upload artifacts
+      - name: Checkstyle upload artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
           name: checkstyle
