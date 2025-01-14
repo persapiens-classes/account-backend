@@ -125,3 +125,13 @@ jobs:
             target/site/jacoco
             target/failsafe-reports
             target/surefire-reports
+
+      - name: Build with Aot
+        run: ./mvnw -B -DskipTests -Paot clean package
+
+      - name: Build with aot upload artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: aot
+          path: |
+            target/example-*-SNAPSHOT.jar
