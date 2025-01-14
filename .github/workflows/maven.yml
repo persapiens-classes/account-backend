@@ -129,9 +129,6 @@ jobs:
       - name: Build with Aot
         run: ./mvnw -B -DskipTests -Paot clean package
 
-      - name: Debug path
-        run: pwd && ls -la *
-
       - name: Build with aot upload artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
@@ -158,3 +155,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: persapiens/software-quality-example:latest
+        if: ${{ github.event_name == 'push' && github.ref_type == 'branch' && github.repository == 'persapiens-classes/ifrn-software-quality-example' }}
