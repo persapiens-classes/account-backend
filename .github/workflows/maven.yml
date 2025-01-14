@@ -154,6 +154,7 @@ jobs:
       - name: Docker build and push
         uses: docker/build-push-action@v6.11.0
         with:
+          context: .
           platforms: linux/amd64,linux/arm64
           push: true
           tags: persapiens/software-quality-example:latest
