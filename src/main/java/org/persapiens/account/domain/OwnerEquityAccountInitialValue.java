@@ -4,14 +4,13 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.MapsId;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
-@SequenceGenerator(sequenceName = "seq_ownerEquityAccountInitialValue", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
 @EqualsAndHashCode(of = { "value", "owner", "equityAccount" })
 @ToString
@@ -29,17 +27,19 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class OwnerEquityAccountInitialValue implements Comparable<OwnerEquityAccountInitialValue> {
 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
-	@Id
-	private Long id;
+	@Builder.Default
+	@EmbeddedId
+	private OwnerEquityAccountInitialValueId id = new OwnerEquityAccountInitialValueId();
 
 	@Column(nullable = false)
 	private BigDecimal value;
 
+	@MapsId("ownerId")
 	@ManyToOne
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_owner"))
 	private Owner owner;
 
+	@MapsId("equityAccountId")
 	@ManyToOne
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_ownerEquityAccountInitialValue_equityAccount"))
 	private EquityAccount equityAccount;
