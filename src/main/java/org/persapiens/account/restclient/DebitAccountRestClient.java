@@ -14,10 +14,10 @@ public class DebitAccountRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public DebitAccountDTO save(DebitAccountDTO entity) {
+	public DebitAccountDTO insert(DebitAccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(this.restClientHelper.saveUri())
+			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
 			.body(DebitAccountDTO.class);
@@ -33,6 +33,15 @@ public class DebitAccountRestClient {
 
 	public void deleteByDescription(String description) {
 		this.restClientHelper.deleteByDescription(description);
+	}
+
+	public DebitAccountDTO update(String description, DebitAccountDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.put()
+			.uri(this.restClientHelper.updateUri(description))
+			.body(entity)
+			.retrieve()
+			.body(DebitAccountDTO.class);
 	}
 
 }

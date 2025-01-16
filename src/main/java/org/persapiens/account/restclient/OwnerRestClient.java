@@ -14,10 +14,10 @@ public class OwnerRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public OwnerDTO save(OwnerDTO entity) {
+	public OwnerDTO insert(OwnerDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(this.restClientHelper.saveUri())
+			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
 			.body(OwnerDTO.class);
@@ -26,13 +26,22 @@ public class OwnerRestClient {
 	public Optional<OwnerDTO> findByName(String name) {
 		return Optional.ofNullable(this.restClientHelper.getRestClient()
 			.get()
-			.uri(this.restClientHelper.uri("/findByName", "name", name))
+			.uri(this.restClientHelper.uri("/{name}", "name", name))
 			.retrieve()
 			.body(OwnerDTO.class));
 	}
 
 	public void deleteByName(String name) {
-		this.restClientHelper.delete("/deleteByName", "name", name);
+		this.restClientHelper.delete("/{name}", "name", name);
+	}
+
+	public OwnerDTO update(String name, OwnerDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.put()
+			.uri(this.restClientHelper.updateUri(name))
+			.body(entity)
+			.retrieve()
+			.body(OwnerDTO.class);
 	}
 
 }

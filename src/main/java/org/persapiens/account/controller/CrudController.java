@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class CrudController<D extends Object, T extends Object, I extends Serializable> {
+public abstract class CrudController<N extends Object, D extends Object, T extends Object, I extends Serializable> {
 
 	private CrudService<T, I> crudService;
+
+	protected abstract T toEntity(D dto);
+
+	protected abstract T insertDtoToEntity(N dto);
+
+	protected abstract D toDTO(T entity);
 
 	@Autowired
 	public void setService(CrudService<T, I> service) {
@@ -22,8 +28,8 @@ public abstract class CrudController<D extends Object, T extends Object, I exten
 	}
 
 	@PostMapping
-	public D save(@RequestBody D dto) {
-		T saved = this.crudService.save(toEntity(dto));
+	public D insert(@RequestBody N insertDto) {
+		T saved = this.crudService.save(insertDtoToEntity(insertDto));
 		return toDTO(saved);
 	}
 
@@ -44,9 +50,5 @@ public abstract class CrudController<D extends Object, T extends Object, I exten
 			return Optional.of(toDTO(entity.get()));
 		}
 	}
-
-	protected abstract T toEntity(D dto);
-
-	protected abstract D toDTO(T entity);
 
 }

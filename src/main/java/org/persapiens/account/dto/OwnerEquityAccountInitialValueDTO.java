@@ -15,9 +15,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class OwnerEquityAccountInitialValueDTO {
 
-	private OwnerDTO owner;
+	private String owner;
 
-	private EquityAccountDTO equityAccount;
+	private String equityAccount;
 
 	private BigDecimal value;
 

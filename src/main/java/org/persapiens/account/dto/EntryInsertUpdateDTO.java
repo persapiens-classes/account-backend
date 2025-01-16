@@ -12,17 +12,15 @@ import lombok.experimental.SuperBuilder;
 @Data
 @ToString
 @NoArgsConstructor
-public class EntryDTO {
-
-	private long id;
+public class EntryInsertUpdateDTO {
 
 	private LocalDateTime date;
 
 	private BigDecimal value;
 
-	private AccountDTO inAccount;
+	private String inAccount;
 
-	private AccountDTO outAccount;
+	private String outAccount;
 
 	private String owner;
 

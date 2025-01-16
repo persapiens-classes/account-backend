@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EquityAccountRestClientIT extends RestClientIT {
 
 	@Test
-	void saveOne() {
+	void insertOne() {
 		String description = "Super bank account";
-		String categoryDescription = CategoryConstants.BANK;
+		String categoryDescription = category(CategoryConstants.BANK).getDescription();
 
 		EquityAccountDTO equityAccount = EquityAccountDTO.builder()
 			.description(description)
-			.category(category(categoryDescription))
+			.category(categoryDescription)
 			.build();
 
-		// verify save operation
-		assertThat(equityAccountRestClient().save(equityAccount)).isNotNull();
+		// verify insert operation
+		assertThat(equityAccountRestClient().insert(equityAccount)).isNotNull();
 
 		// verify findByDescription operation
 		assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
@@ -34,6 +34,42 @@ class EquityAccountRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(equityAccountRestClient().findAll()).isNotEmpty();
+	}
+
+	@Test
+	void updateOne() {
+		EquityAccountDTO equityAccount = equityAccount("Inserted equityAccount",
+				category(CategoryConstants.BANK).getDescription());
+
+		String originalDescription = equityAccount.getDescription();
+		equityAccount.setDescription("Updated equityAccount");
+
+		equityAccountRestClient().update(originalDescription, equityAccount);
+
+		// verify update operation
+		assertThat(equityAccountRestClient().findByDescription(originalDescription)).isEmpty();
+
+		// verify update operation
+		assertThat(equityAccountRestClient().findByDescription(equityAccount.getDescription()).get().getDescription())
+			.isEqualTo(equityAccount.getDescription());
+	}
+
+	@Test
+	void deleteOne() {
+		// create test environment
+		String description = "Fantastic equityAccount";
+
+		equityAccountRestClient().insert(EquityAccountDTO.builder()
+			.description(description)
+			.category(category(CategoryConstants.BANK).getDescription())
+			.build());
+		assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(description);
+
+		// execute deleteByName operation
+		equityAccountRestClient().deleteByDescription(description);
+		// verify the results
+		assertThat(equityAccountRestClient().findByDescription(description)).isEmpty();
 	}
 
 }

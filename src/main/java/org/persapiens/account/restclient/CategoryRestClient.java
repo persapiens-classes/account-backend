@@ -14,10 +14,10 @@ public class CategoryRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public CategoryDTO save(CategoryDTO entity) {
+	public CategoryDTO insert(CategoryDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(this.restClientHelper.saveUri())
+			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
 			.body(CategoryDTO.class);
@@ -29,6 +29,19 @@ public class CategoryRestClient {
 			.uri(this.restClientHelper.findByDescriptionUri(description))
 			.retrieve()
 			.body(CategoryDTO.class));
+	}
+
+	public void deleteByDescription(String description) {
+		this.restClientHelper.deleteByDescription(description);
+	}
+
+	public CategoryDTO update(String description, CategoryDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.put()
+			.uri(this.restClientHelper.updateUri(description))
+			.body(entity)
+			.retrieve()
+			.body(CategoryDTO.class);
 	}
 
 }

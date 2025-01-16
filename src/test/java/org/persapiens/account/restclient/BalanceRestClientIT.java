@@ -11,11 +11,7 @@ import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
-import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.dto.EntryDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.dto.OwnerDTO;
+import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,8 +29,10 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balance500() {
-		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
-		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS, CategoryConstants.BANK);
+		String uncle = owner(OwnerConstants.UNCLE).getName();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS,
+				category(CategoryConstants.BANK).getDescription())
+			.getDescription();
 
 		// initial value 100
 		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
@@ -42,32 +40,34 @@ class BalanceRestClientIT extends RestClientIT {
 			.owner(uncle)
 			.value(new BigDecimal(100))
 			.build();
-		ownerEquityAccountInitialValueRestClient().save(initialValue);
+		ownerEquityAccountInitialValueRestClient().insert(initialValue);
+
+		LocalDateTime date = LocalDateTime.now();
 
 		// credit 600
-		CreditAccountDTO internship = creditAccount(CreditAccountConstants.INTERNSHIP, CategoryConstants.SALARY);
-		EntryDTO entryCredito = EntryDTO.builder()
+		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, category(CategoryConstants.SALARY).getDescription()).getDescription();
+		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(600))
-			.date(LocalDateTime.now())
 			.owner(uncle)
 			.inAccount(savings)
 			.outAccount(internship)
+			.date(date)
 			.build();
-		entryRestClient().save(entryCredito);
+		entryRestClient().insert(entryCredito);
 
 		// debit 200
-		DebitAccountDTO gasoline = debitAccount(DebitAccountConstants.GASOLINE, CategoryConstants.TRANSPORT);
-		EntryDTO entryDebito = EntryDTO.builder()
+		String gasoline = debitAccount(DebitAccountConstants.GASOLINE, category(CategoryConstants.TRANSPORT).getDescription()).getDescription();
+		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(200))
-			.date(LocalDateTime.now())
 			.owner(uncle)
 			.inAccount(gasoline)
 			.outAccount(savings)
+			.date(date)
 			.build();
-		entryRestClient().save(entryDebito);
+		entryRestClient().insert(entryDebito);
 
 		// executa a operacao a ser testada
-		BigDecimal balance = balanceRestClient().balance(uncle.getName(), savings.getDescription());
+		BigDecimal balance = balanceRestClient().balance(uncle, savings);
 
 		assertThat(balance).isEqualTo(new BigDecimal(500).setScale(2));
 	}

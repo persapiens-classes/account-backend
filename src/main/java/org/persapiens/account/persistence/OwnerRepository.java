@@ -2,10 +2,10 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
-import jakarta.transaction.Transactional;
 import org.persapiens.account.domain.Owner;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
 

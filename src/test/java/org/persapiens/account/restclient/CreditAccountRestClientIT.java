@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CreditAccountRestClientIT extends RestClientIT {
 
 	@Test
-	void saveOne() {
+	void insertOne() {
 		String description = "New job";
-		String categoryDescription = CategoryConstants.SALARY;
+		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
 
 		CreditAccountDTO creditAccount = CreditAccountDTO.builder()
 			.description(description)
-			.category(category(categoryDescription))
+			.category(categoryDescription)
 			.build();
 
-		// verify save operation
-		assertThat(creditAccountRestClient().save(creditAccount)).isNotNull();
+		// verify insert operation
+		assertThat(creditAccountRestClient().insert(creditAccount)).isNotNull();
 
 		// verify findByDescription operation
 		assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
@@ -34,6 +34,42 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(creditAccountRestClient().findAll()).isNotEmpty();
+	}
+
+	@Test
+	void updateOne() {
+		CreditAccountDTO creditAccount = creditAccount("Inserted creditAccount",
+				category(CategoryConstants.SALARY).getDescription());
+
+		String originalDescription = creditAccount.getDescription();
+		creditAccount.setDescription("Updated creditAccount");
+
+		creditAccountRestClient().update(originalDescription, creditAccount);
+
+		// verify update operation
+		assertThat(creditAccountRestClient().findByDescription(originalDescription)).isEmpty();
+
+		// verify update operation
+		assertThat(creditAccountRestClient().findByDescription(creditAccount.getDescription()).get().getDescription())
+			.isEqualTo(creditAccount.getDescription());
+	}
+
+	@Test
+	void deleteOne() {
+		// create test environment
+		String description = "Fantastic creditAccount";
+
+		creditAccountRestClient().insert(CreditAccountDTO.builder()
+			.description(description)
+			.category(category(CategoryConstants.SALARY).getDescription())
+			.build());
+		assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(description);
+
+		// execute deleteByName operation
+		creditAccountRestClient().deleteByDescription(description);
+		// verify the results
+		assertThat(creditAccountRestClient().findByDescription(description)).isEmpty();
 	}
 
 }
