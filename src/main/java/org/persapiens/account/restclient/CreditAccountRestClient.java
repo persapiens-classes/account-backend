@@ -14,10 +14,10 @@ public class CreditAccountRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public CreditAccountDTO save(CreditAccountDTO entity) {
+	public CreditAccountDTO insert(CreditAccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(this.restClientHelper.saveUri())
+			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
 			.body(CreditAccountDTO.class);
@@ -33,6 +33,15 @@ public class CreditAccountRestClient {
 
 	public void deleteByDescription(String description) {
 		this.restClientHelper.deleteByDescription(description);
+	}
+
+	public CreditAccountDTO update(String description, CreditAccountDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.put()
+			.uri(this.restClientHelper.updateUri(description))
+			.body(entity)
+			.retrieve()
+			.body(CreditAccountDTO.class);
 	}
 
 }

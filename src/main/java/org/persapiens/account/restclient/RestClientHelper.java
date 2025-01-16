@@ -1,6 +1,8 @@
 package org.persapiens.account.restclient;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
@@ -34,15 +36,29 @@ public class RestClientHelper<T> {
 	}
 
 	public URI uri(String suffix, String param, String value) {
-		return UriComponentsBuilder.fromHttpUrl(url() + suffix).queryParam(param, value).build().encode().toUri();
+		Map<String, Object> uriVariables = new HashMap<>();
+		uriVariables.put(param, value);
+		return uri(suffix, uriVariables);
+	}
+
+	public URI uri(String suffix, Map<String, Object> uriVariables) {
+		return UriComponentsBuilder.fromHttpUrl(url() + suffix).uriVariables(uriVariables).build().encode().toUri();
 	}
 
 	public void delete(String suffix, String param, String value) {
 		getRestClient().delete().uri(uri(suffix, param, value)).retrieve().toBodilessEntity();
 	}
 
+	public void delete(String suffix, Map<String, Object> uriVariables) {
+		getRestClient().delete().uri(uri(suffix, uriVariables)).retrieve().toBodilessEntity();
+	}
+
+	public void deleteById(Long id) {
+		delete("/{id}", "id", id.toString());
+	}
+
 	public void deleteByDescription(String description) {
-		delete("/deleteByDescription", "description", description);
+		delete("/{description}", "description", description);
 	}
 
 	public Iterable<T> findAll() {
@@ -50,16 +66,32 @@ public class RestClientHelper<T> {
 		});
 	}
 
+	public URI findByUri(String suffix, Map<String, Object> uriVariables) {
+		return uri(suffix, uriVariables);
+	}
+
 	public URI findByDescriptionUri(String description) {
-		return uri("/findByDescription", "description", description);
+		return uri("/{description}", "description", description);
+	}
+
+	public URI findByIdUri(Long id) {
+		return uri("/{id}", "id", id.toString());
 	}
 
 	public URI findAllUri() {
 		return uri();
 	}
 
-	public URI saveUri() {
+	public URI insertUri() {
 		return uri();
+	}
+
+	public URI updateUri(String value) {
+		return uri("/{id}", "id", value);
+	}
+
+	public URI updateUri(String suffix, Map<String, Object> uriVariables) {
+		return uri(suffix, uriVariables);
 	}
 
 }

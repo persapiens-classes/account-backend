@@ -14,10 +14,10 @@ public class EquityAccountRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public EquityAccountDTO save(EquityAccountDTO entity) {
+	public EquityAccountDTO insert(EquityAccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
-			.uri(this.restClientHelper.saveUri())
+			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
 			.body(EquityAccountDTO.class);
@@ -33,6 +33,15 @@ public class EquityAccountRestClient {
 
 	public void deleteByDescription(String description) {
 		this.restClientHelper.deleteByDescription(description);
+	}
+
+	public EquityAccountDTO update(String description, EquityAccountDTO entity) {
+		return this.restClientHelper.getRestClient()
+			.put()
+			.uri(this.restClientHelper.updateUri(description))
+			.body(entity)
+			.retrieve()
+			.body(EquityAccountDTO.class);
 	}
 
 }
