@@ -7,6 +7,7 @@ import org.persapiens.account.domain.Category;
 import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
@@ -16,6 +17,11 @@ public class CategoryService extends CrudService<Category, Long> {
 
 	public Optional<Category> findByDescription(String description) {
 		return this.categoryRepository.findByDescription(description);
+	}
+
+	@Transactional
+	public void deleteByDescription(String description) {
+		this.categoryRepository.deleteByDescription(description);
 	}
 
 	private Category category(String description) {
