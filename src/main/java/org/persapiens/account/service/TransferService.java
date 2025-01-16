@@ -24,14 +24,14 @@ public class TransferService {
 	private final CreditAccountService creditAccountService;
 
 	@Transactional
-	public void transfer(BigDecimal value, Owner ownerDebito, EquityAccount debitEquityAccount, Owner ownerCredito,
+	public void transfer(BigDecimal value, Owner debitOwner, EquityAccount debitEquityAccount, Owner creditOwner,
 			EquityAccount creditEquityAccount) {
 
 		DebitAccount debitAccount = this.debitAccountService.expenseTransfer();
 		CreditAccount creditAccount = this.creditAccountService.incomeTransfer();
 
-		if (ownerCredito.equals(ownerDebito)) {
-			throw new IllegalArgumentException("Owners should be different: " + ownerDebito + " = " + ownerCredito);
+		if (creditOwner.equals(debitOwner)) {
+			throw new IllegalArgumentException("Owners should be different: " + debitOwner + " = " + creditOwner);
 		}
 
 		LocalDateTime date = LocalDateTime.now();
@@ -39,7 +39,7 @@ public class TransferService {
 		Entry debitEntry = Entry.builder()
 			.inAccount(debitAccount)
 			.outAccount(debitEquityAccount)
-			.owner(ownerDebito)
+			.owner(debitOwner)
 			.value(value)
 			.date(date)
 			.note("Transfer debit entry")
@@ -49,7 +49,7 @@ public class TransferService {
 		Entry creditEntry = Entry.builder()
 			.inAccount(creditEquityAccount)
 			.outAccount(creditAccount)
-			.owner(ownerCredito)
+			.owner(creditOwner)
 			.value(value)
 			.date(date)
 			.note("Transfer credit entry")
