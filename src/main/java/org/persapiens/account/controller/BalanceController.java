@@ -24,7 +24,7 @@ public class BalanceController {
 	private EquityAccountService equityAccountService;
 
 	@GetMapping("/balance")
-	public BigDecimal balance(@RequestParam String owner, @RequestParam String equityAccount) {
+	public BigDecimal balance(@RequestParam(required = true) String owner, @RequestParam(required = true) String equityAccount) {
 		return this.balanceService.balance(this.ownerService.findByName(owner).get(),
 				this.equityAccountService.findByDescription(equityAccount).get());
 	}

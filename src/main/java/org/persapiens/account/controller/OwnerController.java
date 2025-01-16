@@ -9,14 +9,16 @@ import org.persapiens.account.service.OwnerService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/owner")
-public class OwnerController extends CrudController<OwnerDTO, Owner, Long> {
+@RequestMapping("/owners")
+public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, Owner, Long> {
 
 	private OwnerService ownerService;
 
@@ -30,14 +32,33 @@ public class OwnerController extends CrudController<OwnerDTO, Owner, Long> {
 		return OwnerDTO.builder().name(entity.getName()).build();
 	}
 
-	@GetMapping("/findByName")
-	public Optional<OwnerDTO> findByName(@RequestParam String name) {
+	@Override
+	protected Owner insertDtoToEntity(OwnerDTO dto) {
+		return toEntity(dto);
+	}
+
+	@GetMapping("/{name}")
+	public Optional<OwnerDTO> findByName(@PathVariable String name) {
 		return toDTOOptional(this.ownerService.findByName(name));
 	}
 
-	@DeleteMapping("/deleteByName")
-	public void deleteByName(@RequestParam String name) {
+	@DeleteMapping("/{name}")
+	public void deleteByName(@PathVariable String name) {
 		this.ownerService.deleteByName(name);
+	}
+
+	@PutMapping("/{name}")
+	public OwnerDTO update(@PathVariable String name, @RequestBody OwnerDTO dto) {
+		OwnerDTO result = null;
+		Optional<Owner> ownerOptional = this.ownerService.findByName(name);
+		if (ownerOptional.isPresent()) {
+			Owner currentOwner = ownerOptional.get();
+			Owner entityToSave = toEntity(dto);
+			entityToSave.setId(currentOwner.getId());
+			Owner saved = this.ownerService.save(entityToSave);
+			result = toDTO(saved);
+		}
+		return result;
 	}
 
 }
