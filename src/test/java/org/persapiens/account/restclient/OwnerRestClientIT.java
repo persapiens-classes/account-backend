@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OwnerRestClientIT extends RestClientIT {
 
 	@Test
-	void saveOne() {
+	void insertOne() {
 		String name = "Free income";
 
 		OwnerDTO owner = OwnerDTO.builder().name(name).build();
 
-		// verify save operation
-		assertThat(ownerRestClient().save(owner)).isNotNull();
+		// verify insert operation
+		assertThat(ownerRestClient().insert(owner)).isNotNull();
 
 		// verify findByName operation
 		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(owner.getName());
@@ -31,10 +31,26 @@ class OwnerRestClientIT extends RestClientIT {
 	}
 
 	@Test
+	void updateOne() {
+		OwnerDTO owner = owner("Inserted owner");
+
+		String originalName = owner.getName();
+		owner.setName("Updated owner");
+
+		ownerRestClient().update(originalName, owner);
+
+		// verify update operation
+		assertThat(ownerRestClient().findByName(originalName)).isEmpty();
+
+		// verify update operation
+		assertThat(ownerRestClient().findByName(owner.getName()).get().getName()).isEqualTo(owner.getName());
+	}
+
+	@Test
 	void deleteOne() {
 		// create test environment
 		String name = "Fantastic owner";
-		ownerRestClient().save(OwnerDTO.builder().name(name).build());
+		ownerRestClient().insert(OwnerDTO.builder().name(name).build());
 		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(name);
 
 		// execute deleteByName operation

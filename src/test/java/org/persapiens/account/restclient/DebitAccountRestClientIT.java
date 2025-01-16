@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DebitAccountRestClientIT extends RestClientIT {
 
 	@Test
-	void saveOne() {
+	void insertOne() {
 		String description = "Uber";
-		String categoryDescription = CategoryConstants.TRANSPORT;
+		String categoryDescription = category(CategoryConstants.TRANSPORT).getDescription();
 
 		DebitAccountDTO debitAccount = DebitAccountDTO.builder()
 			.description(description)
-			.category(category(categoryDescription))
+			.category(categoryDescription)
 			.build();
 
-		// verify save operation
-		assertThat(debitAccountRestClient().save(debitAccount)).isNotNull();
+		// verify insert operation
+		assertThat(debitAccountRestClient().insert(debitAccount)).isNotNull();
 
 		// verify findByDescription operation
 		assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
@@ -34,6 +34,42 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(debitAccountRestClient().findAll()).isNotEmpty();
+	}
+
+	@Test
+	void updateOne() {
+		DebitAccountDTO debitAccount = debitAccount("Inserted debitAccount",
+				category(CategoryConstants.TRANSPORT).getDescription());
+
+		String originalDescription = debitAccount.getDescription();
+		debitAccount.setDescription("Updated debitAccount");
+
+		debitAccountRestClient().update(originalDescription, debitAccount);
+
+		// verify update operation
+		assertThat(debitAccountRestClient().findByDescription(originalDescription)).isEmpty();
+
+		// verify update operation
+		assertThat(debitAccountRestClient().findByDescription(debitAccount.getDescription()).get().getDescription())
+			.isEqualTo(debitAccount.getDescription());
+	}
+
+	@Test
+	void deleteOne() {
+		// create test environment
+		String description = "Fantastic debitAccount";
+
+		debitAccountRestClient().insert(DebitAccountDTO.builder()
+			.description(description)
+			.category(category(CategoryConstants.TRANSPORT).getDescription())
+			.build());
+		assertThat(debitAccountRestClient().findByDescription(description).get().getDescription())
+			.isEqualTo(description);
+
+		// execute deleteByName operation
+		debitAccountRestClient().deleteByDescription(description);
+		// verify the results
+		assertThat(debitAccountRestClient().findByDescription(description)).isEmpty();
 	}
 
 }

@@ -34,14 +34,14 @@ class RestClientIT {
 	}
 
 	OwnerRestClient ownerRestClient() {
-		return OwnerRestClient.builder().restClientHelper(this.<OwnerDTO>restClientHelper("owner")).build();
+		return OwnerRestClient.builder().restClientHelper(this.<OwnerDTO>restClientHelper("owners")).build();
 	}
 
 	OwnerDTO owner(String name) {
 		Optional<OwnerDTO> findByDescription = ownerRestClient().findByName(name);
 		if (findByDescription.isEmpty()) {
 			OwnerDTO result = OwnerDTO.builder().name(name).build();
-			return ownerRestClient().save(result);
+			return ownerRestClient().insert(result);
 		}
 		else {
 			return findByDescription.get();
@@ -49,14 +49,14 @@ class RestClientIT {
 	}
 
 	CategoryRestClient categoryRestClient() {
-		return CategoryRestClient.builder().restClientHelper(this.<CategoryDTO>restClientHelper("category")).build();
+		return CategoryRestClient.builder().restClientHelper(this.<CategoryDTO>restClientHelper("categories")).build();
 	}
 
 	CategoryDTO category(String description) {
 		Optional<CategoryDTO> findByDescription = categoryRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CategoryDTO result = CategoryDTO.builder().description(description).build();
-			return categoryRestClient().save(result);
+			return categoryRestClient().insert(result);
 		}
 		else {
 			return findByDescription.get();
@@ -65,16 +65,18 @@ class RestClientIT {
 
 	EquityAccountRestClient equityAccountRestClient() {
 		return EquityAccountRestClient.builder()
-			.restClientHelper(this.<EquityAccountDTO>restClientHelper("equityAccount"))
+			.restClientHelper(this.<EquityAccountDTO>restClientHelper("equityAccounts"))
 			.build();
 	}
 
 	EquityAccountDTO equityAccount(String description, String categoryDescription) {
 		Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
-			CategoryDTO category = category(categoryDescription);
-			EquityAccountDTO result = EquityAccountDTO.builder().description(description).category(category).build();
-			return equityAccountRestClient().save(result);
+			EquityAccountDTO result = EquityAccountDTO.builder()
+				.description(description)
+				.category(categoryDescription)
+				.build();
+			return equityAccountRestClient().insert(result);
 		}
 		else {
 			return findByDescription.get();
@@ -83,16 +85,18 @@ class RestClientIT {
 
 	CreditAccountRestClient creditAccountRestClient() {
 		return CreditAccountRestClient.builder()
-			.restClientHelper(this.<CreditAccountDTO>restClientHelper("creditAccount"))
+			.restClientHelper(this.<CreditAccountDTO>restClientHelper("creditAccounts"))
 			.build();
 	}
 
 	CreditAccountDTO creditAccount(String description, String categoryDescription) {
 		Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
-			CategoryDTO category = category(categoryDescription);
-			CreditAccountDTO result = CreditAccountDTO.builder().description(description).category(category).build();
-			return creditAccountRestClient().save(result);
+			CreditAccountDTO result = CreditAccountDTO.builder()
+				.description(description)
+				.category(categoryDescription)
+				.build();
+			return creditAccountRestClient().insert(result);
 		}
 		else {
 			return findByDescription.get();
@@ -101,16 +105,18 @@ class RestClientIT {
 
 	DebitAccountRestClient debitAccountRestClient() {
 		return DebitAccountRestClient.builder()
-			.restClientHelper(this.<DebitAccountDTO>restClientHelper("debitAccount"))
+			.restClientHelper(this.<DebitAccountDTO>restClientHelper("debitAccounts"))
 			.build();
 	}
 
 	DebitAccountDTO debitAccount(String description, String categoryDescription) {
 		Optional<DebitAccountDTO> findByDescription = debitAccountRestClient().findByDescription(description);
 		if (findByDescription.isEmpty()) {
-			CategoryDTO category = category(categoryDescription);
-			DebitAccountDTO result = DebitAccountDTO.builder().description(description).category(category).build();
-			return debitAccountRestClient().save(result);
+			DebitAccountDTO result = DebitAccountDTO.builder()
+				.description(description)
+				.category(categoryDescription)
+				.build();
+			return debitAccountRestClient().insert(result);
 		}
 		else {
 			return findByDescription.get();
@@ -120,12 +126,18 @@ class RestClientIT {
 	OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
 		return OwnerEquityAccountInitialValueRestClient.builder()
 			.restClientHelper(
-					this.<OwnerEquityAccountInitialValueDTO>restClientHelper("ownerEquityAccountInitialValue"))
+					this.<OwnerEquityAccountInitialValueDTO>restClientHelper("ownerEquityAccountInitialValues"))
 			.build();
 	}
 
+	Optional<OwnerEquityAccountInitialValueDTO> ownerEquityAccountInitialValue(String ownerName,
+			String equityAccountDescription) {
+		return ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(ownerName,
+				equityAccountDescription);
+	}
+
 	EntryRestClient entryRestClient() {
-		return EntryRestClient.builder().restClientHelper(this.<EntryDTO>restClientHelper("entry")).build();
+		return EntryRestClient.builder().restClientHelper(this.<EntryDTO>restClientHelper("entries")).build();
 	}
 
 }

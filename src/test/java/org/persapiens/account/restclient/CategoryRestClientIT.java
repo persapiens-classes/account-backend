@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CategoryRestClientIT extends RestClientIT {
 
 	@Test
-	void saveOne() {
+	void insertOne() {
 		String description = "Free income";
 
 		CategoryDTO category = CategoryDTO.builder().description(description).build();
 
-		// verify save operation
-		assertThat(categoryRestClient().save(category)).isNotNull();
+		// verify insert operation
+		assertThat(categoryRestClient().insert(category)).isNotNull();
 
 		// verify findByDescription operation
 		assertThat(categoryRestClient().findByDescription(description).get().getDescription())
@@ -29,6 +29,35 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(categoryRestClient().findAll()).isNotEmpty();
+	}
+
+	@Test
+	void updateOne() {
+		CategoryDTO category = category("Inserted category");
+
+		String originalDescription = category.getDescription();
+		category.setDescription("Updated category");
+
+		categoryRestClient().update(originalDescription, category);
+
+		// verify update operation
+		assertThat(categoryRestClient().findByDescription(originalDescription)).isEmpty();
+
+		// verify update operation
+		assertThat(categoryRestClient().findByDescription(category.getDescription()).get().getDescription()).isEqualTo(category.getDescription());
+	}
+
+	@Test
+	void deleteOne() {
+		// create test environment
+		String description = "Fantastic category";
+		categoryRestClient().insert(CategoryDTO.builder().description(description).build());
+		assertThat(categoryRestClient().findByDescription(description).get().getDescription()).isEqualTo(description);
+
+		// execute deleteByName operation
+		categoryRestClient().deleteByDescription(description);
+		// verify the results
+		assertThat(categoryRestClient().findByDescription(description)).isEmpty();
 	}
 
 }
