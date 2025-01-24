@@ -39,7 +39,7 @@
         <findsecbugs-plugin.version>1.13.0</findsecbugs-plugin.version>
 
         <plantuml-generator-maven-plugin.version>3.0.1</plantuml-generator-maven-plugin.version>
-        <plantuml-maven-plugin.version>0.2.12</plantuml-maven-plugin.version>
+        <plantuml-maven-plugin.version>0.2.13</plantuml-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
