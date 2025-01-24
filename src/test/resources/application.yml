@@ -1,3 +1,7 @@
 spring:
   jpa:
     show-sql: true
+user-credentials:
+  name: persapiens
+  password: account
+  authorities: ROLE_USER

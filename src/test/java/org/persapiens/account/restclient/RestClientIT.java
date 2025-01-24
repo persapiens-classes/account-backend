@@ -3,6 +3,7 @@ package org.persapiens.account.restclient;
 import java.util.Optional;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.persapiens.account.UserCredentials;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
 import org.persapiens.account.dto.DebitAccountDTO;
@@ -11,6 +12,7 @@ import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 class RestClientIT {
@@ -24,12 +26,17 @@ class RestClientIT {
 	@Value("${local.server.port}")
 	private int port;
 
+	@Autowired
+	private UserCredentials userCredentials;
+
 	<T> RestClientHelper<T> restClientHelper(String endpoint) {
 		return RestClientHelper.<T>builder()
 			.endpoint(endpoint)
 			.protocol(this.protocol)
 			.servername(this.servername)
 			.port(this.port)
+			.username(this.userCredentials.getName())
+			.password(this.userCredentials.getPassword())
 			.build();
 	}
 

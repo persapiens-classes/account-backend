@@ -1,0 +1,4 @@
+user-credentials:
+  name: ${USERNAME:persapiens}
+  password: ${PASSWORD:account}
+  authorities: ROLE_USER

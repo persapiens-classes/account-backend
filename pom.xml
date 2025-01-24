@@ -30,7 +30,7 @@
         <pmd.ruleset>src/checkconfig/pmd/pmd-ruleset.xml</pmd.ruleset>
 
         <duplicate-finder-maven-plugin.version>2.0.1</duplicate-finder-maven-plugin.version>
-        <duplicate.ignoredResourcePattern>()</duplicate.ignoredResourcePattern>
+        <duplicate.ignoredResourcePattern>(application.yml)</duplicate.ignoredResourcePattern>
         <duplicate.ignoredClassPattern>()</duplicate.ignoredClassPattern>
 
         <spotbugs-maven-plugin.version>4.8.6.6</spotbugs-maven-plugin.version>
@@ -116,6 +116,11 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
 
