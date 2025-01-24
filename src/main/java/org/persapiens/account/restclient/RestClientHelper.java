@@ -1,13 +1,21 @@
 package org.persapiens.account.restclient;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,8 +31,25 @@ public class RestClientHelper<T> {
 
 	private int port;
 
+	private String username;
+
+	private String password;
+
 	public RestClient getRestClient() {
-		return RestClient.create();
+		return RestClient.builder().requestInterceptor(new ClientHttpRequestInterceptor() {
+			@SuppressFBWarnings("DM_DEFAULT_ENCODING")
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+					throws IOException {
+				if (!RestClientHelper.this.username.isEmpty() && !RestClientHelper.this.password.isEmpty()) {
+					String base64Credentials = Base64.getEncoder()
+						.encodeToString(
+								(RestClientHelper.this.username + ":" + RestClientHelper.this.password).getBytes());
+
+					request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic " + base64Credentials);
+				}
+				return execution.execute(request, body);
+			}
+		}).build();
 	}
 
 	public String url() {
