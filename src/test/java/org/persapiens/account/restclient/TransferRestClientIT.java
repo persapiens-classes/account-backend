@@ -30,8 +30,10 @@ class TransferRestClientIT extends RestClientIT {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 
-		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING, CategoryConstants.BANK);
-		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT, CategoryConstants.BANK);
+		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING,
+				category(CategoryConstants.BANK).getDescription());
+		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
+				category(CategoryConstants.BANK).getDescription());
 
 		// execute transfer operation
 		transferRestClient().transfer(TransferDTO.builder()
