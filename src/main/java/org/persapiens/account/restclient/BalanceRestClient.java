@@ -14,7 +14,7 @@ public class BalanceRestClient {
 	public BigDecimal balance(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/balance")
+			.uri(UriComponentsBuilder.fromUriString(this.restClientHelper.url() + "/balance")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()

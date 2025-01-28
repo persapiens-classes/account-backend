@@ -51,7 +51,7 @@ public class EntryRestClient {
 	public BigDecimal creditSum(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/creditSum")
+			.uri(UriComponentsBuilder.fromUriString(this.restClientHelper.url() + "/creditSum")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()
@@ -64,7 +64,7 @@ public class EntryRestClient {
 	public BigDecimal debitSum(String owner, String equityAccount) {
 		return this.restClientHelper.getRestClient()
 			.get()
-			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/debitSum")
+			.uri(UriComponentsBuilder.fromUriString(this.restClientHelper.url() + "/debitSum")
 				.queryParam("owner", owner)
 				.queryParam("equityAccount", equityAccount)
 				.build()
