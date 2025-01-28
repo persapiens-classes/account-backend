@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
+import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerEquityAccountInitialValueService;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/ownerEquityAccountInitialValues")
 public class OwnerEquityAccountInitialValueController extends
-		CrudController<OwnerEquityAccountInitialValueDTO, OwnerEquityAccountInitialValueDTO, OwnerEquityAccountInitialValue, Long> {
+		CrudController<OwnerEquityAccountInitialValueDTO, OwnerEquityAccountInitialValueDTO, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
 	private OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
