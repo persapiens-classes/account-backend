@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
+import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
-public class OwnerEquityAccountInitialValueService extends CrudService<OwnerEquityAccountInitialValue, Long> {
+public class OwnerEquityAccountInitialValueService
+		extends CrudService<OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 

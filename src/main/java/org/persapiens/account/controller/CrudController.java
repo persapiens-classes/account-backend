@@ -1,6 +1,5 @@
 package org.persapiens.account.controller;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class CrudController<N extends Object, D extends Object, T extends Object, I extends Serializable> {
+public abstract class CrudController<N extends Object, D extends Object, T extends Object, I> {
 
 	private CrudService<T, I> crudService;
 
