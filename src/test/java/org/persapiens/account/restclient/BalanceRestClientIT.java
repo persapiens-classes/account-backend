@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
@@ -15,11 +14,9 @@ import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BalanceRestClientIT extends RestClientIT {
 
@@ -45,7 +42,9 @@ class BalanceRestClientIT extends RestClientIT {
 		LocalDateTime date = LocalDateTime.now();
 
 		// credit 600
-		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, category(CategoryConstants.SALARY).getDescription()).getDescription();
+		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
+				category(CategoryConstants.SALARY).getDescription())
+			.getDescription();
 		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(600))
 			.owner(uncle)
@@ -56,7 +55,9 @@ class BalanceRestClientIT extends RestClientIT {
 		entryRestClient().insert(entryCredito);
 
 		// debit 200
-		String gasoline = debitAccount(DebitAccountConstants.GASOLINE, category(CategoryConstants.TRANSPORT).getDescription()).getDescription();
+		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
+				category(CategoryConstants.TRANSPORT).getDescription())
+			.getDescription();
 		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(200))
 			.owner(uncle)
