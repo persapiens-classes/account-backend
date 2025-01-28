@@ -13,7 +13,7 @@ public class TransferRestClient {
 	public void transfer(TransferDTO transferDTO) {
 		this.restClientHelper.getRestClient()
 			.post()
-			.uri(UriComponentsBuilder.fromHttpUrl(this.restClientHelper.url() + "/transfer").build().encode().toUri())
+			.uri(UriComponentsBuilder.fromUriString(this.restClientHelper.url() + "/transfer").build().encode().toUri())
 			.body(transferDTO)
 			.retrieve()
 			.toBodilessEntity();

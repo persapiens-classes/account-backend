@@ -57,7 +57,7 @@ public class RestClientHelper<T> {
 	}
 
 	private URI uri() {
-		return UriComponentsBuilder.fromHttpUrl(url()).build().encode().toUri();
+		return UriComponentsBuilder.fromUriString(url()).build().encode().toUri();
 	}
 
 	public URI uri(String suffix, String param, String value) {
@@ -67,7 +67,7 @@ public class RestClientHelper<T> {
 	}
 
 	public URI uri(String suffix, Map<String, Object> uriVariables) {
-		return UriComponentsBuilder.fromHttpUrl(url() + suffix).uriVariables(uriVariables).build().encode().toUri();
+		return UriComponentsBuilder.fromUriString(url() + suffix).uriVariables(uriVariables).build().encode().toUri();
 	}
 
 	public void delete(String suffix, String param, String value) {
