@@ -1,5 +1,7 @@
 {{DOMAIN}} {
-	reverse_proxy :8080
+	reverse_proxy :8080 {
+		header_up X-Forwarded-Proto https
+	}
 	tls persapiens@gmail.com
 	encode gzip
 }
