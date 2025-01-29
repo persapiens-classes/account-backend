@@ -30,6 +30,9 @@ FROM updated AS final
 
 LABEL MANTAINER="persapiens@gmail.com"
 
+ENV DOMAIN="localhost"
+ENV JAVA_OPTS=""
+
 # expose application port
 EXPOSE 80
 
@@ -47,4 +50,3 @@ COPY start.sh /bin/
 
 # run app
 ENTRYPOINT ["/bin/start.sh"]
-CMD ["localhost", ""]
