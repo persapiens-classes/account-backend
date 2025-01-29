@@ -42,8 +42,9 @@ COPY --chown=springboot --from=builder /home/springboot/application.jar /home/sp
 
 USER root
 # copy caddyfile
-COPY Caddyfile /etc/caddy/Caddyfile
+COPY Caddyfile.template /etc/caddy/Caddyfile.template
 COPY start.sh /bin/
 
 # run app
 ENTRYPOINT ["/bin/start.sh"]
+CMD ["localhost", ""]
