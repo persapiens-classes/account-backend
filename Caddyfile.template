@@ -1,0 +1,5 @@
+{{DOMAIN}} {
+	reverse_proxy :8080
+	tls persapiens@gmail.com
+	encode gzip
+}
