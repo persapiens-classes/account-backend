@@ -1,24 +1,18 @@
 package org.persapiens.account.domain;
 
-import java.util.Set;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@SuppressFBWarnings("NP_NONNULL_PARAM_VIOLATION")
 @NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_category", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
@@ -45,10 +39,6 @@ public class Category implements Comparable<Category> {
 
 	@Column(nullable = false, unique = true)
 	private String description;
-
-	@OneToMany(mappedBy = "category")
-	@Singular
-	private Set<Account> accounts;
 
 	@Override
 	public int compareTo(Category o) {

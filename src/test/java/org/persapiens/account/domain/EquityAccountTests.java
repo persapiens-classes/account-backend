@@ -1,7 +1,5 @@
 package org.persapiens.account.domain;
 
-import java.math.BigDecimal;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.common.EquityAccountConstants;
@@ -57,24 +55,18 @@ class EquityAccountTests {
 	}
 
 	@Test
-	void equalDescriptionAndCategoryAndDifferentOwnerEquityAccountInitialValue() {
-		OwnerEquityAccountInitialValue ownerEquityAccountInitialValue = OwnerEquityAccountInitialValue.builder()
-			.owner(Owner.builder().name("father").build())
-			.value(new BigDecimal(100))
-			.build();
-
+	void equalDescriptionAndCategoryAndDifferent() {
 		EquityAccount pocket1 = EquityAccount.builder()
 			.description(EquityAccountConstants.WALLET)
 			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
-			.ownerEquityAccountInitialValue(ownerEquityAccountInitialValue)
 			.build();
 
 		EquityAccount pocket2 = EquityAccount.builder()
 			.description(EquityAccountConstants.WALLET)
-			.category(Category.builder().description(EquityAccountConstants.INDIVIDUAL_ASSETS).build())
+			.category(Category.builder().description(EquityAccountConstants.CHECKING).build())
 			.build();
 
-		assertThat(pocket1).isEqualTo(pocket2);
+		assertThat(pocket1).isNotEqualTo(pocket2);
 	}
 
 }
