@@ -237,6 +237,9 @@
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <automatic-feature-detection>true</automatic-feature-detection>
+                </configuration>
 			</plugin>
         </plugins>
     </build>
