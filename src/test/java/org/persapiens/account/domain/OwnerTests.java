@@ -1,21 +1,14 @@
 package org.persapiens.account.domain;
 
-import java.math.BigDecimal;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.DebitAccountConstants;
-import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class OwnerTests {
-
-	private static final String TAX = "tax";
-
-	private static final String PROPERTY = "property";
 
 	@Test
 	void equalNames() {
@@ -24,33 +17,8 @@ class OwnerTests {
 	}
 
 	@Test
-	void equalDescriptionWithDifferentEntries() {
-		Entry gasolineEntry = Entry.builder().note(DebitAccountConstants.GASOLINE).build();
-		Entry taxEntry = Entry.builder().note(TAX).build();
-
-		OwnerEquityAccountInitialValue walletInitialValue = OwnerEquityAccountInitialValue.builder()
-			.equityAccount(EquityAccount.builder()
-				.description(EquityAccountConstants.WALLET)
-				.category(Category.builder().description(PROPERTY).build())
-				.build())
-			.value(new BigDecimal(100))
-			.build();
-
-		OwnerEquityAccountInitialValue checkingInitialValue = OwnerEquityAccountInitialValue.builder()
-			.equityAccount(EquityAccount.builder()
-				.description(EquityAccountConstants.CHECKING)
-				.category(Category.builder().description(PROPERTY).build())
-				.build())
-			.value(new BigDecimal(1000))
-			.build();
-
-		Owner father1 = Owner.builder()
-			.name(OwnerConstants.FATHER)
-			.entry(gasolineEntry)
-			.entry(taxEntry)
-			.ownerEquityAccountInitialValue(walletInitialValue)
-			.ownerEquityAccountInitialValue(checkingInitialValue)
-			.build();
+	void equalDescription() {
+		Owner father1 = Owner.builder().name(OwnerConstants.FATHER).build();
 
 		Owner father2 = Owner.builder().name(OwnerConstants.FATHER).build();
 

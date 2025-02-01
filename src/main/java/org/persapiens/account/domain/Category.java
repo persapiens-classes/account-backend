@@ -1,19 +1,15 @@
 package org.persapiens.account.domain;
 
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Singular;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -43,10 +39,6 @@ public class Category implements Comparable<Category> {
 
 	@Column(nullable = false, unique = true)
 	private String description;
-
-	@OneToMany(mappedBy = "category")
-	@Singular
-	private Set<Account> accounts;
 
 	@Override
 	public int compareTo(Category o) {
