@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    name: Java ${{ matrix.java }}
+    name: GraalVM ${{ matrix.java }}
     strategy:
       matrix:
         java: [21]
@@ -34,17 +34,17 @@ jobs:
       - name: Validate
         run: ./mvnw -B clean validate
 
-      - name: Build Native app
+      - name: Native App build
         run: ./mvnw -B -Pnative -DskipTests=true native:compile
 
-      - name: Build Native app upload artifacts
+      - name: Native app upload artifacts
         uses: actions/upload-artifact@v4.6.0
         with:
           name: native
           path: |
             target/example*
 
-      - name: Build Native image
+      - name: Native Image build
         run: ./mvnw -B -Pnative -DskipTests=true spring-boot:build-image
 
       - name: Docker Hub login
