@@ -86,8 +86,8 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
@@ -237,9 +237,6 @@
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
-                <configuration>
-                    <automatic-feature-detection>true</automatic-feature-detection>
-                </configuration>
 			</plugin>
         </plugins>
     </build>
