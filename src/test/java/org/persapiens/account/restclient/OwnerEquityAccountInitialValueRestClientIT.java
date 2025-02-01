@@ -39,13 +39,13 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 	@Test
 	void updateOne() {
-		OwnerDTO mother = owner(OwnerConstants.AUNT);
+		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		EquityAccountDTO individualAssets = equityAccount(EquityAccountConstants.INDIVIDUAL_ASSETS,
 				category(CategoryConstants.BANK).getDescription());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000))
-			.owner(mother.getName())
+			.owner(aunt.getName())
 			.equityAccount(individualAssets.getDescription())
 			.build();
 
@@ -60,13 +60,13 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 	@Test
 	void deleteOne() {
-		OwnerDTO mother = owner(OwnerConstants.AUNT);
+		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
 				category(CategoryConstants.BANK).getDescription());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000))
-			.owner(mother.getName())
+			.owner(aunt.getName())
 			.equityAccount(investiment.getDescription())
 			.build();
 

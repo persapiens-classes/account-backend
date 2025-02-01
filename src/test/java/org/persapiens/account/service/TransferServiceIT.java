@@ -31,14 +31,14 @@ class TransferServiceIT {
 	private EntryService entryService;
 
 	@Test
-	void transfer10FromFatherToMother() {
+	void transfer10FromFatherToAunt() {
 		this.transferService.transfer(BigDecimal.TEN, this.ownerFactory.father(), this.equityAccountFactory.checking(),
-				this.ownerFactory.mother(), this.equityAccountFactory.savings());
+				this.ownerFactory.aunt(), this.equityAccountFactory.savings());
 
 		assertThat(this.entryService.debitSum(this.ownerFactory.father(), this.equityAccountFactory.checking()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 
-		assertThat(this.entryService.creditSum(this.ownerFactory.mother(), this.equityAccountFactory.savings()))
+		assertThat(this.entryService.creditSum(this.ownerFactory.aunt(), this.equityAccountFactory.savings()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 	}
 

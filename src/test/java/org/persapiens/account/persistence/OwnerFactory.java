@@ -33,4 +33,8 @@ public class OwnerFactory {
 		return owner(OwnerConstants.MOTHER);
 	}
 
+	public Owner aunt() {
+		return owner(OwnerConstants.AUNT);
+	}
+
 }
