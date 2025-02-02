@@ -1,11 +1,12 @@
 spring:
   datasource:
     url: jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE
-    username: sa
-    password: password
     driverClassName: org.h2.Driver
     hikari:
       maximum-pool-size: 3
+  h2:
+    console:
+      enabled: false  # Desativa o console web do H2 em produção
 
 server:
   forward-headers-strategy: native
