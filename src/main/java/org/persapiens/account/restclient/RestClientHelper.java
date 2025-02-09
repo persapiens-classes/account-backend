@@ -2,7 +2,6 @@ package org.persapiens.account.restclient;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,21 +30,15 @@ public class RestClientHelper<T> {
 
 	private int port;
 
-	private String username;
-
-	private String password;
+	private String jwtToken;
 
 	public RestClient getRestClient() {
 		return RestClient.builder().requestInterceptor(new ClientHttpRequestInterceptor() {
 			@SuppressFBWarnings("DM_DEFAULT_ENCODING")
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 					throws IOException {
-				if (!RestClientHelper.this.username.isEmpty() && !RestClientHelper.this.password.isEmpty()) {
-					String base64Credentials = Base64.getEncoder()
-						.encodeToString(
-								(RestClientHelper.this.username + ":" + RestClientHelper.this.password).getBytes());
-
-					request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Basic " + base64Credentials);
+				if (RestClientHelper.this.jwtToken != null && !RestClientHelper.this.jwtToken.isEmpty()) {
+					request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + RestClientHelper.this.jwtToken);
 				}
 				return execution.execute(request, body);
 			}

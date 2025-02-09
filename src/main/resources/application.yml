@@ -11,7 +11,12 @@ spring:
 server:
   forward-headers-strategy: native
 
-user-credentials:
-  name: ${USERNAME:persapiens}
-  password: ${PASSWORD:account}
-  authorities: ROLE_USER
+account:
+  user-credentials:
+    name: ${USERNAME:persapiens}
+    password: ${PASSWORD:account}
+    authorities: ROLE_USER
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b}
+    # 1h in millisecond
+    expiration-time: ${JWT_EXPIRATION_TIME:3600000}
