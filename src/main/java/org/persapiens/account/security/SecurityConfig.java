@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.security;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.swagger.v3.oas.models.Components;
@@ -10,17 +10,23 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SuppressFBWarnings("SPRING_CSRF_PROTECTION_DISABLED")
-@EnableConfigurationProperties(UserCredentials.class)
+@EnableConfigurationProperties({ UserCredentials.class, JwtProperties.class })
 @EnableWebSecurity
 @Configuration
 @ConditionalOnWebApplication
@@ -28,14 +34,16 @@ public class SecurityConfig {
 
 	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
+			throws Exception {
 		http.csrf((csrf) -> csrf.disable())
 			.cors(Customizer.withDefaults())
-			.authorizeHttpRequests((auth) -> auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**")
+			.sessionManagement((sm) -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests((auth) -> auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/login")
 				.permitAll()
 				.anyRequest()
 				.authenticated())
-			.httpBasic(Customizer.withDefaults());
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
@@ -54,14 +62,31 @@ public class SecurityConfig {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-			.components(new Components().addSecuritySchemes("basicAuth",
-					new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
-			.addSecurityItem(new SecurityRequirement().addList("basicAuth"));
+			.components(new Components().addSecuritySchemes("bearerAuth",
+					new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
+			.addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter(HandlerExceptionResolver handlerExceptionResolver,
+			JwtFactory jwtFactory, UserDetailsService userDetailsService) {
+		return new JwtAuthenticationFilter(handlerExceptionResolver, jwtFactory, userDetailsService);
+	}
+
+	@Bean
+	public JwtFactory jwtFactory(JwtProperties jwtProperties) {
+		return new JwtFactory(jwtProperties);
 	}
 
 }
