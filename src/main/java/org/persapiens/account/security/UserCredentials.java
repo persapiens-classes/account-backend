@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.security;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("user-credentials")
+@ConfigurationProperties("account.user-credentials")
 @Getter
 @Setter
 public class UserCredentials {
