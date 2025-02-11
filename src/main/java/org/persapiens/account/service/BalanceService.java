@@ -3,8 +3,8 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
-import org.persapiens.account.domain.EquityAccount;
-import org.persapiens.account.domain.Owner;
+import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class BalanceService {
 
 	private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
-	public BigDecimal balance(Owner owner, EquityAccount equityAccount) {
+	public BigDecimal balance(OwnerDTO owner, EquityAccountDTO equityAccount) {
 		// get initial value of owner and equity account
 		BigDecimal result = this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(owner, equityAccount)
 			.get()

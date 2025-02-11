@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
-import org.persapiens.account.domain.CreditAccount;
-import org.persapiens.account.domain.DebitAccount;
-import org.persapiens.account.domain.Entry;
-import org.persapiens.account.domain.EquityAccount;
-import org.persapiens.account.domain.Owner;
+import org.persapiens.account.dto.CreditAccountDTO;
+import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.dto.EntryInsertUpdateDTO;
+import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,37 +24,37 @@ public class TransferService {
 	private final CreditAccountService creditAccountService;
 
 	@Transactional
-	public void transfer(BigDecimal value, Owner debitOwner, EquityAccount debitEquityAccount, Owner creditOwner,
-			EquityAccount creditEquityAccount) {
+	public void transfer(BigDecimal value, OwnerDTO debitOwnerDTO, EquityAccountDTO debitEquityAccountDTO,
+			OwnerDTO creditOwnerDTO, EquityAccountDTO creditEquityAccountDTO) {
 
-		DebitAccount debitAccount = this.debitAccountService.expenseTransfer();
-		CreditAccount creditAccount = this.creditAccountService.incomeTransfer();
+		DebitAccountDTO expenseTransferDTO = this.debitAccountService.expenseTransfer();
+		CreditAccountDTO incomeTransferDTO = this.creditAccountService.incomeTransfer();
 
-		if (creditOwner.equals(debitOwner)) {
-			throw new IllegalArgumentException("Owners should be different: " + debitOwner + " = " + creditOwner);
+		if (creditOwnerDTO.equals(debitOwnerDTO)) {
+			throw new IllegalArgumentException("Owners should be different: " + debitOwnerDTO + " = " + creditOwnerDTO);
 		}
 
 		LocalDateTime date = LocalDateTime.now();
 
-		Entry debitEntry = Entry.builder()
-			.inAccount(debitAccount)
-			.outAccount(debitEquityAccount)
-			.owner(debitOwner)
+		EntryInsertUpdateDTO debitEntry = EntryInsertUpdateDTO.builder()
+			.inAccount(expenseTransferDTO.getDescription())
+			.outAccount(debitEquityAccountDTO.getDescription())
+			.owner(debitOwnerDTO.getName())
 			.value(value)
 			.date(date)
 			.note("Transfer debit entry")
 			.build();
-		this.entryService.save(debitEntry);
+		this.entryService.insert(debitEntry);
 
-		Entry creditEntry = Entry.builder()
-			.inAccount(creditEquityAccount)
-			.outAccount(creditAccount)
-			.owner(creditOwner)
+		EntryInsertUpdateDTO creditEntry = EntryInsertUpdateDTO.builder()
+			.inAccount(creditEquityAccountDTO.getDescription())
+			.outAccount(incomeTransferDTO.getDescription())
+			.owner(creditOwnerDTO.getName())
 			.value(value)
 			.date(date)
 			.note("Transfer credit entry")
 			.build();
-		this.entryService.save(creditEntry);
+		this.entryService.insert(creditEntry);
 	}
 
 }

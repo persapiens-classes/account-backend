@@ -2,8 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.Category;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.dto.CategoryDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,7 @@ class CategoryServiceIT {
 	private CategoryService categoryService;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private CategoryDTOFactory categoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -27,22 +26,22 @@ class CategoryServiceIT {
 	@Test
 	void saveOne() {
 		// create test environment
-		Category category = this.categoryFactory.bank();
+		CategoryDTO categoryDTO = this.categoryDTOFactory.bank();
 
 		// verify the results
-		assertThat(this.categoryService.findById(category.getId()).get()).isEqualTo(category);
+		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription()).get()).isEqualTo(categoryDTO);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		Category category = this.categoryFactory.category("UNIQUE CATEGORY");
+		CategoryDTO categoryDTO = this.categoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
 
 		// execute the operation to be tested
-		this.categoryService.delete(category);
+		this.categoryService.deleteByDescription(categoryDTO.getDescription());
 
 		// verify the results
-		assertThat(this.categoryService.findById(category.getId()).isPresent()).isFalse();
+		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription()).isPresent()).isFalse();
 	}
 
 }

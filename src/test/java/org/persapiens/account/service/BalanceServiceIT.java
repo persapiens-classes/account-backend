@@ -4,16 +4,10 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.CreditAccount;
-import org.persapiens.account.domain.DebitAccount;
-import org.persapiens.account.domain.EquityAccount;
-import org.persapiens.account.domain.Owner;
-import org.persapiens.account.persistence.CreditAccountFactory;
-import org.persapiens.account.persistence.DebitAccountFactory;
-import org.persapiens.account.persistence.EntryFactory;
-import org.persapiens.account.persistence.EquityAccountFactory;
-import org.persapiens.account.persistence.OwnerEquityAccountInitialValueFactory;
-import org.persapiens.account.persistence.OwnerFactory;
+import org.persapiens.account.dto.CreditAccountDTO;
+import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,41 +18,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BalanceServiceIT {
 
 	@Autowired
-	private EntryFactory entryFactory;
+	private EntryDTOFactory entryDTOFactory;
 
 	@Autowired
-	private OwnerFactory ownerFactory;
+	private OwnerDTOFactory ownerDTOFactory;
 
 	@Autowired
 	private BalanceService balanceService;
 
 	@Autowired
-	private OwnerEquityAccountInitialValueFactory ownerEquityAccountInitialValueFactory;
+	private OwnerEquityAccountInitialValueDTOFactory ownerEquityAccountInitialValueDTOFactory;
 
 	@Autowired
-	private EquityAccountFactory equityAccountFactory;
+	private EquityAccountDTOFactory equityAccountDTOFactory;
 
 	@Autowired
-	private CreditAccountFactory creditAccountFactory;
+	private CreditAccountDTOFactory creditAccountDTOFactory;
 
 	@Autowired
-	private DebitAccountFactory debitAccountFactory;
+	private DebitAccountDTOFactory debitAccountDTOFactory;
 
 	@Test
 	void balance800() {
 		// create test environment
-		Owner father = this.ownerFactory.father();
+		OwnerDTO father = this.ownerDTOFactory.father();
 
-		EquityAccount wallet = this.equityAccountFactory.wallet();
+		EquityAccountDTO wallet = this.equityAccountDTOFactory.wallet();
 
-		DebitAccount gasoline = this.debitAccountFactory.gasoline();
+		DebitAccountDTO gasoline = this.debitAccountDTOFactory.gasoline();
 
-		CreditAccount internship = this.creditAccountFactory.internship();
+		CreditAccountDTO internship = this.creditAccountDTOFactory.internship();
 
-		this.ownerEquityAccountInitialValueFactory.ownerEquityAccountInitialValue(father, wallet, new BigDecimal(1000));
+		this.ownerEquityAccountInitialValueDTOFactory.ownerEquityAccountInitialValueDTO(father, wallet,
+				new BigDecimal(1000));
 
-		this.entryFactory.entry(father, gasoline, wallet, new BigDecimal(500));
-		this.entryFactory.entry(father, wallet, internship, new BigDecimal(300));
+		this.entryDTOFactory.entryDTO(father, gasoline, wallet, new BigDecimal(500));
+		this.entryDTOFactory.entryDTO(father, wallet, internship, new BigDecimal(300));
 
 		// run the operation to be tested
 		// verify the results

@@ -2,8 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.Owner;
-import org.persapiens.account.persistence.OwnerFactory;
+import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +16,7 @@ class OwnerServiceIT {
 	private OwnerService ownerService;
 
 	@Autowired
-	private OwnerFactory ownerFactory;
+	private OwnerDTOFactory ownerDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -27,22 +26,22 @@ class OwnerServiceIT {
 	@Test
 	void saveOne() {
 		// create test environment
-		Owner owner = this.ownerFactory.mother();
+		OwnerDTO owner = this.ownerDTOFactory.mother();
 
 		// verify the results
-		assertThat(this.ownerService.findById(owner.getId()).get()).isEqualTo(owner);
+		assertThat(this.ownerService.findByName(owner.getName()).get()).isEqualTo(owner);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		Owner owner = this.ownerFactory.owner("UNIQUE Owner");
+		OwnerDTO owner = this.ownerDTOFactory.ownerDTO("UNIQUE Owner");
 
 		// execute the operation to be tested
-		this.ownerService.delete(owner);
+		this.ownerService.deleteByName(owner.getName());
 
 		// verify the results
-		assertThat(this.ownerService.findById(owner.getId()).isPresent()).isFalse();
+		assertThat(this.ownerService.findByName(owner.getName()).isPresent()).isFalse();
 	}
 
 }

@@ -2,9 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.CreditAccount;
-import org.persapiens.account.persistence.CategoryFactory;
-import org.persapiens.account.persistence.CreditAccountFactory;
+import org.persapiens.account.dto.CreditAccountDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +16,10 @@ class CreditAccountServiceIT {
 	private CreditAccountService creditAccountService;
 
 	@Autowired
-	private CreditAccountFactory creditAccountFactory;
+	private CreditAccountDTOFactory creditAccountDTOFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private CategoryDTOFactory categoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -31,23 +29,25 @@ class CreditAccountServiceIT {
 	@Test
 	void saveOne() {
 		// create test environment
-		CreditAccount creditAccount = this.creditAccountFactory.internship();
+		CreditAccountDTO creditAccountDTO = this.creditAccountDTOFactory.internship();
 
 		// verify the results
-		assertThat(this.creditAccountService.findById(creditAccount.getId()).get()).isEqualTo(creditAccount);
+		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()).get())
+			.isEqualTo(creditAccountDTO);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		CreditAccount creditAccount = this.creditAccountFactory.creditAccount("UNIQUE CreditAccount",
-				this.categoryFactory.bank());
+		CreditAccountDTO creditAccountDTO = this.creditAccountDTOFactory.creditAccountDTO("UNIQUE CreditAccount",
+				this.categoryDTOFactory.bank().getDescription());
 
 		// execute the operation to be tested
-		this.creditAccountService.delete(creditAccount);
+		this.creditAccountService.deleteByDescription(creditAccountDTO.getDescription());
 
 		// verify the results
-		assertThat(this.creditAccountService.findById(creditAccount.getId()).isPresent()).isFalse();
+		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()).isPresent())
+			.isFalse();
 	}
 
 }

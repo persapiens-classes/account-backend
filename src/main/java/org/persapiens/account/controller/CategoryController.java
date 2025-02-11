@@ -18,28 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/categories")
-public class CategoryController extends CrudController<CategoryDTO, CategoryDTO, Category, Long> {
+public class CategoryController extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, Category, Long> {
 
 	private CategoryService categoryService;
 
-	@Override
-	protected Category toEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.getDescription()).build();
-	}
-
-	@Override
-	protected CategoryDTO toDTO(Category entity) {
-		return CategoryDTO.builder().description(entity.getDescription()).build();
-	}
-
-	@Override
-	protected Category insertDtoToEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.getDescription()).build();
-	}
-
 	@GetMapping("/{description}")
 	public Optional<CategoryDTO> findByDescription(@PathVariable String description) {
-		return toDTOOptional(this.categoryService.findByDescription(description));
+		return this.categoryService.findByDescription(description);
 	}
 
 	@DeleteMapping("/{description}")
@@ -50,13 +35,9 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 	@PutMapping("/{description}")
 	public CategoryDTO update(@PathVariable String description, @RequestBody CategoryDTO dto) {
 		CategoryDTO result = null;
-		Optional<Category> categoryOptional = this.categoryService.findByDescription(description);
+		Optional<CategoryDTO> categoryOptional = this.categoryService.update(description, dto);
 		if (categoryOptional.isPresent()) {
-			Category currentCategory = categoryOptional.get();
-			Category entityToSave = toEntity(dto);
-			entityToSave.setId(currentCategory.getId());
-			Category saved = this.categoryService.save(entityToSave);
-			result = toDTO(saved);
+			result = categoryOptional.get();
 		}
 		return result;
 	}
