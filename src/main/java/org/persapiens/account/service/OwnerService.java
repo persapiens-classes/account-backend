@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Owner;
+import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
@@ -11,12 +12,43 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
-public class OwnerService extends CrudService<Owner, Long> {
+public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, String, Owner, Long> {
 
 	private OwnerRepository ownerRepository;
 
-	public Optional<Owner> findByName(String name) {
-		return this.ownerRepository.findByName(name);
+	@Override
+	protected Owner toEntity(OwnerDTO dto) {
+		return Owner.builder().name(dto.getName()).build();
+	}
+
+	@Override
+	protected OwnerDTO toDTO(Owner entity) {
+		return OwnerDTO.builder().name(entity.getName()).build();
+	}
+
+	@Override
+	protected Owner insertDtoToEntity(OwnerDTO dto) {
+		return toEntity(dto);
+	}
+
+	@Override
+	protected Owner updateDtoToEntity(OwnerDTO dto) {
+		return toEntity(dto);
+	}
+
+	@Override
+	protected Optional<Owner> findByUpdateKey(String updateKey) {
+		return this.ownerRepository.findByName(updateKey);
+	}
+
+	@Override
+	protected Owner setIdToUpdate(Owner t, Owner updateEntity) {
+		updateEntity.setId(t.getId());
+		return updateEntity;
+	}
+
+	public Optional<OwnerDTO> findByName(String name) {
+		return toOptionalDTO(this.ownerRepository.findByName(name));
 	}
 
 	@Transactional

@@ -7,11 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.Entry;
-import org.persapiens.account.persistence.CreditAccountFactory;
-import org.persapiens.account.persistence.DebitAccountFactory;
-import org.persapiens.account.persistence.EquityAccountFactory;
-import org.persapiens.account.persistence.OwnerFactory;
+import org.persapiens.account.dto.EntryInsertUpdateDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,16 +21,16 @@ class EntryServiceIT {
 	private EntryService entryService;
 
 	@Autowired
-	private OwnerFactory ownerFactory;
+	private OwnerDTOFactory ownerDTOFactory;
 
 	@Autowired
-	private EquityAccountFactory equityAccountFactory;
+	private EquityAccountDTOFactory equityAccountDTOFactory;
 
 	@Autowired
-	private CreditAccountFactory creditAccountFactory;
+	private CreditAccountDTOFactory creditAccountDTOFactory;
 
 	@Autowired
-	private DebitAccountFactory debitAccountFactory;
+	private DebitAccountDTOFactory debitAccountDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -50,30 +46,30 @@ class EntryServiceIT {
 	@Test
 	void entryWithInvalidInAccount() {
 		Assertions.assertThatThrownBy(() -> {
-			Entry entry = Entry.builder()
-				.inAccount(this.creditAccountFactory.internship())
-				.outAccount(this.equityAccountFactory.savings())
+			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
+				.inAccount(this.creditAccountDTOFactory.internship().getDescription())
+				.outAccount(this.equityAccountDTOFactory.savings().getDescription())
 				.value(BigDecimal.TEN)
 				.date(LocalDateTime.now())
-				.owner(this.ownerFactory.father())
+				.owner(this.ownerDTOFactory.father().getName())
 				.build();
 
-			this.entryService.save(entry);
+			this.entryService.insert(entry);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	void entryWithInvalidOutAccount() {
 		Assertions.assertThatThrownBy(() -> {
-			Entry entry = Entry.builder()
-				.inAccount(this.equityAccountFactory.savings())
-				.outAccount(this.debitAccountFactory.gasoline())
+			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
+				.inAccount(this.equityAccountDTOFactory.savings().getDescription())
+				.outAccount(this.debitAccountDTOFactory.gasoline().getDescription())
 				.value(BigDecimal.ZERO)
 				.date(LocalDateTime.now())
-				.owner(this.ownerFactory.father())
+				.owner(this.ownerDTOFactory.father().getName())
 				.build();
 
-			this.entryService.save(entry);
+			this.entryService.insert(entry);
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
 

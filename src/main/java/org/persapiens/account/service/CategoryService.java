@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
+import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.stereotype.Service;
@@ -11,12 +12,43 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
-public class CategoryService extends CrudService<Category, Long> {
+public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, Category, Long> {
 
 	private CategoryRepository categoryRepository;
 
-	public Optional<Category> findByDescription(String description) {
-		return this.categoryRepository.findByDescription(description);
+	@Override
+	protected Category toEntity(CategoryDTO dto) {
+		return Category.builder().description(dto.getDescription()).build();
+	}
+
+	@Override
+	protected CategoryDTO toDTO(Category entity) {
+		return CategoryDTO.builder().description(entity.getDescription()).build();
+	}
+
+	@Override
+	protected Category insertDtoToEntity(CategoryDTO dto) {
+		return Category.builder().description(dto.getDescription()).build();
+	}
+
+	@Override
+	protected Category updateDtoToEntity(CategoryDTO dto) {
+		return Category.builder().description(dto.getDescription()).build();
+	}
+
+	@Override
+	protected Optional<Category> findByUpdateKey(String updateKey) {
+		return this.categoryRepository.findByDescription(updateKey);
+	}
+
+	@Override
+	protected Category setIdToUpdate(Category t, Category updateEntity) {
+		updateEntity.setId(t.getId());
+		return updateEntity;
+	}
+
+	public Optional<CategoryDTO> findByDescription(String description) {
+		return toOptionalDTO(this.categoryRepository.findByDescription(description));
 	}
 
 	@Transactional
@@ -24,23 +56,23 @@ public class CategoryService extends CrudService<Category, Long> {
 		this.categoryRepository.deleteByDescription(description);
 	}
 
-	private Category category(String description) {
-		Optional<Category> findByDescricao = findByDescription(description);
+	private CategoryDTO categoryDTO(String description) {
+		Optional<CategoryDTO> findByDescricao = findByDescription(description);
 		if (findByDescricao.isEmpty()) {
-			Category result = Category.builder().description(description).build();
-			return save(result);
+			CategoryDTO result = CategoryDTO.builder().description(description).build();
+			return insert(result);
 		}
 		else {
 			return findByDescricao.get();
 		}
 	}
 
-	public Category expenseTransfer() {
-		return category(Category.EXPENSE_TRANSFER_CATEGORY);
+	public CategoryDTO expenseTransfer() {
+		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
 	}
 
-	public Category incomeTransfer() {
-		return category(Category.INCOME_TRANSFER_CATEGORY);
+	public CategoryDTO incomeTransfer() {
+		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
 }

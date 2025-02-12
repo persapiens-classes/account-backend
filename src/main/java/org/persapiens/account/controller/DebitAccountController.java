@@ -2,7 +2,6 @@ package org.persapiens.account.controller;
 
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.service.CategoryService;
 import org.persapiens.account.service.DebitAccountService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/debitAccounts")
 public class DebitAccountController extends AccountController<DebitAccountDTO, DebitAccount> {
 
-	public DebitAccountController(DebitAccountService debitAccountService, CategoryService categoryService) {
-		super(debitAccountService, categoryService);
-	}
-
-	protected DebitAccount createAccount() {
-		return new DebitAccount();
-	}
-
-	protected DebitAccountDTO createAccountDTO() {
-		return new DebitAccountDTO();
+	public DebitAccountController(DebitAccountService debitAccountService) {
+		super(debitAccountService);
 	}
 
 }
