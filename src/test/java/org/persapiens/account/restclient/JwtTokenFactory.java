@@ -1,7 +1,7 @@
 package org.persapiens.account.restclient;
 
-import org.persapiens.account.security.LoginRequest;
-import org.persapiens.account.security.LoginResponse;
+import org.persapiens.account.security.LoginRequestDTO;
+import org.persapiens.account.security.LoginResponseDTO;
 import org.persapiens.account.security.UserCredentials;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ class JwtTokenFactory {
 
 	String getJwtToken(String protocol, String servername, int port) {
 		if (this.jwtToken == null) {
-			LoginRequest loginRequest = LoginRequest.builder()
+			LoginRequestDTO loginRequest = LoginRequestDTO.builder()
 				.username(this.userCredentials.getName())
 				.password(this.userCredentials.getPassword())
 				.build();
@@ -30,12 +30,12 @@ class JwtTokenFactory {
 
 			RestClient restClient = RestClient.create();
 
-			LoginResponse loginResponse = restClient.post()
+			LoginResponseDTO loginResponse = restClient.post()
 				.uri(loginUrl)
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(loginRequest)
 				.retrieve()
-				.body(LoginResponse.class);
+				.body(LoginResponseDTO.class);
 
 			if (loginResponse != null) {
 				this.jwtToken = loginResponse.getToken();

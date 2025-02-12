@@ -37,11 +37,11 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody LoginRequestDTO loginRequest) {
 		Authentication authentication = this.authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		if (authentication.isAuthenticated()) {
-			return ResponseEntity.ok(LoginResponse.builder()
+			return ResponseEntity.ok(LoginResponseDTO.builder()
 				.token(this.jwtFactory.generateToken(loginRequest.getUsername()))
 				.expiresIn(this.jwtFactory.getExpirationTime())
 				.build());
