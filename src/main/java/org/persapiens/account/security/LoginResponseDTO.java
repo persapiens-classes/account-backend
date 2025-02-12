@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class LoginResponse {
+public class LoginResponseDTO {
 
 	private String token;
 
