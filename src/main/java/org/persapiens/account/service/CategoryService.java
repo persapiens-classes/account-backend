@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
@@ -73,6 +74,29 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 
 	public CategoryDTO incomeTransfer() {
 		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
+	}
+
+	public void validate(CategoryDTO categoryDto) {
+		if (StringUtils.isBlank(categoryDto.getDescription())) {
+			throw new IllegalArgumentException("Description empty!");
+		}
+		if (findByDescription(categoryDto.getDescription()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + categoryDto.getDescription());
+		}
+	}
+
+	@Override
+	public CategoryDTO insert(CategoryDTO insertDto) {
+		validate(insertDto);
+
+		return super.insert(insertDto);
+	}
+
+	@Override
+	public Optional<CategoryDTO> update(String updateKey, CategoryDTO updateDto) {
+		validate(updateDto);
+
+		return super.update(updateKey, updateDto);
 	}
 
 }

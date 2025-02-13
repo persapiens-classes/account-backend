@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.AccountRepository;
@@ -68,6 +69,39 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 	@Transactional
 	public void deleteByDescription(String description) {
 		this.accountRepository.deleteByDescription(description);
+	}
+
+	private void validateBlank(D accountDto) {
+		if (StringUtils.isBlank(accountDto.getDescription())) {
+			throw new IllegalArgumentException("Description empty!");
+		}
+		if (StringUtils.isBlank(accountDto.getCategory())) {
+			throw new IllegalArgumentException("Category empty!");
+		}
+	}
+
+	public void validate(D accountDto) {
+		validateBlank(accountDto);
+		if (findByDescription(accountDto.getDescription()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + accountDto.getDescription());
+		}
+		if (!this.categoryRepository.findByDescription(accountDto.getCategory()).isPresent()) {
+			throw new BeanNotFoundException("Category not exists: " + accountDto.getCategory());
+		}
+	}
+
+	@Override
+	public D insert(D insertDto) {
+		validate(insertDto);
+
+		return super.insert(insertDto);
+	}
+
+	@Override
+	public Optional<D> update(String updateKey, D updateDto) {
+		validate(updateDto);
+
+		return super.update(updateKey, updateDto);
 	}
 
 }

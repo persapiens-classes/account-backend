@@ -5,8 +5,11 @@ import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.CategoryDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryRestClientIT extends RestClientIT {
@@ -26,6 +29,36 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(categoryRestClient().findAll()).isNotEmpty();
+	}
+
+	private void insertInvalid(String description, HttpStatus httpStatus) {
+		CategoryDTO category = CategoryDTO.builder().description(description).build();
+
+		// verify insert operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> categoryRestClient().insert(category))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void insertEmpty() {
+		String description = "";
+
+		insertInvalid(description, HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	void insertSameCategoryTwice() {
+		String description = "repeated category";
+
+		CategoryDTO category = CategoryDTO.builder().description(description).build();
+
+		categoryRestClient().insert(category);
+
+		// verify insert operation
+		// verify status code error
+		insertInvalid(description, HttpStatus.CONFLICT);
 	}
 
 	@Test

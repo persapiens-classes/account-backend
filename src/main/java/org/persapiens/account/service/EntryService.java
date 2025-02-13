@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.domain.EquityAccount;
@@ -92,14 +93,52 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		return updateEntity;
 	}
 
-	@Override
-	@Transactional
-	public EntryDTO insert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	private void validateBlank(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		if (StringUtils.isBlank(entryInsertUpdateDTO.getInAccount())) {
+			throw new IllegalArgumentException("Description empty!");
+		}
+		if (StringUtils.isBlank(entryInsertUpdateDTO.getOutAccount())) {
+			throw new IllegalArgumentException("Category empty!");
+		}
+		if (StringUtils.isBlank(entryInsertUpdateDTO.getOwner())) {
+			throw new IllegalArgumentException("Owner empty!");
+		}
+		if (entryInsertUpdateDTO.getValue() == null) {
+			throw new IllegalArgumentException("Value null!");
+		}
+		if (entryInsertUpdateDTO.getDate() == null) {
+			throw new IllegalArgumentException("Date null!");
+		}
+	}
+
+	private void validate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		validateBlank(entryInsertUpdateDTO);
+		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.getInAccount()).isPresent()) {
+			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.getInAccount());
+		}
+		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.getOutAccount()).isPresent()) {
+			throw new BeanNotFoundException("Out account not exists: " + entryInsertUpdateDTO.getOutAccount());
+		}
+		if (!this.ownerRepository.findByName(entryInsertUpdateDTO.getOwner()).isPresent()) {
+			throw new BeanExistsException("Owner not exists: " + entryInsertUpdateDTO.getOwner());
+		}
+
 		Entry entry = insertDtoToEntity(entryInsertUpdateDTO);
 
 		entry.verifyAttributes();
+	}
 
+	@Override
+	@Transactional
+	public EntryDTO insert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		validate(entryInsertUpdateDTO);
 		return super.insert(entryInsertUpdateDTO);
+	}
+
+	@Override
+	public Optional<EntryDTO> update(Long updateKey, EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		validate(entryInsertUpdateDTO);
+		return super.update(updateKey, entryInsertUpdateDTO);
 	}
 
 	private Owner owner(OwnerDTO ownerDTO) {
