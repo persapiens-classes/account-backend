@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
@@ -93,6 +94,57 @@ public class OwnerEquityAccountInitialValueService extends
 		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(equityAccountDTO.getDescription())
 			.get();
 		this.ownerEquityAccountInitialValueRepository.deleteByOwnerAndEquityAccount(owner, equityAccount);
+	}
+
+	private void validateBlank(String ownerName, String equityAccountDescription, BigDecimal value) {
+		if (StringUtils.isBlank(ownerName)) {
+			throw new IllegalArgumentException("Owner empty!");
+		}
+		if (StringUtils.isBlank(equityAccountDescription)) {
+			throw new IllegalArgumentException("Equity Account empty!");
+		}
+		if (value == null) {
+			throw new IllegalArgumentException("Value null!");
+		}
+	}
+
+	private void validate(String ownerName, String equityAccountDescription, BigDecimal value, boolean insert) {
+		validateBlank(ownerName, equityAccountDescription, value);
+
+		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
+		if (!byName.isPresent()) {
+			throw new BeanExistsException("Owner not exists: " + ownerName);
+		}
+		Optional<EquityAccount> byDescription = this.equityAccountRepository
+			.findByDescription(equityAccountDescription);
+		if (!byDescription.isPresent()) {
+			throw new BeanExistsException("Equity Account not exists: " + equityAccountDescription);
+		}
+		if (byName.isPresent() && byDescription.isPresent()) {
+			Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
+				.findByOwnerAndEquityAccount(byName.get(), byDescription.get());
+			if (insert && byOwnerAndEquityAccount.isPresent()) {
+				throw new BeanExistsException(
+						"OwnerEquityAccountInitialValue exists: " + ownerName + "-" + equityAccountDescription);
+			}
+			else if (!insert && byOwnerAndEquityAccount.isEmpty()) {
+				throw new BeanNotFoundException(
+						"OwnerEquityAccountInitialValue not exists: " + ownerName + "-" + equityAccountDescription);
+			}
+		}
+	}
+
+	@Override
+	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO insertDto) {
+		validate(insertDto.getOwner(), insertDto.getEquityAccount(), insertDto.getValue(), true);
+		return super.insert(insertDto);
+	}
+
+	@Override
+	public Optional<OwnerEquityAccountInitialValueDTO> update(OwnerNameEquityAccountDescription updateKey,
+			BigDecimal updateDto) {
+		validate(updateKey.getOwnerName(), updateKey.getEquityAccountDescription(), updateDto, false);
+		return super.update(updateKey, updateDto);
 	}
 
 }

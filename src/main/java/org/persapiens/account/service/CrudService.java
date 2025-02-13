@@ -52,24 +52,9 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		return result;
 	}
 
-	protected Iterable<E> insertDtosToEntities(Iterable<? extends I> insertDtos) {
-		List<E> result = new ArrayList<>();
-		for (I dto : insertDtos) {
-			result.add(insertDtoToEntity(dto));
-		}
-		return result;
-	}
-
 	@Autowired
 	public void setRepository(CrudRepository<E, K> repository) {
 		this.repository = repository;
-	}
-
-	@Transactional
-	public Iterable<F> insertAll(Iterable<I> insertDtos) {
-		Iterable<E> entities = insertDtosToEntities(insertDtos);
-
-		return toDTOs(this.repository.saveAll(entities));
 	}
 
 	@Transactional

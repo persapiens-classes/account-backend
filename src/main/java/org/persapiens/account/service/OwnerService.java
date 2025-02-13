@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.persistence.OwnerRepository;
@@ -54,6 +55,29 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	@Transactional
 	public void deleteByName(String name) {
 		this.ownerRepository.deleteByName(name);
+	}
+
+	public void validate(OwnerDTO ownerDto) {
+		if (StringUtils.isBlank(ownerDto.getName())) {
+			throw new IllegalArgumentException("Name empty!");
+		}
+		if (findByName(ownerDto.getName()).isPresent()) {
+			throw new BeanExistsException("Name exists: " + ownerDto.getName());
+		}
+	}
+
+	@Override
+	public OwnerDTO insert(OwnerDTO insertDto) {
+		validate(insertDto);
+
+		return super.insert(insertDto);
+	}
+
+	@Override
+	public Optional<OwnerDTO> update(String updateKey, OwnerDTO updateDto) {
+		validate(updateDto);
+
+		return super.update(updateKey, updateDto);
 	}
 
 }
