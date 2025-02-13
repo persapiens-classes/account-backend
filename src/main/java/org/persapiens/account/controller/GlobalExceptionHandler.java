@@ -1,0 +1,35 @@
+package org.persapiens.account.controller;
+
+import java.util.Collections;
+import java.util.Map;
+
+import org.persapiens.account.service.BeanExistsException;
+import org.persapiens.account.service.BeanNotFoundException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+			.body(Collections.singletonMap("error", exception.getMessage()));
+	}
+
+	@ExceptionHandler(BeanExistsException.class)
+	public ResponseEntity<Map<String, String>> handleBeanExistsExcEntity(BeanExistsException exception) {
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+			.body(Collections.singletonMap("error", exception.getMessage()));
+	}
+
+	@ExceptionHandler(BeanNotFoundException.class)
+	public ResponseEntity<Map<String, String>> handleBeanNotFoundException(BeanNotFoundException exception) {
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+			.body(Collections.singletonMap("error", exception.getMessage()));
+	}
+
+}
