@@ -12,9 +12,11 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,6 +44,8 @@ public class RestClientHelper<T> {
 				}
 				return execution.execute(request, body);
 			}
+		}).defaultStatusHandler(HttpStatusCode::is4xxClientError, (request, responseException) -> {
+			throw new HttpClientErrorException(responseException.getStatusCode());
 		}).build();
 	}
 
