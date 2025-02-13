@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.dto.TransferDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +28,13 @@ class TransferServiceIT {
 
 	@Test
 	void transfer10FromFatherToAunt() {
-		this.transferService.transfer(BigDecimal.TEN, this.ownerDTOFactory.father(),
-				this.equityAccountDTOFactory.checking(), this.ownerDTOFactory.aunt(),
-				this.equityAccountDTOFactory.savings());
+		this.transferService.transfer(TransferDTO.builder()
+			.value(BigDecimal.TEN)
+			.debitOwner(this.ownerDTOFactory.father().getName())
+			.debitAccount(this.equityAccountDTOFactory.checking().getDescription())
+			.creditOwner(this.ownerDTOFactory.aunt().getName())
+			.creditAccount(this.equityAccountDTOFactory.savings().getDescription())
+			.build());
 
 		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father(), this.equityAccountDTOFactory.checking()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));

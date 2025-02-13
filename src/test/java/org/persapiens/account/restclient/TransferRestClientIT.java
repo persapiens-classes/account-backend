@@ -12,8 +12,11 @@ import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.TransferDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TransferRestClientIT extends RestClientIT {
@@ -46,6 +49,47 @@ class TransferRestClientIT extends RestClientIT {
 
 		assertThat(entryRestClient().creditSum(uncle.getName(), investiment.getDescription()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
+	}
+
+	@Test
+	void transferInvalid() {
+		String aunt = owner(OwnerConstants.AUNT).getName();
+		String uncle = owner(OwnerConstants.UNCLE).getName();
+
+		String checkings = equityAccount(EquityAccountConstants.CHECKING,
+				category(CategoryConstants.BANK).getDescription())
+			.getDescription();
+		String investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
+				category(CategoryConstants.BANK).getDescription())
+			.getDescription();
+
+		BigDecimal value = new BigDecimal(100);
+
+		// test blank fields
+		transferInvalid("", checkings, uncle, investiment, value, HttpStatus.BAD_REQUEST);
+		transferInvalid(aunt, "", uncle, investiment, value, HttpStatus.BAD_REQUEST);
+		transferInvalid(aunt, checkings, "", investiment, value, HttpStatus.BAD_REQUEST);
+		transferInvalid(aunt, checkings, uncle, "", value, HttpStatus.BAD_REQUEST);
+		transferInvalid(aunt, checkings, uncle, investiment, null, HttpStatus.BAD_REQUEST);
+
+		// test fields
+		transferInvalid("invalid debit owner", checkings, uncle, investiment, value, HttpStatus.CONFLICT);
+		transferInvalid(aunt, "invalid debit equity account", uncle, investiment, value, HttpStatus.CONFLICT);
+		transferInvalid(aunt, checkings, "invalid credit account", investiment, value, HttpStatus.CONFLICT);
+		transferInvalid(aunt, checkings, uncle, "invalid credit equity account", value, HttpStatus.CONFLICT);
+	}
+
+	private void transferInvalid(String debitOwnerName, String debitEquityAccountDescription, String creditOwnerName,
+			String creditEquityAccountDescription, BigDecimal value, HttpStatus httpStatus) {
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> transferRestClient().transfer(TransferDTO.builder()
+				.debitOwner(debitOwnerName)
+				.debitAccount(debitEquityAccountDescription)
+				.creditOwner(creditOwnerName)
+				.creditAccount(creditEquityAccountDescription)
+				.value(value)
+				.build()))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 }

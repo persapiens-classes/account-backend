@@ -12,8 +12,11 @@ import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
@@ -35,6 +38,56 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
+	}
+
+	private void insertInvalid(BigDecimal value, String owner, String equityAccount, HttpStatus httpStatus) {
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = OwnerEquityAccountInitialValueDTO
+			.builder()
+			.value(value)
+			.owner(owner)
+			.equityAccount(equityAccount)
+			.build();
+
+		// verify insert operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValueDto))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void insertInvalid() {
+		OwnerDTO mother = owner(OwnerConstants.MOTHER);
+		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
+				category(CategoryConstants.BANK).getDescription());
+
+		// null and empty
+		insertInvalid(null, mother.getName(), savings.getDescription(), HttpStatus.BAD_REQUEST);
+		insertInvalid(new BigDecimal(100), "", savings.getDescription(), HttpStatus.BAD_REQUEST);
+		insertInvalid(new BigDecimal(100), mother.getName(), "", HttpStatus.BAD_REQUEST);
+
+		// invalid owner and equity account
+		insertInvalid(new BigDecimal(100), "invalid owner", savings.getDescription(), HttpStatus.CONFLICT);
+		insertInvalid(new BigDecimal(100), mother.getName(), "invalid equity account", HttpStatus.CONFLICT);
+	}
+
+	@Test
+	void insertSameOwnerEquityAccountInitialValueTwice() {
+		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
+		EquityAccountDTO savings = equityAccount(EquityAccountConstants.INVESTIMENT,
+				category(CategoryConstants.BANK).getDescription());
+
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
+			.value(new BigDecimal(1000))
+			.owner(uncle.getName())
+			.equityAccount(savings.getDescription())
+			.build();
+
+		ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValue);
+
+		// verify insert operation
+		// verify status code error
+		insertInvalid(new BigDecimal(1000), uncle.getName(), savings.getDescription(), HttpStatus.CONFLICT);
 	}
 
 	@Test

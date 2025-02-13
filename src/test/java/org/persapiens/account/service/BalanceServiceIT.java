@@ -57,7 +57,8 @@ class BalanceServiceIT {
 
 		// run the operation to be tested
 		// verify the results
-		assertThat(this.balanceService.balance(father, wallet)).isEqualTo(new BigDecimal(800).setScale(2));
+		assertThat(this.balanceService.balance(father.getName(), wallet.getDescription()))
+			.isEqualTo(new BigDecimal(800).setScale(2));
 	}
 
 }

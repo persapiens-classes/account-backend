@@ -14,8 +14,11 @@ import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BalanceRestClientIT extends RestClientIT {
@@ -71,6 +74,30 @@ class BalanceRestClientIT extends RestClientIT {
 		BigDecimal balance = balanceRestClient().balance(uncle, savings);
 
 		assertThat(balance).isEqualTo(new BigDecimal(500).setScale(2));
+	}
+
+	@Test
+	void balanceInvalid() {
+		String ownerName = owner(OwnerConstants.MOTHER).getName();
+		String bank = category(CategoryConstants.BANK).getDescription();
+		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+
+		// test blank fields
+		balanceInvalid("", equityAccountDescription, HttpStatus.BAD_REQUEST);
+		balanceInvalid(ownerName, "", HttpStatus.BAD_REQUEST);
+
+		// test fields
+		balanceInvalid("invalid owner", equityAccountDescription, HttpStatus.CONFLICT);
+		balanceInvalid(ownerName, "invalid equity account", HttpStatus.CONFLICT);
+
+		// test OwnerEquityAccountInitialValue
+		balanceInvalid(ownerName, equityAccountDescription, HttpStatus.CONFLICT);
+	}
+
+	private void balanceInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> balanceRestClient().balance(ownerName, equityAccountDescription))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 }
