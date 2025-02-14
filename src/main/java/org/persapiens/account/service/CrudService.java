@@ -44,14 +44,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		return result;
 	}
 
-	protected Iterable<E> toEntities(Iterable<? extends F> dtos) {
-		List<E> result = new ArrayList<>();
-		for (F dto : dtos) {
-			result.add(toEntity(dto));
-		}
-		return result;
-	}
-
 	@Autowired
 	public void setRepository(CrudRepository<E, K> repository) {
 		this.repository = repository;
@@ -89,18 +81,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 
 	public Iterable<F> findAll() {
 		return toDTOs(this.repository.findAll());
-	}
-
-	public Iterable<F> findAllById(Iterable<K> ids) {
-		return toDTOs(this.repository.findAllById(ids));
-	}
-
-	public long count() {
-		return this.repository.count();
-	}
-
-	public boolean existsById(K id) {
-		return this.repository.existsById(id);
 	}
 
 }
