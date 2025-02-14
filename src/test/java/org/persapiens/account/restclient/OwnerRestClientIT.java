@@ -88,4 +88,18 @@ class OwnerRestClientIT extends RestClientIT {
 		assertThat(ownerRestClient().findByName(name)).isEmpty();
 	}
 
+	private void deleteInvalid(String name, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient().deleteByName(name))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		String name = "Invalid name";
+		deleteInvalid("", HttpStatus.FORBIDDEN);
+		deleteInvalid(name, HttpStatus.NOT_FOUND);
+	}
+
 }

@@ -15,6 +15,6 @@ public interface AccountRepository<T extends Account> extends CrudRepository<T, 
 	Optional<T> findByDescription(String description);
 
 	@Transactional
-	void deleteByDescription(String description);
+	long deleteByDescription(String description);
 
 }

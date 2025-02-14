@@ -6,8 +6,11 @@ import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.dto.EquityAccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EquityAccountRestClientIT extends RestClientIT {
@@ -67,6 +70,21 @@ class EquityAccountRestClientIT extends RestClientIT {
 		equityAccountRestClient().deleteByDescription(description);
 		// verify the results
 		assertThat(equityAccountRestClient().findByDescription(description)).isEmpty();
+	}
+
+	private void deleteInvalid(String description, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> equityAccountRestClient().deleteByDescription(description))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		String description = "Invalid equity account";
+		deleteInvalid("", HttpStatus.FORBIDDEN);
+		deleteInvalid(description, HttpStatus.NOT_FOUND);
 	}
 
 }

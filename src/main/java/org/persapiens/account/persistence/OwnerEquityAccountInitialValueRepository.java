@@ -16,6 +16,6 @@ public interface OwnerEquityAccountInitialValueRepository
 	Optional<OwnerEquityAccountInitialValue> findByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount);
 
 	@Transactional
-	void deleteByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount);
+	long deleteByOwnerAndEquityAccount(Owner owner, EquityAccount equityAccount);
 
 }

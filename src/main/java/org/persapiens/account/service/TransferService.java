@@ -52,16 +52,16 @@ public class TransferService {
 			Optional<EquityAccountDTO> debitEquityAccountOptional, Optional<OwnerDTO> creditOwnerOptional,
 			Optional<EquityAccountDTO> creditEquityAccountOptional) {
 		if (debitOwnerOptional.isEmpty()) {
-			throw new BeanNotFoundException("Debit Owner not exists: " + transferDTO.getDebitOwner());
+			throw new AttributeNotFoundException("Debit Owner not exists: " + transferDTO.getDebitOwner());
 		}
 		if (debitEquityAccountOptional.isEmpty()) {
-			throw new BeanNotFoundException("Debit Equity Account not exists: " + transferDTO.getDebitAccount());
+			throw new AttributeNotFoundException("Debit Equity Account not exists: " + transferDTO.getDebitAccount());
 		}
 		if (creditOwnerOptional.isEmpty()) {
-			throw new BeanNotFoundException("Credit Owner not exists: " + transferDTO.getCreditOwner());
+			throw new AttributeNotFoundException("Credit Owner not exists: " + transferDTO.getCreditOwner());
 		}
 		if (creditEquityAccountOptional.isEmpty()) {
-			throw new BeanNotFoundException("Credit Equity Account not exists: " + transferDTO.getCreditAccount());
+			throw new AttributeNotFoundException("Credit Equity Account not exists: " + transferDTO.getCreditAccount());
 		}
 	}
 

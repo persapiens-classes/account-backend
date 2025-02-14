@@ -119,4 +119,19 @@ class CreditAccountRestClientIT extends RestClientIT {
 		assertThat(creditAccountRestClient().findByDescription(description)).isEmpty();
 	}
 
+	private void deleteInvalid(String description, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> creditAccountRestClient().deleteByDescription(description))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		String description = "Invalid credit account";
+		deleteInvalid("", HttpStatus.FORBIDDEN);
+		deleteInvalid(description, HttpStatus.NOT_FOUND);
+	}
+
 }

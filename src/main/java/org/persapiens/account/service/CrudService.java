@@ -75,27 +75,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		}
 	}
 
-	@Transactional
-	public void deleteAll(Iterable<? extends F> dtos) {
-		Iterable<E> entities = toEntities(dtos);
-		this.repository.deleteAll(entities);
-	}
-
-	@Transactional
-	public void deleteAllById(Iterable<? extends K> ids) {
-		this.repository.deleteAllById(ids);
-	}
-
-	@Transactional
-	public void deleteById(K id) {
-		this.repository.deleteById(id);
-	}
-
-	@Transactional
-	public void deleteAll() {
-		this.repository.deleteAll();
-	}
-
 	public Optional<F> findById(K id) {
 		Optional<F> result;
 		Optional<E> byId = this.repository.findById(id);

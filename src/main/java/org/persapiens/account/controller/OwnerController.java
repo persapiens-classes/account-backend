@@ -28,7 +28,7 @@ public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO
 	}
 
 	@DeleteMapping("/{name}")
-	public void deleteByName(@PathVariable String name) {
+	public void deleteByName(@PathVariable(required = true) String name) {
 		this.ownerService.deleteByName(name);
 	}
 

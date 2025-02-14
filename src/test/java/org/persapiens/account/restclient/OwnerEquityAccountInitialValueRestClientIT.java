@@ -134,4 +134,27 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 			.isEmpty();
 	}
 
+	private void deleteInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(ownerName,
+					equityAccountDescription))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		String father = owner(OwnerConstants.FATHER).getName();
+		String savings = equityAccount(EquityAccountConstants.INVESTIMENT,
+				category(CategoryConstants.BANK).getDescription())
+			.getDescription();
+
+		deleteInvalid("", savings, HttpStatus.BAD_REQUEST);
+		deleteInvalid(father, "", HttpStatus.BAD_REQUEST);
+		deleteInvalid("invalid owner", savings, HttpStatus.CONFLICT);
+		deleteInvalid(father, "invalid equity account", HttpStatus.CONFLICT);
+		deleteInvalid(father, savings, HttpStatus.NOT_FOUND);
+	}
+
 }

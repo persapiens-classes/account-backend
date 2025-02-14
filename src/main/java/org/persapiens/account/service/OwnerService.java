@@ -54,7 +54,9 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 
 	@Transactional
 	public void deleteByName(String name) {
-		this.ownerRepository.deleteByName(name);
+		if (this.ownerRepository.deleteByName(name) == 0) {
+			throw new BeanNotFoundException("Bean not found by: " + name);
+		}
 	}
 
 	public void validate(OwnerDTO ownerDto) {

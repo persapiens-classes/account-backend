@@ -89,22 +89,43 @@ public class OwnerEquityAccountInitialValueService extends
 	}
 
 	@Transactional
-	public void deleteByOwnderAndEquityAccount(OwnerDTO ownerDTO, EquityAccountDTO equityAccountDTO) {
-		Owner owner = this.ownerRepository.findByName(ownerDTO.getName()).get();
-		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(equityAccountDTO.getDescription())
-			.get();
-		this.ownerEquityAccountInitialValueRepository.deleteByOwnerAndEquityAccount(owner, equityAccount);
+	public void deleteByOwnderAndEquityAccount(String ownerName, String equityAccountDescription) {
+		validateBlank(ownerName, equityAccountDescription);
+		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
+		Optional<EquityAccount> byDescription = this.equityAccountRepository
+			.findByDescription(equityAccountDescription);
+		validateAttributes(ownerName, equityAccountDescription, byName, byDescription);
+
+		Owner owner = byName.get();
+		EquityAccount equityAccount = byDescription.get();
+		if (this.ownerEquityAccountInitialValueRepository.deleteByOwnerAndEquityAccount(owner, equityAccount) == 0) {
+			throw new BeanNotFoundException("Bean not found by: " + ownerName + "-" + equityAccountDescription);
+		}
 	}
 
-	private void validateBlank(String ownerName, String equityAccountDescription, BigDecimal value) {
+	private void validateBlank(String ownerName, String equityAccountDescription) {
 		if (StringUtils.isBlank(ownerName)) {
 			throw new IllegalArgumentException("Owner empty!");
 		}
 		if (StringUtils.isBlank(equityAccountDescription)) {
 			throw new IllegalArgumentException("Equity Account empty!");
 		}
+	}
+
+	private void validateBlank(String ownerName, String equityAccountDescription, BigDecimal value) {
+		validateBlank(ownerName, equityAccountDescription);
 		if (value == null) {
 			throw new IllegalArgumentException("Value null!");
+		}
+	}
+
+	private void validateAttributes(String ownerName, String equityAccountDescription, Optional<Owner> byName,
+			Optional<EquityAccount> byDescription) {
+		if (!byName.isPresent()) {
+			throw new BeanExistsException("Owner not exists: " + ownerName);
+		}
+		if (!byDescription.isPresent()) {
+			throw new BeanExistsException("Equity Account not exists: " + equityAccountDescription);
 		}
 	}
 
@@ -112,14 +133,10 @@ public class OwnerEquityAccountInitialValueService extends
 		validateBlank(ownerName, equityAccountDescription, value);
 
 		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
-		if (!byName.isPresent()) {
-			throw new BeanExistsException("Owner not exists: " + ownerName);
-		}
 		Optional<EquityAccount> byDescription = this.equityAccountRepository
 			.findByDescription(equityAccountDescription);
-		if (!byDescription.isPresent()) {
-			throw new BeanExistsException("Equity Account not exists: " + equityAccountDescription);
-		}
+		validateAttributes(ownerName, equityAccountDescription, byName, byDescription);
+
 		if (byName.isPresent() && byDescription.isPresent()) {
 			Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
 				.findByOwnerAndEquityAccount(byName.get(), byDescription.get());
@@ -128,7 +145,7 @@ public class OwnerEquityAccountInitialValueService extends
 						"OwnerEquityAccountInitialValue exists: " + ownerName + "-" + equityAccountDescription);
 			}
 			else if (!insert && byOwnerAndEquityAccount.isEmpty()) {
-				throw new BeanNotFoundException(
+				throw new AttributeNotFoundException(
 						"OwnerEquityAccountInitialValue not exists: " + ownerName + "-" + equityAccountDescription);
 			}
 		}

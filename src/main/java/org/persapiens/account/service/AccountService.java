@@ -68,7 +68,9 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 
 	@Transactional
 	public void deleteByDescription(String description) {
-		this.accountRepository.deleteByDescription(description);
+		if (this.accountRepository.deleteByDescription(description) == 0) {
+			throw new BeanNotFoundException("Bean not found by: " + description);
+		}
 	}
 
 	private void validateBlank(D accountDto) {
@@ -86,7 +88,7 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 			throw new BeanExistsException("Description exists: " + accountDto.getDescription());
 		}
 		if (!this.categoryRepository.findByDescription(accountDto.getCategory()).isPresent()) {
-			throw new BeanNotFoundException("Category not exists: " + accountDto.getCategory());
+			throw new AttributeNotFoundException("Category not exists: " + accountDto.getCategory());
 		}
 	}
 

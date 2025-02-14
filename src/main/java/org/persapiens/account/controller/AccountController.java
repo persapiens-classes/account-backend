@@ -25,7 +25,7 @@ public abstract class AccountController<D extends AccountDTO, E extends Account>
 	}
 
 	@DeleteMapping("/{description}")
-	public void deleteByDescription(@PathVariable String description) {
+	public void deleteByDescription(@PathVariable(required = true) String description) {
 		this.accountService.deleteByDescription(description);
 	}
 

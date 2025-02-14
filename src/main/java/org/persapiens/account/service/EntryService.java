@@ -117,7 +117,7 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.getInAccount());
 		}
 		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.getOutAccount()).isPresent()) {
-			throw new BeanNotFoundException("Out account not exists: " + entryInsertUpdateDTO.getOutAccount());
+			throw new AttributeNotFoundException("Out account not exists: " + entryInsertUpdateDTO.getOutAccount());
 		}
 		if (!this.ownerRepository.findByName(entryInsertUpdateDTO.getOwner()).isPresent()) {
 			throw new BeanExistsException("Owner not exists: " + entryInsertUpdateDTO.getOwner());
@@ -155,6 +155,16 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 
 	public BigDecimal debitSum(OwnerDTO ownerDTO, EquityAccountDTO equityAccountDTO) {
 		return this.entryRepository.debitSum(owner(ownerDTO), equityAccount(equityAccountDTO)).getValue();
+	}
+
+	@Transactional
+	public void deleteById(long id) {
+		if (this.entryRepository.existsById(id)) {
+			this.entryRepository.deleteById(id);
+		}
+		else {
+			throw new BeanNotFoundException("Entry not found by: " + id);
+		}
 	}
 
 }

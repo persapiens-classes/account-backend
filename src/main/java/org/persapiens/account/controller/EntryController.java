@@ -37,7 +37,7 @@ public class EntryController
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id) {
+	public void deleteById(@PathVariable(required = true) Long id) {
 		this.entryService.deleteById(id);
 	}
 

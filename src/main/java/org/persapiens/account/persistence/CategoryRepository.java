@@ -12,6 +12,6 @@ public interface CategoryRepository extends CrudRepository<Category, Long> {
 	Optional<Category> findByDescription(String description);
 
 	@Transactional
-	void deleteByDescription(String description);
+	long deleteByDescription(String description);
 
 }

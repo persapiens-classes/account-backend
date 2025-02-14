@@ -54,7 +54,9 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 
 	@Transactional
 	public void deleteByDescription(String description) {
-		this.categoryRepository.deleteByDescription(description);
+		if (this.categoryRepository.deleteByDescription(description) == 0) {
+			throw new BeanNotFoundException("Bean not found by: " + description);
+		}
 	}
 
 	private CategoryDTO categoryDTO(String description) {
