@@ -28,7 +28,7 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 	}
 
 	@DeleteMapping("/{description}")
-	public void deleteByDescription(@PathVariable String description) {
+	public void deleteByDescription(@PathVariable(required = true) String description) {
 		this.categoryService.deleteByDescription(description);
 	}
 

@@ -43,9 +43,7 @@ public class OwnerEquityAccountInitialValueController extends
 	@DeleteMapping
 	public void deleteByOwnderAndEquityAccount(@RequestParam(required = true) String owner,
 			@RequestParam(required = true) String equityAccount) {
-		this.ownerEquityAccountInitialValueService.deleteByOwnderAndEquityAccount(
-				this.ownerService.findByName(owner).get(),
-				this.equityAccountService.findByDescription(equityAccount).get());
+		this.ownerEquityAccountInitialValueService.deleteByOwnderAndEquityAccount(owner, equityAccount);
 	}
 
 	@PutMapping
