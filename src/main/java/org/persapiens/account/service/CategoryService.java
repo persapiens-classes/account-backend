@@ -18,23 +18,22 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	private CategoryRepository categoryRepository;
 
 	@Override
-	protected Category toEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.getDescription()).build();
-	}
-
-	@Override
 	protected CategoryDTO toDTO(Category entity) {
 		return CategoryDTO.builder().description(entity.getDescription()).build();
 	}
 
-	@Override
-	protected Category insertDtoToEntity(CategoryDTO dto) {
+	private Category toEntity(CategoryDTO dto) {
 		return Category.builder().description(dto.getDescription()).build();
 	}
 
 	@Override
+	protected Category insertDtoToEntity(CategoryDTO dto) {
+		return toEntity(dto);
+	}
+
+	@Override
 	protected Category updateDtoToEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.getDescription()).build();
+		return toEntity(dto);
 	}
 
 	@Override
