@@ -35,10 +35,10 @@ public class BalanceService {
 	private void validateFields(String ownerName, String equityAccountDescription, Optional<OwnerDTO> ownerOptional,
 			Optional<EquityAccountDTO> equityAccountOptional) {
 		if (ownerOptional.isEmpty()) {
-			throw new BeanNotFoundException("Owner not exists: " + ownerName);
+			throw new AttributeNotFoundException("Owner not exists: " + ownerName);
 		}
 		if (equityAccountOptional.isEmpty()) {
-			throw new BeanNotFoundException("Equity Account not exists: " + equityAccountDescription);
+			throw new AttributeNotFoundException("Equity Account not exists: " + equityAccountDescription);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class BalanceService {
 		Optional<OwnerEquityAccountInitialValueDTO> ownerAndEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueService
 			.findByOwnerAndEquityAccount(owner, equityAccount);
 		if (ownerAndEquityAccountInitialValueOptional.isEmpty()) {
-			throw new BeanNotFoundException(
+			throw new AttributeNotFoundException(
 					"OwnerEquityAccountInitialValue not exists: " + ownerName + '-' + equityAccountDescription);
 		}
 
