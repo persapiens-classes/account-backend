@@ -91,4 +91,19 @@ class CategoryRestClientIT extends RestClientIT {
 		assertThat(categoryRestClient().findByDescription(description)).isEmpty();
 	}
 
+	private void deleteInvalid(String description, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> categoryRestClient().deleteByDescription(description))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		String description = "Invalid category";
+		deleteInvalid("", HttpStatus.FORBIDDEN);
+		deleteInvalid(description, HttpStatus.NOT_FOUND);
+	}
+
 }

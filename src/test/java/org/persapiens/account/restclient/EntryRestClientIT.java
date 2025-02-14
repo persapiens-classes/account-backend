@@ -93,19 +93,6 @@ class EntryRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	void deleteOne() {
-		EntryInsertUpdateDTO entryInsertDTO = entry();
-
-		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
-
-		assertThat(entryDTO.getId()).isGreaterThan(0);
-
-		entryRestClient().deleteById(entryDTO.getId());
-
-		assertThat(entryRestClient().findById(entryDTO.getId())).isEmpty();
-	}
-
-	@Test
 	void updateOne() {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
@@ -123,6 +110,32 @@ class EntryRestClientIT extends RestClientIT {
 		entryRestClient().update(entryDTO.getId(), entryUpdate);
 
 		assertThat(entryRestClient().findById(entryDTO.getId()).get().getNote()).isEqualTo("updated note");
+	}
+
+	@Test
+	void deleteOne() {
+		EntryInsertUpdateDTO entryInsertDTO = entry();
+
+		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
+
+		assertThat(entryDTO.getId()).isGreaterThan(0);
+
+		entryRestClient().deleteById(entryDTO.getId());
+
+		assertThat(entryRestClient().findById(entryDTO.getId())).isEmpty();
+	}
+
+	private void deleteInvalid(long id, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> entryRestClient().deleteById(id))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void deleteInvalid() {
+		long id = 1000;
+		deleteInvalid(id, HttpStatus.NOT_FOUND);
 	}
 
 }

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
@@ -35,12 +34,6 @@ class EntryServiceIT {
 	@Test
 	void repositoryNotNull() {
 		assertThat(this.entryService).isNotNull();
-	}
-
-	@BeforeEach
-	void deletarTodos() {
-		this.entryService.deleteAll();
-		assertThat(this.entryService.findAll()).isEmpty();
 	}
 
 	@Test
