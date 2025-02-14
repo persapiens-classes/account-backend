@@ -13,8 +13,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 
 	private CrudRepository<E, K> repository;
 
-	protected abstract E toEntity(F dto);
-
 	protected abstract F toDTO(E entity);
 
 	protected abstract E insertDtoToEntity(I dto);

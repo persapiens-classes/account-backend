@@ -35,18 +35,6 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	private EquityAccountRepository equityAccountRepository;
 
 	@Override
-	protected Entry toEntity(EntryDTO dto) {
-		return Entry.builder()
-			.inAccount(this.accountRepository.findByDescription(dto.getInAccount().getDescription()).get())
-			.outAccount(this.accountRepository.findByDescription(dto.getOutAccount().getDescription()).get())
-			.owner(this.ownerRepository.findByName(dto.getOwner()).get())
-			.date(dto.getDate())
-			.value(dto.getValue())
-			.note(dto.getNote())
-			.build();
-	}
-
-	@Override
 	protected EntryDTO toDTO(Entry entry) {
 		return EntryDTO.builder()
 			.id(entry.getId())
@@ -65,21 +53,25 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 			.build();
 	}
 
-	@Override
-	protected Entry insertDtoToEntity(EntryInsertUpdateDTO entryInsertDTO) {
+	private Entry toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		return Entry.builder()
-			.inAccount(this.accountRepository.findByDescription(entryInsertDTO.getInAccount()).get())
-			.outAccount(this.accountRepository.findByDescription(entryInsertDTO.getOutAccount()).get())
-			.owner(this.ownerRepository.findByName(entryInsertDTO.getOwner()).get())
-			.value(entryInsertDTO.getValue())
-			.note(entryInsertDTO.getNote())
-			.date(entryInsertDTO.getDate())
+			.inAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.getInAccount()).get())
+			.outAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.getOutAccount()).get())
+			.owner(this.ownerRepository.findByName(entryInsertUpdateDTO.getOwner()).get())
+			.value(entryInsertUpdateDTO.getValue())
+			.note(entryInsertUpdateDTO.getNote())
+			.date(entryInsertUpdateDTO.getDate())
 			.build();
 	}
 
 	@Override
-	protected Entry updateDtoToEntity(EntryInsertUpdateDTO entryInsertDTO) {
-		return insertDtoToEntity(entryInsertDTO);
+	protected Entry insertDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		return toEntity(entryInsertUpdateDTO);
+	}
+
+	@Override
+	protected Entry updateDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		return toEntity(entryInsertUpdateDTO);
 	}
 
 	@Override

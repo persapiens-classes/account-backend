@@ -18,13 +18,12 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	private OwnerRepository ownerRepository;
 
 	@Override
-	protected Owner toEntity(OwnerDTO dto) {
-		return Owner.builder().name(dto.getName()).build();
-	}
-
-	@Override
 	protected OwnerDTO toDTO(Owner entity) {
 		return OwnerDTO.builder().name(entity.getName()).build();
+	}
+
+	private Owner toEntity(OwnerDTO dto) {
+		return Owner.builder().name(dto.getName()).build();
 	}
 
 	@Override

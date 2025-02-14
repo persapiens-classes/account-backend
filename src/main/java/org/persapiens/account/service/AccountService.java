@@ -26,18 +26,17 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 	protected abstract D createAccountDTO();
 
 	@Override
-	public E toEntity(D dto) {
-		E result = createAccount();
-		result.setDescription(dto.getDescription());
-		result.setCategory(this.categoryRepository.findByDescription(dto.getCategory()).get());
-		return result;
-	}
-
-	@Override
 	protected D toDTO(E entity) {
 		D result = createAccountDTO();
 		result.setDescription(entity.getDescription());
 		result.setCategory(entity.getCategory().getDescription());
+		return result;
+	}
+
+	private E toEntity(D dto) {
+		E result = createAccount();
+		result.setDescription(dto.getDescription());
+		result.setCategory(this.categoryRepository.findByDescription(dto.getCategory()).get());
 		return result;
 	}
 
