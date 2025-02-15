@@ -64,27 +64,6 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		}
 	}
 
-	private CategoryDTO categoryDTO(String description) {
-		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
-		if (findByDescricao.isEmpty()) {
-			CategoryDTO result = CategoryDTO.builder().description(description).build();
-			return insert(result);
-		}
-		else {
-			return toDTO(findByDescricao.get());
-		}
-	}
-
-	@Transactional
-	public CategoryDTO expenseTransfer() {
-		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
-	}
-
-	@Transactional
-	public CategoryDTO incomeTransfer() {
-		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
-	}
-
 	private void validate(CategoryDTO categoryDto) {
 		if (StringUtils.isBlank(categoryDto.getDescription())) {
 			throw new IllegalArgumentException("Description empty!");
@@ -106,6 +85,27 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		validate(updateDto);
 
 		return super.update(updateKey, updateDto);
+	}
+
+	private CategoryDTO categoryDTO(String description) {
+		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
+		if (findByDescricao.isEmpty()) {
+			CategoryDTO result = CategoryDTO.builder().description(description).build();
+			return insert(result);
+		}
+		else {
+			return toDTO(findByDescricao.get());
+		}
+	}
+
+	@Transactional
+	public CategoryDTO expenseTransfer() {
+		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
+	}
+
+	@Transactional
+	public CategoryDTO incomeTransfer() {
+		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
 }
