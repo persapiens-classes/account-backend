@@ -53,15 +53,15 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 	}
 
 	@Transactional
-	public Optional<F> update(B updateKey, U updateDto) {
+	public F update(B updateKey, U updateDto) {
 		Optional<E> byUpdateKey = findByUpdateKey(updateKey);
 		if (byUpdateKey.isPresent()) {
 			E updateEntity = updateDtoToEntity(updateDto);
 			updateEntity = setIdToUpdate(byUpdateKey.get(), updateEntity);
-			return Optional.of(toDTO(this.repository.save(updateEntity)));
+			return toDTO(this.repository.save(updateEntity));
 		}
 		else {
-			return Optional.empty();
+			throw new BeanNotFoundException("Bean not found by: " + updateKey);
 		}
 	}
 
