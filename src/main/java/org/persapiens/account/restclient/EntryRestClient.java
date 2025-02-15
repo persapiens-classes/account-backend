@@ -1,7 +1,6 @@
 package org.persapiens.account.restclient;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.EntryDTO;
@@ -27,12 +26,12 @@ public class EntryRestClient {
 			.body(EntryDTO.class);
 	}
 
-	public Optional<EntryDTO> findById(Long id) {
-		return Optional.ofNullable(this.restClientHelper.getRestClient()
+	public EntryDTO findById(Long id) {
+		return this.restClientHelper.getRestClient()
 			.get()
 			.uri(this.restClientHelper.findByIdUri(id))
 			.retrieve()
-			.body(EntryDTO.class));
+			.body(EntryDTO.class);
 	}
 
 	public void deleteById(Long id) {

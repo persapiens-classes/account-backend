@@ -1,7 +1,5 @@
 package org.persapiens.account.restclient;
 
-import java.util.Optional;
-
 import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CreditAccountDTO;
 
@@ -23,12 +21,12 @@ public class CreditAccountRestClient {
 			.body(CreditAccountDTO.class);
 	}
 
-	public Optional<CreditAccountDTO> findByDescription(String description) {
-		return Optional.ofNullable(this.restClientHelper.getRestClient()
+	public CreditAccountDTO findByDescription(String description) {
+		return this.restClientHelper.getRestClient()
 			.get()
 			.uri(this.restClientHelper.findByDescriptionUri(description))
 			.retrieve()
-			.body(CreditAccountDTO.class));
+			.body(CreditAccountDTO.class);
 	}
 
 	public void deleteByDescription(String description) {

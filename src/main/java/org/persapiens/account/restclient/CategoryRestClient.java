@@ -1,7 +1,5 @@
 package org.persapiens.account.restclient;
 
-import java.util.Optional;
-
 import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.CategoryDTO;
 
@@ -23,12 +21,12 @@ public class CategoryRestClient {
 			.body(CategoryDTO.class);
 	}
 
-	public Optional<CategoryDTO> findByDescription(String description) {
-		return Optional.ofNullable(this.restClientHelper.getRestClient()
+	public CategoryDTO findByDescription(String description) {
+		return this.restClientHelper.getRestClient()
 			.get()
 			.uri(this.restClientHelper.findByDescriptionUri(description))
 			.retrieve()
-			.body(CategoryDTO.class));
+			.body(CategoryDTO.class);
 	}
 
 	public void deleteByDescription(String description) {

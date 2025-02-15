@@ -2,7 +2,6 @@ package org.persapiens.account.restclient;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
@@ -32,13 +31,13 @@ public class OwnerEquityAccountInitialValueRestClient {
 		return result;
 	}
 
-	public Optional<OwnerEquityAccountInitialValueDTO> findByOwnerAndEquityAccount(String owner, String equityAccount) {
-		return Optional.ofNullable(this.restClientHelper.getRestClient()
+	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(String owner, String equityAccount) {
+		return this.restClientHelper.getRestClient()
 			.get()
 			.uri(this.restClientHelper.findByUri("/filter?owner={owner}&equityAccount={equityAccount}",
 					uriVariables(owner, equityAccount)))
 			.retrieve()
-			.body(OwnerEquityAccountInitialValueDTO.class));
+			.body(OwnerEquityAccountInitialValueDTO.class);
 	}
 
 	public void deleteByOwnerAndEquityAccount(String owner, String equityAccount) {
