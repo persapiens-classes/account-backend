@@ -17,7 +17,7 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 	}
 
 	@PostMapping
-	public F insert(@RequestBody I insertDto) {
+	public F insert(@RequestBody(required = true) I insertDto) {
 		return this.crudService.insert(insertDto);
 	}
 

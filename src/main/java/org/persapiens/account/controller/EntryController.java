@@ -1,7 +1,6 @@
 package org.persapiens.account.controller;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Entry;
@@ -27,7 +26,7 @@ public class EntryController
 	private EntryService entryService;
 
 	@GetMapping("/{id}")
-	public Optional<EntryDTO> findById(@PathVariable Long id) {
+	public EntryDTO findById(@PathVariable(required = true) Long id) {
 		return this.entryService.findById(id);
 	}
 

@@ -1,7 +1,5 @@
 package org.persapiens.account.controller;
 
-import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
@@ -23,7 +21,7 @@ public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO
 	private OwnerService ownerService;
 
 	@GetMapping("/{name}")
-	public Optional<OwnerDTO> findByName(@PathVariable String name) {
+	public OwnerDTO findByName(@PathVariable(required = true) String name) {
 		return this.ownerService.findByName(name);
 	}
 

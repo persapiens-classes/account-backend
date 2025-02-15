@@ -1,16 +1,13 @@
 package org.persapiens.account.controller;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.dto.OwnerNameEquityAccountDescription;
-import org.persapiens.account.service.EquityAccountService;
 import org.persapiens.account.service.OwnerEquityAccountInitialValueService;
-import org.persapiens.account.service.OwnerService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,16 +25,10 @@ public class OwnerEquityAccountInitialValueController extends
 
 	private OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
-	private OwnerService ownerService;
-
-	private EquityAccountService equityAccountService;
-
 	@GetMapping("/filter")
-	public Optional<OwnerEquityAccountInitialValueDTO> findByOwnerAndEquityAccount(
-			@RequestParam(required = true) String owner, @RequestParam(required = true) String equityAccount) {
-		return this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(
-				this.ownerService.findByName(owner).get(),
-				this.equityAccountService.findByDescription(equityAccount).get());
+	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(@RequestParam(required = true) String owner,
+			@RequestParam(required = true) String equityAccount) {
+		return this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(owner, equityAccount);
 	}
 
 	@DeleteMapping
