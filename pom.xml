@@ -560,16 +560,6 @@
                                                     <allow>
                                                         <one-of>dto, domain</one-of>
                                                     </allow>
-                                                    <allow>
-                                                        <one-of>restclient, controller</one-of>
-                                                        <any-of>dto</any-of>
-                                                    </allow>
-                                                    <allow>
-                                                        <one-of>restclient, service</one-of>
-                                                    </allow>
-                                                    <allow>
-                                                        <one-of>restclient, domain</one-of>
-                                                    </allow>
                                                 </constraints>
                                             </slicing>
                                         </slicings>
