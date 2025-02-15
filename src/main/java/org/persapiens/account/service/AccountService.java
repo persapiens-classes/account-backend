@@ -99,7 +99,7 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 	}
 
 	@Override
-	public Optional<D> update(String updateKey, D updateDto) {
+	public D update(String updateKey, D updateDto) {
 		validate(updateDto);
 
 		return super.update(updateKey, updateDto);

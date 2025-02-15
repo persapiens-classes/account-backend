@@ -75,6 +75,34 @@ class OwnerRestClientIT extends RestClientIT {
 		assertThat(ownerRestClient().findByName(owner.getName()).get().getName()).isEqualTo(owner.getName());
 	}
 
+	private void updateInvalid(String oldName, String newName, HttpStatus httpStatus) {
+		OwnerDTO category = OwnerDTO.builder().name(newName).build();
+
+		// verify update operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerRestClient().update(oldName, category))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void updateInvalid() {
+		OwnerDTO ownerToUpdate = owner("owner to update");
+
+		// empty id
+		updateInvalid("", "", HttpStatus.FORBIDDEN);
+		updateInvalid("", ownerToUpdate.getName(), HttpStatus.FORBIDDEN);
+
+		// empty fields
+		updateInvalid(ownerToUpdate.getName(), "", HttpStatus.BAD_REQUEST);
+
+		// invalid id
+		updateInvalid("invalid owner", "valid owner name", HttpStatus.NOT_FOUND);
+
+		// invalid field
+		updateInvalid(ownerToUpdate.getName(), ownerToUpdate.getName(), HttpStatus.CONFLICT);
+	}
+
 	@Test
 	void deleteOne() {
 		// create test environment

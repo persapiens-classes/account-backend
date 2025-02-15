@@ -132,17 +132,15 @@ public class OwnerEquityAccountInitialValueService extends
 			.findByDescription(equityAccountDescription);
 		validateAttributes(ownerName, equityAccountDescription, byName, byDescription);
 
-		if (byName.isPresent() && byDescription.isPresent()) {
-			Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
-				.findByOwnerAndEquityAccount(byName.get(), byDescription.get());
-			if (insert && byOwnerAndEquityAccount.isPresent()) {
-				throw new BeanExistsException(
-						"OwnerEquityAccountInitialValue exists: " + ownerName + "-" + equityAccountDescription);
-			}
-			else if (!insert && byOwnerAndEquityAccount.isEmpty()) {
-				throw new AttributeNotFoundException(
-						"OwnerEquityAccountInitialValue not exists: " + ownerName + "-" + equityAccountDescription);
-			}
+		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
+			.findByOwnerAndEquityAccount(byName.get(), byDescription.get());
+		if (insert && byOwnerAndEquityAccount.isPresent()) {
+			throw new BeanExistsException(
+					"OwnerEquityAccountInitialValue exists: " + ownerName + "-" + equityAccountDescription);
+		}
+		else if (!insert && byOwnerAndEquityAccount.isEmpty()) {
+			throw new BeanNotFoundException(
+					"OwnerEquityAccountInitialValue not exists: " + ownerName + "-" + equityAccountDescription);
 		}
 	}
 
@@ -153,8 +151,7 @@ public class OwnerEquityAccountInitialValueService extends
 	}
 
 	@Override
-	public Optional<OwnerEquityAccountInitialValueDTO> update(OwnerNameEquityAccountDescription updateKey,
-			BigDecimal updateDto) {
+	public OwnerEquityAccountInitialValueDTO update(OwnerNameEquityAccountDescription updateKey, BigDecimal updateDto) {
 		validate(updateKey.getOwnerName(), updateKey.getEquityAccountDescription(), updateDto, false);
 		return super.update(updateKey, updateDto);
 	}

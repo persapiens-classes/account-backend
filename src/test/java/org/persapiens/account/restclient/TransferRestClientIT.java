@@ -77,6 +77,9 @@ class TransferRestClientIT extends RestClientIT {
 		transferInvalid(aunt, "invalid debit equity account", uncle, investiment, value, HttpStatus.CONFLICT);
 		transferInvalid(aunt, checkings, "invalid credit account", investiment, value, HttpStatus.CONFLICT);
 		transferInvalid(aunt, checkings, uncle, "invalid credit equity account", value, HttpStatus.CONFLICT);
+
+		// test same owners
+		transferInvalid(aunt, checkings, aunt, investiment, value, HttpStatus.BAD_REQUEST);
 	}
 
 	private void transferInvalid(String debitOwnerName, String debitEquityAccountDescription, String creditOwnerName,

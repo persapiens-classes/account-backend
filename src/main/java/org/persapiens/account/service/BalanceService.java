@@ -5,9 +5,13 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.dto.OwnerDTO;
-import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.Owner;
+import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
+import org.persapiens.account.persistence.EntryRepository;
+import org.persapiens.account.persistence.EquityAccountRepository;
+import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
+import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -15,13 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class BalanceService {
 
-	private final EntryService entryService;
+	private EntryRepository entryRepository;
 
-	private OwnerService ownerService;
+	private OwnerRepository ownerRepository;
 
-	private EquityAccountService equityAccountService;
+	private EquityAccountRepository equityAccountRepository;
 
-	private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
+	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
 	private void validateBlank(String ownerName, String equityAccountDescription) {
 		if (StringUtils.isBlank(ownerName)) {
@@ -32,8 +36,8 @@ public class BalanceService {
 		}
 	}
 
-	private void validateFields(String ownerName, String equityAccountDescription, Optional<OwnerDTO> ownerOptional,
-			Optional<EquityAccountDTO> equityAccountOptional) {
+	private void validateFields(String ownerName, String equityAccountDescription, Optional<Owner> ownerOptional,
+			Optional<EquityAccount> equityAccountOptional) {
 		if (ownerOptional.isEmpty()) {
 			throw new AttributeNotFoundException("Owner not exists: " + ownerName);
 		}
@@ -45,16 +49,16 @@ public class BalanceService {
 	public BigDecimal balance(String ownerName, String equityAccountDescription) {
 		validateBlank(ownerName, equityAccountDescription);
 
-		Optional<OwnerDTO> ownerOptional = this.ownerService.findByName(ownerName);
-		Optional<EquityAccountDTO> equityAccountOptional = this.equityAccountService
+		Optional<Owner> ownerOptional = this.ownerRepository.findByName(ownerName);
+		Optional<EquityAccount> equityAccountOptional = this.equityAccountRepository
 			.findByDescription(equityAccountDescription);
 
 		validateFields(ownerName, equityAccountDescription, ownerOptional, equityAccountOptional);
 
-		OwnerDTO owner = ownerOptional.get();
-		EquityAccountDTO equityAccount = equityAccountOptional.get();
+		Owner owner = ownerOptional.get();
+		EquityAccount equityAccount = equityAccountOptional.get();
 
-		Optional<OwnerEquityAccountInitialValueDTO> ownerAndEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueService
+		Optional<OwnerEquityAccountInitialValue> ownerAndEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueRepository
 			.findByOwnerAndEquityAccount(owner, equityAccount);
 		if (ownerAndEquityAccountInitialValueOptional.isEmpty()) {
 			throw new AttributeNotFoundException(
@@ -65,10 +69,10 @@ public class BalanceService {
 		BigDecimal result = ownerAndEquityAccountInitialValueOptional.get().getValue();
 
 		// sum credits of owner and equity account
-		BigDecimal credits = this.entryService.creditSum(owner, equityAccount);
+		BigDecimal credits = this.entryRepository.creditSum(owner, equityAccount).getValue();
 
 		// subtract debits of owner and equity account
-		BigDecimal debits = this.entryService.debitSum(owner, equityAccount);
+		BigDecimal debits = this.entryRepository.debitSum(owner, equityAccount).getValue();
 
 		return result.add(credits).subtract(debits);
 	}

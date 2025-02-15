@@ -48,19 +48,12 @@ public class OwnerEquityAccountInitialValueController extends
 
 	@PutMapping
 	public OwnerEquityAccountInitialValueDTO update(@RequestParam(required = true) String owner,
-			@RequestParam(required = true) String equityAccount, @RequestBody BigDecimal value) {
-		OwnerEquityAccountInitialValueDTO result = null;
-
+			@RequestParam(required = true) String equityAccount, @RequestBody(required = true) BigDecimal value) {
 		OwnerNameEquityAccountDescription updateKey = OwnerNameEquityAccountDescription.builder()
 			.ownerName(owner)
 			.equityAccountDescription(equityAccount)
 			.build();
-		Optional<OwnerEquityAccountInitialValueDTO> ownerEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueService
-			.update(updateKey, value);
-		if (ownerEquityAccountInitialValueOptional.isPresent()) {
-			result = ownerEquityAccountInitialValueOptional.get();
-		}
-		return result;
+		return this.ownerEquityAccountInitialValueService.update(updateKey, value);
 	}
 
 }

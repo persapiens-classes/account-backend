@@ -83,6 +83,47 @@ class CreditAccountRestClientIT extends RestClientIT {
 		invalidInsert(description, categoryDescription, HttpStatus.CONFLICT);
 	}
 
+	private void updateInvalid(String oldDescription, String description, String categoryDescription,
+			HttpStatus httpStatus) {
+		CreditAccountDTO creditAccount = CreditAccountDTO.builder()
+			.description(description)
+			.category(categoryDescription)
+			.build();
+
+		// verify update operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> creditAccountRestClient().update(oldDescription, creditAccount))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void updateInvalid() {
+		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
+		CreditAccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
+
+		// empty id
+		updateInvalid("", "", "", HttpStatus.FORBIDDEN);
+		updateInvalid("", "", creditAccountToUpdate.getCategory(), HttpStatus.FORBIDDEN);
+		updateInvalid("", creditAccountToUpdate.getDescription(), "", HttpStatus.FORBIDDEN);
+
+		// empty fields
+		updateInvalid(creditAccountToUpdate.getDescription(), "", "", HttpStatus.BAD_REQUEST);
+		updateInvalid(creditAccountToUpdate.getDescription(), "credit account updated", "", HttpStatus.BAD_REQUEST);
+		updateInvalid(creditAccountToUpdate.getDescription(), "", creditAccountToUpdate.getCategory(),
+				HttpStatus.BAD_REQUEST);
+
+		// invalid id
+		updateInvalid("invalid credit account", "credit account updated", creditAccountToUpdate.getCategory(),
+				HttpStatus.NOT_FOUND);
+
+		// invalid fields
+		updateInvalid(creditAccountToUpdate.getDescription(), "credit account updated", "invalid category",
+				HttpStatus.CONFLICT);
+		updateInvalid(creditAccountToUpdate.getDescription(), creditAccountToUpdate.getDescription(),
+				creditAccountToUpdate.getCategory(), HttpStatus.CONFLICT);
+	}
+
 	@Test
 	void updateOne() {
 		CreditAccountDTO creditAccount = creditAccount("Inserted creditAccount",

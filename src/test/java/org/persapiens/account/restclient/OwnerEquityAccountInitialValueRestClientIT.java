@@ -90,6 +90,38 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		insertInvalid(new BigDecimal(1000), uncle.getName(), savings.getDescription(), HttpStatus.CONFLICT);
 	}
 
+	private void updateInvalid(String owner, String equityAccount, BigDecimal value, HttpStatus httpStatus) {
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = OwnerEquityAccountInitialValueDTO
+			.builder()
+			.value(value)
+			.owner(owner)
+			.equityAccount(equityAccount)
+			.build();
+
+		// verify update operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().update(ownerEquityAccountInitialValueDto))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void updateInvalid() {
+		OwnerDTO grandmother = owner("grandmother");
+		EquityAccountDTO savings = equityAccount(EquityAccountConstants.INVESTIMENT,
+				category(CategoryConstants.BANK).getDescription());
+
+		// empty id
+		updateInvalid("", "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
+		updateInvalid(grandmother.getName(), "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
+		updateInvalid("", savings.getDescription(), new BigDecimal(100), HttpStatus.BAD_REQUEST);
+
+		// invalid id
+		updateInvalid("invalid owner", savings.getDescription(), new BigDecimal(100), HttpStatus.CONFLICT);
+		updateInvalid(grandmother.getName(), "invalid equity account", new BigDecimal(100), HttpStatus.CONFLICT);
+		updateInvalid(grandmother.getName(), savings.getDescription(), new BigDecimal(100), HttpStatus.NOT_FOUND);
+	}
+
 	@Test
 	void updateOne() {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);

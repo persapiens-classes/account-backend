@@ -12,8 +12,6 @@ import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.persistence.AccountRepository;
 import org.persapiens.account.persistence.EntryRepository;
 import org.persapiens.account.persistence.EquityAccountRepository;
@@ -128,25 +126,25 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	@Override
-	public Optional<EntryDTO> update(Long updateKey, EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	public EntryDTO update(Long updateKey, EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validate(entryInsertUpdateDTO);
 		return super.update(updateKey, entryInsertUpdateDTO);
 	}
 
-	private Owner owner(OwnerDTO ownerDTO) {
-		return this.ownerRepository.findByName(ownerDTO.getName()).get();
+	public BigDecimal creditSum(String ownerName, String equityAccountDescription) {
+		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
+		Optional<EquityAccount> byDescription = this.equityAccountRepository
+			.findByDescription(equityAccountDescription);
+
+		return this.entryRepository.creditSum(byName.get(), byDescription.get()).getValue();
 	}
 
-	private EquityAccount equityAccount(EquityAccountDTO equityAccountDTO) {
-		return this.equityAccountRepository.findByDescription(equityAccountDTO.getDescription()).get();
-	}
+	public BigDecimal debitSum(String ownerName, String equityAccountDescription) {
+		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
+		Optional<EquityAccount> byDescription = this.equityAccountRepository
+			.findByDescription(equityAccountDescription);
 
-	public BigDecimal creditSum(OwnerDTO ownerDTO, EquityAccountDTO equityAccountDTO) {
-		return this.entryRepository.creditSum(owner(ownerDTO), equityAccount(equityAccountDTO)).getValue();
-	}
-
-	public BigDecimal debitSum(OwnerDTO ownerDTO, EquityAccountDTO equityAccountDTO) {
-		return this.entryRepository.debitSum(owner(ownerDTO), equityAccount(equityAccountDTO)).getValue();
+		return this.entryRepository.debitSum(byName.get(), byDescription.get()).getValue();
 	}
 
 	@Transactional

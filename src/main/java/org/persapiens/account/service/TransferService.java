@@ -79,6 +79,10 @@ public class TransferService {
 		validateFields(transferDTO, debitOwnerOptional, debitEquityAccountOptional, creditOwnerOptional,
 				creditEquityAccountOptional);
 
+		if (transferDTO.getCreditOwner().equals(transferDTO.getDebitOwner())) {
+			throw new IllegalArgumentException("Owners should be different: " + transferDTO.getCreditOwner());
+		}
+
 		BigDecimal value = transferDTO.getValue();
 		OwnerDTO debitOwnerDTO = debitOwnerOptional.get();
 		EquityAccountDTO debitEquityAccountDTO = debitEquityAccountOptional.get();
@@ -87,10 +91,6 @@ public class TransferService {
 
 		DebitAccountDTO expenseTransferDTO = this.debitAccountService.expenseTransfer();
 		CreditAccountDTO incomeTransferDTO = this.creditAccountService.incomeTransfer();
-
-		if (creditOwnerDTO.equals(debitOwnerDTO)) {
-			throw new IllegalArgumentException("Owners should be different: " + debitOwnerDTO + " = " + creditOwnerDTO);
-		}
 
 		LocalDateTime date = LocalDateTime.now();
 

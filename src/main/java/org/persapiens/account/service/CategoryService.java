@@ -94,7 +94,7 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	@Override
-	public Optional<CategoryDTO> update(String updateKey, CategoryDTO updateDto) {
+	public CategoryDTO update(String updateKey, CategoryDTO updateDto) {
 		validate(updateDto);
 
 		return super.update(updateKey, updateDto);

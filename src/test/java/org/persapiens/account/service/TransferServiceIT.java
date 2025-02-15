@@ -36,10 +36,12 @@ class TransferServiceIT {
 			.creditAccount(this.equityAccountDTOFactory.savings().getDescription())
 			.build());
 
-		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father(), this.equityAccountDTOFactory.checking()))
+		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().getName(),
+				this.equityAccountDTOFactory.checking().getDescription()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 
-		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt(), this.equityAccountDTOFactory.savings()))
+		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt().getName(),
+				this.equityAccountDTOFactory.savings().getDescription()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 	}
 

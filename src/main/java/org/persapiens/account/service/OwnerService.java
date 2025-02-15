@@ -75,7 +75,7 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	}
 
 	@Override
-	public Optional<OwnerDTO> update(String updateKey, OwnerDTO updateDto) {
+	public OwnerDTO update(String updateKey, OwnerDTO updateDto) {
 		validate(updateDto);
 
 		return super.update(updateKey, updateDto);

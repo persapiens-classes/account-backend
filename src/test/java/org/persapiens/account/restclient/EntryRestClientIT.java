@@ -89,7 +89,6 @@ class EntryRestClientIT extends RestClientIT {
 		invalidInsert(value, date, "invalid owner", inAccountDescription, outAccountDescription, HttpStatus.CONFLICT);
 		invalidInsert(value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.CONFLICT);
 		invalidInsert(value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.CONFLICT);
-
 	}
 
 	@Test
@@ -110,6 +109,67 @@ class EntryRestClientIT extends RestClientIT {
 		entryRestClient().update(entryDTO.getId(), entryUpdate);
 
 		assertThat(entryRestClient().findById(entryDTO.getId()).get().getNote()).isEqualTo("updated note");
+	}
+
+	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
+			String inAccountDescription, String outAccountDescription, HttpStatus httpStatus) {
+		EntryInsertUpdateDTO entryInsertUpdateDTO = EntryInsertUpdateDTO.builder()
+			.value(value)
+			.note("invalid update")
+			.owner(ownerName)
+			.inAccount(inAccountDescription)
+			.outAccount(outAccountDescription)
+			.date(date)
+			.build();
+
+		// verify update operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> entryRestClient().update(id, entryInsertUpdateDTO))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void updateInvalid() {
+		BigDecimal value = new BigDecimal(100);
+		LocalDateTime date = LocalDateTime.now();
+		String ownerName = owner(OwnerConstants.AUNT).getName();
+		String salary = category(CategoryConstants.SALARY).getDescription();
+		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
+		String cash = category(CategoryConstants.CASH).getDescription();
+		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).getDescription();
+
+		// empty id
+		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);
+		updateInvalid(null, value, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.FORBIDDEN);
+
+		EntryInsertUpdateDTO entryInsertUpdateDTO = EntryInsertUpdateDTO.builder()
+			.value(value)
+			.note("valid entry")
+			.owner(ownerName)
+			.inAccount(inAccountDescription)
+			.outAccount(outAccountDescription)
+			.date(date)
+			.build();
+		Long id = entryRestClient().insert(entryInsertUpdateDTO).getId();
+
+		// empty fields
+		updateInvalid(id, null, null, "", "", "", HttpStatus.BAD_REQUEST);
+		updateInvalid(id, null, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, null, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, "", inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, ownerName, "", outAccountDescription, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, ownerName, inAccountDescription, "", HttpStatus.BAD_REQUEST);
+
+		// invalid id
+		updateInvalid(1000000L, value, date, ownerName, inAccountDescription, outAccountDescription,
+				HttpStatus.NOT_FOUND);
+
+		// invalid fields
+		updateInvalid(id, value, date, "invalid owner", inAccountDescription, outAccountDescription,
+				HttpStatus.CONFLICT);
+		updateInvalid(id, value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.CONFLICT);
+		updateInvalid(id, value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.CONFLICT);
 	}
 
 	@Test

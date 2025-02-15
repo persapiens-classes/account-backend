@@ -17,7 +17,7 @@ public class TransferController {
 	private TransferService transferService;
 
 	@PostMapping("/transfer")
-	public void transfer(@RequestBody TransferDTO transferDTO) {
+	public void transfer(@RequestBody(required = true) TransferDTO transferDTO) {
 		this.transferService.transfer(transferDTO);
 	}
 

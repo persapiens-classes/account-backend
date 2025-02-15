@@ -42,7 +42,7 @@ public class EntryRestClient {
 	public EntryDTO update(Long id, EntryInsertUpdateDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.put()
-			.uri(this.restClientHelper.updateUri(id.toString()))
+			.uri(this.restClientHelper.updateUri((id != null) ? id.toString() : ""))
 			.body(entity)
 			.retrieve()
 			.body(EntryDTO.class);
