@@ -42,7 +42,7 @@ jobs:
         with:
           name: native
           path: |
-            target/example*
+            target/account-backend*
 
       - name: Native Image build
         run: ./mvnw -B -Pnative -DskipTests=true spring-boot:build-image
@@ -52,12 +52,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/ifrn-software-quality-example' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Create tag
-        run: docker tag example:1.0.0-SNAPSHOT persapiens/software-quality-graalvm:latest
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/ifrn-software-quality-example' }}
+        run: docker tag account-backend:1.0.0-SNAPSHOT persapiens/account-backend:native
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Push image
-        run: docker push persapiens/software-quality-graalvm:latest
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/ifrn-software-quality-example' }}
+        run: docker push persapiens/account-backend:native
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
