@@ -24,7 +24,7 @@ class OwnerRestClientIT extends RestClientIT {
 		assertThat(ownerRestClient().insert(owner)).isNotNull();
 
 		// verify findByName operation
-		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(owner.getName());
+		assertThat(ownerRestClient().findByName(name).getName()).isEqualTo(owner.getName());
 
 		// verify findAll operation
 		assertThat(ownerRestClient().findAll()).isNotEmpty();
@@ -69,10 +69,12 @@ class OwnerRestClientIT extends RestClientIT {
 		ownerRestClient().update(originalName, owner);
 
 		// verify update operation
-		assertThat(ownerRestClient().findByName(originalName)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerRestClient().findByName(originalName))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(ownerRestClient().findByName(owner.getName()).get().getName()).isEqualTo(owner.getName());
+		assertThat(ownerRestClient().findByName(owner.getName()).getName()).isEqualTo(owner.getName());
 	}
 
 	private void updateInvalid(String oldName, String newName, HttpStatus httpStatus) {
@@ -108,12 +110,13 @@ class OwnerRestClientIT extends RestClientIT {
 		// create test environment
 		String name = "Fantastic owner";
 		ownerRestClient().insert(OwnerDTO.builder().name(name).build());
-		assertThat(ownerRestClient().findByName(name).get().getName()).isEqualTo(name);
+		assertThat(ownerRestClient().findByName(name).getName()).isEqualTo(name);
 
 		// execute deleteByName operation
 		ownerRestClient().deleteByName(name);
 		// verify the results
-		assertThat(ownerRestClient().findByName(name)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient().findByName(name))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(String name, HttpStatus httpStatus) {

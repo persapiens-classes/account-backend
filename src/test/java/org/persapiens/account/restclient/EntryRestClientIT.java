@@ -108,7 +108,7 @@ class EntryRestClientIT extends RestClientIT {
 
 		entryRestClient().update(entryDTO.getId(), entryUpdate);
 
-		assertThat(entryRestClient().findById(entryDTO.getId()).get().getNote()).isEqualTo("updated note");
+		assertThat(entryRestClient().findById(entryDTO.getId()).getNote()).isEqualTo("updated note");
 	}
 
 	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
@@ -133,7 +133,7 @@ class EntryRestClientIT extends RestClientIT {
 	void updateInvalid() {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner(OwnerConstants.AUNT).getName();
+		String ownerName = owner("grandmother").getName();
 		String salary = category(CategoryConstants.SALARY).getDescription();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
 		String cash = category(CategoryConstants.CASH).getDescription();
@@ -182,7 +182,9 @@ class EntryRestClientIT extends RestClientIT {
 
 		entryRestClient().deleteById(entryDTO.getId());
 
-		assertThat(entryRestClient().findById(entryDTO.getId())).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> entryRestClient().findById(entryDTO.getId()))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(long id, HttpStatus httpStatus) {

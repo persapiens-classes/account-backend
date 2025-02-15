@@ -29,7 +29,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 		assertThat(creditAccountRestClient().insert(creditAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
+		assertThat(creditAccountRestClient().findByDescription(description).getDescription())
 			.isEqualTo(creditAccount.getDescription());
 
 		// verify findAll operation
@@ -135,10 +135,12 @@ class CreditAccountRestClientIT extends RestClientIT {
 		creditAccountRestClient().update(originalDescription, creditAccount);
 
 		// verify update operation
-		assertThat(creditAccountRestClient().findByDescription(originalDescription)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> creditAccountRestClient().findByDescription(originalDescription))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(creditAccountRestClient().findByDescription(creditAccount.getDescription()).get().getDescription())
+		assertThat(creditAccountRestClient().findByDescription(creditAccount.getDescription()).getDescription())
 			.isEqualTo(creditAccount.getDescription());
 	}
 
@@ -151,18 +153,17 @@ class CreditAccountRestClientIT extends RestClientIT {
 			.description(description)
 			.category(category(CategoryConstants.SALARY).getDescription())
 			.build());
-		assertThat(creditAccountRestClient().findByDescription(description).get().getDescription())
-			.isEqualTo(description);
+		assertThat(creditAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
 
-		// execute deleteByName operation
+		// execute deleteByDescription operation
 		creditAccountRestClient().deleteByDescription(description);
 		// verify the results
-		assertThat(creditAccountRestClient().findByDescription(description)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> creditAccountRestClient().findByDescription(description))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
-	private void deleteInvalid(String description, HttpStatus httpStatus) {
-		// verify delete operation
-		// verify status code error
+	private void deleteInvalidCreditAccount(String description, HttpStatus httpStatus) {
 		assertThatExceptionOfType(HttpClientErrorException.class)
 			.isThrownBy(() -> creditAccountRestClient().deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
@@ -171,8 +172,8 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void deleteInvalid() {
 		String description = "Invalid credit account";
-		deleteInvalid("", HttpStatus.FORBIDDEN);
-		deleteInvalid(description, HttpStatus.NOT_FOUND);
+		deleteInvalidCreditAccount("", HttpStatus.FORBIDDEN);
+		deleteInvalidCreditAccount(description, HttpStatus.NOT_FOUND);
 	}
 
 }
