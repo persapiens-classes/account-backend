@@ -78,6 +78,34 @@ class CategoryRestClientIT extends RestClientIT {
 			.isEqualTo(category.getDescription());
 	}
 
+	private void updateInvalid(String oldDescription, String newDescription, HttpStatus httpStatus) {
+		CategoryDTO category = CategoryDTO.builder().description(newDescription).build();
+
+		// verify update operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> categoryRestClient().update(oldDescription, category))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void updateInvalid() {
+		CategoryDTO categoryToUpdate = category("category to update");
+
+		// empty id
+		updateInvalid("", "", HttpStatus.FORBIDDEN);
+		updateInvalid("", categoryToUpdate.getDescription(), HttpStatus.FORBIDDEN);
+
+		// empty fields
+		updateInvalid(categoryToUpdate.getDescription(), "", HttpStatus.BAD_REQUEST);
+
+		// invalid id
+		updateInvalid("invalid category", "valid category description", HttpStatus.NOT_FOUND);
+
+		// invalid field
+		updateInvalid(categoryToUpdate.getDescription(), categoryToUpdate.getDescription(), HttpStatus.CONFLICT);
+	}
+
 	@Test
 	void deleteOne() {
 		// create test environment
