@@ -1,7 +1,5 @@
 package org.persapiens.account.controller;
 
-import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.dto.AccountDTO;
@@ -20,7 +18,7 @@ public abstract class AccountController<D extends AccountDTO, E extends Account>
 	private AccountService<D, E> accountService;
 
 	@GetMapping("/{description}")
-	public Optional<D> findByDescription(@PathVariable String description) {
+	public D findByDescription(@PathVariable(required = true) String description) {
 		return this.accountService.findByDescription(description);
 	}
 

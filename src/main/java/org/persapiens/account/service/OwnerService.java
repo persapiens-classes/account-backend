@@ -47,8 +47,14 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		return updateEntity;
 	}
 
-	public Optional<OwnerDTO> findByName(String name) {
-		return toOptionalDTO(this.ownerRepository.findByName(name));
+	public OwnerDTO findByName(String name) {
+		Optional<Owner> byName = this.ownerRepository.findByName(name);
+		if (byName.isPresent()) {
+			return toDTO(byName.get());
+		}
+		else {
+			throw new BeanNotFoundException("Bean not found by: " + name);
+		}
 	}
 
 	@Transactional
@@ -62,7 +68,7 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		if (StringUtils.isBlank(ownerDto.getName())) {
 			throw new IllegalArgumentException("Name empty!");
 		}
-		if (findByName(ownerDto.getName()).isPresent()) {
+		if (this.ownerRepository.findByName(ownerDto.getName()).isPresent()) {
 			throw new BeanExistsException("Name exists: " + ownerDto.getName());
 		}
 	}

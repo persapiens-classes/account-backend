@@ -28,16 +28,18 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 				category(CategoryConstants.BANK).getDescription());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000))
+			.value(new BigDecimal(1000).setScale(2))
 			.owner(mother.getName())
 			.equityAccount(savings.getDescription())
 			.build();
 
-		// verify insert operation
-		assertThat(ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValue)).isNotNull();
+		// run insert operation
+		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
+			.insert(ownerEquityAccountInitialValue);
 
 		// verify findAll operation
-		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
+		assertThat(inserted).isEqualTo(ownerEquityAccountInitialValueRestClient()
+			.findByOwnerAndEquityAccount(mother.getName(), savings.getDescription()));
 	}
 
 	private void insertInvalid(BigDecimal value, String owner, String equityAccount, HttpStatus httpStatus) {
@@ -90,6 +92,27 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		insertInvalid(new BigDecimal(1000), uncle.getName(), savings.getDescription(), HttpStatus.CONFLICT);
 	}
 
+	@Test
+	void updateOne() {
+		OwnerDTO aunt = owner(OwnerConstants.AUNT);
+		EquityAccountDTO individualAssets = equityAccount(EquityAccountConstants.INDIVIDUAL_ASSETS,
+				category(CategoryConstants.BANK).getDescription());
+
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
+			.value(new BigDecimal(1000))
+			.owner(aunt.getName())
+			.equityAccount(individualAssets.getDescription())
+			.build();
+
+		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
+			.insert(ownerEquityAccountInitialValue);
+		inserted.setValue(new BigDecimal(2000));
+
+		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient().update(inserted);
+
+		assertThat(updated.getValue()).isEqualTo(new BigDecimal(2000));
+	}
+
 	private void updateInvalid(String owner, String equityAccount, BigDecimal value, HttpStatus httpStatus) {
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = OwnerEquityAccountInitialValueDTO
 			.builder()
@@ -123,27 +146,6 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	void updateOne() {
-		OwnerDTO aunt = owner(OwnerConstants.AUNT);
-		EquityAccountDTO individualAssets = equityAccount(EquityAccountConstants.INDIVIDUAL_ASSETS,
-				category(CategoryConstants.BANK).getDescription());
-
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000))
-			.owner(aunt.getName())
-			.equityAccount(individualAssets.getDescription())
-			.build();
-
-		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
-			.insert(ownerEquityAccountInitialValue);
-		inserted.setValue(new BigDecimal(2000));
-
-		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient().update(inserted);
-
-		assertThat(updated.getValue()).isEqualTo(new BigDecimal(2000));
-	}
-
-	@Test
 	void deleteOne() {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
@@ -161,9 +163,10 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(bean.getOwner(),
 				bean.getEquityAccount());
 
-		assertThat(ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(bean.getOwner(),
-				bean.getEquityAccount()))
-			.isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(bean.getOwner(),
+					bean.getEquityAccount()))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {

@@ -1,7 +1,5 @@
 package org.persapiens.account.controller;
 
-import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
@@ -23,7 +21,7 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 	private CategoryService categoryService;
 
 	@GetMapping("/{description}")
-	public Optional<CategoryDTO> findByDescription(@PathVariable String description) {
+	public CategoryDTO findByDescription(@PathVariable(required = true) String description) {
 		return this.categoryService.findByDescription(description);
 	}
 

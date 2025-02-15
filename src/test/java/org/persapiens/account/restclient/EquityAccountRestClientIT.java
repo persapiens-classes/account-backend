@@ -29,7 +29,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 		assertThat(equityAccountRestClient().insert(equityAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
+		assertThat(equityAccountRestClient().findByDescription(description).getDescription())
 			.isEqualTo(equityAccount.getDescription());
 
 		// verify findAll operation
@@ -47,10 +47,12 @@ class EquityAccountRestClientIT extends RestClientIT {
 		equityAccountRestClient().update(originalDescription, equityAccount);
 
 		// verify update operation
-		assertThat(equityAccountRestClient().findByDescription(originalDescription)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> equityAccountRestClient().findByDescription(originalDescription))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(equityAccountRestClient().findByDescription(equityAccount.getDescription()).get().getDescription())
+		assertThat(equityAccountRestClient().findByDescription(equityAccount.getDescription()).getDescription())
 			.isEqualTo(equityAccount.getDescription());
 	}
 
@@ -63,18 +65,17 @@ class EquityAccountRestClientIT extends RestClientIT {
 			.description(description)
 			.category(category(CategoryConstants.BANK).getDescription())
 			.build());
-		assertThat(equityAccountRestClient().findByDescription(description).get().getDescription())
-			.isEqualTo(description);
+		assertThat(equityAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
 
 		// execute deleteByName operation
 		equityAccountRestClient().deleteByDescription(description);
 		// verify the results
-		assertThat(equityAccountRestClient().findByDescription(description)).isEmpty();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> equityAccountRestClient().findByDescription(description))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(String description, HttpStatus httpStatus) {
-		// verify delete operation
-		// verify status code error
 		assertThatExceptionOfType(HttpClientErrorException.class)
 			.isThrownBy(() -> equityAccountRestClient().deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));

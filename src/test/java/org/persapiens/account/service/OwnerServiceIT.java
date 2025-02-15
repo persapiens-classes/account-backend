@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.OwnerDTO;
+import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class OwnerServiceIT {
+
+	@Autowired
+	private OwnerRepository ownerRepository;
 
 	@Autowired
 	private OwnerService ownerService;
@@ -29,7 +33,7 @@ class OwnerServiceIT {
 		OwnerDTO owner = this.ownerDTOFactory.mother();
 
 		// verify the results
-		assertThat(this.ownerService.findByName(owner.getName()).get()).isEqualTo(owner);
+		assertThat(this.ownerService.findByName(owner.getName())).isEqualTo(owner);
 	}
 
 	@Test
@@ -41,7 +45,7 @@ class OwnerServiceIT {
 		this.ownerService.deleteByName(owner.getName());
 
 		// verify the results
-		assertThat(this.ownerService.findByName(owner.getName()).isPresent()).isFalse();
+		assertThat(this.ownerRepository.findByName(owner.getName()).isPresent()).isFalse();
 	}
 
 }

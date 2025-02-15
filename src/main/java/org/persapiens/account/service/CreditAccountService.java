@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CreditAccountService extends AccountService<CreditAccountDTO, CreditAccount> {
 
+	private CreditAccountRepository creditAccountRepository;
+
 	private CategoryService categoryService;
 
 	public CreditAccountService(CreditAccountRepository creditAccountRepository, CategoryRepository categoryRepository,
 			CategoryService categoryService) {
 		super(creditAccountRepository, categoryRepository);
+		this.creditAccountRepository = creditAccountRepository;
 		this.categoryService = categoryService;
 	}
 
@@ -29,7 +32,8 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 	}
 
 	public CreditAccountDTO incomeTransfer() {
-		Optional<CreditAccountDTO> findByDescription = findByDescription(CreditAccount.INCOME_TRANSFER);
+		Optional<CreditAccount> findByDescription = this.creditAccountRepository
+			.findByDescription(CreditAccount.INCOME_TRANSFER);
 		if (findByDescription.isEmpty()) {
 			CreditAccountDTO result = CreditAccountDTO.builder()
 				.description(CreditAccount.INCOME_TRANSFER)
@@ -38,7 +42,7 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 			return insert(result);
 		}
 		else {
-			return findByDescription.get();
+			return toDTO(findByDescription.get());
 		}
 	}
 

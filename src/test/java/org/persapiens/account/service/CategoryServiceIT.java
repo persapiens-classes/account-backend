@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.CategoryDTO;
+import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class CategoryServiceIT {
+
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private CategoryService categoryService;
@@ -29,7 +33,7 @@ class CategoryServiceIT {
 		CategoryDTO categoryDTO = this.categoryDTOFactory.bank();
 
 		// verify the results
-		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription()).get()).isEqualTo(categoryDTO);
+		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription())).isEqualTo(categoryDTO);
 	}
 
 	@Test
@@ -41,7 +45,7 @@ class CategoryServiceIT {
 		this.categoryService.deleteByDescription(categoryDTO.getDescription());
 
 		// verify the results
-		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription()).isPresent()).isFalse();
+		assertThat(this.categoryRepository.findByDescription(categoryDTO.getDescription()).isPresent()).isFalse();
 	}
 
 }

@@ -157,4 +157,14 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		}
 	}
 
+	public EntryDTO findById(Long id) {
+		Optional<Entry> byId = this.entryRepository.findById(id);
+		if (byId.isPresent()) {
+			return toDTO(byId.get());
+		}
+		else {
+			throw new BeanNotFoundException("Entry not found by: " + id);
+		}
+	}
+
 }

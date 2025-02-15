@@ -1,7 +1,5 @@
 package org.persapiens.account.restclient;
 
-import java.util.Optional;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
@@ -13,6 +11,7 @@ import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.HttpClientErrorException;
 
 class RestClientIT {
 
@@ -43,13 +42,12 @@ class RestClientIT {
 	}
 
 	OwnerDTO owner(String name) {
-		Optional<OwnerDTO> findByDescription = ownerRestClient().findByName(name);
-		if (findByDescription.isEmpty()) {
+		try {
+			return ownerRestClient().findByName(name);
+		}
+		catch (HttpClientErrorException error) {
 			OwnerDTO result = OwnerDTO.builder().name(name).build();
 			return ownerRestClient().insert(result);
-		}
-		else {
-			return findByDescription.get();
 		}
 	}
 
@@ -58,13 +56,12 @@ class RestClientIT {
 	}
 
 	CategoryDTO category(String description) {
-		Optional<CategoryDTO> findByDescription = categoryRestClient().findByDescription(description);
-		if (findByDescription.isEmpty()) {
+		try {
+			return categoryRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
 			CategoryDTO result = CategoryDTO.builder().description(description).build();
 			return categoryRestClient().insert(result);
-		}
-		else {
-			return findByDescription.get();
 		}
 	}
 
@@ -75,16 +72,15 @@ class RestClientIT {
 	}
 
 	EquityAccountDTO equityAccount(String description, String categoryDescription) {
-		Optional<EquityAccountDTO> findByDescription = equityAccountRestClient().findByDescription(description);
-		if (findByDescription.isEmpty()) {
+		try {
+			return equityAccountRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
 			EquityAccountDTO result = EquityAccountDTO.builder()
 				.description(description)
 				.category(categoryDescription)
 				.build();
 			return equityAccountRestClient().insert(result);
-		}
-		else {
-			return findByDescription.get();
 		}
 	}
 
@@ -95,16 +91,15 @@ class RestClientIT {
 	}
 
 	CreditAccountDTO creditAccount(String description, String categoryDescription) {
-		Optional<CreditAccountDTO> findByDescription = creditAccountRestClient().findByDescription(description);
-		if (findByDescription.isEmpty()) {
+		try {
+			return creditAccountRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
 			CreditAccountDTO result = CreditAccountDTO.builder()
 				.description(description)
 				.category(categoryDescription)
 				.build();
 			return creditAccountRestClient().insert(result);
-		}
-		else {
-			return findByDescription.get();
 		}
 	}
 
@@ -115,16 +110,15 @@ class RestClientIT {
 	}
 
 	DebitAccountDTO debitAccount(String description, String categoryDescription) {
-		Optional<DebitAccountDTO> findByDescription = debitAccountRestClient().findByDescription(description);
-		if (findByDescription.isEmpty()) {
+		try {
+			return debitAccountRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
 			DebitAccountDTO result = DebitAccountDTO.builder()
 				.description(description)
 				.category(categoryDescription)
 				.build();
 			return debitAccountRestClient().insert(result);
-		}
-		else {
-			return findByDescription.get();
 		}
 	}
 
@@ -135,7 +129,7 @@ class RestClientIT {
 			.build();
 	}
 
-	Optional<OwnerEquityAccountInitialValueDTO> ownerEquityAccountInitialValue(String ownerName,
+	OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue(String ownerName,
 			String equityAccountDescription) {
 		return ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(ownerName,
 				equityAccountDescription);

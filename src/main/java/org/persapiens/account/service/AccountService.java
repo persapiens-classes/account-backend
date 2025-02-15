@@ -61,8 +61,14 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 		return updateEntity;
 	}
 
-	public Optional<D> findByDescription(String description) {
-		return toOptionalDTO(this.accountRepository.findByDescription(description));
+	public D findByDescription(String description) {
+		Optional<E> accountOptional = this.accountRepository.findByDescription(description);
+		if (accountOptional.isPresent()) {
+			return toDTO(accountOptional.get());
+		}
+		else {
+			throw new BeanNotFoundException("Bean not found by: " + description);
+		}
 	}
 
 	@Transactional
@@ -83,7 +89,7 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 
 	public void validate(D accountDto) {
 		validateBlank(accountDto);
-		if (findByDescription(accountDto.getDescription()).isPresent()) {
+		if (this.accountRepository.findByDescription(accountDto.getDescription()).isPresent()) {
 			throw new BeanExistsException("Description exists: " + accountDto.getDescription());
 		}
 		if (!this.categoryRepository.findByDescription(accountDto.getCategory()).isPresent()) {

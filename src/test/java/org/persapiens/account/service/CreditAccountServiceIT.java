@@ -3,6 +3,7 @@ package org.persapiens.account.service;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.CreditAccountDTO;
+import org.persapiens.account.persistence.CreditAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class CreditAccountServiceIT {
+
+	@Autowired
+	private CreditAccountRepository creditAccountRepository;
 
 	@Autowired
 	private CreditAccountService creditAccountService;
@@ -32,7 +36,7 @@ class CreditAccountServiceIT {
 		CreditAccountDTO creditAccountDTO = this.creditAccountDTOFactory.internship();
 
 		// verify the results
-		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()).get())
+		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()))
 			.isEqualTo(creditAccountDTO);
 	}
 
@@ -46,7 +50,7 @@ class CreditAccountServiceIT {
 		this.creditAccountService.deleteByDescription(creditAccountDTO.getDescription());
 
 		// verify the results
-		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()).isPresent())
+		assertThat(this.creditAccountRepository.findByDescription(creditAccountDTO.getDescription()).isPresent())
 			.isFalse();
 	}
 

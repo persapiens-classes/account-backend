@@ -23,17 +23,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 
 	protected abstract E setIdToUpdate(E t, E updateEntity);
 
-	protected Optional<F> toOptionalDTO(Optional<E> optionalEntity) {
-		Optional<F> result;
-		if (optionalEntity.isPresent()) {
-			result = Optional.of(toDTO(optionalEntity.get()));
-		}
-		else {
-			result = Optional.empty();
-		}
-		return result;
-	}
-
 	protected Iterable<F> toDTOs(Iterable<? extends E> entities) {
 		List<F> result = new ArrayList<>();
 		for (E entity : entities) {
@@ -63,18 +52,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		else {
 			throw new BeanNotFoundException("Bean not found by: " + updateKey);
 		}
-	}
-
-	public Optional<F> findById(K id) {
-		Optional<F> result;
-		Optional<E> byId = this.repository.findById(id);
-		if (byId.isPresent()) {
-			result = Optional.of(toDTO(byId.get()));
-		}
-		else {
-			result = Optional.empty();
-		}
-		return result;
 	}
 
 	public Iterable<F> findAll() {

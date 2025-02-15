@@ -47,8 +47,14 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return updateEntity;
 	}
 
-	public Optional<CategoryDTO> findByDescription(String description) {
-		return toOptionalDTO(this.categoryRepository.findByDescription(description));
+	public CategoryDTO findByDescription(String description) {
+		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
+		if (categoryOptional.isPresent()) {
+			return toDTO(categoryOptional.get());
+		}
+		else {
+			throw new BeanNotFoundException("Bean not found by: " + description);
+		}
 	}
 
 	@Transactional
@@ -59,13 +65,13 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	private CategoryDTO categoryDTO(String description) {
-		Optional<CategoryDTO> findByDescricao = findByDescription(description);
+		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
 		if (findByDescricao.isEmpty()) {
 			CategoryDTO result = CategoryDTO.builder().description(description).build();
 			return insert(result);
 		}
 		else {
-			return findByDescricao.get();
+			return toDTO(findByDescricao.get());
 		}
 	}
 
@@ -81,7 +87,7 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		if (StringUtils.isBlank(categoryDto.getDescription())) {
 			throw new IllegalArgumentException("Description empty!");
 		}
-		if (findByDescription(categoryDto.getDescription()).isPresent()) {
+		if (this.categoryRepository.findByDescription(categoryDto.getDescription()).isPresent()) {
 			throw new BeanExistsException("Description exists: " + categoryDto.getDescription());
 		}
 	}

@@ -6,12 +6,14 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.CreditAccountDTO;
 import org.persapiens.account.dto.DebitAccountDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.TransferDTO;
+import org.persapiens.account.persistence.EquityAccountRepository;
+import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +28,9 @@ public class TransferService {
 
 	private final CreditAccountService creditAccountService;
 
-	private final OwnerService ownerService;
+	private final OwnerRepository ownerRepository;
 
-	private final EquityAccountService equityAccountService;
+	private final EquityAccountRepository equityAccountRepository;
 
 	private void validateBlank(TransferDTO transferDTO) {
 		if (StringUtils.isBlank(transferDTO.getDebitOwner())) {
@@ -48,9 +50,9 @@ public class TransferService {
 		}
 	}
 
-	private void validateFields(TransferDTO transferDTO, Optional<OwnerDTO> debitOwnerOptional,
-			Optional<EquityAccountDTO> debitEquityAccountOptional, Optional<OwnerDTO> creditOwnerOptional,
-			Optional<EquityAccountDTO> creditEquityAccountOptional) {
+	private void validateFields(TransferDTO transferDTO, Optional<Owner> debitOwnerOptional,
+			Optional<EquityAccount> debitEquityAccountOptional, Optional<Owner> creditOwnerOptional,
+			Optional<EquityAccount> creditEquityAccountOptional) {
 		if (debitOwnerOptional.isEmpty()) {
 			throw new AttributeNotFoundException("Debit Owner not exists: " + transferDTO.getDebitOwner());
 		}
@@ -69,11 +71,11 @@ public class TransferService {
 	public void transfer(TransferDTO transferDTO) {
 		validateBlank(transferDTO);
 
-		Optional<OwnerDTO> debitOwnerOptional = this.ownerService.findByName(transferDTO.getDebitOwner());
-		Optional<EquityAccountDTO> debitEquityAccountOptional = this.equityAccountService
+		Optional<Owner> debitOwnerOptional = this.ownerRepository.findByName(transferDTO.getDebitOwner());
+		Optional<EquityAccount> debitEquityAccountOptional = this.equityAccountRepository
 			.findByDescription(transferDTO.getDebitAccount());
-		Optional<OwnerDTO> creditOwnerOptional = this.ownerService.findByName(transferDTO.getCreditOwner());
-		Optional<EquityAccountDTO> creditEquityAccountOptional = this.equityAccountService
+		Optional<Owner> creditOwnerOptional = this.ownerRepository.findByName(transferDTO.getCreditOwner());
+		Optional<EquityAccount> creditEquityAccountOptional = this.equityAccountRepository
 			.findByDescription(transferDTO.getCreditAccount());
 
 		validateFields(transferDTO, debitOwnerOptional, debitEquityAccountOptional, creditOwnerOptional,
@@ -84,10 +86,10 @@ public class TransferService {
 		}
 
 		BigDecimal value = transferDTO.getValue();
-		OwnerDTO debitOwnerDTO = debitOwnerOptional.get();
-		EquityAccountDTO debitEquityAccountDTO = debitEquityAccountOptional.get();
-		OwnerDTO creditOwnerDTO = creditOwnerOptional.get();
-		EquityAccountDTO creditEquityAccountDTO = creditEquityAccountOptional.get();
+		Owner debitOwnerDTO = debitOwnerOptional.get();
+		EquityAccount debitEquityAccountDTO = debitEquityAccountOptional.get();
+		Owner creditOwnerDTO = creditOwnerOptional.get();
+		EquityAccount creditEquityAccountDTO = creditEquityAccountOptional.get();
 
 		DebitAccountDTO expenseTransferDTO = this.debitAccountService.expenseTransfer();
 		CreditAccountDTO incomeTransferDTO = this.creditAccountService.incomeTransfer();
