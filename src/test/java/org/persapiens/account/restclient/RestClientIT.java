@@ -8,6 +8,7 @@ import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.security.LoginResponseDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,18 +28,31 @@ class RestClientIT {
 	@Autowired
 	private JwtTokenFactory jwtTokenFactory;
 
-	<T> RestClientHelper<T> restClientHelper(String endpoint) {
+	<T> RestClientHelper<T> authenticatedRestClientHelper(String endpoint) {
+		RestClientHelper<T> result = restClientHelper(endpoint);
+
+		result.setJwtToken(this.jwtTokenFactory.getJwtToken(authenticationRestClient()));
+
+		return result;
+	}
+
+	private <T> RestClientHelper<T> restClientHelper(String endpoint) {
 		return RestClientHelper.<T>builder()
 			.endpoint(endpoint)
 			.protocol(this.protocol)
 			.servername(this.servername)
 			.port(this.port)
-			.jwtToken(this.jwtTokenFactory.getJwtToken(this.protocol, this.servername, this.port))
 			.build();
 	}
 
+	AuthenticationRestClient authenticationRestClient() {
+		return AuthenticationRestClient.builder().restClientHelper(this.<LoginResponseDTO>restClientHelper("")).build();
+	}
+
 	OwnerRestClient ownerRestClient() {
-		return OwnerRestClient.builder().restClientHelper(this.<OwnerDTO>restClientHelper("owners")).build();
+		return OwnerRestClient.builder()
+			.restClientHelper(this.<OwnerDTO>authenticatedRestClientHelper("owners"))
+			.build();
 	}
 
 	OwnerDTO owner(String name) {
@@ -52,7 +66,9 @@ class RestClientIT {
 	}
 
 	CategoryRestClient categoryRestClient() {
-		return CategoryRestClient.builder().restClientHelper(this.<CategoryDTO>restClientHelper("categories")).build();
+		return CategoryRestClient.builder()
+			.restClientHelper(this.<CategoryDTO>authenticatedRestClientHelper("categories"))
+			.build();
 	}
 
 	CategoryDTO category(String description) {
@@ -67,7 +83,7 @@ class RestClientIT {
 
 	EquityAccountRestClient equityAccountRestClient() {
 		return EquityAccountRestClient.builder()
-			.restClientHelper(this.<EquityAccountDTO>restClientHelper("equityAccounts"))
+			.restClientHelper(this.<EquityAccountDTO>authenticatedRestClientHelper("equityAccounts"))
 			.build();
 	}
 
@@ -86,7 +102,7 @@ class RestClientIT {
 
 	CreditAccountRestClient creditAccountRestClient() {
 		return CreditAccountRestClient.builder()
-			.restClientHelper(this.<CreditAccountDTO>restClientHelper("creditAccounts"))
+			.restClientHelper(this.<CreditAccountDTO>authenticatedRestClientHelper("creditAccounts"))
 			.build();
 	}
 
@@ -105,7 +121,7 @@ class RestClientIT {
 
 	DebitAccountRestClient debitAccountRestClient() {
 		return DebitAccountRestClient.builder()
-			.restClientHelper(this.<DebitAccountDTO>restClientHelper("debitAccounts"))
+			.restClientHelper(this.<DebitAccountDTO>authenticatedRestClientHelper("debitAccounts"))
 			.build();
 	}
 
@@ -124,8 +140,8 @@ class RestClientIT {
 
 	OwnerEquityAccountInitialValueRestClient ownerEquityAccountInitialValueRestClient() {
 		return OwnerEquityAccountInitialValueRestClient.builder()
-			.restClientHelper(
-					this.<OwnerEquityAccountInitialValueDTO>restClientHelper("ownerEquityAccountInitialValues"))
+			.restClientHelper(this
+				.<OwnerEquityAccountInitialValueDTO>authenticatedRestClientHelper("ownerEquityAccountInitialValues"))
 			.build();
 	}
 
@@ -136,7 +152,9 @@ class RestClientIT {
 	}
 
 	EntryRestClient entryRestClient() {
-		return EntryRestClient.builder().restClientHelper(this.<EntryDTO>restClientHelper("entries")).build();
+		return EntryRestClient.builder()
+			.restClientHelper(this.<EntryDTO>authenticatedRestClientHelper("entries"))
+			.build();
 	}
 
 }

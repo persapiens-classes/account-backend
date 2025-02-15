@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class TransferRestClientIT extends RestClientIT {
 
 	private TransferRestClient transferRestClient() {
-		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>restClientHelper("")).build();
+		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>authenticatedRestClientHelper("")).build();
 	}
 
 	@Test
