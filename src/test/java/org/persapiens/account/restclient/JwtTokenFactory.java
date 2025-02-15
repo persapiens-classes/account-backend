@@ -6,9 +6,7 @@ import org.persapiens.account.security.UserCredentials;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 @ConditionalOnWebApplication
 @Component
@@ -19,23 +17,14 @@ class JwtTokenFactory {
 
 	private String jwtToken;
 
-	String getJwtToken(String protocol, String servername, int port) {
+	String getJwtToken(AuthenticationRestClient authenticationRestClient) {
 		if (this.jwtToken == null) {
 			LoginRequestDTO loginRequest = LoginRequestDTO.builder()
 				.username(this.userCredentials.getName())
 				.password(this.userCredentials.getPassword())
 				.build();
 
-			String loginUrl = protocol + "://" + servername + ":" + port + "/login";
-
-			RestClient restClient = RestClient.create();
-
-			LoginResponseDTO loginResponse = restClient.post()
-				.uri(loginUrl)
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(loginRequest)
-				.retrieve()
-				.body(LoginResponseDTO.class);
+			LoginResponseDTO loginResponse = authenticationRestClient.login(loginRequest);
 
 			if (loginResponse != null) {
 				this.jwtToken = loginResponse.getToken();

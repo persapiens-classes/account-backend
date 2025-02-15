@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class BalanceRestClientIT extends RestClientIT {
 
 	private BalanceRestClient balanceRestClient() {
-		return BalanceRestClient.builder().restClientHelper(this.<BigDecimal>restClientHelper("")).build();
+		return BalanceRestClient.builder().restClientHelper(this.<BigDecimal>authenticatedRestClientHelper("")).build();
 	}
 
 	@Test
