@@ -12,11 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAccount> {
 
+	private DebitAccountRepository debitAccountRepository;
+
 	private CategoryService categoryService;
 
 	public DebitAccountService(DebitAccountRepository debitAccountRepository, CategoryRepository categoryRepository,
 			CategoryService categoryService) {
 		super(debitAccountRepository, categoryRepository);
+		this.debitAccountRepository = debitAccountRepository;
 		this.categoryService = categoryService;
 	}
 
@@ -29,7 +32,8 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 	}
 
 	public DebitAccountDTO expenseTransfer() {
-		Optional<DebitAccountDTO> findByDescription = findByDescription(DebitAccount.EXPENSE_TRANSFER);
+		Optional<DebitAccount> findByDescription = this.debitAccountRepository
+			.findByDescription(DebitAccount.EXPENSE_TRANSFER);
 		if (findByDescription.isEmpty()) {
 			DebitAccountDTO result = DebitAccountDTO.builder()
 				.description(DebitAccount.EXPENSE_TRANSFER)
@@ -38,7 +42,7 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 			return insert(result);
 		}
 		else {
-			return findByDescription.get();
+			return toDTO(findByDescription.get());
 		}
 	}
 

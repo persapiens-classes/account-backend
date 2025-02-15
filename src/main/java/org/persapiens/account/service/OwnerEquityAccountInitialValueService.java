@@ -9,8 +9,6 @@ import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
-import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.dto.OwnerNameEquityAccountDescription;
 import org.persapiens.account.persistence.EquityAccountRepository;
@@ -74,13 +72,18 @@ public class OwnerEquityAccountInitialValueService extends
 		return updateEntity;
 	}
 
-	public Optional<OwnerEquityAccountInitialValueDTO> findByOwnerAndEquityAccount(OwnerDTO ownerDTO,
-			EquityAccountDTO equityAccountDTO) {
-		Owner owner = this.ownerRepository.findByName(ownerDTO.getName()).get();
-		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(equityAccountDTO.getDescription())
-			.get();
-		return toOptionalDTO(
-				this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(owner, equityAccount));
+	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(String ownerName,
+			String equityAccountDescription) {
+		Owner owner = this.ownerRepository.findByName(ownerName).get();
+		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(equityAccountDescription).get();
+		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
+			.findByOwnerAndEquityAccount(owner, equityAccount);
+		if (byOwnerAndEquityAccount.isPresent()) {
+			return toDTO(byOwnerAndEquityAccount.get());
+		}
+		else {
+			throw new BeanNotFoundException("Bean not found by: " + ownerName + "-" + equityAccountDescription);
+		}
 	}
 
 	@Transactional
