@@ -40,6 +40,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		// verify findAll operation
 		assertThat(inserted).isEqualTo(ownerEquityAccountInitialValueRestClient()
 			.findByOwnerAndEquityAccount(mother.getName(), savings.getDescription()));
+		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(BigDecimal value, String owner, String equityAccount, HttpStatus httpStatus) {
@@ -111,6 +112,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient().update(inserted);
 
 		assertThat(updated.getValue()).isEqualTo(new BigDecimal(2000));
+		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
 	}
 
 	private void updateInvalid(String owner, String equityAccount, BigDecimal value, HttpStatus httpStatus) {
