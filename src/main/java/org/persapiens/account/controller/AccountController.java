@@ -30,13 +30,8 @@ public abstract class AccountController<D extends AccountDTO, E extends Account>
 	}
 
 	@PutMapping("/{description}")
-	public D update(@PathVariable String description, @RequestBody D dto) {
-		D result = null;
-		Optional<D> accountOptional = this.accountService.update(description, dto);
-		if (accountOptional.isPresent()) {
-			result = accountOptional.get();
-		}
-		return result;
+	public D update(@PathVariable(required = true) String description, @RequestBody(required = true) D dto) {
+		return this.accountService.update(description, dto);
 	}
 
 }

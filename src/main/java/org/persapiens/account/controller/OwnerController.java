@@ -33,13 +33,8 @@ public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO
 	}
 
 	@PutMapping("/{name}")
-	public OwnerDTO update(@PathVariable String name, @RequestBody OwnerDTO dto) {
-		OwnerDTO result = null;
-		Optional<OwnerDTO> ownerOptional = this.ownerService.update(name, dto);
-		if (ownerOptional.isPresent()) {
-			result = ownerOptional.get();
-		}
-		return result;
+	public OwnerDTO update(@PathVariable(required = true) String name, @RequestBody(required = true) OwnerDTO dto) {
+		return this.ownerService.update(name, dto);
 	}
 
 }

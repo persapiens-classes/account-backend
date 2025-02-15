@@ -33,13 +33,9 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 	}
 
 	@PutMapping("/{description}")
-	public CategoryDTO update(@PathVariable String description, @RequestBody CategoryDTO dto) {
-		CategoryDTO result = null;
-		Optional<CategoryDTO> categoryOptional = this.categoryService.update(description, dto);
-		if (categoryOptional.isPresent()) {
-			result = categoryOptional.get();
-		}
-		return result;
+	public CategoryDTO update(@PathVariable(required = true) String description,
+			@RequestBody(required = true) CategoryDTO dto) {
+		return this.categoryService.update(description, dto);
 	}
 
 }

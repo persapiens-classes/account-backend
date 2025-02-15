@@ -8,8 +8,6 @@ import org.persapiens.account.domain.Entry;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.service.EntryService;
-import org.persapiens.account.service.EquityAccountService;
-import org.persapiens.account.service.OwnerService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
@@ -26,10 +25,6 @@ public class EntryController
 		extends CrudController<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, Entry, Long> {
 
 	private EntryService entryService;
-
-	private OwnerService ownerService;
-
-	private EquityAccountService equityAccountService;
 
 	@GetMapping("/{id}")
 	public Optional<EntryDTO> findById(@PathVariable Long id) {
@@ -42,25 +37,21 @@ public class EntryController
 	}
 
 	@PutMapping("/{id}")
-	public EntryDTO update(@PathVariable Long id, @RequestBody EntryInsertUpdateDTO dto) {
-		EntryDTO result = null;
-		Optional<EntryDTO> entryOptional = this.entryService.update(id, dto);
-		if (entryOptional.isPresent()) {
-			result = entryOptional.get();
-		}
-		return result;
+	public EntryDTO update(@PathVariable(required = true) Long id,
+			@RequestBody(required = true) EntryInsertUpdateDTO dto) {
+		return this.entryService.update(id, dto);
 	}
 
 	@GetMapping("/creditSum")
-	public BigDecimal creditSum(String owner, String equityAccount) {
-		return this.entryService.creditSum(this.ownerService.findByName(owner).get(),
-				this.equityAccountService.findByDescription(equityAccount).get());
+	public BigDecimal creditSum(@RequestParam(required = true) String owner,
+			@RequestParam(required = true) String equityAccount) {
+		return this.entryService.creditSum(owner, equityAccount);
 	}
 
 	@GetMapping("/debitSum")
-	public BigDecimal debitSum(String owner, String equityAccount) {
-		return this.entryService.debitSum(this.ownerService.findByName(owner).get(),
-				this.equityAccountService.findByDescription(equityAccount).get());
+	public BigDecimal debitSum(@RequestParam(required = true) String owner,
+			@RequestParam(required = true) String equityAccount) {
+		return this.entryService.debitSum(owner, equityAccount);
 	}
 
 }
