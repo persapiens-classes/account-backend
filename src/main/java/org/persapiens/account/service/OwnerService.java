@@ -64,7 +64,7 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		}
 	}
 
-	public void validate(OwnerDTO ownerDto) {
+	private void validate(OwnerDTO ownerDto) {
 		if (StringUtils.isBlank(ownerDto.getName())) {
 			throw new IllegalArgumentException("Name empty!");
 		}

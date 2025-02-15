@@ -75,15 +75,17 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		}
 	}
 
+	@Transactional
 	public CategoryDTO expenseTransfer() {
 		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
 	}
 
+	@Transactional
 	public CategoryDTO incomeTransfer() {
 		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
-	public void validate(CategoryDTO categoryDto) {
+	private void validate(CategoryDTO categoryDto) {
 		if (StringUtils.isBlank(categoryDto.getDescription())) {
 			throw new IllegalArgumentException("Description empty!");
 		}

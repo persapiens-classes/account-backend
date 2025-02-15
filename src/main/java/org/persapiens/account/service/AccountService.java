@@ -87,7 +87,7 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 		}
 	}
 
-	public void validate(D accountDto) {
+	private void validate(D accountDto) {
 		validateBlank(accountDto);
 		if (this.accountRepository.findByDescription(accountDto.getDescription()).isPresent()) {
 			throw new BeanExistsException("Description exists: " + accountDto.getDescription());

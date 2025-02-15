@@ -8,6 +8,7 @@ import org.persapiens.account.persistence.CategoryRepository;
 import org.persapiens.account.persistence.CreditAccountRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CreditAccountService extends AccountService<CreditAccountDTO, CreditAccount> {
@@ -31,6 +32,7 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 		return new CreditAccountDTO();
 	}
 
+	@Transactional
 	public CreditAccountDTO incomeTransfer() {
 		Optional<CreditAccount> findByDescription = this.creditAccountRepository
 			.findByDescription(CreditAccount.INCOME_TRANSFER);

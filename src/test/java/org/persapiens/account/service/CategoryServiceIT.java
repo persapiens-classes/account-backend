@@ -48,4 +48,14 @@ class CategoryServiceIT {
 		assertThat(this.categoryRepository.findByDescription(categoryDTO.getDescription()).isPresent()).isFalse();
 	}
 
+	@Test
+	void expenseTransfer() {
+		assertThat(this.categoryService.expenseTransfer()).isEqualTo(this.categoryService.expenseTransfer());
+	}
+
+	@Test
+	void incomeTransfer() {
+		assertThat(this.categoryService.incomeTransfer()).isEqualTo(this.categoryService.incomeTransfer());
+	}
+
 }

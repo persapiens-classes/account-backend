@@ -8,6 +8,7 @@ import org.persapiens.account.persistence.CategoryRepository;
 import org.persapiens.account.persistence.DebitAccountRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAccount> {
@@ -31,6 +32,7 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 		return new DebitAccountDTO();
 	}
 
+	@Transactional
 	public DebitAccountDTO expenseTransfer() {
 		Optional<DebitAccount> findByDescription = this.debitAccountRepository
 			.findByDescription(DebitAccount.EXPENSE_TRANSFER);
