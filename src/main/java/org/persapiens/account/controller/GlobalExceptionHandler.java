@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(BeanExistsException.class)
-	public ResponseEntity<Map<String, String>> handleBeanExistsExcEntity(BeanExistsException exception) {
+	public ResponseEntity<Map<String, String>> handleBeanExistsException(BeanExistsException exception) {
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 			.body(Collections.singletonMap("error", exception.getMessage()));
 	}
