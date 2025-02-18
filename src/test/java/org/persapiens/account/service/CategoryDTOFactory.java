@@ -15,7 +15,7 @@ public class CategoryDTOFactory {
 	private CategoryFactory categoryFactory;
 
 	public CategoryDTO categoryDTO(Category category) {
-		return CategoryDTO.builder().description(category.getDescription()).build();
+		return new CategoryDTO(category.getDescription());
 	}
 
 	public CategoryDTO categoryDTO(String description) {

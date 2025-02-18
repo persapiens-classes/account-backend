@@ -18,21 +18,20 @@ class CategoryRestClientIT extends RestClientIT {
 	void insertOne() {
 		String description = "Free income";
 
-		CategoryDTO category = CategoryDTO.builder().description(description).build();
+		CategoryDTO category = new CategoryDTO(description);
 
 		// verify insert operation
 		assertThat(categoryRestClient().insert(category)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(categoryRestClient().findByDescription(description).getDescription())
-			.isEqualTo(category.getDescription());
+		assertThat(categoryRestClient().findByDescription(description).description()).isEqualTo(category.description());
 
 		// verify findAll operation
 		assertThat(categoryRestClient().findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(String description, HttpStatus httpStatus) {
-		CategoryDTO category = CategoryDTO.builder().description(description).build();
+		CategoryDTO category = new CategoryDTO(description);
 
 		// verify insert operation
 		// verify status code error
@@ -52,7 +51,7 @@ class CategoryRestClientIT extends RestClientIT {
 	void insertSameCategoryTwice() {
 		String description = "repeated category";
 
-		CategoryDTO category = CategoryDTO.builder().description(description).build();
+		CategoryDTO category = new CategoryDTO(description);
 
 		categoryRestClient().insert(category);
 
@@ -65,8 +64,8 @@ class CategoryRestClientIT extends RestClientIT {
 	void updateOne() {
 		CategoryDTO category = category("Inserted category");
 
-		String originalDescription = category.getDescription();
-		category.setDescription("Updated category");
+		String originalDescription = category.description();
+		category = new CategoryDTO("Updated category");
 
 		categoryRestClient().update(originalDescription, category);
 
@@ -76,12 +75,12 @@ class CategoryRestClientIT extends RestClientIT {
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(categoryRestClient().findByDescription(category.getDescription()).getDescription())
-			.isEqualTo(category.getDescription());
+		assertThat(categoryRestClient().findByDescription(category.description()).description())
+			.isEqualTo(category.description());
 	}
 
 	private void updateInvalid(String oldDescription, String newDescription, HttpStatus httpStatus) {
-		CategoryDTO category = CategoryDTO.builder().description(newDescription).build();
+		CategoryDTO category = new CategoryDTO(newDescription);
 
 		// verify update operation
 		// verify status code error
@@ -96,24 +95,24 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// empty id
 		updateInvalid("", "", HttpStatus.FORBIDDEN);
-		updateInvalid("", categoryToUpdate.getDescription(), HttpStatus.FORBIDDEN);
+		updateInvalid("", categoryToUpdate.description(), HttpStatus.FORBIDDEN);
 
 		// empty fields
-		updateInvalid(categoryToUpdate.getDescription(), "", HttpStatus.BAD_REQUEST);
+		updateInvalid(categoryToUpdate.description(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid id
 		updateInvalid("invalid category", "valid category description", HttpStatus.NOT_FOUND);
 
 		// invalid field
-		updateInvalid(categoryToUpdate.getDescription(), categoryToUpdate.getDescription(), HttpStatus.CONFLICT);
+		updateInvalid(categoryToUpdate.description(), categoryToUpdate.description(), HttpStatus.CONFLICT);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
 		String description = "Fantastic category";
-		categoryRestClient().insert(CategoryDTO.builder().description(description).build());
-		assertThat(categoryRestClient().findByDescription(description).getDescription()).isEqualTo(description);
+		categoryRestClient().insert(new CategoryDTO(description));
+		assertThat(categoryRestClient().findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
 		categoryRestClient().deleteByDescription(description);

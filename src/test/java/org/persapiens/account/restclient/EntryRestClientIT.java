@@ -24,9 +24,9 @@ class EntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).getDescription();
+		String salary = category(CategoryConstants.SALARY).description();
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String bank = category(CategoryConstants.BANK).getDescription();
+		String bank = category(CategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
 
 		return EntryInsertUpdateDTO.builder()
@@ -73,9 +73,9 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).getDescription();
+		String salary = category(CategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String bank = category(CategoryConstants.BANK).getDescription();
+		String bank = category(CategoryConstants.BANK).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
 
 		// test blank fields
@@ -134,9 +134,9 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
-		String salary = category(CategoryConstants.SALARY).getDescription();
+		String salary = category(CategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String cash = category(CategoryConstants.CASH).getDescription();
+		String cash = category(CategoryConstants.CASH).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).getDescription();
 
 		// empty id

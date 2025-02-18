@@ -33,7 +33,7 @@ class CategoryServiceIT {
 		CategoryDTO categoryDTO = this.categoryDTOFactory.bank();
 
 		// verify the results
-		assertThat(this.categoryService.findByDescription(categoryDTO.getDescription())).isEqualTo(categoryDTO);
+		assertThat(this.categoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
 	}
 
 	@Test
@@ -42,10 +42,10 @@ class CategoryServiceIT {
 		CategoryDTO categoryDTO = this.categoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
 
 		// execute the operation to be tested
-		this.categoryService.deleteByDescription(categoryDTO.getDescription());
+		this.categoryService.deleteByDescription(categoryDTO.description());
 
 		// verify the results
-		assertThat(this.categoryRepository.findByDescription(categoryDTO.getDescription()).isPresent()).isFalse();
+		assertThat(this.categoryRepository.findByDescription(categoryDTO.description()).isPresent()).isFalse();
 	}
 
 	@Test

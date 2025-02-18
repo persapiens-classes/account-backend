@@ -19,11 +19,11 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 
 	@Override
 	protected CategoryDTO toDTO(Category entity) {
-		return CategoryDTO.builder().description(entity.getDescription()).build();
+		return new CategoryDTO(entity.getDescription());
 	}
 
 	private Category toEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.getDescription()).build();
+		return Category.builder().description(dto.description()).build();
 	}
 
 	@Override
@@ -65,11 +65,11 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	private void validate(CategoryDTO categoryDto) {
-		if (StringUtils.isBlank(categoryDto.getDescription())) {
+		if (StringUtils.isBlank(categoryDto.description())) {
 			throw new IllegalArgumentException("Description empty!");
 		}
-		if (this.categoryRepository.findByDescription(categoryDto.getDescription()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + categoryDto.getDescription());
+		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + categoryDto.description());
 		}
 	}
 
@@ -90,7 +90,7 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	private CategoryDTO categoryDTO(String description) {
 		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
 		if (findByDescricao.isEmpty()) {
-			CategoryDTO result = CategoryDTO.builder().description(description).build();
+			CategoryDTO result = new CategoryDTO(description);
 			return insert(result);
 		}
 		else {

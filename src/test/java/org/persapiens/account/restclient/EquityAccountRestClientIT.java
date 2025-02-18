@@ -18,7 +18,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "Super bank account";
-		String categoryDescription = category(CategoryConstants.BANK).getDescription();
+		String categoryDescription = category(CategoryConstants.BANK).description();
 
 		EquityAccountDTO equityAccount = EquityAccountDTO.builder()
 			.description(description)
@@ -39,7 +39,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 	@Test
 	void updateOne() {
 		EquityAccountDTO equityAccount = equityAccount("Inserted equityAccount",
-				category(CategoryConstants.BANK).getDescription());
+				category(CategoryConstants.BANK).description());
 
 		String originalDescription = equityAccount.getDescription();
 		equityAccount.setDescription("Updated equityAccount");
@@ -63,7 +63,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 
 		equityAccountRestClient().insert(EquityAccountDTO.builder()
 			.description(description)
-			.category(category(CategoryConstants.BANK).getDescription())
+			.category(category(CategoryConstants.BANK).description())
 			.build());
 		assertThat(equityAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
 

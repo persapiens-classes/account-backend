@@ -30,8 +30,7 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balance500() {
 		String uncle = owner(OwnerConstants.UNCLE).name();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS,
-				category(CategoryConstants.BANK).getDescription())
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(CategoryConstants.BANK).description())
 			.getDescription();
 
 		// initial value 100
@@ -46,7 +45,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 		// credit 600
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
-				category(CategoryConstants.SALARY).getDescription())
+				category(CategoryConstants.SALARY).description())
 			.getDescription();
 		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(600))
@@ -59,7 +58,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
-				category(CategoryConstants.TRANSPORT).getDescription())
+				category(CategoryConstants.TRANSPORT).description())
 			.getDescription();
 		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(200))
@@ -79,7 +78,7 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balanceInvalid() {
 		String ownerName = owner(OwnerConstants.MOTHER).name();
-		String bank = category(CategoryConstants.BANK).getDescription();
+		String bank = category(CategoryConstants.BANK).description();
 		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
 
 		// test blank fields

@@ -31,9 +31,9 @@ class TransferRestClientIT extends RestClientIT {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 
 		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).getDescription());
+				category(CategoryConstants.BANK).description());
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).getDescription());
+				category(CategoryConstants.BANK).description());
 
 		// execute transfer operation
 		transferRestClient().transfer(TransferDTO.builder()
@@ -57,10 +57,10 @@ class TransferRestClientIT extends RestClientIT {
 		String uncle = owner(OwnerConstants.UNCLE).name();
 
 		String checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).getDescription())
+				category(CategoryConstants.BANK).description())
 			.getDescription();
 		String investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).getDescription())
+				category(CategoryConstants.BANK).description())
 			.getDescription();
 
 		BigDecimal value = new BigDecimal(100);

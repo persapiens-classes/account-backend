@@ -18,7 +18,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "New job";
-		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
+		String categoryDescription = category(CategoryConstants.SALARY).description();
 
 		CreditAccountDTO creditAccount = CreditAccountDTO.builder()
 			.description(description)
@@ -52,7 +52,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertEmpty() {
 		String description = "not empty";
-		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
+		String categoryDescription = category(CategoryConstants.SALARY).description();
 
 		invalidInsert("", categoryDescription, HttpStatus.BAD_REQUEST);
 		invalidInsert(description, "", HttpStatus.BAD_REQUEST);
@@ -61,7 +61,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertSameCreditAccountTwice() {
 		String description = "repeated credit account";
-		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
+		String categoryDescription = category(CategoryConstants.SALARY).description();
 
 		CreditAccountDTO creditAccountDto = CreditAccountDTO.builder()
 			.description(description)
@@ -99,7 +99,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateInvalid() {
-		String categoryDescription = category(CategoryConstants.SALARY).getDescription();
+		String categoryDescription = category(CategoryConstants.SALARY).description();
 		CreditAccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
 
 		// empty id
@@ -127,7 +127,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void updateOne() {
 		CreditAccountDTO creditAccount = creditAccount("Inserted creditAccount",
-				category(CategoryConstants.SALARY).getDescription());
+				category(CategoryConstants.SALARY).description());
 
 		String originalDescription = creditAccount.getDescription();
 		creditAccount.setDescription("Updated creditAccount");
@@ -151,7 +151,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		creditAccountRestClient().insert(CreditAccountDTO.builder()
 			.description(description)
-			.category(category(CategoryConstants.SALARY).getDescription())
+			.category(category(CategoryConstants.SALARY).description())
 			.build());
 		assertThat(creditAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
 

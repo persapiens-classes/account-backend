@@ -44,7 +44,7 @@ class CreditAccountServiceIT {
 	void deleteOne() {
 		// create test environment
 		CreditAccountDTO creditAccountDTO = this.creditAccountDTOFactory.creditAccountDTO("UNIQUE CreditAccount",
-				this.categoryDTOFactory.bank().getDescription());
+				this.categoryDTOFactory.bank().description());
 
 		// execute the operation to be tested
 		this.creditAccountService.deleteByDescription(creditAccountDTO.getDescription());

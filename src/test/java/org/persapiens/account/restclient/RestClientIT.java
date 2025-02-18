@@ -76,7 +76,7 @@ class RestClientIT {
 			return categoryRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			CategoryDTO result = CategoryDTO.builder().description(description).build();
+			CategoryDTO result = new CategoryDTO(description);
 			return categoryRestClient().insert(result);
 		}
 	}

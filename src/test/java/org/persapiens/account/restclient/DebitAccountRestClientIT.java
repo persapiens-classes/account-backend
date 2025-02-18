@@ -18,7 +18,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "Uber";
-		String categoryDescription = category(CategoryConstants.TRANSPORT).getDescription();
+		String categoryDescription = category(CategoryConstants.TRANSPORT).description();
 
 		DebitAccountDTO debitAccount = DebitAccountDTO.builder()
 			.description(description)
@@ -39,7 +39,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 	@Test
 	void updateOne() {
 		DebitAccountDTO debitAccount = debitAccount("Inserted debitAccount",
-				category(CategoryConstants.TRANSPORT).getDescription());
+				category(CategoryConstants.TRANSPORT).description());
 
 		String originalDescription = debitAccount.getDescription();
 		debitAccount.setDescription("Updated debitAccount");
@@ -63,7 +63,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		debitAccountRestClient().insert(DebitAccountDTO.builder()
 			.description(description)
-			.category(category(CategoryConstants.TRANSPORT).getDescription())
+			.category(category(CategoryConstants.TRANSPORT).description())
 			.build());
 		assertThat(debitAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
 
