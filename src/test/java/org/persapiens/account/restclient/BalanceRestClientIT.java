@@ -44,26 +44,16 @@ class BalanceRestClientIT extends RestClientIT {
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
 				category(CategoryConstants.SALARY).description())
 			.description();
-		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
-			.value(new BigDecimal(600))
-			.owner(uncle)
-			.inAccount(savings)
-			.outAccount(internship)
-			.date(date)
-			.build();
+		EntryInsertUpdateDTO entryCredito = new EntryInsertUpdateDTO(uncle, date, savings, internship,
+				new BigDecimal(600), "");
 		entryRestClient().insert(entryCredito);
 
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				category(CategoryConstants.TRANSPORT).description())
 			.description();
-		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
-			.value(new BigDecimal(200))
-			.owner(uncle)
-			.inAccount(gasoline)
-			.outAccount(savings)
-			.date(date)
-			.build();
+		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, date, gasoline, savings, new BigDecimal(200),
+				"");
 		entryRestClient().insert(entryDebito);
 
 		// executa a operacao a ser testada

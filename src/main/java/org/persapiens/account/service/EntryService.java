@@ -34,27 +34,22 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 
 	@Override
 	protected EntryDTO toDTO(Entry entry) {
-		return EntryDTO.builder()
-			.id(entry.getId())
-			.inAccount(new AccountDTO(entry.getInAccount().getDescription(),
-					entry.getInAccount().getCategory().getDescription()))
-			.outAccount(new AccountDTO(entry.getOutAccount().getDescription(),
-					entry.getOutAccount().getCategory().getDescription()))
-			.owner(entry.getOwner().getName())
-			.date(entry.getDate())
-			.value(entry.getValue())
-			.note(entry.getNote())
-			.build();
+		return new EntryDTO(entry.getId(), entry.getOwner().getName(), entry.getDate(),
+				new AccountDTO(entry.getInAccount().getDescription(),
+						entry.getInAccount().getCategory().getDescription()),
+				new AccountDTO(entry.getOutAccount().getDescription(),
+						entry.getOutAccount().getCategory().getDescription()),
+				entry.getValue(), entry.getNote());
 	}
 
 	private Entry toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		return Entry.builder()
-			.inAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.getInAccount()).get())
-			.outAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.getOutAccount()).get())
-			.owner(this.ownerRepository.findByName(entryInsertUpdateDTO.getOwner()).get())
-			.value(entryInsertUpdateDTO.getValue())
-			.note(entryInsertUpdateDTO.getNote())
-			.date(entryInsertUpdateDTO.getDate())
+			.inAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.inAccount()).get())
+			.outAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.outAccount()).get())
+			.owner(this.ownerRepository.findByName(entryInsertUpdateDTO.owner()).get())
+			.value(entryInsertUpdateDTO.value())
+			.note(entryInsertUpdateDTO.note())
+			.date(entryInsertUpdateDTO.date())
 			.build();
 	}
 
@@ -80,33 +75,33 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	private void validateBlank(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		if (StringUtils.isBlank(entryInsertUpdateDTO.getInAccount())) {
+		if (StringUtils.isBlank(entryInsertUpdateDTO.inAccount())) {
 			throw new IllegalArgumentException("Description empty!");
 		}
-		if (StringUtils.isBlank(entryInsertUpdateDTO.getOutAccount())) {
+		if (StringUtils.isBlank(entryInsertUpdateDTO.outAccount())) {
 			throw new IllegalArgumentException("Category empty!");
 		}
-		if (StringUtils.isBlank(entryInsertUpdateDTO.getOwner())) {
+		if (StringUtils.isBlank(entryInsertUpdateDTO.owner())) {
 			throw new IllegalArgumentException("Owner empty!");
 		}
-		if (entryInsertUpdateDTO.getValue() == null) {
+		if (entryInsertUpdateDTO.value() == null) {
 			throw new IllegalArgumentException("Value null!");
 		}
-		if (entryInsertUpdateDTO.getDate() == null) {
+		if (entryInsertUpdateDTO.date() == null) {
 			throw new IllegalArgumentException("Date null!");
 		}
 	}
 
 	private void validate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validateBlank(entryInsertUpdateDTO);
-		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.getInAccount()).isPresent()) {
-			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.getInAccount());
+		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.inAccount()).isPresent()) {
+			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.inAccount());
 		}
-		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.getOutAccount()).isPresent()) {
-			throw new AttributeNotFoundException("Out account not exists: " + entryInsertUpdateDTO.getOutAccount());
+		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.outAccount()).isPresent()) {
+			throw new AttributeNotFoundException("Out account not exists: " + entryInsertUpdateDTO.outAccount());
 		}
-		if (!this.ownerRepository.findByName(entryInsertUpdateDTO.getOwner()).isPresent()) {
-			throw new BeanExistsException("Owner not exists: " + entryInsertUpdateDTO.getOwner());
+		if (!this.ownerRepository.findByName(entryInsertUpdateDTO.owner()).isPresent()) {
+			throw new BeanExistsException("Owner not exists: " + entryInsertUpdateDTO.owner());
 		}
 
 		Entry entry = insertDtoToEntity(entryInsertUpdateDTO);
