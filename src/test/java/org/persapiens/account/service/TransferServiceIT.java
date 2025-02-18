@@ -28,13 +28,9 @@ class TransferServiceIT {
 
 	@Test
 	void transfer10FromFatherToAunt() {
-		this.transferService.transfer(TransferDTO.builder()
-			.value(BigDecimal.TEN)
-			.debitOwner(this.ownerDTOFactory.father().name())
-			.debitAccount(this.equityAccountDTOFactory.checking().description())
-			.creditOwner(this.ownerDTOFactory.aunt().name())
-			.creditAccount(this.equityAccountDTOFactory.savings().description())
-			.build());
+		this.transferService.transfer(new TransferDTO(this.ownerDTOFactory.father().name(),
+				this.equityAccountDTOFactory.checking().description(), this.ownerDTOFactory.aunt().name(),
+				this.equityAccountDTOFactory.savings().description(), BigDecimal.TEN));
 
 		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().name(),
 				this.equityAccountDTOFactory.checking().description()))

@@ -33,19 +33,19 @@ public class TransferService {
 	private final EquityAccountRepository equityAccountRepository;
 
 	private void validateBlank(TransferDTO transferDTO) {
-		if (StringUtils.isBlank(transferDTO.getDebitOwner())) {
+		if (StringUtils.isBlank(transferDTO.debitOwner())) {
 			throw new IllegalArgumentException("Debit Owner empty!");
 		}
-		if (StringUtils.isBlank(transferDTO.getDebitAccount())) {
+		if (StringUtils.isBlank(transferDTO.debitAccount())) {
 			throw new IllegalArgumentException("Debit Account empty!");
 		}
-		if (StringUtils.isBlank(transferDTO.getCreditOwner())) {
+		if (StringUtils.isBlank(transferDTO.creditOwner())) {
 			throw new IllegalArgumentException("Credit Owner empty!");
 		}
-		if (StringUtils.isBlank(transferDTO.getCreditAccount())) {
+		if (StringUtils.isBlank(transferDTO.creditAccount())) {
 			throw new IllegalArgumentException("Credit Account empty!");
 		}
-		if (transferDTO.getValue() == null) {
+		if (transferDTO.value() == null) {
 			throw new IllegalArgumentException("Value empty!");
 		}
 	}
@@ -54,16 +54,16 @@ public class TransferService {
 			Optional<EquityAccount> debitEquityAccountOptional, Optional<Owner> creditOwnerOptional,
 			Optional<EquityAccount> creditEquityAccountOptional) {
 		if (debitOwnerOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Debit Owner not exists: " + transferDTO.getDebitOwner());
+			throw new AttributeNotFoundException("Debit Owner not exists: " + transferDTO.debitOwner());
 		}
 		if (debitEquityAccountOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Debit Equity Account not exists: " + transferDTO.getDebitAccount());
+			throw new AttributeNotFoundException("Debit Equity Account not exists: " + transferDTO.debitAccount());
 		}
 		if (creditOwnerOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Credit Owner not exists: " + transferDTO.getCreditOwner());
+			throw new AttributeNotFoundException("Credit Owner not exists: " + transferDTO.creditOwner());
 		}
 		if (creditEquityAccountOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Credit Equity Account not exists: " + transferDTO.getCreditAccount());
+			throw new AttributeNotFoundException("Credit Equity Account not exists: " + transferDTO.creditAccount());
 		}
 	}
 
@@ -71,21 +71,21 @@ public class TransferService {
 	public void transfer(TransferDTO transferDTO) {
 		validateBlank(transferDTO);
 
-		Optional<Owner> debitOwnerOptional = this.ownerRepository.findByName(transferDTO.getDebitOwner());
+		Optional<Owner> debitOwnerOptional = this.ownerRepository.findByName(transferDTO.debitOwner());
 		Optional<EquityAccount> debitEquityAccountOptional = this.equityAccountRepository
-			.findByDescription(transferDTO.getDebitAccount());
-		Optional<Owner> creditOwnerOptional = this.ownerRepository.findByName(transferDTO.getCreditOwner());
+			.findByDescription(transferDTO.debitAccount());
+		Optional<Owner> creditOwnerOptional = this.ownerRepository.findByName(transferDTO.creditOwner());
 		Optional<EquityAccount> creditEquityAccountOptional = this.equityAccountRepository
-			.findByDescription(transferDTO.getCreditAccount());
+			.findByDescription(transferDTO.creditAccount());
 
 		validateFields(transferDTO, debitOwnerOptional, debitEquityAccountOptional, creditOwnerOptional,
 				creditEquityAccountOptional);
 
-		if (transferDTO.getCreditOwner().equals(transferDTO.getDebitOwner())) {
-			throw new IllegalArgumentException("Owners should be different: " + transferDTO.getCreditOwner());
+		if (transferDTO.creditOwner().equals(transferDTO.debitOwner())) {
+			throw new IllegalArgumentException("Owners should be different: " + transferDTO.creditOwner());
 		}
 
-		BigDecimal value = transferDTO.getValue();
+		BigDecimal value = transferDTO.value();
 		Owner debitOwnerDTO = debitOwnerOptional.get();
 		EquityAccount debitEquityAccountDTO = debitEquityAccountOptional.get();
 		Owner creditOwnerDTO = creditOwnerOptional.get();
