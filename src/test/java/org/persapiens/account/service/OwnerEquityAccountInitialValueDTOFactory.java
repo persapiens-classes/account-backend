@@ -31,11 +31,9 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(
 			OwnerEquityAccountInitialValue ownerEquityAccountInitialValue) {
-		return OwnerEquityAccountInitialValueDTO.builder()
-			.owner(ownerEquityAccountInitialValue.getOwner().getName())
-			.equityAccount(ownerEquityAccountInitialValue.getEquityAccount().getDescription())
-			.value(ownerEquityAccountInitialValue.getValue())
-			.build();
+		return new OwnerEquityAccountInitialValueDTO(ownerEquityAccountInitialValue.getOwner().getName(),
+				ownerEquityAccountInitialValue.getEquityAccount().getDescription(),
+				ownerEquityAccountInitialValue.getValue());
 	}
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner,

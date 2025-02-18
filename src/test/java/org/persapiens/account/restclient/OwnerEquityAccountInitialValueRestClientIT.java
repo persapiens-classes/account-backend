@@ -27,11 +27,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
 				category(CategoryConstants.BANK).description());
 
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000).setScale(2))
-			.owner(mother.name())
-			.equityAccount(savings.description())
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
+				mother.name(), savings.description(), new BigDecimal(1000).setScale(2));
 
 		// run insert operation
 		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
@@ -44,12 +41,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	}
 
 	private void insertInvalid(BigDecimal value, String owner, String equityAccount, HttpStatus httpStatus) {
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = OwnerEquityAccountInitialValueDTO
-			.builder()
-			.value(value)
-			.owner(owner)
-			.equityAccount(equityAccount)
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = new OwnerEquityAccountInitialValueDTO(
+				owner, equityAccount, value);
 
 		// verify insert operation
 		// verify status code error
@@ -80,11 +73,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.INVESTIMENT,
 				category(CategoryConstants.BANK).description());
 
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000))
-			.owner(uncle.name())
-			.equityAccount(savings.description())
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
+				uncle.name(), savings.description(), new BigDecimal(1000));
 
 		ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValue);
 
@@ -99,29 +89,23 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		EquityAccountDTO individualAssets = equityAccount(EquityAccountConstants.INDIVIDUAL_ASSETS,
 				category(CategoryConstants.BANK).description());
 
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000))
-			.owner(aunt.name())
-			.equityAccount(individualAssets.description())
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
+				aunt.name(), individualAssets.description(), new BigDecimal(1000));
 
 		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
 			.insert(ownerEquityAccountInitialValue);
-		inserted.setValue(new BigDecimal(2000));
+		inserted = new OwnerEquityAccountInitialValueDTO(inserted.owner(), inserted.equityAccount(),
+				new BigDecimal(2000));
 
 		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient().update(inserted);
 
-		assertThat(updated.getValue()).isEqualTo(new BigDecimal(2000));
+		assertThat(updated.value()).isEqualTo(new BigDecimal(2000));
 		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
 	}
 
 	private void updateInvalid(String owner, String equityAccount, BigDecimal value, HttpStatus httpStatus) {
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = OwnerEquityAccountInitialValueDTO
-			.builder()
-			.value(value)
-			.owner(owner)
-			.equityAccount(equityAccount)
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDto = new OwnerEquityAccountInitialValueDTO(
+				owner, equityAccount, value);
 
 		// verify update operation
 		// verify status code error
@@ -153,21 +137,17 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
 				category(CategoryConstants.BANK).description());
 
-		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.value(new BigDecimal(1000))
-			.owner(aunt.name())
-			.equityAccount(investiment.description())
-			.build();
+		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
+				aunt.name(), investiment.description(), new BigDecimal(1000));
 
 		OwnerEquityAccountInitialValueDTO bean = ownerEquityAccountInitialValueRestClient()
 			.insert(ownerEquityAccountInitialValue);
 
-		ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(bean.getOwner(),
-				bean.getEquityAccount());
+		ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(bean.owner(), bean.equityAccount());
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(bean.getOwner(),
-					bean.getEquityAccount()))
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(bean.owner(),
+					bean.equityAccount()))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 

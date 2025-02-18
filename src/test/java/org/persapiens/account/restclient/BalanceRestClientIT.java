@@ -34,11 +34,8 @@ class BalanceRestClientIT extends RestClientIT {
 			.description();
 
 		// initial value 100
-		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.equityAccount(savings)
-			.owner(uncle)
-			.value(new BigDecimal(100))
-			.build();
+		OwnerEquityAccountInitialValueDTO initialValue = new OwnerEquityAccountInitialValueDTO(uncle, savings,
+				new BigDecimal(100));
 		ownerEquityAccountInitialValueRestClient().insert(initialValue);
 
 		LocalDateTime date = LocalDateTime.now();
