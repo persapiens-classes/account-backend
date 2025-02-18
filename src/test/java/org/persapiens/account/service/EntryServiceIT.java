@@ -44,7 +44,7 @@ class EntryServiceIT {
 				.outAccount(this.equityAccountDTOFactory.savings().getDescription())
 				.value(BigDecimal.TEN)
 				.date(LocalDateTime.now())
-				.owner(this.ownerDTOFactory.father().getName())
+				.owner(this.ownerDTOFactory.father().name())
 				.build();
 
 			this.entryService.insert(entry);
@@ -59,7 +59,7 @@ class EntryServiceIT {
 				.outAccount(this.debitAccountDTOFactory.gasoline().getDescription())
 				.value(BigDecimal.ZERO)
 				.date(LocalDateTime.now())
-				.owner(this.ownerDTOFactory.father().getName())
+				.owner(this.ownerDTOFactory.father().name())
 				.build();
 
 			this.entryService.insert(entry);

@@ -60,7 +60,7 @@ class RestClientIT {
 			return ownerRestClient().findByName(name);
 		}
 		catch (HttpClientErrorException error) {
-			OwnerDTO result = OwnerDTO.builder().name(name).build();
+			OwnerDTO result = new OwnerDTO(name);
 			return ownerRestClient().insert(result);
 		}
 	}

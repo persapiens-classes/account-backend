@@ -47,7 +47,7 @@ public class EntryDTOFactory {
 	}
 
 	public EntryDTO entryDTO(OwnerDTO owner, DebitAccountDTO inAccount, EquityAccountDTO outAccount, BigDecimal value) {
-		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.getName()),
+		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
 				this.debitAccountFactory.debitAccount(inAccount.getDescription(),
 						this.categoryFactory.category(inAccount.getCategory())),
 				this.equityAccountFactory.equityAccount(outAccount.getDescription(),
@@ -57,7 +57,7 @@ public class EntryDTOFactory {
 
 	public EntryDTO entryDTO(OwnerDTO owner, EquityAccountDTO inAccount, CreditAccountDTO outAccount,
 			BigDecimal value) {
-		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.getName()),
+		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
 				this.equityAccountFactory.equityAccount(inAccount.getDescription(),
 						this.categoryFactory.category(inAccount.getCategory())),
 				this.creditAccountFactory.creditAccount(outAccount.getDescription(),

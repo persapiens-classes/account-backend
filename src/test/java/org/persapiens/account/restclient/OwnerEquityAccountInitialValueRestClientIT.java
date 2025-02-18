@@ -29,7 +29,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000).setScale(2))
-			.owner(mother.getName())
+			.owner(mother.name())
 			.equityAccount(savings.getDescription())
 			.build();
 
@@ -39,7 +39,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// verify findAll operation
 		assertThat(inserted).isEqualTo(ownerEquityAccountInitialValueRestClient()
-			.findByOwnerAndEquityAccount(mother.getName(), savings.getDescription()));
+			.findByOwnerAndEquityAccount(mother.name(), savings.getDescription()));
 		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
 	}
 
@@ -65,13 +65,13 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 				category(CategoryConstants.BANK).getDescription());
 
 		// null and empty
-		insertInvalid(null, mother.getName(), savings.getDescription(), HttpStatus.BAD_REQUEST);
+		insertInvalid(null, mother.name(), savings.getDescription(), HttpStatus.BAD_REQUEST);
 		insertInvalid(new BigDecimal(100), "", savings.getDescription(), HttpStatus.BAD_REQUEST);
-		insertInvalid(new BigDecimal(100), mother.getName(), "", HttpStatus.BAD_REQUEST);
+		insertInvalid(new BigDecimal(100), mother.name(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid owner and equity account
 		insertInvalid(new BigDecimal(100), "invalid owner", savings.getDescription(), HttpStatus.CONFLICT);
-		insertInvalid(new BigDecimal(100), mother.getName(), "invalid equity account", HttpStatus.CONFLICT);
+		insertInvalid(new BigDecimal(100), mother.name(), "invalid equity account", HttpStatus.CONFLICT);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000))
-			.owner(uncle.getName())
+			.owner(uncle.name())
 			.equityAccount(savings.getDescription())
 			.build();
 
@@ -90,7 +90,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
-		insertInvalid(new BigDecimal(1000), uncle.getName(), savings.getDescription(), HttpStatus.CONFLICT);
+		insertInvalid(new BigDecimal(1000), uncle.name(), savings.getDescription(), HttpStatus.CONFLICT);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000))
-			.owner(aunt.getName())
+			.owner(aunt.name())
 			.equityAccount(individualAssets.getDescription())
 			.build();
 
@@ -138,13 +138,13 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// empty id
 		updateInvalid("", "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
-		updateInvalid(grandmother.getName(), "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
+		updateInvalid(grandmother.name(), "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
 		updateInvalid("", savings.getDescription(), new BigDecimal(100), HttpStatus.BAD_REQUEST);
 
 		// invalid id
 		updateInvalid("invalid owner", savings.getDescription(), new BigDecimal(100), HttpStatus.CONFLICT);
-		updateInvalid(grandmother.getName(), "invalid equity account", new BigDecimal(100), HttpStatus.CONFLICT);
-		updateInvalid(grandmother.getName(), savings.getDescription(), new BigDecimal(100), HttpStatus.NOT_FOUND);
+		updateInvalid(grandmother.name(), "invalid equity account", new BigDecimal(100), HttpStatus.CONFLICT);
+		updateInvalid(grandmother.name(), savings.getDescription(), new BigDecimal(100), HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -155,7 +155,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = OwnerEquityAccountInitialValueDTO.builder()
 			.value(new BigDecimal(1000))
-			.owner(aunt.getName())
+			.owner(aunt.name())
 			.equityAccount(investiment.getDescription())
 			.build();
 
@@ -182,7 +182,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 	@Test
 	void deleteInvalid() {
-		String father = owner(OwnerConstants.FATHER).getName();
+		String father = owner(OwnerConstants.FATHER).name();
 		String savings = equityAccount(EquityAccountConstants.INVESTIMENT,
 				category(CategoryConstants.BANK).getDescription())
 			.getDescription();

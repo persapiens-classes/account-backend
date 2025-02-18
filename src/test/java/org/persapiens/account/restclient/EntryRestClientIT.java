@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class EntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
-		String mother = owner(OwnerConstants.MOTHER).getName();
+		String mother = owner(OwnerConstants.MOTHER).name();
 		String salary = category(CategoryConstants.SALARY).getDescription();
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
 		String bank = category(CategoryConstants.BANK).getDescription();
@@ -72,7 +72,7 @@ class EntryRestClientIT extends RestClientIT {
 	void insertInvalid() {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner(OwnerConstants.MOTHER).getName();
+		String ownerName = owner(OwnerConstants.MOTHER).name();
 		String salary = category(CategoryConstants.SALARY).getDescription();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
 		String bank = category(CategoryConstants.BANK).getDescription();
@@ -133,7 +133,7 @@ class EntryRestClientIT extends RestClientIT {
 	void updateInvalid() {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner("grandmother").getName();
+		String ownerName = owner("grandmother").name();
 		String salary = category(CategoryConstants.SALARY).getDescription();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
 		String cash = category(CategoryConstants.CASH).getDescription();

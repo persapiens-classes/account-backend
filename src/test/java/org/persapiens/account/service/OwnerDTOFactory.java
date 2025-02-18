@@ -15,7 +15,7 @@ public class OwnerDTOFactory {
 	private OwnerFactory ownerFactory;
 
 	public OwnerDTO ownerDTO(Owner owner) {
-		return OwnerDTO.builder().name(owner.getName()).build();
+		return new OwnerDTO(owner.getName());
 	}
 
 	public OwnerDTO ownerDTO(String name) {

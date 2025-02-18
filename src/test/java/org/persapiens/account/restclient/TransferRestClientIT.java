@@ -37,24 +37,24 @@ class TransferRestClientIT extends RestClientIT {
 
 		// execute transfer operation
 		transferRestClient().transfer(TransferDTO.builder()
-			.debitOwner(aunt.getName())
-			.creditOwner(uncle.getName())
+			.debitOwner(aunt.name())
+			.creditOwner(uncle.name())
 			.debitAccount(checkings.getDescription())
 			.creditAccount(investiment.getDescription())
 			.value(new BigDecimal(50))
 			.build());
 
-		assertThat(entryRestClient().debitSum(aunt.getName(), checkings.getDescription()))
+		assertThat(entryRestClient().debitSum(aunt.name(), checkings.getDescription()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 
-		assertThat(entryRestClient().creditSum(uncle.getName(), investiment.getDescription()))
+		assertThat(entryRestClient().creditSum(uncle.name(), investiment.getDescription()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 	}
 
 	@Test
 	void transferInvalid() {
-		String aunt = owner(OwnerConstants.AUNT).getName();
-		String uncle = owner(OwnerConstants.UNCLE).getName();
+		String aunt = owner(OwnerConstants.AUNT).name();
+		String uncle = owner(OwnerConstants.UNCLE).name();
 
 		String checkings = equityAccount(EquityAccountConstants.CHECKING,
 				category(CategoryConstants.BANK).getDescription())

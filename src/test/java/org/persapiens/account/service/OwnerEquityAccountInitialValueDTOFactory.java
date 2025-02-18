@@ -41,7 +41,7 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner,
 			EquityAccountDTO equityAccount, BigDecimal value) {
 		return ownerEquityAccountInitialValueDTO(this.ownerEquityAccountInitialValueFactory
-			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.getName()),
+			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.name()),
 					this.equityAccountFactory.equityAccount(equityAccount.getDescription(),
 							this.categoryFactory.category(equityAccount.getCategory())),
 					value));

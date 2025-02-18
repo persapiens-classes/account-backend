@@ -29,7 +29,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balance500() {
-		String uncle = owner(OwnerConstants.UNCLE).getName();
+		String uncle = owner(OwnerConstants.UNCLE).name();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS,
 				category(CategoryConstants.BANK).getDescription())
 			.getDescription();
@@ -78,7 +78,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balanceInvalid() {
-		String ownerName = owner(OwnerConstants.MOTHER).getName();
+		String ownerName = owner(OwnerConstants.MOTHER).name();
 		String bank = category(CategoryConstants.BANK).getDescription();
 		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
 

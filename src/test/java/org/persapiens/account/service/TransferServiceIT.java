@@ -30,17 +30,17 @@ class TransferServiceIT {
 	void transfer10FromFatherToAunt() {
 		this.transferService.transfer(TransferDTO.builder()
 			.value(BigDecimal.TEN)
-			.debitOwner(this.ownerDTOFactory.father().getName())
+			.debitOwner(this.ownerDTOFactory.father().name())
 			.debitAccount(this.equityAccountDTOFactory.checking().getDescription())
-			.creditOwner(this.ownerDTOFactory.aunt().getName())
+			.creditOwner(this.ownerDTOFactory.aunt().name())
 			.creditAccount(this.equityAccountDTOFactory.savings().getDescription())
 			.build());
 
-		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().getName(),
+		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().name(),
 				this.equityAccountDTOFactory.checking().getDescription()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 
-		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt().getName(),
+		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt().name(),
 				this.equityAccountDTOFactory.savings().getDescription()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 	}
