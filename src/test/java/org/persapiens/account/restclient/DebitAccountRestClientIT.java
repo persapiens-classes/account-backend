@@ -20,17 +20,14 @@ class DebitAccountRestClientIT extends RestClientIT {
 		String description = "Uber";
 		String categoryDescription = category(CategoryConstants.TRANSPORT).description();
 
-		DebitAccountDTO debitAccount = DebitAccountDTO.builder()
-			.description(description)
-			.category(categoryDescription)
-			.build();
+		DebitAccountDTO debitAccount = new DebitAccountDTO(description, categoryDescription);
 
 		// verify insert operation
 		assertThat(debitAccountRestClient().insert(debitAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(debitAccountRestClient().findByDescription(description).getDescription())
-			.isEqualTo(debitAccount.getDescription());
+		assertThat(debitAccountRestClient().findByDescription(description).description())
+			.isEqualTo(debitAccount.description());
 
 		// verify findAll operation
 		assertThat(debitAccountRestClient().findAll()).isNotEmpty();
@@ -41,8 +38,8 @@ class DebitAccountRestClientIT extends RestClientIT {
 		DebitAccountDTO debitAccount = debitAccount("Inserted debitAccount",
 				category(CategoryConstants.TRANSPORT).description());
 
-		String originalDescription = debitAccount.getDescription();
-		debitAccount.setDescription("Updated debitAccount");
+		String originalDescription = debitAccount.description();
+		debitAccount = new DebitAccountDTO("Updated debitAccount", debitAccount.category());
 
 		debitAccountRestClient().update(originalDescription, debitAccount);
 
@@ -52,8 +49,8 @@ class DebitAccountRestClientIT extends RestClientIT {
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(debitAccountRestClient().findByDescription(debitAccount.getDescription()).getDescription())
-			.isEqualTo(debitAccount.getDescription());
+		assertThat(debitAccountRestClient().findByDescription(debitAccount.description()).description())
+			.isEqualTo(debitAccount.description());
 	}
 
 	@Test
@@ -61,11 +58,9 @@ class DebitAccountRestClientIT extends RestClientIT {
 		// create test environment
 		String description = "Fantastic debitAccount";
 
-		debitAccountRestClient().insert(DebitAccountDTO.builder()
-			.description(description)
-			.category(category(CategoryConstants.TRANSPORT).description())
-			.build());
-		assertThat(debitAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
+		debitAccountRestClient()
+			.insert(new DebitAccountDTO(description, category(CategoryConstants.TRANSPORT).description()));
+		assertThat(debitAccountRestClient().findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
 		debitAccountRestClient().deleteByDescription(description);

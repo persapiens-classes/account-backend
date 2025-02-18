@@ -18,10 +18,7 @@ public class CreditAccountDTOFactory {
 	private CategoryFactory categoryFactory;
 
 	public CreditAccountDTO creditAccountDTO(CreditAccount creditAccount) {
-		return CreditAccountDTO.builder()
-			.description(creditAccount.getDescription())
-			.category(creditAccount.getCategory().getDescription())
-			.build();
+		return new CreditAccountDTO(creditAccount.getDescription(), creditAccount.getCategory().getDescription());
 	}
 
 	public CreditAccountDTO creditAccountDTO(String description, String category) {

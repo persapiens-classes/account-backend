@@ -48,20 +48,20 @@ public class EntryDTOFactory {
 
 	public EntryDTO entryDTO(OwnerDTO owner, DebitAccountDTO inAccount, EquityAccountDTO outAccount, BigDecimal value) {
 		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
-				this.debitAccountFactory.debitAccount(inAccount.getDescription(),
-						this.categoryFactory.category(inAccount.getCategory())),
-				this.equityAccountFactory.equityAccount(outAccount.getDescription(),
-						this.categoryFactory.category(outAccount.getCategory())),
+				this.debitAccountFactory.debitAccount(inAccount.description(),
+						this.categoryFactory.category(inAccount.category())),
+				this.equityAccountFactory.equityAccount(outAccount.description(),
+						this.categoryFactory.category(outAccount.category())),
 				value));
 	}
 
 	public EntryDTO entryDTO(OwnerDTO owner, EquityAccountDTO inAccount, CreditAccountDTO outAccount,
 			BigDecimal value) {
 		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
-				this.equityAccountFactory.equityAccount(inAccount.getDescription(),
-						this.categoryFactory.category(inAccount.getCategory())),
-				this.creditAccountFactory.creditAccount(outAccount.getDescription(),
-						this.categoryFactory.category(outAccount.getCategory())),
+				this.equityAccountFactory.equityAccount(inAccount.description(),
+						this.categoryFactory.category(inAccount.category())),
+				this.creditAccountFactory.creditAccount(outAccount.description(),
+						this.categoryFactory.category(outAccount.category())),
 				value));
 	}
 

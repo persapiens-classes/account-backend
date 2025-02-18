@@ -36,7 +36,7 @@ class CreditAccountServiceIT {
 		CreditAccountDTO creditAccountDTO = this.creditAccountDTOFactory.internship();
 
 		// verify the results
-		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.getDescription()))
+		assertThat(this.creditAccountService.findByDescription(creditAccountDTO.description()))
 			.isEqualTo(creditAccountDTO);
 	}
 
@@ -47,10 +47,10 @@ class CreditAccountServiceIT {
 				this.categoryDTOFactory.bank().description());
 
 		// execute the operation to be tested
-		this.creditAccountService.deleteByDescription(creditAccountDTO.getDescription());
+		this.creditAccountService.deleteByDescription(creditAccountDTO.description());
 
 		// verify the results
-		assertThat(this.creditAccountRepository.findByDescription(creditAccountDTO.getDescription()).isPresent())
+		assertThat(this.creditAccountRepository.findByDescription(creditAccountDTO.description()).isPresent())
 			.isFalse();
 	}
 

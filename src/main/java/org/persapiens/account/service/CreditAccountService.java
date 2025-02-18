@@ -28,8 +28,8 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 		return new CreditAccount();
 	}
 
-	protected CreditAccountDTO createAccountDTO() {
-		return new CreditAccountDTO();
+	protected CreditAccountDTO createAccountDTO(String description, String category) {
+		return new CreditAccountDTO(description, category);
 	}
 
 	@Transactional
@@ -37,10 +37,8 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 		Optional<CreditAccount> findByDescription = this.creditAccountRepository
 			.findByDescription(CreditAccount.INCOME_TRANSFER);
 		if (findByDescription.isEmpty()) {
-			CreditAccountDTO result = CreditAccountDTO.builder()
-				.description(CreditAccount.INCOME_TRANSFER)
-				.category(this.categoryService.incomeTransfer().description())
-				.build();
+			CreditAccountDTO result = new CreditAccountDTO(CreditAccount.INCOME_TRANSFER,
+					this.categoryService.incomeTransfer().description());
 			return insert(result);
 		}
 		else {

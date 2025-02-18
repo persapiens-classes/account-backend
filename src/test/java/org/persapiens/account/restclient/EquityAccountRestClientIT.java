@@ -20,17 +20,14 @@ class EquityAccountRestClientIT extends RestClientIT {
 		String description = "Super bank account";
 		String categoryDescription = category(CategoryConstants.BANK).description();
 
-		EquityAccountDTO equityAccount = EquityAccountDTO.builder()
-			.description(description)
-			.category(categoryDescription)
-			.build();
+		EquityAccountDTO equityAccount = new EquityAccountDTO(description, categoryDescription);
 
 		// verify insert operation
 		assertThat(equityAccountRestClient().insert(equityAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(equityAccountRestClient().findByDescription(description).getDescription())
-			.isEqualTo(equityAccount.getDescription());
+		assertThat(equityAccountRestClient().findByDescription(description).description())
+			.isEqualTo(equityAccount.description());
 
 		// verify findAll operation
 		assertThat(equityAccountRestClient().findAll()).isNotEmpty();
@@ -41,8 +38,8 @@ class EquityAccountRestClientIT extends RestClientIT {
 		EquityAccountDTO equityAccount = equityAccount("Inserted equityAccount",
 				category(CategoryConstants.BANK).description());
 
-		String originalDescription = equityAccount.getDescription();
-		equityAccount.setDescription("Updated equityAccount");
+		String originalDescription = equityAccount.description();
+		equityAccount = new EquityAccountDTO("Updated equityAccount", equityAccount.category());
 
 		equityAccountRestClient().update(originalDescription, equityAccount);
 
@@ -52,8 +49,8 @@ class EquityAccountRestClientIT extends RestClientIT {
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(equityAccountRestClient().findByDescription(equityAccount.getDescription()).getDescription())
-			.isEqualTo(equityAccount.getDescription());
+		assertThat(equityAccountRestClient().findByDescription(equityAccount.description()).description())
+			.isEqualTo(equityAccount.description());
 	}
 
 	@Test
@@ -61,11 +58,9 @@ class EquityAccountRestClientIT extends RestClientIT {
 		// create test environment
 		String description = "Fantastic equityAccount";
 
-		equityAccountRestClient().insert(EquityAccountDTO.builder()
-			.description(description)
-			.category(category(CategoryConstants.BANK).description())
-			.build());
-		assertThat(equityAccountRestClient().findByDescription(description).getDescription()).isEqualTo(description);
+		equityAccountRestClient()
+			.insert(new EquityAccountDTO(description, category(CategoryConstants.BANK).description()));
+		assertThat(equityAccountRestClient().findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByName operation
 		equityAccountRestClient().deleteByDescription(description);

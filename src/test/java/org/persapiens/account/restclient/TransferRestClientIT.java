@@ -22,7 +22,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class TransferRestClientIT extends RestClientIT {
 
 	private TransferRestClient transferRestClient() {
-		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>authenticatedRestClientHelper("")).build();
+		return TransferRestClient.builder()
+			.restClientHelper(this.<TransferDTO>authenticatedRestClientHelper(""))
+			.build();
 	}
 
 	@Test
@@ -39,15 +41,15 @@ class TransferRestClientIT extends RestClientIT {
 		transferRestClient().transfer(TransferDTO.builder()
 			.debitOwner(aunt.name())
 			.creditOwner(uncle.name())
-			.debitAccount(checkings.getDescription())
-			.creditAccount(investiment.getDescription())
+			.debitAccount(checkings.description())
+			.creditAccount(investiment.description())
 			.value(new BigDecimal(50))
 			.build());
 
-		assertThat(entryRestClient().debitSum(aunt.name(), checkings.getDescription()))
+		assertThat(entryRestClient().debitSum(aunt.name(), checkings.description()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 
-		assertThat(entryRestClient().creditSum(uncle.name(), investiment.getDescription()))
+		assertThat(entryRestClient().creditSum(uncle.name(), investiment.description()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 	}
 
@@ -58,10 +60,10 @@ class TransferRestClientIT extends RestClientIT {
 
 		String checkings = equityAccount(EquityAccountConstants.CHECKING,
 				category(CategoryConstants.BANK).description())
-			.getDescription();
+			.description();
 		String investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
 				category(CategoryConstants.BANK).description())
-			.getDescription();
+			.description();
 
 		BigDecimal value = new BigDecimal(100);
 

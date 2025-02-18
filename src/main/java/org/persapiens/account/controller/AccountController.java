@@ -2,7 +2,7 @@ package org.persapiens.account.controller;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
-import org.persapiens.account.dto.AccountDTO;
+import org.persapiens.account.dto.AccountDTOInterface;
 import org.persapiens.account.service.AccountService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @AllArgsConstructor
-public abstract class AccountController<D extends AccountDTO, E extends Account>
+public abstract class AccountController<D extends AccountDTOInterface, E extends Account>
 		extends CrudController<D, D, D, String, E, Long> {
 
 	private AccountService<D, E> accountService;

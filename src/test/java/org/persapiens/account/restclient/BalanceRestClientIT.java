@@ -31,7 +31,7 @@ class BalanceRestClientIT extends RestClientIT {
 	void balance500() {
 		String uncle = owner(OwnerConstants.UNCLE).name();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(CategoryConstants.BANK).description())
-			.getDescription();
+			.description();
 
 		// initial value 100
 		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
@@ -46,7 +46,7 @@ class BalanceRestClientIT extends RestClientIT {
 		// credit 600
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
 				category(CategoryConstants.SALARY).description())
-			.getDescription();
+			.description();
 		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(600))
 			.owner(uncle)
@@ -59,7 +59,7 @@ class BalanceRestClientIT extends RestClientIT {
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				category(CategoryConstants.TRANSPORT).description())
-			.getDescription();
+			.description();
 		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(200))
 			.owner(uncle)
@@ -79,7 +79,7 @@ class BalanceRestClientIT extends RestClientIT {
 	void balanceInvalid() {
 		String ownerName = owner(OwnerConstants.MOTHER).name();
 		String bank = category(CategoryConstants.BANK).description();
-		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
 		balanceInvalid("", equityAccountDescription, HttpStatus.BAD_REQUEST);

@@ -25,9 +25,9 @@ class EntryRestClientIT extends RestClientIT {
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
 		String salary = category(CategoryConstants.SALARY).description();
-		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
+		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
 		String bank = category(CategoryConstants.BANK).description();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		return EntryInsertUpdateDTO.builder()
 			.value(new BigDecimal(543))
@@ -74,9 +74,9 @@ class EntryRestClientIT extends RestClientIT {
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner(OwnerConstants.MOTHER).name();
 		String salary = category(CategoryConstants.SALARY).description();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
+		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
 		String bank = category(CategoryConstants.BANK).description();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
 		invalidInsert(null, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
@@ -101,8 +101,8 @@ class EntryRestClientIT extends RestClientIT {
 			.value(entryDTO.getValue())
 			.note("updated note")
 			.owner(entryDTO.getOwner())
-			.inAccount(entryDTO.getInAccount().getDescription())
-			.outAccount(entryDTO.getOutAccount().getDescription())
+			.inAccount(entryDTO.getInAccount().description())
+			.outAccount(entryDTO.getOutAccount().description())
 			.date(entryDTO.getDate())
 			.build();
 
@@ -135,9 +135,9 @@ class EntryRestClientIT extends RestClientIT {
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
 		String salary = category(CategoryConstants.SALARY).description();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
+		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
 		String cash = category(CategoryConstants.CASH).description();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).getDescription();
+		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
 
 		// empty id
 		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);

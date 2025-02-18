@@ -97,7 +97,7 @@ public class TransferService {
 		LocalDateTime date = LocalDateTime.now();
 
 		EntryInsertUpdateDTO debitEntry = EntryInsertUpdateDTO.builder()
-			.inAccount(expenseTransferDTO.getDescription())
+			.inAccount(expenseTransferDTO.description())
 			.outAccount(debitEquityAccountDTO.getDescription())
 			.owner(debitOwnerDTO.getName())
 			.value(value)
@@ -108,7 +108,7 @@ public class TransferService {
 
 		EntryInsertUpdateDTO creditEntry = EntryInsertUpdateDTO.builder()
 			.inAccount(creditEquityAccountDTO.getDescription())
-			.outAccount(incomeTransferDTO.getDescription())
+			.outAccount(incomeTransferDTO.description())
 			.owner(creditOwnerDTO.getName())
 			.value(value)
 			.date(date)

@@ -36,14 +36,10 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	protected EntryDTO toDTO(Entry entry) {
 		return EntryDTO.builder()
 			.id(entry.getId())
-			.inAccount(AccountDTO.builder()
-				.description(entry.getInAccount().getDescription())
-				.category(entry.getInAccount().getCategory().getDescription())
-				.build())
-			.outAccount(AccountDTO.builder()
-				.description(entry.getOutAccount().getDescription())
-				.category(entry.getOutAccount().getCategory().getDescription())
-				.build())
+			.inAccount(new AccountDTO(entry.getInAccount().getDescription(),
+					entry.getInAccount().getCategory().getDescription()))
+			.outAccount(new AccountDTO(entry.getOutAccount().getDescription(),
+					entry.getOutAccount().getCategory().getDescription()))
 			.owner(entry.getOwner().getName())
 			.date(entry.getDate())
 			.value(entry.getValue())

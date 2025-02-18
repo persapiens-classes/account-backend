@@ -40,8 +40,8 @@ class EntryServiceIT {
 	void entryWithInvalidInAccount() {
 		Assertions.assertThatThrownBy(() -> {
 			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
-				.inAccount(this.creditAccountDTOFactory.internship().getDescription())
-				.outAccount(this.equityAccountDTOFactory.savings().getDescription())
+				.inAccount(this.creditAccountDTOFactory.internship().description())
+				.outAccount(this.equityAccountDTOFactory.savings().description())
 				.value(BigDecimal.TEN)
 				.date(LocalDateTime.now())
 				.owner(this.ownerDTOFactory.father().name())
@@ -55,8 +55,8 @@ class EntryServiceIT {
 	void entryWithInvalidOutAccount() {
 		Assertions.assertThatThrownBy(() -> {
 			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
-				.inAccount(this.equityAccountDTOFactory.savings().getDescription())
-				.outAccount(this.debitAccountDTOFactory.gasoline().getDescription())
+				.inAccount(this.equityAccountDTOFactory.savings().description())
+				.outAccount(this.debitAccountDTOFactory.gasoline().description())
 				.value(BigDecimal.ZERO)
 				.date(LocalDateTime.now())
 				.owner(this.ownerDTOFactory.father().name())
