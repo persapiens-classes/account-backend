@@ -54,4 +54,9 @@ class CreditAccountServiceIT {
 			.isFalse();
 	}
 
+	@Test
+	void incomeTransfer() {
+		assertThat(this.creditAccountService.incomeTransfer()).isEqualTo(this.creditAccountService.incomeTransfer());
+	}
+
 }
