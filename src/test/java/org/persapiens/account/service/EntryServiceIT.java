@@ -39,13 +39,12 @@ class EntryServiceIT {
 	@Test
 	void entryWithInvalidInAccount() {
 		Assertions.assertThatThrownBy(() -> {
-			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
-				.inAccount(this.creditAccountDTOFactory.internship().getDescription())
-				.outAccount(this.equityAccountDTOFactory.savings().getDescription())
-				.value(BigDecimal.TEN)
-				.date(LocalDateTime.now())
-				.owner(this.ownerDTOFactory.father().getName())
-				.build();
+			EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(
+				this.ownerDTOFactory.father().name(),
+				LocalDateTime.now(),
+				this.creditAccountDTOFactory.internship().description(),
+				this.equityAccountDTOFactory.savings().description(),
+				BigDecimal.TEN, "");
 
 			this.entryService.insert(entry);
 		}).isInstanceOf(IllegalArgumentException.class);
@@ -54,13 +53,9 @@ class EntryServiceIT {
 	@Test
 	void entryWithInvalidOutAccount() {
 		Assertions.assertThatThrownBy(() -> {
-			EntryInsertUpdateDTO entry = EntryInsertUpdateDTO.builder()
-				.inAccount(this.equityAccountDTOFactory.savings().getDescription())
-				.outAccount(this.debitAccountDTOFactory.gasoline().getDescription())
-				.value(BigDecimal.ZERO)
-				.date(LocalDateTime.now())
-				.owner(this.ownerDTOFactory.father().getName())
-				.build();
+			EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(),
+					LocalDateTime.now(), this.equityAccountDTOFactory.savings().description(),
+					this.debitAccountDTOFactory.gasoline().description(), BigDecimal.ZERO, "");
 
 			this.entryService.insert(entry);
 		}).isInstanceOf(IllegalArgumentException.class);

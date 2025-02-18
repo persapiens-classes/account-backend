@@ -18,20 +18,20 @@ class OwnerRestClientIT extends RestClientIT {
 	void insertOne() {
 		String name = "Free income";
 
-		OwnerDTO owner = OwnerDTO.builder().name(name).build();
+		OwnerDTO owner = new OwnerDTO(name);
 
 		// verify insert operation
 		assertThat(ownerRestClient().insert(owner)).isNotNull();
 
 		// verify findByName operation
-		assertThat(ownerRestClient().findByName(name).getName()).isEqualTo(owner.getName());
+		assertThat(ownerRestClient().findByName(name).name()).isEqualTo(owner.name());
 
 		// verify findAll operation
 		assertThat(ownerRestClient().findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(String name, HttpStatus httpStatus) {
-		OwnerDTO ownerDto = OwnerDTO.builder().name(name).build();
+		OwnerDTO ownerDto = new OwnerDTO(name);
 
 		// verify insert operation
 		// verify status code error
@@ -50,7 +50,7 @@ class OwnerRestClientIT extends RestClientIT {
 	void insertSameOwnerTwice() {
 		String name = "repeated owner";
 
-		OwnerDTO ownerDto = OwnerDTO.builder().name(name).build();
+		OwnerDTO ownerDto = new OwnerDTO(name);
 
 		ownerRestClient().insert(ownerDto);
 
@@ -63,8 +63,8 @@ class OwnerRestClientIT extends RestClientIT {
 	void updateOne() {
 		OwnerDTO owner = owner("Inserted owner");
 
-		String originalName = owner.getName();
-		owner.setName("Updated owner");
+		String originalName = owner.name();
+		owner = new OwnerDTO("Updated owner");
 
 		ownerRestClient().update(originalName, owner);
 
@@ -74,11 +74,11 @@ class OwnerRestClientIT extends RestClientIT {
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(ownerRestClient().findByName(owner.getName()).getName()).isEqualTo(owner.getName());
+		assertThat(ownerRestClient().findByName(owner.name()).name()).isEqualTo(owner.name());
 	}
 
 	private void updateInvalid(String oldName, String newName, HttpStatus httpStatus) {
-		OwnerDTO category = OwnerDTO.builder().name(newName).build();
+		OwnerDTO category = new OwnerDTO(newName);
 
 		// verify update operation
 		// verify status code error
@@ -93,24 +93,24 @@ class OwnerRestClientIT extends RestClientIT {
 
 		// empty id
 		updateInvalid("", "", HttpStatus.FORBIDDEN);
-		updateInvalid("", ownerToUpdate.getName(), HttpStatus.FORBIDDEN);
+		updateInvalid("", ownerToUpdate.name(), HttpStatus.FORBIDDEN);
 
 		// empty fields
-		updateInvalid(ownerToUpdate.getName(), "", HttpStatus.BAD_REQUEST);
+		updateInvalid(ownerToUpdate.name(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid id
 		updateInvalid("invalid owner", "valid owner name", HttpStatus.NOT_FOUND);
 
 		// invalid field
-		updateInvalid(ownerToUpdate.getName(), ownerToUpdate.getName(), HttpStatus.CONFLICT);
+		updateInvalid(ownerToUpdate.name(), ownerToUpdate.name(), HttpStatus.CONFLICT);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
 		String name = "Fantastic owner";
-		ownerRestClient().insert(OwnerDTO.builder().name(name).build());
-		assertThat(ownerRestClient().findByName(name).getName()).isEqualTo(name);
+		ownerRestClient().insert(new OwnerDTO(name));
+		assertThat(ownerRestClient().findByName(name).name()).isEqualTo(name);
 
 		// execute deleteByName operation
 		ownerRestClient().deleteByName(name);

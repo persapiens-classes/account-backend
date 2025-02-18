@@ -18,10 +18,7 @@ public class DebitAccountDTOFactory {
 	private CategoryFactory categoryFactory;
 
 	public DebitAccountDTO debitAccountDTO(DebitAccount debitAccount) {
-		return DebitAccountDTO.builder()
-			.description(debitAccount.getDescription())
-			.category(debitAccount.getCategory().getDescription())
-			.build();
+		return new DebitAccountDTO(debitAccount.getDescription(), debitAccount.getCategory().getDescription());
 	}
 
 	public DebitAccountDTO debitAccountDTO(String description, String category) {

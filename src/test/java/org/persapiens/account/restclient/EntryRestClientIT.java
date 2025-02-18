@@ -23,20 +23,14 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class EntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
-		String mother = owner(OwnerConstants.MOTHER).getName();
-		String salary = category(CategoryConstants.SALARY).getDescription();
-		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String bank = category(CategoryConstants.BANK).getDescription();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String mother = owner(OwnerConstants.MOTHER).name();
+		String salary = category(CategoryConstants.SALARY).description();
+		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
+		String bank = category(CategoryConstants.BANK).description();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
-		return EntryInsertUpdateDTO.builder()
-			.value(new BigDecimal(543))
-			.note("saving the internship")
-			.owner(mother)
-			.inAccount(savings)
-			.outAccount(internship)
-			.date(LocalDateTime.now())
-			.build();
+		return new EntryInsertUpdateDTO(mother, LocalDateTime.now(), savings, internship, new BigDecimal(543),
+				"saving the internship");
 	}
 
 	@Test
@@ -52,14 +46,8 @@ class EntryRestClientIT extends RestClientIT {
 
 	private void invalidInsert(BigDecimal value, LocalDateTime date, String ownerName, String inAccountDescription,
 			String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = EntryInsertUpdateDTO.builder()
-			.value(value)
-			.note("invalid insert")
-			.owner(ownerName)
-			.inAccount(inAccountDescription)
-			.outAccount(outAccountDescription)
-			.date(date)
-			.build();
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+				outAccountDescription, value, "invalid insert");
 
 		// verify insert operation
 		// verify status code error
@@ -72,11 +60,11 @@ class EntryRestClientIT extends RestClientIT {
 	void insertInvalid() {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner(OwnerConstants.MOTHER).getName();
-		String salary = category(CategoryConstants.SALARY).getDescription();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String bank = category(CategoryConstants.BANK).getDescription();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String ownerName = owner(OwnerConstants.MOTHER).name();
+		String salary = category(CategoryConstants.SALARY).description();
+		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
+		String bank = category(CategoryConstants.BANK).description();
+		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
 		invalidInsert(null, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
@@ -97,30 +85,19 @@ class EntryRestClientIT extends RestClientIT {
 
 		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
 
-		EntryInsertUpdateDTO entryUpdate = EntryInsertUpdateDTO.builder()
-			.value(entryDTO.getValue())
-			.note("updated note")
-			.owner(entryDTO.getOwner())
-			.inAccount(entryDTO.getInAccount().getDescription())
-			.outAccount(entryDTO.getOutAccount().getDescription())
-			.date(entryDTO.getDate())
-			.build();
+		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.owner(), entryDTO.date(),
+				entryDTO.inAccount().description(), entryDTO.outAccount().description(), entryDTO.value(),
+				"updated note");
 
-		entryRestClient().update(entryDTO.getId(), entryUpdate);
+		entryRestClient().update(entryDTO.id(), entryUpdate);
 
-		assertThat(entryRestClient().findById(entryDTO.getId()).getNote()).isEqualTo("updated note");
+		assertThat(entryRestClient().findById(entryDTO.id()).note()).isEqualTo("updated note");
 	}
 
 	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
 			String inAccountDescription, String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = EntryInsertUpdateDTO.builder()
-			.value(value)
-			.note("invalid update")
-			.owner(ownerName)
-			.inAccount(inAccountDescription)
-			.outAccount(outAccountDescription)
-			.date(date)
-			.build();
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+				outAccountDescription, value, "invalid update");
 
 		// verify update operation
 		// verify status code error
@@ -133,25 +110,19 @@ class EntryRestClientIT extends RestClientIT {
 	void updateInvalid() {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner("grandmother").getName();
-		String salary = category(CategoryConstants.SALARY).getDescription();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).getDescription();
-		String cash = category(CategoryConstants.CASH).getDescription();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).getDescription();
+		String ownerName = owner("grandmother").name();
+		String salary = category(CategoryConstants.SALARY).description();
+		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
+		String cash = category(CategoryConstants.CASH).description();
+		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
 
 		// empty id
 		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);
 		updateInvalid(null, value, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.FORBIDDEN);
 
-		EntryInsertUpdateDTO entryInsertUpdateDTO = EntryInsertUpdateDTO.builder()
-			.value(value)
-			.note("valid entry")
-			.owner(ownerName)
-			.inAccount(inAccountDescription)
-			.outAccount(outAccountDescription)
-			.date(date)
-			.build();
-		Long id = entryRestClient().insert(entryInsertUpdateDTO).getId();
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+				outAccountDescription, value, "valid entry");
+		Long id = entryRestClient().insert(entryInsertUpdateDTO).id();
 
 		// empty fields
 		updateInvalid(id, null, null, "", "", "", HttpStatus.BAD_REQUEST);
@@ -178,12 +149,12 @@ class EntryRestClientIT extends RestClientIT {
 
 		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
 
-		assertThat(entryDTO.getId()).isGreaterThan(0);
+		assertThat(entryDTO.id()).isGreaterThan(0);
 
-		entryRestClient().deleteById(entryDTO.getId());
+		entryRestClient().deleteById(entryDTO.id());
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().findById(entryDTO.getId()))
+			.isThrownBy(() -> entryRestClient().findById(entryDTO.id()))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 

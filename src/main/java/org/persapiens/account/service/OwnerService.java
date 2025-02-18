@@ -19,11 +19,11 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 
 	@Override
 	protected OwnerDTO toDTO(Owner entity) {
-		return OwnerDTO.builder().name(entity.getName()).build();
+		return new OwnerDTO(entity.getName());
 	}
 
 	private Owner toEntity(OwnerDTO dto) {
-		return Owner.builder().name(dto.getName()).build();
+		return Owner.builder().name(dto.name()).build();
 	}
 
 	@Override
@@ -65,11 +65,11 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	}
 
 	private void validate(OwnerDTO ownerDto) {
-		if (StringUtils.isBlank(ownerDto.getName())) {
+		if (StringUtils.isBlank(ownerDto.name())) {
 			throw new IllegalArgumentException("Name empty!");
 		}
-		if (this.ownerRepository.findByName(ownerDto.getName()).isPresent()) {
-			throw new BeanExistsException("Name exists: " + ownerDto.getName());
+		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
+			throw new BeanExistsException("Name exists: " + ownerDto.name());
 		}
 	}
 

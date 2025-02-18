@@ -19,8 +19,8 @@ public class EquityAccountService extends AccountService<EquityAccountDTO, Equit
 		return new EquityAccount();
 	}
 
-	protected EquityAccountDTO createAccountDTO() {
-		return new EquityAccountDTO();
+	protected EquityAccountDTO createAccountDTO(String description, String category) {
+		return new EquityAccountDTO(description, category);
 	}
 
 }

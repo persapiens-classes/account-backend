@@ -49,8 +49,8 @@ public class OwnerEquityAccountInitialValueRestClient {
 		return this.restClientHelper.getRestClient()
 			.put()
 			.uri(this.restClientHelper.updateUri("?owner={owner}&equityAccount={equityAccount}",
-					uriVariables(entity.getOwner(), entity.getEquityAccount())))
-			.body(entity.getValue())
+					uriVariables(entity.owner(), entity.equityAccount())))
+			.body(entity.value())
 			.retrieve()
 			.body(OwnerEquityAccountInitialValueDTO.class);
 	}

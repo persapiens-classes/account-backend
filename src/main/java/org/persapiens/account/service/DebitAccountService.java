@@ -28,8 +28,8 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 		return new DebitAccount();
 	}
 
-	protected DebitAccountDTO createAccountDTO() {
-		return new DebitAccountDTO();
+	protected DebitAccountDTO createAccountDTO(String description, String category) {
+		return new DebitAccountDTO(description, category);
 	}
 
 	@Transactional
@@ -37,10 +37,8 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 		Optional<DebitAccount> findByDescription = this.debitAccountRepository
 			.findByDescription(DebitAccount.EXPENSE_TRANSFER);
 		if (findByDescription.isEmpty()) {
-			DebitAccountDTO result = DebitAccountDTO.builder()
-				.description(DebitAccount.EXPENSE_TRANSFER)
-				.category(this.categoryService.expenseTransfer().getDescription())
-				.build();
+			DebitAccountDTO result = new DebitAccountDTO(DebitAccount.EXPENSE_TRANSFER,
+					this.categoryService.expenseTransfer().description());
 			return insert(result);
 		}
 		else {

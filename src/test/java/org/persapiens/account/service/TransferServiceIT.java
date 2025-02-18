@@ -28,20 +28,16 @@ class TransferServiceIT {
 
 	@Test
 	void transfer10FromFatherToAunt() {
-		this.transferService.transfer(TransferDTO.builder()
-			.value(BigDecimal.TEN)
-			.debitOwner(this.ownerDTOFactory.father().getName())
-			.debitAccount(this.equityAccountDTOFactory.checking().getDescription())
-			.creditOwner(this.ownerDTOFactory.aunt().getName())
-			.creditAccount(this.equityAccountDTOFactory.savings().getDescription())
-			.build());
+		this.transferService.transfer(new TransferDTO(this.ownerDTOFactory.father().name(),
+				this.equityAccountDTOFactory.checking().description(), this.ownerDTOFactory.aunt().name(),
+				this.equityAccountDTOFactory.savings().description(), BigDecimal.TEN));
 
-		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().getName(),
-				this.equityAccountDTOFactory.checking().getDescription()))
+		assertThat(this.entryService.debitSum(this.ownerDTOFactory.father().name(),
+				this.equityAccountDTOFactory.checking().description()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 
-		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt().getName(),
-				this.equityAccountDTOFactory.savings().getDescription()))
+		assertThat(this.entryService.creditSum(this.ownerDTOFactory.aunt().name(),
+				this.equityAccountDTOFactory.savings().description()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 	}
 

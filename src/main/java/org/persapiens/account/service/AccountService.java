@@ -5,7 +5,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
-import org.persapiens.account.dto.AccountDTO;
+import org.persapiens.account.dto.AccountDTOInterface;
 import org.persapiens.account.persistence.AccountRepository;
 import org.persapiens.account.persistence.CategoryRepository;
 
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
-public abstract class AccountService<D extends AccountDTO, E extends Account>
+public abstract class AccountService<D extends AccountDTOInterface, E extends Account>
 		extends CrudService<D, D, D, String, E, Long> {
 
 	private AccountRepository<E> accountRepository;
@@ -23,20 +23,17 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 
 	protected abstract E createAccount();
 
-	protected abstract D createAccountDTO();
+	protected abstract D createAccountDTO(String description, String category);
 
 	@Override
 	protected D toDTO(E entity) {
-		D result = createAccountDTO();
-		result.setDescription(entity.getDescription());
-		result.setCategory(entity.getCategory().getDescription());
-		return result;
+		return createAccountDTO(entity.getDescription(), entity.getCategory().getDescription());
 	}
 
 	private E toEntity(D dto) {
 		E result = createAccount();
-		result.setDescription(dto.getDescription());
-		result.setCategory(this.categoryRepository.findByDescription(dto.getCategory()).get());
+		result.setDescription(dto.description());
+		result.setCategory(this.categoryRepository.findByDescription(dto.category()).get());
 		return result;
 	}
 
@@ -79,21 +76,21 @@ public abstract class AccountService<D extends AccountDTO, E extends Account>
 	}
 
 	private void validateBlank(D accountDto) {
-		if (StringUtils.isBlank(accountDto.getDescription())) {
+		if (StringUtils.isBlank(accountDto.description())) {
 			throw new IllegalArgumentException("Description empty!");
 		}
-		if (StringUtils.isBlank(accountDto.getCategory())) {
+		if (StringUtils.isBlank(accountDto.category())) {
 			throw new IllegalArgumentException("Category empty!");
 		}
 	}
 
 	private void validate(D accountDto) {
 		validateBlank(accountDto);
-		if (this.accountRepository.findByDescription(accountDto.getDescription()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + accountDto.getDescription());
+		if (this.accountRepository.findByDescription(accountDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + accountDto.description());
 		}
-		if (!this.categoryRepository.findByDescription(accountDto.getCategory()).isPresent()) {
-			throw new AttributeNotFoundException("Category not exists: " + accountDto.getCategory());
+		if (!this.categoryRepository.findByDescription(accountDto.category()).isPresent()) {
+			throw new AttributeNotFoundException("Category not exists: " + accountDto.category());
 		}
 	}
 

@@ -31,19 +31,16 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	protected OwnerEquityAccountInitialValueDTO toDTO(OwnerEquityAccountInitialValue entity) {
-		return OwnerEquityAccountInitialValueDTO.builder()
-			.value(entity.getValue())
-			.owner(entity.getOwner().getName())
-			.equityAccount(entity.getEquityAccount().getDescription())
-			.build();
+		return new OwnerEquityAccountInitialValueDTO(entity.getOwner().getName(),
+				entity.getEquityAccount().getDescription(), entity.getValue());
 	}
 
 	@Override
 	protected OwnerEquityAccountInitialValue insertDtoToEntity(OwnerEquityAccountInitialValueDTO dto) {
-		Owner owner = this.ownerRepository.findByName(dto.getOwner()).get();
-		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(dto.getEquityAccount()).get();
+		Owner owner = this.ownerRepository.findByName(dto.owner()).get();
+		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(dto.equityAccount()).get();
 		return OwnerEquityAccountInitialValue.builder()
-			.value(dto.getValue())
+			.value(dto.value())
 			.owner(owner)
 			.equityAccount(equityAccount)
 			.build();
@@ -56,9 +53,9 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	protected Optional<OwnerEquityAccountInitialValue> findByUpdateKey(OwnerNameEquityAccountDescription updateKey) {
-		Owner owner = this.ownerRepository.findByName(updateKey.getOwnerName()).get();
+		Owner owner = this.ownerRepository.findByName(updateKey.ownerName()).get();
 		EquityAccount equityAccount = this.equityAccountRepository
-			.findByDescription(updateKey.getEquityAccountDescription())
+			.findByDescription(updateKey.equityAccountDescription())
 			.get();
 		return this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(owner, equityAccount);
 	}
@@ -146,13 +143,13 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO insertDto) {
-		validate(insertDto.getOwner(), insertDto.getEquityAccount(), insertDto.getValue(), true);
+		validate(insertDto.owner(), insertDto.equityAccount(), insertDto.value(), true);
 		return super.insert(insertDto);
 	}
 
 	@Override
 	public OwnerEquityAccountInitialValueDTO update(OwnerNameEquityAccountDescription updateKey, BigDecimal updateDto) {
-		validate(updateKey.getOwnerName(), updateKey.getEquityAccountDescription(), updateDto, false);
+		validate(updateKey.ownerName(), updateKey.equityAccountDescription(), updateDto, false);
 		return super.update(updateKey, updateDto);
 	}
 

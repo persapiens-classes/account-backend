@@ -22,7 +22,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class TransferRestClientIT extends RestClientIT {
 
 	private TransferRestClient transferRestClient() {
-		return TransferRestClient.builder().restClientHelper(this.<TransferDTO>authenticatedRestClientHelper("")).build();
+		return TransferRestClient.builder()
+			.restClientHelper(this.<TransferDTO>authenticatedRestClientHelper(""))
+			.build();
 	}
 
 	@Test
@@ -31,37 +33,32 @@ class TransferRestClientIT extends RestClientIT {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 
 		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).getDescription());
+				category(CategoryConstants.BANK).description());
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).getDescription());
+				category(CategoryConstants.BANK).description());
 
 		// execute transfer operation
-		transferRestClient().transfer(TransferDTO.builder()
-			.debitOwner(aunt.getName())
-			.creditOwner(uncle.getName())
-			.debitAccount(checkings.getDescription())
-			.creditAccount(investiment.getDescription())
-			.value(new BigDecimal(50))
-			.build());
+		transferRestClient().transfer(new TransferDTO(aunt.name(), checkings.description(), uncle.name(),
+				investiment.description(), new BigDecimal(50)));
 
-		assertThat(entryRestClient().debitSum(aunt.getName(), checkings.getDescription()))
+		assertThat(entryRestClient().debitSum(aunt.name(), checkings.description()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 
-		assertThat(entryRestClient().creditSum(uncle.getName(), investiment.getDescription()))
+		assertThat(entryRestClient().creditSum(uncle.name(), investiment.description()))
 			.isEqualTo(new BigDecimal(50).setScale(2));
 	}
 
 	@Test
 	void transferInvalid() {
-		String aunt = owner(OwnerConstants.AUNT).getName();
-		String uncle = owner(OwnerConstants.UNCLE).getName();
+		String aunt = owner(OwnerConstants.AUNT).name();
+		String uncle = owner(OwnerConstants.UNCLE).name();
 
 		String checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).getDescription())
-			.getDescription();
+				category(CategoryConstants.BANK).description())
+			.description();
 		String investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).getDescription())
-			.getDescription();
+				category(CategoryConstants.BANK).description())
+			.description();
 
 		BigDecimal value = new BigDecimal(100);
 
@@ -85,13 +82,8 @@ class TransferRestClientIT extends RestClientIT {
 	private void transferInvalid(String debitOwnerName, String debitEquityAccountDescription, String creditOwnerName,
 			String creditEquityAccountDescription, BigDecimal value, HttpStatus httpStatus) {
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> transferRestClient().transfer(TransferDTO.builder()
-				.debitOwner(debitOwnerName)
-				.debitAccount(debitEquityAccountDescription)
-				.creditOwner(creditOwnerName)
-				.creditAccount(creditEquityAccountDescription)
-				.value(value)
-				.build()))
+			.isThrownBy(() -> transferRestClient().transfer(new TransferDTO(debitOwnerName,
+					debitEquityAccountDescription, creditOwnerName, creditEquityAccountDescription, value)))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

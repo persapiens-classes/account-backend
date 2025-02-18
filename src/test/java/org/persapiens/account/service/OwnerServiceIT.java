@@ -33,7 +33,7 @@ class OwnerServiceIT {
 		OwnerDTO owner = this.ownerDTOFactory.mother();
 
 		// verify the results
-		assertThat(this.ownerService.findByName(owner.getName())).isEqualTo(owner);
+		assertThat(this.ownerService.findByName(owner.name())).isEqualTo(owner);
 	}
 
 	@Test
@@ -42,10 +42,10 @@ class OwnerServiceIT {
 		OwnerDTO owner = this.ownerDTOFactory.ownerDTO("UNIQUE Owner");
 
 		// execute the operation to be tested
-		this.ownerService.deleteByName(owner.getName());
+		this.ownerService.deleteByName(owner.name());
 
 		// verify the results
-		assertThat(this.ownerRepository.findByName(owner.getName()).isPresent()).isFalse();
+		assertThat(this.ownerRepository.findByName(owner.name()).isPresent()).isFalse();
 	}
 
 }

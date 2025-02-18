@@ -31,19 +31,16 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(
 			OwnerEquityAccountInitialValue ownerEquityAccountInitialValue) {
-		return OwnerEquityAccountInitialValueDTO.builder()
-			.owner(ownerEquityAccountInitialValue.getOwner().getName())
-			.equityAccount(ownerEquityAccountInitialValue.getEquityAccount().getDescription())
-			.value(ownerEquityAccountInitialValue.getValue())
-			.build();
+		return new OwnerEquityAccountInitialValueDTO(ownerEquityAccountInitialValue.getOwner().getName(),
+				ownerEquityAccountInitialValue.getEquityAccount().getDescription(),
+				ownerEquityAccountInitialValue.getValue());
 	}
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner,
 			EquityAccountDTO equityAccount, BigDecimal value) {
 		return ownerEquityAccountInitialValueDTO(this.ownerEquityAccountInitialValueFactory
-			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.getName()),
-					this.equityAccountFactory.equityAccount(equityAccount.getDescription(),
-							this.categoryFactory.category(equityAccount.getCategory())),
+			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.name()), this.equityAccountFactory
+				.equityAccount(equityAccount.description(), this.categoryFactory.category(equityAccount.category())),
 					value));
 	}
 

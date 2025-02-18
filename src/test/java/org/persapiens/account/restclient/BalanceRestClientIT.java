@@ -29,45 +29,31 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balance500() {
-		String uncle = owner(OwnerConstants.UNCLE).getName();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS,
-				category(CategoryConstants.BANK).getDescription())
-			.getDescription();
+		String uncle = owner(OwnerConstants.UNCLE).name();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(CategoryConstants.BANK).description())
+			.description();
 
 		// initial value 100
-		OwnerEquityAccountInitialValueDTO initialValue = OwnerEquityAccountInitialValueDTO.builder()
-			.equityAccount(savings)
-			.owner(uncle)
-			.value(new BigDecimal(100))
-			.build();
+		OwnerEquityAccountInitialValueDTO initialValue = new OwnerEquityAccountInitialValueDTO(uncle, savings,
+				new BigDecimal(100));
 		ownerEquityAccountInitialValueRestClient().insert(initialValue);
 
 		LocalDateTime date = LocalDateTime.now();
 
 		// credit 600
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
-				category(CategoryConstants.SALARY).getDescription())
-			.getDescription();
-		EntryInsertUpdateDTO entryCredito = EntryInsertUpdateDTO.builder()
-			.value(new BigDecimal(600))
-			.owner(uncle)
-			.inAccount(savings)
-			.outAccount(internship)
-			.date(date)
-			.build();
+				category(CategoryConstants.SALARY).description())
+			.description();
+		EntryInsertUpdateDTO entryCredito = new EntryInsertUpdateDTO(uncle, date, savings, internship,
+				new BigDecimal(600), "");
 		entryRestClient().insert(entryCredito);
 
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
-				category(CategoryConstants.TRANSPORT).getDescription())
-			.getDescription();
-		EntryInsertUpdateDTO entryDebito = EntryInsertUpdateDTO.builder()
-			.value(new BigDecimal(200))
-			.owner(uncle)
-			.inAccount(gasoline)
-			.outAccount(savings)
-			.date(date)
-			.build();
+				category(CategoryConstants.TRANSPORT).description())
+			.description();
+		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, date, gasoline, savings, new BigDecimal(200),
+				"");
 		entryRestClient().insert(entryDebito);
 
 		// executa a operacao a ser testada
@@ -78,9 +64,9 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balanceInvalid() {
-		String ownerName = owner(OwnerConstants.MOTHER).getName();
-		String bank = category(CategoryConstants.BANK).getDescription();
-		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).getDescription();
+		String ownerName = owner(OwnerConstants.MOTHER).name();
+		String bank = category(CategoryConstants.BANK).description();
+		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
 		balanceInvalid("", equityAccountDescription, HttpStatus.BAD_REQUEST);

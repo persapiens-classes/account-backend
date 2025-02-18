@@ -19,10 +19,7 @@ public class EquityAccountDTOFactory {
 	private CategoryFactory categoryFactory;
 
 	public EquityAccountDTO equityAccountDTO(EquityAccount equityAccount) {
-		return EquityAccountDTO.builder()
-			.description(equityAccount.getDescription())
-			.category(equityAccount.getCategory().getDescription())
-			.build();
+		return new EquityAccountDTO(equityAccount.getDescription(), equityAccount.getCategory().getDescription());
 	}
 
 	public EquityAccountDTO equityAccountDTO(String description, String category) {

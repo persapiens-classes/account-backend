@@ -60,7 +60,7 @@ class RestClientIT {
 			return ownerRestClient().findByName(name);
 		}
 		catch (HttpClientErrorException error) {
-			OwnerDTO result = OwnerDTO.builder().name(name).build();
+			OwnerDTO result = new OwnerDTO(name);
 			return ownerRestClient().insert(result);
 		}
 	}
@@ -76,7 +76,7 @@ class RestClientIT {
 			return categoryRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			CategoryDTO result = CategoryDTO.builder().description(description).build();
+			CategoryDTO result = new CategoryDTO(description);
 			return categoryRestClient().insert(result);
 		}
 	}
@@ -92,10 +92,7 @@ class RestClientIT {
 			return equityAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			EquityAccountDTO result = EquityAccountDTO.builder()
-				.description(description)
-				.category(categoryDescription)
-				.build();
+			EquityAccountDTO result = new EquityAccountDTO(description, categoryDescription);
 			return equityAccountRestClient().insert(result);
 		}
 	}
@@ -111,10 +108,7 @@ class RestClientIT {
 			return creditAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			CreditAccountDTO result = CreditAccountDTO.builder()
-				.description(description)
-				.category(categoryDescription)
-				.build();
+			CreditAccountDTO result = new CreditAccountDTO(description, categoryDescription);
 			return creditAccountRestClient().insert(result);
 		}
 	}
@@ -130,10 +124,7 @@ class RestClientIT {
 			return debitAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			DebitAccountDTO result = DebitAccountDTO.builder()
-				.description(description)
-				.category(categoryDescription)
-				.build();
+			DebitAccountDTO result = new DebitAccountDTO(description, categoryDescription);
 			return debitAccountRestClient().insert(result);
 		}
 	}
