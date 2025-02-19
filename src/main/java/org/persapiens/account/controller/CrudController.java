@@ -1,5 +1,8 @@
 package org.persapiens.account.controller;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 import org.persapiens.account.service.CrudService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +25,8 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 	}
 
 	@GetMapping
-	public Iterable<F> findAll() {
-		return this.crudService.findAll();
+	public List<F> findAll() {
+		return StreamSupport.stream(this.crudService.findAll().spliterator(), false).toList();
 	}
 
 }
