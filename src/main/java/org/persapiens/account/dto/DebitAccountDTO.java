@@ -1,5 +1,7 @@
 package org.persapiens.account.dto;
 
-public record DebitAccountDTO(String description, String category) implements AccountDTOInterface {
+import jakarta.validation.constraints.NotBlank;
+
+public record DebitAccountDTO(@NotBlank String description, @NotBlank String category) implements AccountDTOInterface {
 
 }

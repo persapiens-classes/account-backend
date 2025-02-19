@@ -2,6 +2,9 @@ package org.persapiens.account.dto;
 
 import java.math.BigDecimal;
 
-public record OwnerEquityAccountInitialValueDTO(String owner, String equityAccount, BigDecimal value) {
+import jakarta.validation.constraints.NotBlank;
+
+public record OwnerEquityAccountInitialValueDTO(@NotBlank String owner, @NotBlank String equityAccount,
+		@NotBlank BigDecimal value) {
 
 }

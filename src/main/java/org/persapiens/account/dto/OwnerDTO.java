@@ -1,5 +1,7 @@
 package org.persapiens.account.dto;
 
-public record OwnerDTO(String name) {
+import jakarta.validation.constraints.NotBlank;
+
+public record OwnerDTO(@NotBlank String name) {
 
 }
