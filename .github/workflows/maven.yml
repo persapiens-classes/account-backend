@@ -113,8 +113,10 @@ jobs:
             target/spotbugsXml.xml
             target/spotbugs-exclude.xml
 
-      - name: Tests run
-        run: ./mvnw -B verify
+      - name: Tests and Sonar run
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./mvnw -B verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=persapiens-classes -Dsonar.projectKey=persapiens-classes_account-backend
 
       - name: Tests upload artifacts
         uses: actions/upload-artifact@v4.6.0

@@ -43,6 +43,8 @@
 
         <plantuml-generator-maven-plugin.version>3.0.1</plantuml-generator-maven-plugin.version>
         <plantuml-maven-plugin.version>0.2.13</plantuml-maven-plugin.version>
+
+        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -220,6 +222,12 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
