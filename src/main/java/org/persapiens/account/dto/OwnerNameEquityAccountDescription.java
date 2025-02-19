@@ -1,5 +1,7 @@
 package org.persapiens.account.dto;
 
-public record OwnerNameEquityAccountDescription(String ownerName, String equityAccountDescription) {
+import jakarta.validation.constraints.NotBlank;
+
+public record OwnerNameEquityAccountDescription(@NotBlank String ownerName, @NotBlank String equityAccountDescription) {
 
 }

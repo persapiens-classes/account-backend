@@ -1,5 +1,7 @@
 package org.persapiens.account.dto;
 
-public record CategoryDTO(String description) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CategoryDTO(@NotBlank String description) {
 
 }
