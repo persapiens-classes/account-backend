@@ -22,9 +22,9 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EntryRestClientIT extends RestClientIT {
 
-	private static String INVALID_OWNER = "invalid owner";
+	private static final String INVALID_OWNER = "invalid owner";
 
-	private static String INVALID_EQUITY_ACCOUNT = "invalid equity account";
+	private static final String INVALID_EQUITY_ACCOUNT = "invalid equity account";
 
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
