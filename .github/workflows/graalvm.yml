@@ -50,14 +50,14 @@ jobs:
           echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
-        if: ${{ github.repository == 'persapiens-classes/account-backend' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Zip, copy and deploy executable via SSH
         run: |
           zip -j target/account-backend.zip target/account-backend
           scp -i ~/.ssh/id_rsa -P ${{ secrets.DEPLOY_PORT }} target/account-backend.zip ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:~/
           ssh -i ~/.ssh/id_rsa -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "~/deploy.sh"
-        if: ${{ github.repository == 'persapiens-classes/account-backend' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
         
       - name: Native Image build
         run: ./mvnw -B -Pnative -DskipTests=true spring-boot:build-image
