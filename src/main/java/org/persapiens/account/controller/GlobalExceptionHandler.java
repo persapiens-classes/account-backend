@@ -15,28 +15,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	private static String ERROR = "error";
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-			.body(Collections.singletonMap("error", exception.getMessage()));
+			.body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 
 	@ExceptionHandler(BeanExistsException.class)
 	public ResponseEntity<Map<String, String>> handleBeanExistsException(BeanExistsException exception) {
-		return ResponseEntity.status(HttpStatus.CONFLICT)
-			.body(Collections.singletonMap("error", exception.getMessage()));
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 
 	@ExceptionHandler(AttributeNotFoundException.class)
 	public ResponseEntity<Map<String, String>> handleAttributeNotFoundException(AttributeNotFoundException exception) {
-		return ResponseEntity.status(HttpStatus.CONFLICT)
-			.body(Collections.singletonMap("error", exception.getMessage()));
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 
 	@ExceptionHandler(BeanNotFoundException.class)
 	public ResponseEntity<Map<String, String>> handleBeanNotFoundException(BeanNotFoundException exception) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-			.body(Collections.singletonMap("error", exception.getMessage()));
+			.body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 
 }
