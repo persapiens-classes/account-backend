@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	private static String ERROR = "error";
+	private static final String ERROR = "error";
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException exception) {
