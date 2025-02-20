@@ -121,20 +121,41 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		return super.update(updateKey, entryInsertUpdateDTO);
 	}
 
-	public BigDecimal creditSum(String ownerName, String equityAccountDescription) {
-		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
-		Optional<EquityAccount> byDescription = this.equityAccountRepository
-			.findByDescription(equityAccountDescription);
+	private Owner validateOwner(String ownerName) {
+		if (StringUtils.isBlank(ownerName)) {
+			throw new IllegalArgumentException("Owner empty!");
+		}
+		Optional<Owner> ownerOptional = this.ownerRepository.findByName(ownerName);
+		if (!ownerOptional.isPresent()) {
+			throw new BeanExistsException("Owner not exists: " + ownerName);
+		}
+		return ownerOptional.get();
+	}
 
-		return this.entryRepository.creditSum(byName.get(), byDescription.get()).getValue();
+	private EquityAccount validateEquityAccount(String equityAccountDescription) {
+		if (StringUtils.isBlank(equityAccountDescription)) {
+			throw new IllegalArgumentException("Equity account empty!");
+		}
+		Optional<EquityAccount> equityAccountOptional = this.equityAccountRepository
+			.findByDescription(equityAccountDescription);
+		if (!equityAccountOptional.isPresent()) {
+			throw new BeanExistsException("Equity Account not exists: " + equityAccountOptional);
+		}
+		return equityAccountOptional.get();
+	}
+
+	public BigDecimal creditSum(String ownerName, String equityAccountDescription) {
+		Owner owner = validateOwner(ownerName);
+		EquityAccount equityAccount = validateEquityAccount(equityAccountDescription);
+
+		return this.entryRepository.creditSum(owner, equityAccount).getValue();
 	}
 
 	public BigDecimal debitSum(String ownerName, String equityAccountDescription) {
-		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
-		Optional<EquityAccount> byDescription = this.equityAccountRepository
-			.findByDescription(equityAccountDescription);
+		Owner owner = validateOwner(ownerName);
+		EquityAccount equityAccount = validateEquityAccount(equityAccountDescription);
 
-		return this.entryRepository.debitSum(byName.get(), byDescription.get()).getValue();
+		return this.entryRepository.debitSum(owner, equityAccount).getValue();
 	}
 
 	@Transactional

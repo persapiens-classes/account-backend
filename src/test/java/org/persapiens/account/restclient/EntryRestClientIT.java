@@ -22,6 +22,10 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EntryRestClientIT extends RestClientIT {
 
+	private static final String INVALID_OWNER = "invalid owner";
+
+	private static final String INVALID_EQUITY_ACCOUNT = "invalid equity account";
+
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
 		String salary = category(CategoryConstants.SALARY).description();
@@ -169,6 +173,50 @@ class EntryRestClientIT extends RestClientIT {
 	void deleteInvalid() {
 		long id = 1000;
 		deleteInvalid(id, HttpStatus.NOT_FOUND);
+	}
+
+	private void creditSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> entryRestClient().creditSum(owner, equityAccount))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void creditSumInvalid() {
+		String mother = owner(OwnerConstants.MOTHER).name();
+		String salary = category(CategoryConstants.SALARY).description();
+
+		creditSumInvalid("", "", HttpStatus.BAD_REQUEST);
+		creditSumInvalid(INVALID_OWNER, "", HttpStatus.CONFLICT);
+		creditSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
+		creditSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		creditSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
+		creditSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		creditSumInvalid(INVALID_OWNER, salary, HttpStatus.CONFLICT);
+	}
+
+	private void debitSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
+		// verify delete operation
+		// verify status code error
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> entryRestClient().debitSum(owner, equityAccount))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+	}
+
+	@Test
+	void debitSumInvalid() {
+		String mother = owner(OwnerConstants.MOTHER).name();
+		String salary = category(CategoryConstants.SALARY).description();
+
+		debitSumInvalid("", "", HttpStatus.BAD_REQUEST);
+		debitSumInvalid(INVALID_OWNER, "", HttpStatus.CONFLICT);
+		debitSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
+		debitSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		debitSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
+		debitSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		debitSumInvalid(INVALID_OWNER, salary, HttpStatus.CONFLICT);
 	}
 
 }
