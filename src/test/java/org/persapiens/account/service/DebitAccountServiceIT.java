@@ -50,7 +50,7 @@ class DebitAccountServiceIT {
 		this.debitAccountService.deleteByDescription(debitAccountDTO.description());
 
 		// verify the results
-		assertThat(this.debitAccountRepository.findByDescription(debitAccountDTO.description()).isPresent()).isFalse();
+		assertThat(this.debitAccountRepository.findByDescription(debitAccountDTO.description())).isNotPresent();
 	}
 
 	@Test

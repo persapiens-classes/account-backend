@@ -39,8 +39,7 @@ class CreditAccountRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.creditAccountRepository.findOne(Example.of(creditAccountExemplo)).get())
-			.isEqualTo(creditAccount);
+		assertThat(this.creditAccountRepository.findOne(Example.of(creditAccountExemplo))).contains(creditAccount);
 	}
 
 }

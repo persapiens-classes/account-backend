@@ -32,8 +32,8 @@ class OwnerRepositoryIT {
 
 		// execute the operation to be tested
 		// verify results
-		assertThat(this.ownerRepository.findByName(OwnerConstants.FATHER).get()).isEqualTo(father);
-		assertThat(this.ownerRepository.findByName(OwnerConstants.MOTHER).get()).isEqualTo(mother);
+		assertThat(this.ownerRepository.findByName(OwnerConstants.FATHER)).contains(father);
+		assertThat(this.ownerRepository.findByName(OwnerConstants.MOTHER)).contains(mother);
 	}
 
 	@Test

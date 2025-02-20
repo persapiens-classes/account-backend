@@ -45,8 +45,8 @@ class OwnerEquityAccountInitialValueRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(father, savings).get())
-			.isEqualTo(ownerEquityAccountInitialValue);
+		assertThat(this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(father, savings))
+			.contains(ownerEquityAccountInitialValue);
 	}
 
 }
