@@ -50,8 +50,7 @@ class CreditAccountServiceIT {
 		this.creditAccountService.deleteByDescription(creditAccountDTO.description());
 
 		// verify the results
-		assertThat(this.creditAccountRepository.findByDescription(creditAccountDTO.description()).isPresent())
-			.isFalse();
+		assertThat(this.creditAccountRepository.findByDescription(creditAccountDTO.description())).isNotPresent();
 	}
 
 	@Test

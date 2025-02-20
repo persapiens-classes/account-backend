@@ -39,7 +39,7 @@ class DebitAccountRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.debitAccountRepository.findOne(Example.of(debitAccountExemplo)).get()).isEqualTo(debitAccount);
+		assertThat(this.debitAccountRepository.findOne(Example.of(debitAccountExemplo))).contains(debitAccount);
 	}
 
 }

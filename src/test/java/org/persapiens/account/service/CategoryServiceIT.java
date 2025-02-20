@@ -45,7 +45,7 @@ class CategoryServiceIT {
 		this.categoryService.deleteByDescription(categoryDTO.description());
 
 		// verify the results
-		assertThat(this.categoryRepository.findByDescription(categoryDTO.description()).isPresent()).isFalse();
+		assertThat(this.categoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
 	}
 
 	@Test

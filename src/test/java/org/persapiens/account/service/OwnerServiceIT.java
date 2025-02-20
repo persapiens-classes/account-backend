@@ -45,7 +45,7 @@ class OwnerServiceIT {
 		this.ownerService.deleteByName(owner.name());
 
 		// verify the results
-		assertThat(this.ownerRepository.findByName(owner.name()).isPresent()).isFalse();
+		assertThat(this.ownerRepository.findByName(owner.name())).isNotPresent();
 	}
 
 }

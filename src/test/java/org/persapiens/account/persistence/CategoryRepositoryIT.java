@@ -32,7 +32,7 @@ class CategoryRepositoryIT {
 		this.categoryRepository.delete(category);
 
 		// verify the results
-		assertThat(this.categoryRepository.findById(category.getId()).isPresent()).isFalse();
+		assertThat(this.categoryRepository.findById(category.getId())).isNotPresent();
 	}
 
 	@Test
