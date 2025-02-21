@@ -8,7 +8,6 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -41,12 +40,12 @@ public class JwtFactory {
 
 	private String buildToken(Map<String, Object> extraClaims, String username, long expiration) {
 		return Jwts.builder()
-			.claims(extraClaims)
-			.subject(username)
-			.issuedAt(new Date(System.currentTimeMillis()))
-			.expiration(new Date(System.currentTimeMillis() + expiration))
-			.signWith(getSignInKey())
-			.compact();
+				.claims(extraClaims)
+				.subject(username)
+				.issuedAt(new Date(System.currentTimeMillis()))
+				.expiration(new Date(System.currentTimeMillis() + expiration))
+				.signWith(getSignInKey())
+				.compact();
 	}
 
 	public String generateToken(String username) {
@@ -55,16 +54,6 @@ public class JwtFactory {
 
 	public long getExpirationTime() {
 		return this.jwtProperties.getExpirationTime();
-	}
-
-	public boolean isTokenValid(String token, String username) {
-		try {
-			final String extractedUsername = extractUsername(token);
-			return extractedUsername.equals(username);
-		}
-		catch (ExpiredJwtException error) {
-			return false;
-		}
 	}
 
 }
