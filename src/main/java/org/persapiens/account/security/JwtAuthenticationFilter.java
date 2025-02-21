@@ -34,22 +34,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
 		final String authHeader = request.getHeader("Authorization");
 
+		// check if jwt authentication using bearer header
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
 		try {
-			final String jwt = authHeader.substring(7);
-			final String username = this.jwtFactory.extractUsername(jwt);
-
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-			if (username != null && authentication == null) {
+			// user not authenticated yet
+			if (authentication == null) {
+				final String jwt = authHeader.substring(7);
+				// extract username from jwt token
+				final String username = this.jwtFactory.extractUsername(jwt);
+
+				// search user details from username
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-				if (this.jwtFactory.isTokenValid(jwt, userDetails.getUsername())) {
-					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+				// userDetails is enabled
+				if (userDetails.isEnabled()) {
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+							userDetails,
 							null, userDetails.getAuthorities());
 
 					authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -58,8 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 
 			filterChain.doFilter(request, response);
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			this.handlerExceptionResolver.resolveException(request, response, null, exception);
 		}
 	}
