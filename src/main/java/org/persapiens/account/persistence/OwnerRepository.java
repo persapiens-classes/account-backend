@@ -11,8 +11,6 @@ public interface OwnerRepository extends CrudRepository<Owner, Long> {
 
 	Optional<Owner> findByName(String name);
 
-	long countByNameContains(String name);
-
 	@Transactional
 	long deleteByName(String name);
 
