@@ -54,8 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 				// userDetails is enabled
 				if (userDetails.isEnabled()) {
-					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-							userDetails,
+					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
 							null, userDetails.getAuthorities());
 
 					authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -64,7 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			}
 
 			filterChain.doFilter(request, response);
-		} catch (Exception exception) {
+		}
+		catch (Exception exception) {
 			this.handlerExceptionResolver.resolveException(request, response, null, exception);
 		}
 	}
