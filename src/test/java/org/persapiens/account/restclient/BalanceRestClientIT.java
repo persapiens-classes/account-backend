@@ -31,7 +31,7 @@ class BalanceRestClientIT extends RestClientIT {
 	void balance500() {
 		String uncle = owner(OwnerConstants.UNCLE).name();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(CategoryConstants.BANK).description())
-			.description();
+				.description();
 
 		// initial value 100
 		OwnerEquityAccountInitialValueDTO initialValue = new OwnerEquityAccountInitialValueDTO(uncle, savings,
@@ -43,7 +43,7 @@ class BalanceRestClientIT extends RestClientIT {
 		// credit 600
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
 				category(CategoryConstants.SALARY).description())
-			.description();
+				.description();
 		EntryInsertUpdateDTO entryCredito = new EntryInsertUpdateDTO(uncle, date, savings, internship,
 				new BigDecimal(600), "");
 		entryRestClient().insert(entryCredito);
@@ -51,7 +51,7 @@ class BalanceRestClientIT extends RestClientIT {
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				category(CategoryConstants.TRANSPORT).description())
-			.description();
+				.description();
 		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, date, gasoline, savings, new BigDecimal(200),
 				"");
 		entryRestClient().insert(entryDebito);
@@ -64,7 +64,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balanceInvalid() {
-		String ownerName = owner(OwnerConstants.MOTHER).name();
+		String ownerName = owner(OwnerConstants.FATHER).name();
 		String bank = category(CategoryConstants.BANK).description();
 		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
@@ -82,8 +82,8 @@ class BalanceRestClientIT extends RestClientIT {
 
 	private void balanceInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> balanceRestClient().balance(ownerName, equityAccountDescription))
-			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
+				.isThrownBy(() -> balanceRestClient().balance(ownerName, equityAccountDescription))
+				.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 }
