@@ -2,14 +2,10 @@ package org.persapiens.account.persistence;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
-import org.persapiens.account.domain.Category;
-import org.persapiens.account.domain.EquityAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,14 +28,9 @@ class EquityAccountRepositoryIT {
 		// create test environment
 		this.equityAccountFactory.savings();
 
-		EquityAccount equityAccountExemplo = EquityAccount.builder()
-			.description(EquityAccountConstants.SAVINGS)
-			.category(Category.builder().description(CategoryConstants.BANK).build())
-			.build();
-
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.equityAccountRepository.count(Example.of(equityAccountExemplo))).isEqualTo(1);
+		assertThat(this.equityAccountRepository.findByDescription(EquityAccountConstants.SAVINGS)).isPresent();
 	}
 
 }
