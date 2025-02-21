@@ -37,17 +37,6 @@ class OwnerRepositoryIT {
 	}
 
 	@Test
-	void countByName() {
-		// create test environment
-		this.ownerFactory.father();
-		this.ownerFactory.mother();
-
-		// execute the operation to be tested
-		// verify results
-		assertThat(this.ownerRepository.countByNameContains("ther")).isEqualTo(2);
-	}
-
-	@Test
 	void deleteByName() {
 		String uniqueName = "Unique Owner";
 
@@ -58,7 +47,7 @@ class OwnerRepositoryIT {
 		this.ownerRepository.deleteByName(uniqueName);
 
 		// verify results
-		assertThat(this.ownerRepository.countByNameContains(uniqueName)).isZero();
+		assertThat(this.ownerRepository.findByName(uniqueName)).isNotPresent();
 	}
 
 }

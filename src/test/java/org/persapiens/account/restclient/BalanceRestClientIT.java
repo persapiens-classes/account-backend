@@ -64,7 +64,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 	@Test
 	void balanceInvalid() {
-		String ownerName = owner(OwnerConstants.MOTHER).name();
+		String ownerName = owner(OwnerConstants.AUNT).name();
 		String bank = category(CategoryConstants.BANK).description();
 		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
