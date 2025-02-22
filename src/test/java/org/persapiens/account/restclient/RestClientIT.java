@@ -1,6 +1,5 @@
 package org.persapiens.account.restclient;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.dto.CreditAccountDTO;
 import org.persapiens.account.dto.DebitAccountDTO;
@@ -16,11 +15,9 @@ import org.springframework.web.client.HttpClientErrorException;
 
 class RestClientIT {
 
-	@SuppressFBWarnings("SS_SHOULD_BE_STATIC")
-	private final String protocol = "http";
+	private static final String PROTOCOL = "http";
 
-	@SuppressFBWarnings("SS_SHOULD_BE_STATIC")
-	private final String servername = "localhost";
+	private static final String SERVERNAME = "localhost";
 
 	@Value("${local.server.port}")
 	private int port;
@@ -39,8 +36,8 @@ class RestClientIT {
 	private <T> RestClientHelper<T> restClientHelper(String endpoint) {
 		return RestClientHelper.<T>builder()
 			.endpoint(endpoint)
-			.protocol(this.protocol)
-			.servername(this.servername)
+			.protocol(PROTOCOL)
+			.servername(SERVERNAME)
 			.port(this.port)
 			.build();
 	}

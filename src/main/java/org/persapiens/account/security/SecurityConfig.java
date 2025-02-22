@@ -30,7 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SuppressFBWarnings("SPRING_CSRF_PROTECTION_DISABLED")
-@EnableConfigurationProperties({ UserCredentials.class, JwtProperties.class })
+@EnableConfigurationProperties({ UserCredentialsProperties.class, JwtProperties.class, CorsProperties.class })
 @EnableWebSecurity
 @Configuration
 @ConditionalOnWebApplication
@@ -52,13 +52,14 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public InMemoryUserDetailsManager userDetailsService(UserCredentials userCredentials) {
+	public InMemoryUserDetailsManager userDetailsService(UserCredentialsProperties userCredentialsProperties) {
 		PasswordEncoder encoder = passwordEncoder();
 		InMemoryUserDetailsManager result = new InMemoryUserDetailsManager();
 		result.createUser(User.builder()
-			.username(userCredentials.getName())
-			.password(encoder.encode(userCredentials.getPassword()))
-			.authorities(userCredentials.getAuthorities().toArray(new String[userCredentials.getAuthorities().size()]))
+			.username(userCredentialsProperties.getName())
+			.password(encoder.encode(userCredentialsProperties.getPassword()))
+			.authorities(userCredentialsProperties.getAuthorities()
+				.toArray(new String[userCredentialsProperties.getAuthorities().size()]))
 			.build());
 		return result;
 	}
@@ -94,9 +95,9 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
+	public CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+		corsConfiguration.setAllowedOriginPatterns(List.of(corsProperties.getAllowedOriginPatterns()));
 		corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		corsConfiguration.setAllowedHeaders(List.of("*"));
 		corsConfiguration.setAllowCredentials(true);

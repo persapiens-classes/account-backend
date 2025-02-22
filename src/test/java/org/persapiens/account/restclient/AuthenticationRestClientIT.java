@@ -3,7 +3,7 @@ package org.persapiens.account.restclient;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.security.LoginRequestDTO;
-import org.persapiens.account.security.UserCredentials;
+import org.persapiens.account.security.UserCredentialsProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 class AuthenticationRestClientIT extends RestClientIT {
 
 	@Autowired
-	private UserCredentials userCredentials;
+	private UserCredentialsProperties userCredentialsProperties;
 
 	@Test
 	void loginValid() {
 		LoginRequestDTO loginRequestDTO = LoginRequestDTO.builder()
-			.username(this.userCredentials.getName())
-			.password(this.userCredentials.getPassword())
+			.username(this.userCredentialsProperties.getName())
+			.password(this.userCredentialsProperties.getPassword())
 			.build();
 
 		assertThat(authenticationRestClient().login(loginRequestDTO).getToken()).isNotNull();
@@ -33,7 +33,7 @@ class AuthenticationRestClientIT extends RestClientIT {
 	void loginInvalid() {
 		LoginRequestDTO loginRequestDTO = LoginRequestDTO.builder()
 			.username("invalid user")
-			.password(this.userCredentials.getPassword())
+			.password(this.userCredentialsProperties.getPassword())
 			.build();
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
