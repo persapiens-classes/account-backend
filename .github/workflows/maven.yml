@@ -129,7 +129,7 @@ jobs:
       - name: Sonar run
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=persapiens-classes -Dsonar.projectKey=persapiens-classes_account-backend
+        run: ./mvnw -B verify sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=persapiens-classes -Dsonar.projectKey=persapiens-classes_account-backend
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Build with Aot
