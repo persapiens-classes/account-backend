@@ -3,6 +3,7 @@ package org.persapiens.account.security;
 import java.io.IOException;
 import java.util.List;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,12 +19,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
-class JwtAuthenticationFilterIT {
+class JwtAuthenticationFilterTests {
 
 	@Mock
 	private JwtFactory jwtFactory;
@@ -42,6 +44,9 @@ class JwtAuthenticationFilterIT {
 
 	@Mock
 	private UserDetails userDetails;
+
+	@Mock
+	private HandlerExceptionResolver handlerExceptionResolver;
 
 	@InjectMocks
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -94,6 +99,19 @@ class JwtAuthenticationFilterIT {
 		this.jwtAuthenticationFilter.doFilterInternal(this.request, this.response, this.filterChain);
 
 		assertThat(SecurityContextHolder.getContext().getAuthentication()).isNull();
+	}
+
+	@Test
+	void testInvalidJwtToken() throws ServletException, IOException {
+		String token = "invalid-jwt-token";
+		Exception exception = new JwtException("token error");
+
+		given(this.request.getHeader("Authorization")).willReturn("Bearer " + token);
+		given(this.jwtFactory.extractUsername(token)).willThrow(exception);
+
+		this.jwtAuthenticationFilter.doFilterInternal(this.request, this.response, this.filterChain);
+
+		then(this.handlerExceptionResolver).should().resolveException(this.request, this.response, null, exception);
 	}
 
 }
