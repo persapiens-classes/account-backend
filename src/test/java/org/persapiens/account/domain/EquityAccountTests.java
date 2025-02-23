@@ -47,7 +47,7 @@ class EquityAccountTests {
 	@Test
 	void equalDescriptionWithoutCategory() {
 		var builder = EquityAccount.builder().description(EquityAccountConstants.CHECKING);
-		Assertions.assertThatThrownBy(() -> builder.build()).isInstanceOf(NullPointerException.class);
+		Assertions.assertThatThrownBy(builder::build).isInstanceOf(NullPointerException.class);
 	}
 
 	@Test
