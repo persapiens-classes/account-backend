@@ -148,12 +148,14 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
 		OwnerEquityAccountInitialValueDTO bean = ownerEquityAccountInitialValueRestClient
 			.insert(ownerEquityAccountInitialValue);
+		String owner = bean.owner();
+		String equityAccount = bean.equityAccount();
 
-		ownerEquityAccountInitialValueRestClient.deleteByOwnerAndEquityAccount(bean.owner(), bean.equityAccount());
+		ownerEquityAccountInitialValueRestClient.deleteByOwnerAndEquityAccount(owner, equityAccount);
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient.findByOwnerAndEquityAccount(bean.owner(),
-					bean.equityAccount()))
+			.isThrownBy(
+					() -> ownerEquityAccountInitialValueRestClient.findByOwnerAndEquityAccount(owner, equityAccount))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 

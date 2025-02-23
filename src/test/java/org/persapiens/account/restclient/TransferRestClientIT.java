@@ -83,10 +83,11 @@ class TransferRestClientIT extends RestClientIT {
 
 	private void transferInvalid(String debitOwnerName, String debitEquityAccountDescription, String creditOwnerName,
 			String creditEquityAccountDescription, BigDecimal value, HttpStatus httpStatus) {
+		var transferDTO = new TransferDTO(debitOwnerName, debitEquityAccountDescription, creditOwnerName,
+				creditEquityAccountDescription, value);
 		var transferRestClient = transferRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> transferRestClient.transfer(new TransferDTO(debitOwnerName, debitEquityAccountDescription,
-					creditOwnerName, creditEquityAccountDescription, value)))
+			.isThrownBy(() -> transferRestClient.transfer(transferDTO))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

@@ -157,14 +157,13 @@ class EntryRestClientIT extends RestClientIT {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
 		var entryRestClient = entryRestClient();
-		EntryDTO entryDTO = entryRestClient.insert(entryInsertDTO);
+		var id = entryRestClient.insert(entryInsertDTO).id();
 
-		assertThat(entryDTO.id()).isGreaterThan(0);
+		assertThat(id).isGreaterThan(0);
 
-		entryRestClient.deleteById(entryDTO.id());
+		entryRestClient.deleteById(id);
 
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient.findById(entryDTO.id()))
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> entryRestClient.findById(id))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
