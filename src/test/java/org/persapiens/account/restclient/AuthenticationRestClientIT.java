@@ -26,7 +26,8 @@ class AuthenticationRestClientIT extends RestClientIT {
 			.password(this.userCredentialsProperties.getPassword())
 			.build();
 
-		assertThat(authenticationRestClient().login(loginRequestDTO).getToken()).isNotNull();
+		var authenticationRestClient = authenticationRestClient();
+		assertThat(authenticationRestClient.login(loginRequestDTO).getToken()).isNotNull();
 	}
 
 	@Test
@@ -36,8 +37,9 @@ class AuthenticationRestClientIT extends RestClientIT {
 			.password(this.userCredentialsProperties.getPassword())
 			.build();
 
+		var authenticationRestClient = authenticationRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> authenticationRestClient().login(loginRequestDTO))
+			.isThrownBy(() -> authenticationRestClient.login(loginRequestDTO))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED));
 	}
 

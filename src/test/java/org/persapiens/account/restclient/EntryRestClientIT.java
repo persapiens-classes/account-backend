@@ -41,11 +41,12 @@ class EntryRestClientIT extends RestClientIT {
 	void insertOne() {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
+		var entryRestClient = entryRestClient();
 		// verify insert operation
-		assertThat(entryRestClient().insert(entryInsertDTO)).isNotNull();
+		assertThat(entryRestClient.insert(entryInsertDTO)).isNotNull();
 
 		// verify findAll operation
-		assertThat(entryRestClient().findAll()).isNotEmpty();
+		assertThat(entryRestClient.findAll()).isNotEmpty();
 	}
 
 	private void invalidInsert(BigDecimal value, LocalDateTime date, String ownerName, String inAccountDescription,
@@ -55,8 +56,9 @@ class EntryRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
+		var entryRestClient = entryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().insert(entryInsertUpdateDTO))
+			.isThrownBy(() -> entryRestClient.insert(entryInsertUpdateDTO))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -87,15 +89,16 @@ class EntryRestClientIT extends RestClientIT {
 	void updateOne() {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
-		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
+		var entryRestClient = entryRestClient();
+		EntryDTO entryDTO = entryRestClient.insert(entryInsertDTO);
 
 		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.owner(), entryDTO.date(),
 				entryDTO.inAccount().description(), entryDTO.outAccount().description(), entryDTO.value(),
 				"updated note");
 
-		entryRestClient().update(entryDTO.id(), entryUpdate);
+		entryRestClient.update(entryDTO.id(), entryUpdate);
 
-		assertThat(entryRestClient().findById(entryDTO.id()).note()).isEqualTo("updated note");
+		assertThat(entryRestClient.findById(entryDTO.id()).note()).isEqualTo("updated note");
 	}
 
 	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
@@ -105,8 +108,9 @@ class EntryRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
+		var entryRestClient = entryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().update(id, entryInsertUpdateDTO))
+			.isThrownBy(() -> entryRestClient.update(id, entryInsertUpdateDTO))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -126,7 +130,8 @@ class EntryRestClientIT extends RestClientIT {
 
 		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
 				outAccountDescription, value, "valid entry");
-		Long id = entryRestClient().insert(entryInsertUpdateDTO).id();
+		var entryRestClient = entryRestClient();
+		Long id = entryRestClient.insert(entryInsertUpdateDTO).id();
 
 		// empty fields
 		updateInvalid(id, null, null, "", "", "", HttpStatus.BAD_REQUEST);
@@ -151,21 +156,23 @@ class EntryRestClientIT extends RestClientIT {
 	void deleteOne() {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
-		EntryDTO entryDTO = entryRestClient().insert(entryInsertDTO);
+		var entryRestClient = entryRestClient();
+		EntryDTO entryDTO = entryRestClient.insert(entryInsertDTO);
 
 		assertThat(entryDTO.id()).isGreaterThan(0);
 
-		entryRestClient().deleteById(entryDTO.id());
+		entryRestClient.deleteById(entryDTO.id());
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().findById(entryDTO.id()))
+			.isThrownBy(() -> entryRestClient.findById(entryDTO.id()))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(long id, HttpStatus httpStatus) {
 		// verify delete operation
 		// verify status code error
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> entryRestClient().deleteById(id))
+		var entryRestClient = entryRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> entryRestClient.deleteById(id))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -178,8 +185,9 @@ class EntryRestClientIT extends RestClientIT {
 	private void creditSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
 		// verify delete operation
 		// verify status code error
+		var entryRestClient = entryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().creditSum(owner, equityAccount))
+			.isThrownBy(() -> entryRestClient.creditSum(owner, equityAccount))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -200,8 +208,9 @@ class EntryRestClientIT extends RestClientIT {
 	private void debitSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
 		// verify delete operation
 		// verify status code error
+		var entryRestClient = entryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient().debitSum(owner, equityAccount))
+			.isThrownBy(() -> entryRestClient.debitSum(owner, equityAccount))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

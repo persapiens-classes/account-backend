@@ -30,14 +30,15 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				mother.name(), savings.description(), new BigDecimal(1000).setScale(2));
 
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
 		// run insert operation
-		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
+		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient
 			.insert(ownerEquityAccountInitialValue);
 
 		// verify findAll operation
-		assertThat(inserted).isEqualTo(ownerEquityAccountInitialValueRestClient()
+		assertThat(inserted).isEqualTo(ownerEquityAccountInitialValueRestClient
 			.findByOwnerAndEquityAccount(mother.name(), savings.description()));
-		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
+		assertThat(ownerEquityAccountInitialValueRestClient.findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(BigDecimal value, String owner, String equityAccount, HttpStatus httpStatus) {
@@ -46,8 +47,9 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValueDto))
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient.insert(ownerEquityAccountInitialValueDto))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -76,7 +78,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				uncle.name(), savings.description(), new BigDecimal(1000));
 
-		ownerEquityAccountInitialValueRestClient().insert(ownerEquityAccountInitialValue);
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
+		ownerEquityAccountInitialValueRestClient.insert(ownerEquityAccountInitialValue);
 
 		// verify insert operation
 		// verify status code error
@@ -92,15 +95,16 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				aunt.name(), individualAssets.description(), new BigDecimal(1000));
 
-		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient()
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
+		OwnerEquityAccountInitialValueDTO inserted = ownerEquityAccountInitialValueRestClient
 			.insert(ownerEquityAccountInitialValue);
 		inserted = new OwnerEquityAccountInitialValueDTO(inserted.owner(), inserted.equityAccount(),
 				new BigDecimal(2000));
 
-		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient().update(inserted);
+		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient.update(inserted);
 
 		assertThat(updated.value()).isEqualTo(new BigDecimal(2000));
-		assertThat(ownerEquityAccountInitialValueRestClient().findAll()).isNotEmpty();
+		assertThat(ownerEquityAccountInitialValueRestClient.findAll()).isNotEmpty();
 	}
 
 	private void updateInvalid(String owner, String equityAccount, BigDecimal value, HttpStatus httpStatus) {
@@ -109,8 +113,9 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().update(ownerEquityAccountInitialValueDto))
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient.update(ownerEquityAccountInitialValueDto))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -140,13 +145,14 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				aunt.name(), investiment.description(), new BigDecimal(1000));
 
-		OwnerEquityAccountInitialValueDTO bean = ownerEquityAccountInitialValueRestClient()
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
+		OwnerEquityAccountInitialValueDTO bean = ownerEquityAccountInitialValueRestClient
 			.insert(ownerEquityAccountInitialValue);
 
-		ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(bean.owner(), bean.equityAccount());
+		ownerEquityAccountInitialValueRestClient.deleteByOwnerAndEquityAccount(bean.owner(), bean.equityAccount());
 
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().findByOwnerAndEquityAccount(bean.owner(),
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient.findByOwnerAndEquityAccount(bean.owner(),
 					bean.equityAccount()))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
@@ -154,8 +160,9 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	private void deleteInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {
 		// verify delete operation
 		// verify status code error
+		var ownerEquityAccountInitialValueRestClient = ownerEquityAccountInitialValueRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient().deleteByOwnerAndEquityAccount(ownerName,
+			.isThrownBy(() -> ownerEquityAccountInitialValueRestClient.deleteByOwnerAndEquityAccount(ownerName,
 					equityAccountDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}

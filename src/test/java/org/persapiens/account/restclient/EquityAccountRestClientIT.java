@@ -22,15 +22,16 @@ class EquityAccountRestClientIT extends RestClientIT {
 
 		EquityAccountDTO equityAccount = new EquityAccountDTO(description, categoryDescription);
 
+		var equityAccountRestClient = equityAccountRestClient();
 		// verify insert operation
-		assertThat(equityAccountRestClient().insert(equityAccount)).isNotNull();
+		assertThat(equityAccountRestClient.insert(equityAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(equityAccountRestClient().findByDescription(description).description())
+		assertThat(equityAccountRestClient.findByDescription(description).description())
 			.isEqualTo(equityAccount.description());
 
 		// verify findAll operation
-		assertThat(equityAccountRestClient().findAll()).isNotEmpty();
+		assertThat(equityAccountRestClient.findAll()).isNotEmpty();
 	}
 
 	@Test
@@ -41,15 +42,16 @@ class EquityAccountRestClientIT extends RestClientIT {
 		String originalDescription = equityAccount.description();
 		equityAccount = new EquityAccountDTO("Updated equityAccount", equityAccount.category());
 
-		equityAccountRestClient().update(originalDescription, equityAccount);
+		var equityAccountRestClient = equityAccountRestClient();
+		equityAccountRestClient.update(originalDescription, equityAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> equityAccountRestClient().findByDescription(originalDescription))
+			.isThrownBy(() -> equityAccountRestClient.findByDescription(originalDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(equityAccountRestClient().findByDescription(equityAccount.description()).description())
+		assertThat(equityAccountRestClient.findByDescription(equityAccount.description()).description())
 			.isEqualTo(equityAccount.description());
 	}
 
@@ -58,21 +60,23 @@ class EquityAccountRestClientIT extends RestClientIT {
 		// create test environment
 		String description = "Fantastic equityAccount";
 
-		equityAccountRestClient()
+		var equityAccountRestClient = equityAccountRestClient();
+		equityAccountRestClient
 			.insert(new EquityAccountDTO(description, category(CategoryConstants.BANK).description()));
-		assertThat(equityAccountRestClient().findByDescription(description).description()).isEqualTo(description);
+		assertThat(equityAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByName operation
-		equityAccountRestClient().deleteByDescription(description);
+		equityAccountRestClient.deleteByDescription(description);
 		// verify the results
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> equityAccountRestClient().findByDescription(description))
+			.isThrownBy(() -> equityAccountRestClient.findByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(String description, HttpStatus httpStatus) {
+		var equityAccountRestClient = equityAccountRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> equityAccountRestClient().deleteByDescription(description))
+			.isThrownBy(() -> equityAccountRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

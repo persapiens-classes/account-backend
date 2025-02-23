@@ -22,15 +22,17 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		DebitAccountDTO debitAccount = new DebitAccountDTO(description, categoryDescription);
 
+		var debitAccountRestClient = debitAccountRestClient();
+
 		// verify insert operation
-		assertThat(debitAccountRestClient().insert(debitAccount)).isNotNull();
+		assertThat(debitAccountRestClient.insert(debitAccount)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(debitAccountRestClient().findByDescription(description).description())
+		assertThat(debitAccountRestClient.findByDescription(description).description())
 			.isEqualTo(debitAccount.description());
 
 		// verify findAll operation
-		assertThat(debitAccountRestClient().findAll()).isNotEmpty();
+		assertThat(debitAccountRestClient.findAll()).isNotEmpty();
 	}
 
 	@Test
@@ -41,15 +43,17 @@ class DebitAccountRestClientIT extends RestClientIT {
 		String originalDescription = debitAccount.description();
 		debitAccount = new DebitAccountDTO("Updated debitAccount", debitAccount.category());
 
-		debitAccountRestClient().update(originalDescription, debitAccount);
+		var debitAccountRestClient = debitAccountRestClient();
+
+		debitAccountRestClient.update(originalDescription, debitAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> debitAccountRestClient().findByDescription(originalDescription))
+			.isThrownBy(() -> debitAccountRestClient.findByDescription(originalDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(debitAccountRestClient().findByDescription(debitAccount.description()).description())
+		assertThat(debitAccountRestClient.findByDescription(debitAccount.description()).description())
 			.isEqualTo(debitAccount.description());
 	}
 
@@ -58,21 +62,23 @@ class DebitAccountRestClientIT extends RestClientIT {
 		// create test environment
 		String description = "Fantastic debitAccount";
 
-		debitAccountRestClient()
+		var debitAccountRestClient = debitAccountRestClient();
+		debitAccountRestClient
 			.insert(new DebitAccountDTO(description, category(CategoryConstants.TRANSPORT).description()));
-		assertThat(debitAccountRestClient().findByDescription(description).description()).isEqualTo(description);
+		assertThat(debitAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
-		debitAccountRestClient().deleteByDescription(description);
+		debitAccountRestClient.deleteByDescription(description);
 		// verify the results
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> debitAccountRestClient().findByDescription(description))
+			.isThrownBy(() -> debitAccountRestClient.findByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalidDebitAccount(String description, HttpStatus httpStatus) {
+		var debitAccountRestClient = debitAccountRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> debitAccountRestClient().deleteByDescription(description))
+			.isThrownBy(() -> debitAccountRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

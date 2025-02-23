@@ -50,12 +50,8 @@ class DebitAccountTests {
 
 	@Test
 	void equalDescriptionWithoutCategory() {
-		Assertions
-			.assertThatThrownBy(() -> DebitAccount.builder()
-				.description(DebitAccountConstants.GASOLINE)
-				.build()
-				.equals(DebitAccount.builder().description(DebitAccountConstants.GASOLINE).build()))
-			.isInstanceOf(NullPointerException.class);
+		var builder = DebitAccount.builder().description(DebitAccountConstants.GASOLINE);
+		Assertions.assertThatThrownBy(() -> builder.build()).isInstanceOf(NullPointerException.class);
 	}
 
 	@Test

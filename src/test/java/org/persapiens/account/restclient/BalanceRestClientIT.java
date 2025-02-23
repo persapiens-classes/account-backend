@@ -57,7 +57,8 @@ class BalanceRestClientIT extends RestClientIT {
 		entryRestClient().insert(entryDebito);
 
 		// executa a operacao a ser testada
-		BigDecimal balance = balanceRestClient().balance(uncle, savings);
+		var balanceRestClient = balanceRestClient();
+		BigDecimal balance = balanceRestClient.balance(uncle, savings);
 
 		assertThat(balance).isEqualTo(new BigDecimal(500).setScale(2));
 	}
@@ -81,8 +82,9 @@ class BalanceRestClientIT extends RestClientIT {
 	}
 
 	private void balanceInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {
+		var balanceRestClient = balanceRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> balanceRestClient().balance(ownerName, equityAccountDescription))
+			.isThrownBy(() -> balanceRestClient.balance(ownerName, equityAccountDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
