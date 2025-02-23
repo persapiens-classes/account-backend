@@ -49,12 +49,8 @@ class CreditAccountTests {
 
 	@Test
 	void equalDescriptionWithoutCategory() {
-		Assertions
-			.assertThatThrownBy(() -> CreditAccount.builder()
-				.description(CreditAccountConstants.STOCK)
-				.build()
-				.equals(CreditAccount.builder().description(CreditAccountConstants.STOCK).build()))
-			.isInstanceOf(NullPointerException.class);
+		var builder = CreditAccount.builder().description(CreditAccountConstants.STOCK);
+		Assertions.assertThatThrownBy(() -> builder.build()).isInstanceOf(NullPointerException.class);
 	}
 
 	@Test

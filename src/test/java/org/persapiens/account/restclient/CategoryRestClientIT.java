@@ -20,14 +20,16 @@ class CategoryRestClientIT extends RestClientIT {
 
 		CategoryDTO category = new CategoryDTO(description);
 
+		var categoryRestClient = categoryRestClient();
+
 		// verify insert operation
-		assertThat(categoryRestClient().insert(category)).isNotNull();
+		assertThat(categoryRestClient.insert(category)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(categoryRestClient().findByDescription(description).description()).isEqualTo(category.description());
+		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(category.description());
 
 		// verify findAll operation
-		assertThat(categoryRestClient().findAll()).isNotEmpty();
+		assertThat(categoryRestClient.findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(String description, HttpStatus httpStatus) {
@@ -35,8 +37,8 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient().insert(category))
+		var categoryRestClient = categoryRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> categoryRestClient.insert(category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -53,7 +55,8 @@ class CategoryRestClientIT extends RestClientIT {
 
 		CategoryDTO category = new CategoryDTO(description);
 
-		categoryRestClient().insert(category);
+		var categoryRestClient = categoryRestClient();
+		categoryRestClient.insert(category);
 
 		// verify insert operation
 		// verify status code error
@@ -67,15 +70,16 @@ class CategoryRestClientIT extends RestClientIT {
 		String originalDescription = category.description();
 		category = new CategoryDTO("Updated category");
 
-		categoryRestClient().update(originalDescription, category);
+		var categoryRestClient = categoryRestClient();
+		categoryRestClient.update(originalDescription, category);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient().findByDescription(originalDescription))
+			.isThrownBy(() -> categoryRestClient.findByDescription(originalDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(categoryRestClient().findByDescription(category.description()).description())
+		assertThat(categoryRestClient.findByDescription(category.description()).description())
 			.isEqualTo(category.description());
 	}
 
@@ -84,8 +88,9 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
+		var categoryRestClient = categoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient().update(oldDescription, category))
+			.isThrownBy(() -> categoryRestClient.update(oldDescription, category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -111,20 +116,22 @@ class CategoryRestClientIT extends RestClientIT {
 	void deleteOne() {
 		// create test environment
 		String description = "Fantastic category";
-		categoryRestClient().insert(new CategoryDTO(description));
-		assertThat(categoryRestClient().findByDescription(description).description()).isEqualTo(description);
+		var categoryRestClient = categoryRestClient();
+		categoryRestClient.insert(new CategoryDTO(description));
+		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
-		categoryRestClient().deleteByDescription(description);
+		categoryRestClient.deleteByDescription(description);
 		// verify the results
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient().findByDescription(description))
+			.isThrownBy(() -> categoryRestClient.findByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalidCategory(String description, HttpStatus httpStatus) {
+		var categoryRestClient = categoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient().deleteByDescription(description))
+			.isThrownBy(() -> categoryRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 

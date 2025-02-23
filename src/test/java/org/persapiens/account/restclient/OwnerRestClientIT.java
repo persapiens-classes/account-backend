@@ -20,14 +20,15 @@ class OwnerRestClientIT extends RestClientIT {
 
 		OwnerDTO owner = new OwnerDTO(name);
 
+		var ownerRestClient = ownerRestClient();
 		// verify insert operation
-		assertThat(ownerRestClient().insert(owner)).isNotNull();
+		assertThat(ownerRestClient.insert(owner)).isNotNull();
 
 		// verify findByName operation
-		assertThat(ownerRestClient().findByName(name).name()).isEqualTo(owner.name());
+		assertThat(ownerRestClient.findByName(name).name()).isEqualTo(owner.name());
 
 		// verify findAll operation
-		assertThat(ownerRestClient().findAll()).isNotEmpty();
+		assertThat(ownerRestClient.findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(String name, HttpStatus httpStatus) {
@@ -35,7 +36,8 @@ class OwnerRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient().insert(ownerDto))
+		var ownerRestClient = ownerRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient.insert(ownerDto))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -52,7 +54,8 @@ class OwnerRestClientIT extends RestClientIT {
 
 		OwnerDTO ownerDto = new OwnerDTO(name);
 
-		ownerRestClient().insert(ownerDto);
+		var ownerRestClient = ownerRestClient();
+		ownerRestClient.insert(ownerDto);
 
 		// verify insert operation
 		// verify status code error
@@ -66,15 +69,16 @@ class OwnerRestClientIT extends RestClientIT {
 		String originalName = owner.name();
 		owner = new OwnerDTO("Updated owner");
 
-		ownerRestClient().update(originalName, owner);
+		var ownerRestClient = ownerRestClient();
+		ownerRestClient.update(originalName, owner);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerRestClient().findByName(originalName))
+			.isThrownBy(() -> ownerRestClient.findByName(originalName))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(ownerRestClient().findByName(owner.name()).name()).isEqualTo(owner.name());
+		assertThat(ownerRestClient.findByName(owner.name()).name()).isEqualTo(owner.name());
 	}
 
 	private void updateInvalid(String oldName, String newName, HttpStatus httpStatus) {
@@ -82,8 +86,9 @@ class OwnerRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
+		var ownerRestClient = ownerRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> ownerRestClient().update(oldName, category))
+			.isThrownBy(() -> ownerRestClient.update(oldName, category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -109,20 +114,22 @@ class OwnerRestClientIT extends RestClientIT {
 	void deleteOne() {
 		// create test environment
 		String name = "Fantastic owner";
-		ownerRestClient().insert(new OwnerDTO(name));
-		assertThat(ownerRestClient().findByName(name).name()).isEqualTo(name);
+		var ownerRestClient = ownerRestClient();
+		ownerRestClient.insert(new OwnerDTO(name));
+		assertThat(ownerRestClient.findByName(name).name()).isEqualTo(name);
 
 		// execute deleteByName operation
-		ownerRestClient().deleteByName(name);
+		ownerRestClient.deleteByName(name);
 		// verify the results
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient().findByName(name))
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient.findByName(name))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalid(String name, HttpStatus httpStatus) {
 		// verify delete operation
 		// verify status code error
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient().deleteByName(name))
+		var ownerRestClient = ownerRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> ownerRestClient.deleteByName(name))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
