@@ -145,7 +145,7 @@ jobs:
             -Dsonar.issue.ignore.multicriteria=e1 \
             -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1611 \
             -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/*.java
-        if: ${{ vars.SONAR_HOST_URL != '' && vars.SONAR_ORGANIZATION != '' && vars.SONAR_PROJECT_KEY == '' }}
+        if: ${{ vars.SONAR_HOST_URL != '' && vars.SONAR_ORGANIZATION != '' && vars.SONAR_PROJECT_KEY != '' }}
 
       - name: Build with Aot
         run: ./mvnw -B -DskipTests -Paot clean package
