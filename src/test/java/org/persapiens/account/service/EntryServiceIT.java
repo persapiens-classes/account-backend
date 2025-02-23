@@ -48,13 +48,12 @@ class EntryServiceIT {
 
 	@Test
 	void entryWithInvalidOutAccount() {
-		Assertions.assertThatThrownBy(() -> {
-			EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(),
-					LocalDateTime.now(), this.equityAccountDTOFactory.savings().description(),
-					this.debitAccountDTOFactory.gasoline().description(), BigDecimal.ZERO, "");
+		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(), LocalDateTime.now(),
+				this.equityAccountDTOFactory.savings().description(),
+				this.debitAccountDTOFactory.gasoline().description(), BigDecimal.ZERO, "");
 
-			this.entryService.insert(entry);
-		}).isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatThrownBy(() -> this.entryService.insert(entry))
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 }
