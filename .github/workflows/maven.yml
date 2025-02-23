@@ -129,14 +129,18 @@ jobs:
       - name: Sonar run
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B verify sonar:sonar \
-                -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.organization=persapiens-classes \
-                -Dsonar.projectKey=persapiens-classes_account-backend \
-                -Dsonar.issue.ignore.multicriteria=e1 \
-                -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1611 \
-                -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/*.java
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+          SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
+          SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
+        run: | 
+          ./mvnw -B verify sonar:sonar \
+            -Dsonar.host.url={{ SONAR_HOST_URL }} \
+            -Dsonar.organization={{ SONAR_ORGANIZATION }} \
+            -Dsonar.projectKey={{ SONAR_PROJECT_KEY }} \
+            -Dsonar.issue.ignore.multicriteria=e1 \
+            -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1611 \
+            -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/*.java
+        if: ${{ secrets.SONAR_TOKEN != '' && vars.SONAR_HOST_URL != '' && vars.SONAR_ORGANIZATION != '' && vars.SONAR_PROJECT_KEY == '' }}
 
       - name: Build with Aot
         run: ./mvnw -B -DskipTests -Paot clean package
