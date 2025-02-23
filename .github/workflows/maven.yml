@@ -133,15 +133,16 @@ jobs:
           SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
           SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
         run: | 
-          if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
+          if [ -z "$SONAR_TOKEN" ]; then
             echo "SONAR_TOKEN secret not defined! Skipping sonar run!"
             exit 0
           fi
 
           ./mvnw -B verify sonar:sonar \
-            -Dsonar.host.url={{ SONAR_HOST_URL }} \
-            -Dsonar.organization={{ SONAR_ORGANIZATION }} \
-            -Dsonar.projectKey={{ SONAR_PROJECT_KEY }} \
+            -Dsonar.host.url="$SONAR_HOST_URL" \
+            -Dsonar.organization="$SONAR_ORGANIZATION" \
+            -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+            -Dsonar.login="$SONAR_TOKEN" \
             -Dsonar.issue.ignore.multicriteria=e1 \
             -Dsonar.issue.ignore.multicriteria.e1.ruleKey=java:S1611 \
             -Dsonar.issue.ignore.multicriteria.e1.resourceKey=**/*.java
