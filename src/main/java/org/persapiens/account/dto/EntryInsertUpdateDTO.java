@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public record EntryInsertUpdateDTO(@NotBlank String owner, @NotBlank LocalDateTime date, @NotBlank String inAccount,
-		@NotBlank String outAccount, @NotBlank @PositiveOrZero BigDecimal value, String note) {
+public record EntryInsertUpdateDTO(@NotBlank String owner, @NotNull LocalDateTime date, @NotBlank String inAccount,
+		@NotBlank String outAccount, @NotNull @PositiveOrZero BigDecimal value, String note) {
 
 }
