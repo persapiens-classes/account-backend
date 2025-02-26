@@ -1,5 +1,6 @@
 package org.persapiens.account.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
@@ -32,7 +33,7 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 
 	@PutMapping("/{description}")
 	public CategoryDTO update(@PathVariable(required = true) String description,
-			@RequestBody(required = true) CategoryDTO dto) {
+			@Valid @RequestBody(required = true) CategoryDTO dto) {
 		return this.categoryService.update(description, dto);
 	}
 

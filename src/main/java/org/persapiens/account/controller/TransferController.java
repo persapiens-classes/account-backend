@@ -1,5 +1,6 @@
 package org.persapiens.account.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.dto.TransferDTO;
 import org.persapiens.account.service.TransferService;
@@ -17,7 +18,7 @@ public class TransferController {
 	private TransferService transferService;
 
 	@PostMapping("/transfer")
-	public void transfer(@RequestBody(required = true) TransferDTO transferDTO) {
+	public void transfer(@Valid @RequestBody(required = true) TransferDTO transferDTO) {
 		this.transferService.transfer(transferDTO);
 	}
 
