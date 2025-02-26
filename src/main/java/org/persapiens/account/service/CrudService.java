@@ -36,7 +36,8 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		this.repository = repository;
 	}
 
-	protected abstract void validateInsert(I insertDto);
+	protected void validateInsert(I insertDto) {
+	}
 
 	@Transactional
 	public F insert(I insertDto) {
@@ -45,7 +46,8 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 		return toDTO(this.repository.save(insertDtoToEntity(insertDto)));
 	}
 
-	protected abstract void validateUpdate(U updateDto);
+	protected void validateUpdate(U updateDto) {
+	}
 
 	@Transactional
 	public F update(B updateKey, U updateDto) {

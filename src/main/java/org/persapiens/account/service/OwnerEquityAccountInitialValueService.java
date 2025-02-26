@@ -114,10 +114,6 @@ public class OwnerEquityAccountInitialValueService extends
 		}
 	}
 
-	@Override
-	protected void validateUpdate(BigDecimal updateDto) {
-	}
-
 	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(String ownerName,
 			String equityAccountDescription) {
 		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
