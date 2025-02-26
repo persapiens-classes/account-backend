@@ -21,18 +21,18 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		return new OwnerDTO(entity.getName());
 	}
 
-	private Owner toEntity(OwnerDTO dto) {
-		return Owner.builder().name(dto.name()).build();
+	private Owner toEntity(OwnerDTO ownerDTO) {
+		return Owner.builder().name(ownerDTO.name()).build();
 	}
 
 	@Override
-	protected Owner insertDtoToEntity(OwnerDTO dto) {
-		return toEntity(dto);
+	protected Owner insertDtoToEntity(OwnerDTO ownerDTO) {
+		return toEntity(ownerDTO);
 	}
 
 	@Override
-	protected Owner updateDtoToEntity(OwnerDTO dto) {
-		return toEntity(dto);
+	protected Owner updateDtoToEntity(OwnerDTO ownerDTO) {
+		return toEntity(ownerDTO);
 	}
 
 	@Override
@@ -44,6 +44,22 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	protected Owner setIdToUpdate(Owner t, Owner updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
+	}
+
+	private void validate(OwnerDTO ownerDto) {
+		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
+			throw new BeanExistsException("Name exists: " + ownerDto.name());
+		}
+	}
+
+	@Override
+	protected void validateInsert(OwnerDTO insertDto) {
+		validate(insertDto);
+	}
+
+	@Override
+	protected void validateUpdate(OwnerDTO updateDto) {
+		validate(updateDto);
 	}
 
 	public OwnerDTO findByName(String name) {
@@ -61,26 +77,6 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		if (this.ownerRepository.deleteByName(name) == 0) {
 			throw new BeanNotFoundException("Bean not found by: " + name);
 		}
-	}
-
-	private void validate(OwnerDTO ownerDto) {
-		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
-			throw new BeanExistsException("Name exists: " + ownerDto.name());
-		}
-	}
-
-	@Override
-	public OwnerDTO insert(OwnerDTO insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public OwnerDTO update(String updateKey, OwnerDTO updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
 	}
 
 }

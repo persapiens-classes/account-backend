@@ -37,13 +37,13 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 	}
 
 	@Override
-	protected E insertDtoToEntity(D dto) {
-		return toEntity(dto);
+	protected E insertDtoToEntity(D accountDTO) {
+		return toEntity(accountDTO);
 	}
 
 	@Override
-	protected E updateDtoToEntity(D dto) {
-		return toEntity(dto);
+	protected E updateDtoToEntity(D accountDTO) {
+		return toEntity(accountDTO);
 	}
 
 	@Override
@@ -55,6 +55,25 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 	protected E setIdToUpdate(E t, E updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
+	}
+
+	private void validate(D accountDto) {
+		if (this.accountRepository.findByDescription(accountDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + accountDto.description());
+		}
+		if (!this.categoryRepository.findByDescription(accountDto.category()).isPresent()) {
+			throw new AttributeNotFoundException("Category not exists: " + accountDto.category());
+		}
+	}
+
+	@Override
+	protected void validateInsert(D insertDto) {
+		validate(insertDto);
+	}
+
+	@Override
+	protected void validateUpdate(D updateDto) {
+		validate(updateDto);
 	}
 
 	public D findByDescription(String description) {
@@ -72,29 +91,6 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		if (this.accountRepository.deleteByDescription(description) == 0) {
 			throw new BeanNotFoundException("Bean not found by: " + description);
 		}
-	}
-
-	private void validate(D accountDto) {
-		if (this.accountRepository.findByDescription(accountDto.description()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + accountDto.description());
-		}
-		if (!this.categoryRepository.findByDescription(accountDto.category()).isPresent()) {
-			throw new AttributeNotFoundException("Category not exists: " + accountDto.category());
-		}
-	}
-
-	@Override
-	public D insert(D insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public D update(String updateKey, D updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
 	}
 
 }

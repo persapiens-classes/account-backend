@@ -21,18 +21,18 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return new CategoryDTO(entity.getDescription());
 	}
 
-	private Category toEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.description()).build();
+	private Category toEntity(CategoryDTO categoryDTO) {
+		return Category.builder().description(categoryDTO.description()).build();
 	}
 
 	@Override
-	protected Category insertDtoToEntity(CategoryDTO dto) {
-		return toEntity(dto);
+	protected Category insertDtoToEntity(CategoryDTO categoryDTO) {
+		return toEntity(categoryDTO);
 	}
 
 	@Override
-	protected Category updateDtoToEntity(CategoryDTO dto) {
-		return toEntity(dto);
+	protected Category updateDtoToEntity(CategoryDTO categoryDTO) {
+		return toEntity(categoryDTO);
 	}
 
 	@Override
@@ -44,6 +44,22 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	protected Category setIdToUpdate(Category t, Category updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
+	}
+
+	private void validate(CategoryDTO categoryDto) {
+		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + categoryDto.description());
+		}
+	}
+
+	@Override
+	protected void validateInsert(CategoryDTO insertDto) {
+		validate(insertDto);
+	}
+
+	@Override
+	protected void validateUpdate(CategoryDTO updateDto) {
+		validate(updateDto);
 	}
 
 	public CategoryDTO findByDescription(String description) {
@@ -61,26 +77,6 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		if (this.categoryRepository.deleteByDescription(description) == 0) {
 			throw new BeanNotFoundException("Bean not found by: " + description);
 		}
-	}
-
-	private void validate(CategoryDTO categoryDto) {
-		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + categoryDto.description());
-		}
-	}
-
-	@Override
-	public CategoryDTO insert(CategoryDTO insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public CategoryDTO update(String updateKey, CategoryDTO updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
 	}
 
 	private CategoryDTO categoryDTO(String description) {

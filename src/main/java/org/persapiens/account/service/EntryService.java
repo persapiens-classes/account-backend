@@ -91,15 +91,33 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	@Override
-	public EntryDTO insert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	protected void validateInsert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validate(entryInsertUpdateDTO);
-		return super.insert(entryInsertUpdateDTO);
 	}
 
 	@Override
-	public EntryDTO update(Long updateKey, EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	protected void validateUpdate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validate(entryInsertUpdateDTO);
-		return super.update(updateKey, entryInsertUpdateDTO);
+	}
+
+	@Transactional
+	public void deleteById(long id) {
+		if (this.entryRepository.existsById(id)) {
+			this.entryRepository.deleteById(id);
+		}
+		else {
+			throw new BeanNotFoundException("Entry not found by: " + id);
+		}
+	}
+
+	public EntryDTO findById(Long id) {
+		Optional<Entry> byId = this.entryRepository.findById(id);
+		if (byId.isPresent()) {
+			return toDTO(byId.get());
+		}
+		else {
+			throw new BeanNotFoundException("Entry not found by: " + id);
+		}
 	}
 
 	private Owner validateOwner(String ownerName) {
@@ -137,26 +155,6 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		EquityAccount equityAccount = validateEquityAccount(equityAccountDescription);
 
 		return this.entryRepository.debitSum(owner, equityAccount).getValue();
-	}
-
-	@Transactional
-	public void deleteById(long id) {
-		if (this.entryRepository.existsById(id)) {
-			this.entryRepository.deleteById(id);
-		}
-		else {
-			throw new BeanNotFoundException("Entry not found by: " + id);
-		}
-	}
-
-	public EntryDTO findById(Long id) {
-		Optional<Entry> byId = this.entryRepository.findById(id);
-		if (byId.isPresent()) {
-			return toDTO(byId.get());
-		}
-		else {
-			throw new BeanNotFoundException("Entry not found by: " + id);
-		}
 	}
 
 }
