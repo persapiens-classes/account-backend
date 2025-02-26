@@ -29,10 +29,10 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		return createAccountDTO(entity.getDescription(), entity.getCategory().getDescription());
 	}
 
-	private E toEntity(D dto) {
+	private E toEntity(D accountDTO) {
 		E result = createAccount();
-		result.setDescription(dto.description());
-		result.setCategory(this.categoryRepository.findByDescription(dto.category()).get());
+		result.setDescription(accountDTO.description());
+		result.setCategory(this.categoryRepository.findByDescription(accountDTO.category()).get());
 		return result;
 	}
 

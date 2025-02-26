@@ -15,9 +15,9 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 
 	protected abstract F toDTO(E entity);
 
-	protected abstract E insertDtoToEntity(I dto);
+	protected abstract E insertDtoToEntity(I insertDTO);
 
-	protected abstract E updateDtoToEntity(U dto);
+	protected abstract E updateDtoToEntity(U updateDTO);
 
 	protected abstract Optional<E> findByUpdateKey(B updateKey);
 

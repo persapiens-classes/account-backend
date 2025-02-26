@@ -33,8 +33,8 @@ public class CategoryController extends CrudController<CategoryDTO, CategoryDTO,
 
 	@PutMapping("/{description}")
 	public CategoryDTO update(@PathVariable(required = true) String description,
-			@Valid @RequestBody(required = true) CategoryDTO dto) {
-		return this.categoryService.update(description, dto);
+			@Valid @RequestBody(required = true) CategoryDTO categoryDTO) {
+		return this.categoryService.update(description, categoryDTO);
 	}
 
 }

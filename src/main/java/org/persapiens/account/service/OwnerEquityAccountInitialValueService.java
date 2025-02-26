@@ -59,11 +59,14 @@ public class OwnerEquityAccountInitialValueService extends
 	}
 
 	@Override
-	protected OwnerEquityAccountInitialValue insertDtoToEntity(OwnerEquityAccountInitialValueDTO dto) {
-		Owner owner = this.ownerRepository.findByName(dto.owner()).get();
-		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(dto.equityAccount()).get();
+	protected OwnerEquityAccountInitialValue insertDtoToEntity(
+			OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO) {
+		Owner owner = this.ownerRepository.findByName(ownerEquityAccountInitialValueDTO.owner()).get();
+		EquityAccount equityAccount = this.equityAccountRepository
+			.findByDescription(ownerEquityAccountInitialValueDTO.equityAccount())
+			.get();
 		return OwnerEquityAccountInitialValue.builder()
-			.value(dto.value())
+			.value(ownerEquityAccountInitialValueDTO.value())
 			.owner(owner)
 			.equityAccount(equityAccount)
 			.build();

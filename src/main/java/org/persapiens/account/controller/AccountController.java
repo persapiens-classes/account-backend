@@ -29,8 +29,9 @@ public abstract class AccountController<D extends AccountDTOInterface, E extends
 	}
 
 	@PutMapping("/{description}")
-	public D update(@PathVariable(required = true) String description, @Valid @RequestBody(required = true) D dto) {
-		return this.accountService.update(description, dto);
+	public D update(@PathVariable(required = true) String description,
+			@Valid @RequestBody(required = true) D accountDTO) {
+		return this.accountService.update(description, accountDTO);
 	}
 
 }
