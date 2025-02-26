@@ -67,13 +67,17 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 	}
 
 	@Override
-	protected void validateInsert(D insertDto) {
+	public D insert(D insertDto) {
 		validate(insertDto);
+
+		return super.insert(insertDto);
 	}
 
 	@Override
-	protected void validateUpdate(D updateDto) {
+	public D update(String description, D updateDto) {
 		validate(updateDto);
+
+		return super.update(description, updateDto);
 	}
 
 	public D findByDescription(String description) {

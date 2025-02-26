@@ -102,7 +102,7 @@ public class OwnerEquityAccountInitialValueService extends
 	}
 
 	@Override
-	protected void validateInsert(OwnerEquityAccountInitialValueDTO insertDto) {
+	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO insertDto) {
 		Owner owner = validateOwner(insertDto.owner());
 		EquityAccount equityAccount = validateEquityAccount(insertDto.equityAccount());
 
@@ -112,6 +112,8 @@ public class OwnerEquityAccountInitialValueService extends
 			throw new BeanExistsException(
 					"OwnerEquityAccountInitialValue exists: " + owner.getName() + "-" + equityAccount.getDescription());
 		}
+
+		return super.insert(insertDto);
 	}
 
 	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(String ownerName,

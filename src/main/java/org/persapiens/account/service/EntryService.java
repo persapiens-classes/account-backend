@@ -91,13 +91,17 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	@Override
-	protected void validateInsert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	public EntryDTO insert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validate(entryInsertUpdateDTO);
+
+		return super.insert(entryInsertUpdateDTO);
 	}
 
 	@Override
-	protected void validateUpdate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	public EntryDTO update(Long id, EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		validate(entryInsertUpdateDTO);
+
+		return super.update(id, entryInsertUpdateDTO);
 	}
 
 	@Transactional

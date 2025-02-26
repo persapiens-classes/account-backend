@@ -53,13 +53,17 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	@Override
-	protected void validateInsert(CategoryDTO insertDto) {
+	public CategoryDTO insert(CategoryDTO insertDto) {
 		validate(insertDto);
+
+		return super.insert(insertDto);
 	}
 
 	@Override
-	protected void validateUpdate(CategoryDTO updateDto) {
+	public CategoryDTO update(String description, CategoryDTO updateDto) {
 		validate(updateDto);
+
+		return super.update(description, updateDto);
 	}
 
 	public CategoryDTO findByDescription(String description) {
@@ -82,8 +86,8 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	private CategoryDTO categoryDTO(String description) {
 		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
 		if (findByDescricao.isEmpty()) {
-			CategoryDTO result = new CategoryDTO(description);
-			return insert(result);
+			Category result = Category.builder().description(description).build();
+			return toDTO(this.categoryRepository.save(result));
 		}
 		else {
 			return toDTO(findByDescricao.get());

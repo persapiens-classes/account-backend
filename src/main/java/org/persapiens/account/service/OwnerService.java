@@ -53,13 +53,17 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	}
 
 	@Override
-	protected void validateInsert(OwnerDTO insertDto) {
+	public OwnerDTO insert(OwnerDTO insertDto) {
 		validate(insertDto);
+
+		return super.insert(insertDto);
 	}
 
 	@Override
-	protected void validateUpdate(OwnerDTO updateDto) {
+	public OwnerDTO update(String name, OwnerDTO updateDto) {
 		validate(updateDto);
+
+		return super.update(name, updateDto);
 	}
 
 	public OwnerDTO findByName(String name) {
