@@ -74,26 +74,7 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		return updateEntity;
 	}
 
-	private void validateBlank(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		if (StringUtils.isBlank(entryInsertUpdateDTO.inAccount())) {
-			throw new IllegalArgumentException("Description empty!");
-		}
-		if (StringUtils.isBlank(entryInsertUpdateDTO.outAccount())) {
-			throw new IllegalArgumentException("Category empty!");
-		}
-		if (StringUtils.isBlank(entryInsertUpdateDTO.owner())) {
-			throw new IllegalArgumentException("Owner empty!");
-		}
-		if (entryInsertUpdateDTO.value() == null) {
-			throw new IllegalArgumentException("Value null!");
-		}
-		if (entryInsertUpdateDTO.date() == null) {
-			throw new IllegalArgumentException("Date null!");
-		}
-	}
-
 	private void validate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		validateBlank(entryInsertUpdateDTO);
 		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.inAccount()).isPresent()) {
 			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.inAccount());
 		}

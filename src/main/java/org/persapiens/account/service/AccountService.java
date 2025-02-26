@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.dto.AccountDTOInterface;
 import org.persapiens.account.persistence.AccountRepository;
@@ -75,17 +74,7 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		}
 	}
 
-	private void validateBlank(D accountDto) {
-		if (StringUtils.isBlank(accountDto.description())) {
-			throw new IllegalArgumentException("Description empty!");
-		}
-		if (StringUtils.isBlank(accountDto.category())) {
-			throw new IllegalArgumentException("Category empty!");
-		}
-	}
-
 	private void validate(D accountDto) {
-		validateBlank(accountDto);
 		if (this.accountRepository.findByDescription(accountDto.description()).isPresent()) {
 			throw new BeanExistsException("Description exists: " + accountDto.description());
 		}

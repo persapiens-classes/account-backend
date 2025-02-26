@@ -29,12 +29,6 @@ public class OwnerEquityAccountInitialValueService extends
 
 	private EquityAccountRepository equityAccountRepository;
 
-	private void validateValue(BigDecimal value) {
-		if (value == null) {
-			throw new IllegalArgumentException("Value null!");
-		}
-	}
-
 	private Owner validateOwner(String ownerName) {
 		if (StringUtils.isBlank(ownerName)) {
 			throw new IllegalArgumentException("Owner empty!");
@@ -77,7 +71,6 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	protected OwnerEquityAccountInitialValue updateDtoToEntity(BigDecimal value) {
-		validateValue(value);
 		return OwnerEquityAccountInitialValue.builder().value(value).build();
 	}
 
@@ -129,7 +122,6 @@ public class OwnerEquityAccountInitialValueService extends
 	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO insertDto) {
 		Owner owner = validateOwner(insertDto.owner());
 		EquityAccount equityAccount = validateEquityAccount(insertDto.equityAccount());
-		validateValue(insertDto.value());
 
 		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
 			.findByOwnerAndEquityAccount(owner, equityAccount);

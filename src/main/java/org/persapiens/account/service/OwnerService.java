@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.persistence.OwnerRepository;
@@ -65,9 +64,6 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	}
 
 	private void validate(OwnerDTO ownerDto) {
-		if (StringUtils.isBlank(ownerDto.name())) {
-			throw new IllegalArgumentException("Name empty!");
-		}
 		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
 			throw new BeanExistsException("Name exists: " + ownerDto.name());
 		}

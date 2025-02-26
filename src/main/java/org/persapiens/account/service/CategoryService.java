@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
@@ -65,9 +64,6 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	private void validate(CategoryDTO categoryDto) {
-		if (StringUtils.isBlank(categoryDto.description())) {
-			throw new IllegalArgumentException("Description empty!");
-		}
 		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
 			throw new BeanExistsException("Description exists: " + categoryDto.description());
 		}

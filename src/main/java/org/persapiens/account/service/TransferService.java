@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.CreditAccountDTO;
@@ -32,24 +31,6 @@ public class TransferService {
 
 	private final EquityAccountRepository equityAccountRepository;
 
-	private void validateBlank(TransferDTO transferDTO) {
-		if (StringUtils.isBlank(transferDTO.debitOwner())) {
-			throw new IllegalArgumentException("Debit Owner empty!");
-		}
-		if (StringUtils.isBlank(transferDTO.debitAccount())) {
-			throw new IllegalArgumentException("Debit Account empty!");
-		}
-		if (StringUtils.isBlank(transferDTO.creditOwner())) {
-			throw new IllegalArgumentException("Credit Owner empty!");
-		}
-		if (StringUtils.isBlank(transferDTO.creditAccount())) {
-			throw new IllegalArgumentException("Credit Account empty!");
-		}
-		if (transferDTO.value() == null) {
-			throw new IllegalArgumentException("Value empty!");
-		}
-	}
-
 	private void validateFields(TransferDTO transferDTO, Optional<Owner> debitOwnerOptional,
 			Optional<EquityAccount> debitEquityAccountOptional, Optional<Owner> creditOwnerOptional,
 			Optional<EquityAccount> creditEquityAccountOptional) {
@@ -69,8 +50,6 @@ public class TransferService {
 
 	@Transactional
 	public void transfer(TransferDTO transferDTO) {
-		validateBlank(transferDTO);
-
 		Optional<Owner> debitOwnerOptional = this.ownerRepository.findByName(transferDTO.debitOwner());
 		Optional<EquityAccount> debitEquityAccountOptional = this.equityAccountRepository
 			.findByDescription(transferDTO.debitAccount());
