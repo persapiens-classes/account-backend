@@ -43,7 +43,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 		equityAccount = new EquityAccountDTO("Updated equityAccount", equityAccount.category());
 
 		var equityAccountRestClient = equityAccountRestClient();
-		equityAccountRestClient.update(originalDescription, equityAccount);
+		equityAccount = equityAccountRestClient.update(originalDescription, equityAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)

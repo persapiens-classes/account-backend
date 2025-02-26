@@ -71,7 +71,7 @@ class CategoryRestClientIT extends RestClientIT {
 		category = new CategoryDTO("Updated category");
 
 		var categoryRestClient = categoryRestClient();
-		categoryRestClient.update(originalDescription, category);
+		category = categoryRestClient.update(originalDescription, category);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)

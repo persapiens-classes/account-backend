@@ -126,7 +126,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 		creditAccount = new CreditAccountDTO("Updated creditAccount", creditAccount.category());
 
 		var creditAccountRestClient = creditAccountRestClient();
-		creditAccountRestClient.update(originalDescription, creditAccount);
+		creditAccount = creditAccountRestClient.update(originalDescription, creditAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)

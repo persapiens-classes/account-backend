@@ -96,7 +96,7 @@ class EntryRestClientIT extends RestClientIT {
 				entryDTO.inAccount().description(), entryDTO.outAccount().description(), entryDTO.value(),
 				"updated note");
 
-		entryRestClient.update(entryDTO.id(), entryUpdate);
+		entryDTO = entryRestClient.update(entryDTO.id(), entryUpdate);
 
 		assertThat(entryRestClient.findById(entryDTO.id()).note()).isEqualTo("updated note");
 	}

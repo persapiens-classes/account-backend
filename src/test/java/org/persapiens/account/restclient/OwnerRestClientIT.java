@@ -70,7 +70,7 @@ class OwnerRestClientIT extends RestClientIT {
 		owner = new OwnerDTO("Updated owner");
 
 		var ownerRestClient = ownerRestClient();
-		ownerRestClient.update(originalName, owner);
+		owner = ownerRestClient.update(originalName, owner);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
