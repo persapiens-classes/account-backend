@@ -1,5 +1,6 @@
 package org.persapiens.account.security;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +38,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody LoginRequestDTO loginRequest) {
+	public ResponseEntity<LoginResponseDTO> authenticate(@Valid @RequestBody LoginRequestDTO loginRequest) {
 		try {
 			this.authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
