@@ -72,10 +72,10 @@ class TransferRestClientIT extends RestClientIT {
 		transferInvalid(aunt, checkings, uncle, investiment, null, HttpStatus.BAD_REQUEST);
 
 		// test fields
-		transferInvalid("invalid debit owner", checkings, uncle, investiment, value, HttpStatus.CONFLICT);
-		transferInvalid(aunt, "invalid debit equity account", uncle, investiment, value, HttpStatus.CONFLICT);
-		transferInvalid(aunt, checkings, "invalid credit account", investiment, value, HttpStatus.CONFLICT);
-		transferInvalid(aunt, checkings, uncle, "invalid credit equity account", value, HttpStatus.CONFLICT);
+		transferInvalid("invalid debit owner", checkings, uncle, investiment, value, HttpStatus.NOT_FOUND);
+		transferInvalid(aunt, "invalid debit equity account", uncle, investiment, value, HttpStatus.NOT_FOUND);
+		transferInvalid(aunt, checkings, "invalid credit account", investiment, value, HttpStatus.NOT_FOUND);
+		transferInvalid(aunt, checkings, uncle, "invalid credit equity account", value, HttpStatus.NOT_FOUND);
 
 		// test same owners
 		transferInvalid(aunt, checkings, aunt, investiment, value, HttpStatus.BAD_REQUEST);

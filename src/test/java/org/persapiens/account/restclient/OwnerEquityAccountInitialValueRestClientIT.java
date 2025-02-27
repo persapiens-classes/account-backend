@@ -65,8 +65,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		insertInvalid(new BigDecimal(100), mother.name(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid owner and equity account
-		insertInvalid(new BigDecimal(100), "invalid owner", savings.description(), HttpStatus.CONFLICT);
-		insertInvalid(new BigDecimal(100), mother.name(), "invalid equity account", HttpStatus.CONFLICT);
+		insertInvalid(new BigDecimal(100), "invalid owner", savings.description(), HttpStatus.NOT_FOUND);
+		insertInvalid(new BigDecimal(100), mother.name(), "invalid equity account", HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -131,8 +131,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		updateInvalid("", savings.description(), new BigDecimal(100), HttpStatus.BAD_REQUEST);
 
 		// invalid id
-		updateInvalid("invalid owner", savings.description(), new BigDecimal(100), HttpStatus.CONFLICT);
-		updateInvalid(grandmother.name(), "invalid equity account", new BigDecimal(100), HttpStatus.CONFLICT);
+		updateInvalid("invalid owner", savings.description(), new BigDecimal(100), HttpStatus.NOT_FOUND);
+		updateInvalid(grandmother.name(), "invalid equity account", new BigDecimal(100), HttpStatus.NOT_FOUND);
 		updateInvalid(grandmother.name(), savings.description(), new BigDecimal(100), HttpStatus.NOT_FOUND);
 	}
 
@@ -178,8 +178,8 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 
 		deleteInvalid("", savings, HttpStatus.BAD_REQUEST);
 		deleteInvalid(father, "", HttpStatus.BAD_REQUEST);
-		deleteInvalid("invalid owner", savings, HttpStatus.CONFLICT);
-		deleteInvalid(father, "invalid equity account", HttpStatus.CONFLICT);
+		deleteInvalid("invalid owner", savings, HttpStatus.NOT_FOUND);
+		deleteInvalid(father, "invalid equity account", HttpStatus.NOT_FOUND);
 		deleteInvalid(father, savings, HttpStatus.NOT_FOUND);
 	}
 

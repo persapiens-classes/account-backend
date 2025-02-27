@@ -80,9 +80,9 @@ class EntryRestClientIT extends RestClientIT {
 		invalidInsert(value, date, ownerName, inAccountDescription, "", HttpStatus.BAD_REQUEST);
 
 		// test fields
-		invalidInsert(value, date, "invalid owner", inAccountDescription, outAccountDescription, HttpStatus.CONFLICT);
-		invalidInsert(value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.CONFLICT);
-		invalidInsert(value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.CONFLICT);
+		invalidInsert(value, date, "invalid owner", inAccountDescription, outAccountDescription, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -96,7 +96,7 @@ class EntryRestClientIT extends RestClientIT {
 				entryDTO.inAccount().description(), entryDTO.outAccount().description(), entryDTO.value(),
 				"updated note");
 
-		entryRestClient.update(entryDTO.id(), entryUpdate);
+		entryDTO = entryRestClient.update(entryDTO.id(), entryUpdate);
 
 		assertThat(entryRestClient.findById(entryDTO.id()).note()).isEqualTo("updated note");
 	}
@@ -147,9 +147,9 @@ class EntryRestClientIT extends RestClientIT {
 
 		// invalid fields
 		updateInvalid(id, value, date, "invalid owner", inAccountDescription, outAccountDescription,
-				HttpStatus.CONFLICT);
-		updateInvalid(id, value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.CONFLICT);
-		updateInvalid(id, value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.CONFLICT);
+				HttpStatus.NOT_FOUND);
+		updateInvalid(id, value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.NOT_FOUND);
+		updateInvalid(id, value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -196,12 +196,12 @@ class EntryRestClientIT extends RestClientIT {
 		String salary = category(CategoryConstants.SALARY).description();
 
 		creditSumInvalid("", "", HttpStatus.BAD_REQUEST);
-		creditSumInvalid(INVALID_OWNER, "", HttpStatus.CONFLICT);
+		creditSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
 		creditSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
-		creditSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		creditSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
 		creditSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
-		creditSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
-		creditSumInvalid(INVALID_OWNER, salary, HttpStatus.CONFLICT);
+		creditSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
+		creditSumInvalid(INVALID_OWNER, salary, HttpStatus.NOT_FOUND);
 	}
 
 	private void debitSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
@@ -219,12 +219,12 @@ class EntryRestClientIT extends RestClientIT {
 		String salary = category(CategoryConstants.SALARY).description();
 
 		debitSumInvalid("", "", HttpStatus.BAD_REQUEST);
-		debitSumInvalid(INVALID_OWNER, "", HttpStatus.CONFLICT);
+		debitSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
 		debitSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
-		debitSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
+		debitSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
 		debitSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
-		debitSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.CONFLICT);
-		debitSumInvalid(INVALID_OWNER, salary, HttpStatus.CONFLICT);
+		debitSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
+		debitSumInvalid(INVALID_OWNER, salary, HttpStatus.NOT_FOUND);
 	}
 
 }

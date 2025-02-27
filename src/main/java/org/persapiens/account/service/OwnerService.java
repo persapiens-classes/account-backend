@@ -22,23 +22,43 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 		return new OwnerDTO(entity.getName());
 	}
 
-	private Owner toEntity(OwnerDTO dto) {
-		return Owner.builder().name(dto.name()).build();
+	private void validate(OwnerDTO ownerDto) {
+		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
+			throw new BeanExistsException("Owner name exists: " + ownerDto.name());
+		}
+	}
+
+	private Owner toEntity(OwnerDTO ownerDTO) {
+		validate(ownerDTO);
+		return Owner.builder().name(ownerDTO.name()).build();
 	}
 
 	@Override
-	protected Owner insertDtoToEntity(OwnerDTO dto) {
-		return toEntity(dto);
+	protected Owner insertDtoToEntity(OwnerDTO ownerDTO) {
+		return toEntity(ownerDTO);
 	}
 
 	@Override
-	protected Owner updateDtoToEntity(OwnerDTO dto) {
-		return toEntity(dto);
+	protected Owner updateDtoToEntity(OwnerDTO ownerDTO) {
+		return toEntity(ownerDTO);
+	}
+
+	Owner findEntityByName(String name) {
+		if (StringUtils.isBlank(name)) {
+			throw new IllegalArgumentException("Owner name empty!");
+		}
+		Optional<Owner> byName = this.ownerRepository.findByName(name);
+		if (byName.isPresent()) {
+			return byName.get();
+		}
+		else {
+			throw new BeanNotFoundException("Owner not found by: " + name);
+		}
 	}
 
 	@Override
-	protected Optional<Owner> findByUpdateKey(String updateKey) {
-		return this.ownerRepository.findByName(updateKey);
+	protected Owner findByUpdateKey(String updateKey) {
+		return findEntityByName(updateKey);
 	}
 
 	@Override
@@ -48,43 +68,14 @@ public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, Stri
 	}
 
 	public OwnerDTO findByName(String name) {
-		Optional<Owner> byName = this.ownerRepository.findByName(name);
-		if (byName.isPresent()) {
-			return toDTO(byName.get());
-		}
-		else {
-			throw new BeanNotFoundException("Bean not found by: " + name);
-		}
+		return toDTO(findEntityByName(name));
 	}
 
 	@Transactional
 	public void deleteByName(String name) {
 		if (this.ownerRepository.deleteByName(name) == 0) {
-			throw new BeanNotFoundException("Bean not found by: " + name);
+			throw new BeanNotFoundException("Owner not found by: " + name);
 		}
-	}
-
-	private void validate(OwnerDTO ownerDto) {
-		if (StringUtils.isBlank(ownerDto.name())) {
-			throw new IllegalArgumentException("Name empty!");
-		}
-		if (this.ownerRepository.findByName(ownerDto.name()).isPresent()) {
-			throw new BeanExistsException("Name exists: " + ownerDto.name());
-		}
-	}
-
-	@Override
-	public OwnerDTO insert(OwnerDTO insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public OwnerDTO update(String updateKey, OwnerDTO updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
 	}
 
 }

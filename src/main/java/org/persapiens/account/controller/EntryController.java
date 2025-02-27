@@ -2,6 +2,7 @@ package org.persapiens.account.controller;
 
 import java.math.BigDecimal;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.dto.EntryDTO;
@@ -37,8 +38,8 @@ public class EntryController
 
 	@PutMapping("/{id}")
 	public EntryDTO update(@PathVariable(required = true) Long id,
-			@RequestBody(required = true) EntryInsertUpdateDTO dto) {
-		return this.entryService.update(id, dto);
+			@Valid @RequestBody(required = true) EntryInsertUpdateDTO entryDTO) {
+		return this.entryService.update(id, entryDTO);
 	}
 
 	@GetMapping("/creditSum")

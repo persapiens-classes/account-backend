@@ -1,5 +1,6 @@
 package org.persapiens.account.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.dto.AccountDTOInterface;
@@ -28,8 +29,9 @@ public abstract class AccountController<D extends AccountDTOInterface, E extends
 	}
 
 	@PutMapping("/{description}")
-	public D update(@PathVariable(required = true) String description, @RequestBody(required = true) D dto) {
-		return this.accountService.update(description, dto);
+	public D update(@PathVariable(required = true) String description,
+			@Valid @RequestBody(required = true) D accountDTO) {
+		return this.accountService.update(description, accountDTO);
 	}
 
 }

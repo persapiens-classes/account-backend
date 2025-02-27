@@ -54,15 +54,6 @@ public class Entry implements Comparable<Entry> {
 
 	private String note;
 
-	public void verifyAttributes() {
-		if (this.inAccount instanceof CreditAccount) {
-			throw new IllegalArgumentException("In account cannot be of type CreditAccount: " + this.inAccount);
-		}
-		if (this.outAccount instanceof DebitAccount) {
-			throw new IllegalArgumentException("Out account cannot be of type DebitAccount: " + this.outAccount);
-		}
-	}
-
 	@Override
 	public int compareTo(Entry o) {
 		return Comparator.comparing(Entry::getDate)

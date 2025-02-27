@@ -112,7 +112,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		// invalid fields
 		updateInvalid(creditAccountToUpdate.description(), "credit account updated", "invalid category",
-				HttpStatus.CONFLICT);
+				HttpStatus.NOT_FOUND);
 		updateInvalid(creditAccountToUpdate.description(), creditAccountToUpdate.description(),
 				creditAccountToUpdate.category(), HttpStatus.CONFLICT);
 	}
@@ -126,7 +126,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 		creditAccount = new CreditAccountDTO("Updated creditAccount", creditAccount.category());
 
 		var creditAccountRestClient = creditAccountRestClient();
-		creditAccountRestClient.update(originalDescription, creditAccount);
+		creditAccount = creditAccountRestClient.update(originalDescription, creditAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)

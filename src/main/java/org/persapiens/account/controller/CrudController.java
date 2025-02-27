@@ -3,6 +3,7 @@ package org.persapiens.account.controller;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
+import jakarta.validation.Valid;
 import org.persapiens.account.service.CrudService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 	}
 
 	@PostMapping
-	public F insert(@RequestBody(required = true) I insertDto) {
+	public F insert(@Valid @RequestBody(required = true) I insertDto) {
 		return this.crudService.insert(insertDto);
 	}
 

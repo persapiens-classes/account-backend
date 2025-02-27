@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.persistence.CategoryRepository;
 import org.persapiens.account.persistence.CreditAccountRepository;
 
 import org.springframework.stereotype.Service;
@@ -17,17 +16,18 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 
 	private CategoryService categoryService;
 
-	public CreditAccountService(CreditAccountRepository creditAccountRepository, CategoryRepository categoryRepository,
-			CategoryService categoryService) {
-		super(creditAccountRepository, categoryRepository);
+	public CreditAccountService(CreditAccountRepository creditAccountRepository, CategoryService categoryService) {
+		super(creditAccountRepository, categoryService);
 		this.creditAccountRepository = creditAccountRepository;
 		this.categoryService = categoryService;
 	}
 
+	@Override
 	protected CreditAccount createAccount() {
 		return new CreditAccount();
 	}
 
+	@Override
 	protected CreditAccountDTO createAccountDTO(String description, String category) {
 		return new CreditAccountDTO(description, category);
 	}
@@ -37,9 +37,11 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 		Optional<CreditAccount> findByDescription = this.creditAccountRepository
 			.findByDescription(CreditAccount.INCOME_TRANSFER);
 		if (findByDescription.isEmpty()) {
-			CreditAccountDTO result = new CreditAccountDTO(CreditAccount.INCOME_TRANSFER,
-					this.categoryService.incomeTransfer().description());
-			return insert(result);
+			CreditAccount result = CreditAccount.builder()
+				.description(CreditAccount.INCOME_TRANSFER)
+				.category(this.categoryService.incomeTransfer())
+				.build();
+			return toDTO(this.creditAccountRepository.save(result));
 		}
 		else {
 			return toDTO(findByDescription.get());

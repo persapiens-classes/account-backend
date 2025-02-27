@@ -45,7 +45,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		var debitAccountRestClient = debitAccountRestClient();
 
-		debitAccountRestClient.update(originalDescription, debitAccount);
+		debitAccount = debitAccountRestClient.update(originalDescription, debitAccount);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)

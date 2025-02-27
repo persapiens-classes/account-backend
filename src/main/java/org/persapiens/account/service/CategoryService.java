@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
@@ -22,23 +21,40 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return new CategoryDTO(entity.getDescription());
 	}
 
-	private Category toEntity(CategoryDTO dto) {
-		return Category.builder().description(dto.description()).build();
+	private void validate(CategoryDTO categoryDto) {
+		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + categoryDto.description());
+		}
+	}
+
+	private Category toEntity(CategoryDTO categoryDTO) {
+		validate(categoryDTO);
+		return Category.builder().description(categoryDTO.description()).build();
 	}
 
 	@Override
-	protected Category insertDtoToEntity(CategoryDTO dto) {
-		return toEntity(dto);
+	protected Category insertDtoToEntity(CategoryDTO categoryDTO) {
+		return toEntity(categoryDTO);
 	}
 
 	@Override
-	protected Category updateDtoToEntity(CategoryDTO dto) {
-		return toEntity(dto);
+	protected Category updateDtoToEntity(CategoryDTO categoryDTO) {
+		return toEntity(categoryDTO);
+	}
+
+	Category findEntityByDescription(String description) {
+		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
+		if (categoryOptional.isPresent()) {
+			return categoryOptional.get();
+		}
+		else {
+			throw new BeanNotFoundException("Category not found by: " + description);
+		}
 	}
 
 	@Override
-	protected Optional<Category> findByUpdateKey(String updateKey) {
-		return this.categoryRepository.findByDescription(updateKey);
+	protected Category findByUpdateKey(String updateKey) {
+		return findEntityByDescription(updateKey);
 	}
 
 	@Override
@@ -48,64 +64,35 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	public CategoryDTO findByDescription(String description) {
-		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
-		if (categoryOptional.isPresent()) {
-			return toDTO(categoryOptional.get());
-		}
-		else {
-			throw new BeanNotFoundException("Bean not found by: " + description);
-		}
+		return toDTO(findEntityByDescription(description));
 	}
 
 	@Transactional
 	public void deleteByDescription(String description) {
 		if (this.categoryRepository.deleteByDescription(description) == 0) {
-			throw new BeanNotFoundException("Bean not found by: " + description);
+			throw new BeanNotFoundException("Category not found by: " + description);
 		}
 	}
 
-	private void validate(CategoryDTO categoryDto) {
-		if (StringUtils.isBlank(categoryDto.description())) {
-			throw new IllegalArgumentException("Description empty!");
-		}
-		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + categoryDto.description());
-		}
-	}
-
-	@Override
-	public CategoryDTO insert(CategoryDTO insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public CategoryDTO update(String updateKey, CategoryDTO updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
-	}
-
-	private CategoryDTO categoryDTO(String description) {
+	private Category category(String description) {
 		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
 		if (findByDescricao.isEmpty()) {
-			CategoryDTO result = new CategoryDTO(description);
-			return insert(result);
+			Category result = Category.builder().description(description).build();
+			return this.categoryRepository.save(result);
 		}
 		else {
-			return toDTO(findByDescricao.get());
+			return findByDescricao.get();
 		}
 	}
 
 	@Transactional
-	public CategoryDTO expenseTransfer() {
-		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
+	public Category expenseTransfer() {
+		return category(Category.EXPENSE_TRANSFER_CATEGORY);
 	}
 
 	@Transactional
-	public CategoryDTO incomeTransfer() {
-		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
+	public Category incomeTransfer() {
+		return category(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
 }

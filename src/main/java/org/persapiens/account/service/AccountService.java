@@ -5,9 +5,9 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
+import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.AccountDTOInterface;
 import org.persapiens.account.persistence.AccountRepository;
-import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 
 	private AccountRepository<E> accountRepository;
 
-	private CategoryRepository categoryRepository;
+	private CategoryService categoryService;
 
 	protected abstract E createAccount();
 
@@ -30,26 +30,49 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		return createAccountDTO(entity.getDescription(), entity.getCategory().getDescription());
 	}
 
-	private E toEntity(D dto) {
+	private String validateAccountDescription(String description) {
+		if (this.accountRepository.findByDescription(description).isPresent()) {
+			throw new BeanExistsException("Description exists: " + description);
+		}
+		return description;
+	}
+
+	private E toEntity(D accountDTO) {
+		String description = validateAccountDescription(accountDTO.description());
+		Category category = this.categoryService.findEntityByDescription(accountDTO.category());
+
 		E result = createAccount();
-		result.setDescription(dto.description());
-		result.setCategory(this.categoryRepository.findByDescription(dto.category()).get());
+		result.setDescription(description);
+		result.setCategory(category);
 		return result;
 	}
 
 	@Override
-	protected E insertDtoToEntity(D dto) {
-		return toEntity(dto);
+	protected E insertDtoToEntity(D accountDTO) {
+		return toEntity(accountDTO);
 	}
 
 	@Override
-	protected E updateDtoToEntity(D dto) {
-		return toEntity(dto);
+	protected E updateDtoToEntity(D accountDTO) {
+		return toEntity(accountDTO);
+	}
+
+	E findEntityByDescription(String description) {
+		if (StringUtils.isBlank(description)) {
+			throw new IllegalArgumentException("Account description empty!");
+		}
+		Optional<E> accountOptional = this.accountRepository.findByDescription(description);
+		if (accountOptional.isPresent()) {
+			return accountOptional.get();
+		}
+		else {
+			throw new BeanNotFoundException("Account not found by: " + description);
+		}
 	}
 
 	@Override
-	protected Optional<E> findByUpdateKey(String updateKey) {
-		return this.accountRepository.findByDescription(updateKey);
+	protected E findByUpdateKey(String updateKey) {
+		return findEntityByDescription(updateKey);
 	}
 
 	@Override
@@ -59,53 +82,14 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 	}
 
 	public D findByDescription(String description) {
-		Optional<E> accountOptional = this.accountRepository.findByDescription(description);
-		if (accountOptional.isPresent()) {
-			return toDTO(accountOptional.get());
-		}
-		else {
-			throw new BeanNotFoundException("Bean not found by: " + description);
-		}
+		return toDTO(findEntityByDescription(description));
 	}
 
 	@Transactional
 	public void deleteByDescription(String description) {
 		if (this.accountRepository.deleteByDescription(description) == 0) {
-			throw new BeanNotFoundException("Bean not found by: " + description);
+			throw new BeanNotFoundException("Account not found by: " + description);
 		}
-	}
-
-	private void validateBlank(D accountDto) {
-		if (StringUtils.isBlank(accountDto.description())) {
-			throw new IllegalArgumentException("Description empty!");
-		}
-		if (StringUtils.isBlank(accountDto.category())) {
-			throw new IllegalArgumentException("Category empty!");
-		}
-	}
-
-	private void validate(D accountDto) {
-		validateBlank(accountDto);
-		if (this.accountRepository.findByDescription(accountDto.description()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + accountDto.description());
-		}
-		if (!this.categoryRepository.findByDescription(accountDto.category()).isPresent()) {
-			throw new AttributeNotFoundException("Category not exists: " + accountDto.category());
-		}
-	}
-
-	@Override
-	public D insert(D insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public D update(String updateKey, D updateDto) {
-		validate(updateDto);
-
-		return super.update(updateKey, updateDto);
 	}
 
 }

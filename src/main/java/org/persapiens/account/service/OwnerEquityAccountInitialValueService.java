@@ -4,16 +4,13 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.dto.OwnerNameEquityAccountDescription;
-import org.persapiens.account.persistence.EquityAccountRepository;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
-import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,38 +22,9 @@ public class OwnerEquityAccountInitialValueService extends
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
-	private OwnerRepository ownerRepository;
+	private OwnerService ownerService;
 
-	private EquityAccountRepository equityAccountRepository;
-
-	private void validateValue(BigDecimal value) {
-		if (value == null) {
-			throw new IllegalArgumentException("Value null!");
-		}
-	}
-
-	private Owner validateOwner(String ownerName) {
-		if (StringUtils.isBlank(ownerName)) {
-			throw new IllegalArgumentException("Owner empty!");
-		}
-		Optional<Owner> byName = this.ownerRepository.findByName(ownerName);
-		if (!byName.isPresent()) {
-			throw new BeanExistsException("Owner not exists: " + ownerName);
-		}
-		return byName.get();
-	}
-
-	private EquityAccount validateEquityAccount(String equityAccountDescription) {
-		if (StringUtils.isBlank(equityAccountDescription)) {
-			throw new IllegalArgumentException("Equity Account empty!");
-		}
-		Optional<EquityAccount> byDescription = this.equityAccountRepository
-			.findByDescription(equityAccountDescription);
-		if (!byDescription.isPresent()) {
-			throw new BeanExistsException("Equity Account not exists: " + equityAccountDescription);
-		}
-		return byDescription.get();
-	}
+	private EquityAccountService equityAccountService;
 
 	@Override
 	protected OwnerEquityAccountInitialValueDTO toDTO(OwnerEquityAccountInitialValue entity) {
@@ -65,11 +33,21 @@ public class OwnerEquityAccountInitialValueService extends
 	}
 
 	@Override
-	protected OwnerEquityAccountInitialValue insertDtoToEntity(OwnerEquityAccountInitialValueDTO dto) {
-		Owner owner = this.ownerRepository.findByName(dto.owner()).get();
-		EquityAccount equityAccount = this.equityAccountRepository.findByDescription(dto.equityAccount()).get();
+	protected OwnerEquityAccountInitialValue insertDtoToEntity(
+			OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO) {
+		Owner owner = this.ownerService.findEntityByName(ownerEquityAccountInitialValueDTO.owner());
+		EquityAccount equityAccount = this.equityAccountService
+			.findEntityByDescription(ownerEquityAccountInitialValueDTO.equityAccount());
+
+		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
+			.findByOwnerAndEquityAccount(owner, equityAccount);
+		if (byOwnerAndEquityAccount.isPresent()) {
+			throw new BeanExistsException(
+					"OwnerEquityAccountInitialValue exists: " + owner.getName() + "-" + equityAccount.getDescription());
+		}
+
 		return OwnerEquityAccountInitialValue.builder()
-			.value(dto.value())
+			.value(ownerEquityAccountInitialValueDTO.value())
 			.owner(owner)
 			.equityAccount(equityAccount)
 			.build();
@@ -77,23 +55,26 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	protected OwnerEquityAccountInitialValue updateDtoToEntity(BigDecimal value) {
-		validateValue(value);
 		return OwnerEquityAccountInitialValue.builder().value(value).build();
 	}
 
-	@Override
-	protected Optional<OwnerEquityAccountInitialValue> findByUpdateKey(OwnerNameEquityAccountDescription updateKey) {
-		Owner owner = validateOwner(updateKey.ownerName());
-		EquityAccount equityAccount = validateEquityAccount(updateKey.equityAccountDescription());
-
+	OwnerEquityAccountInitialValue findEntityByOwnerAndEquityAccount(String ownerName,
+			String equityAccountDescription) {
 		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
-			.findByOwnerAndEquityAccount(owner, equityAccount);
-		if (byOwnerAndEquityAccount.isEmpty()) {
-			throw new BeanNotFoundException("OwnerEquityAccountInitialValue not exists: " + owner.getName() + "-"
-					+ equityAccount.getDescription());
+			.findByOwnerAndEquityAccount(this.ownerService.findEntityByName(ownerName),
+					this.equityAccountService.findEntityByDescription(equityAccountDescription));
+		if (byOwnerAndEquityAccount.isPresent()) {
+			return byOwnerAndEquityAccount.get();
 		}
+		else {
+			throw new BeanNotFoundException(
+					"OwnerEquityAccountInitialValue not found by: " + ownerName + "-" + equityAccountDescription);
+		}
+	}
 
-		return this.ownerEquityAccountInitialValueRepository.findByOwnerAndEquityAccount(owner, equityAccount);
+	@Override
+	protected OwnerEquityAccountInitialValue findByUpdateKey(OwnerNameEquityAccountDescription updateKey) {
+		return findEntityByOwnerAndEquityAccount(updateKey.ownerName(), updateKey.equityAccountDescription());
 	}
 
 	@Override
@@ -107,38 +88,17 @@ public class OwnerEquityAccountInitialValueService extends
 
 	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(String ownerName,
 			String equityAccountDescription) {
-		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
-			.findByOwnerAndEquityAccount(validateOwner(ownerName), validateEquityAccount(equityAccountDescription));
-		if (byOwnerAndEquityAccount.isPresent()) {
-			return toDTO(byOwnerAndEquityAccount.get());
-		}
-		else {
-			throw new BeanNotFoundException("Bean not found by: " + ownerName + "-" + equityAccountDescription);
-		}
+		return toDTO(findEntityByOwnerAndEquityAccount(ownerName, equityAccountDescription));
+
 	}
 
 	@Transactional
 	public void deleteByOwnderAndEquityAccount(String ownerName, String equityAccountDescription) {
-		if (this.ownerEquityAccountInitialValueRepository.deleteByOwnerAndEquityAccount(validateOwner(ownerName),
-				validateEquityAccount(equityAccountDescription)) == 0) {
+		if (this.ownerEquityAccountInitialValueRepository.deleteByOwnerAndEquityAccount(
+				this.ownerService.findEntityByName(ownerName),
+				this.equityAccountService.findEntityByDescription(equityAccountDescription)) == 0) {
 			throw new BeanNotFoundException("Bean not found by: " + ownerName + "-" + equityAccountDescription);
 		}
-	}
-
-	@Override
-	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO insertDto) {
-		Owner owner = validateOwner(insertDto.owner());
-		EquityAccount equityAccount = validateEquityAccount(insertDto.equityAccount());
-		validateValue(insertDto.value());
-
-		Optional<OwnerEquityAccountInitialValue> byOwnerAndEquityAccount = this.ownerEquityAccountInitialValueRepository
-			.findByOwnerAndEquityAccount(owner, equityAccount);
-		if (byOwnerAndEquityAccount.isPresent()) {
-			throw new BeanExistsException(
-					"OwnerEquityAccountInitialValue exists: " + owner.getName() + "-" + equityAccount.getDescription());
-		}
-
-		return super.insert(insertDto);
 	}
 
 }

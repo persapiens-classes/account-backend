@@ -1,5 +1,6 @@
 package org.persapiens.account.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
@@ -31,8 +32,9 @@ public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO
 	}
 
 	@PutMapping("/{name}")
-	public OwnerDTO update(@PathVariable(required = true) String name, @RequestBody(required = true) OwnerDTO dto) {
-		return this.ownerService.update(name, dto);
+	public OwnerDTO update(@PathVariable(required = true) String name,
+			@Valid @RequestBody(required = true) OwnerDTO ownerDTO) {
+		return this.ownerService.update(name, ownerDTO);
 	}
 
 }
