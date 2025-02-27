@@ -37,9 +37,11 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 		Optional<CreditAccount> findByDescription = this.creditAccountRepository
 			.findByDescription(CreditAccount.INCOME_TRANSFER);
 		if (findByDescription.isEmpty()) {
-			CreditAccountDTO result = new CreditAccountDTO(CreditAccount.INCOME_TRANSFER,
-					this.categoryService.incomeTransfer().description());
-			return insert(result);
+			CreditAccount result = CreditAccount.builder()
+				.description(CreditAccount.INCOME_TRANSFER)
+				.category(this.categoryService.incomeTransfer())
+				.build();
+			return toDTO(this.creditAccountRepository.save(result));
 		}
 		else {
 			return toDTO(findByDescription.get());

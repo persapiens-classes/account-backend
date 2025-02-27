@@ -37,9 +37,11 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 		Optional<DebitAccount> findByDescription = this.debitAccountRepository
 			.findByDescription(DebitAccount.EXPENSE_TRANSFER);
 		if (findByDescription.isEmpty()) {
-			DebitAccountDTO result = new DebitAccountDTO(DebitAccount.EXPENSE_TRANSFER,
-					this.categoryService.expenseTransfer().description());
-			return insert(result);
+			DebitAccount result = DebitAccount.builder()
+				.description(DebitAccount.EXPENSE_TRANSFER)
+				.category(this.categoryService.expenseTransfer())
+				.build();
+			return toDTO(this.debitAccountRepository.save(result));
 		}
 		else {
 			return toDTO(findByDescription.get());

@@ -74,25 +74,25 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		}
 	}
 
-	private CategoryDTO categoryDTO(String description) {
+	private Category category(String description) {
 		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
 		if (findByDescricao.isEmpty()) {
 			Category result = Category.builder().description(description).build();
-			return toDTO(this.categoryRepository.save(result));
+			return this.categoryRepository.save(result);
 		}
 		else {
-			return toDTO(findByDescricao.get());
+			return findByDescricao.get();
 		}
 	}
 
 	@Transactional
-	public CategoryDTO expenseTransfer() {
-		return categoryDTO(Category.EXPENSE_TRANSFER_CATEGORY);
+	public Category expenseTransfer() {
+		return category(Category.EXPENSE_TRANSFER_CATEGORY);
 	}
 
 	@Transactional
-	public CategoryDTO incomeTransfer() {
-		return categoryDTO(Category.INCOME_TRANSFER_CATEGORY);
+	public Category incomeTransfer() {
+		return category(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
 }
