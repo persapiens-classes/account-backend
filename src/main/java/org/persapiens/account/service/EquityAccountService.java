@@ -13,10 +13,12 @@ public class EquityAccountService extends AccountService<EquityAccountDTO, Equit
 		super(equityAccountRepository, categoryService);
 	}
 
+	@Override
 	protected EquityAccount createAccount() {
 		return new EquityAccount();
 	}
 
+	@Override
 	protected EquityAccountDTO createAccountDTO(String description, String category) {
 		return new EquityAccountDTO(description, category);
 	}
