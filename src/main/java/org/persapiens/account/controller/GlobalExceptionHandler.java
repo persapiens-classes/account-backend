@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.persapiens.account.service.AttributeNotFoundException;
 import org.persapiens.account.service.BeanExistsException;
 import org.persapiens.account.service.BeanNotFoundException;
 
@@ -27,11 +26,6 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BeanExistsException.class)
 	public ResponseEntity<Map<String, String>> handleBeanExistsException(BeanExistsException exception) {
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ERROR, exception.getMessage()));
-	}
-
-	@ExceptionHandler(AttributeNotFoundException.class)
-	public ResponseEntity<Map<String, String>> handleAttributeNotFoundException(AttributeNotFoundException exception) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 

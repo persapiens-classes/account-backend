@@ -78,7 +78,7 @@ class BalanceRestClientIT extends RestClientIT {
 		balanceInvalid(ownerName, "invalid equity account", HttpStatus.NOT_FOUND);
 
 		// test OwnerEquityAccountInitialValue
-		balanceInvalid(ownerName, equityAccountDescription, HttpStatus.CONFLICT);
+		balanceInvalid(ownerName, equityAccountDescription, HttpStatus.NOT_FOUND);
 	}
 
 	private void balanceInvalid(String ownerName, String equityAccountDescription, HttpStatus httpStatus) {

@@ -31,7 +31,7 @@ public class BalanceService {
 		Optional<OwnerEquityAccountInitialValue> ownerAndEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueRepository
 			.findByOwnerAndEquityAccount(owner, equityAccount);
 		if (ownerAndEquityAccountInitialValueOptional.isEmpty()) {
-			throw new AttributeNotFoundException(
+			throw new BeanNotFoundException(
 					"OwnerEquityAccountInitialValue not exists: " + ownerName + '-' + equityAccountDescription);
 		}
 
