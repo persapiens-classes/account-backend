@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.persistence.CategoryRepository;
 import org.persapiens.account.persistence.CreditAccountRepository;
 
 import org.springframework.stereotype.Service;
@@ -17,9 +16,8 @@ public class CreditAccountService extends AccountService<CreditAccountDTO, Credi
 
 	private CategoryService categoryService;
 
-	public CreditAccountService(CreditAccountRepository creditAccountRepository, CategoryRepository categoryRepository,
-			CategoryService categoryService) {
-		super(creditAccountRepository, categoryRepository);
+	public CreditAccountService(CreditAccountRepository creditAccountRepository, CategoryService categoryService) {
+		super(creditAccountRepository, categoryService);
 		this.creditAccountRepository = creditAccountRepository;
 		this.categoryService = categoryService;
 	}

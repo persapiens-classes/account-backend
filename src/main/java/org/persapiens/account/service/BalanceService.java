@@ -4,14 +4,11 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.persistence.EntryRepository;
-import org.persapiens.account.persistence.EquityAccountRepository;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
-import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -21,42 +18,15 @@ public class BalanceService {
 
 	private EntryRepository entryRepository;
 
-	private OwnerRepository ownerRepository;
+	private OwnerService ownerService;
 
-	private EquityAccountRepository equityAccountRepository;
+	private EquityAccountService equityAccountService;
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
-	private void validateBlank(String ownerName, String equityAccountDescription) {
-		if (StringUtils.isBlank(ownerName)) {
-			throw new IllegalArgumentException("Owner empty!");
-		}
-		if (StringUtils.isBlank(equityAccountDescription)) {
-			throw new IllegalArgumentException("Equity Account empty!");
-		}
-	}
-
-	private void validateFields(String ownerName, String equityAccountDescription, Optional<Owner> ownerOptional,
-			Optional<EquityAccount> equityAccountOptional) {
-		if (ownerOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Owner not exists: " + ownerName);
-		}
-		if (equityAccountOptional.isEmpty()) {
-			throw new AttributeNotFoundException("Equity Account not exists: " + equityAccountDescription);
-		}
-	}
-
 	public BigDecimal balance(String ownerName, String equityAccountDescription) {
-		validateBlank(ownerName, equityAccountDescription);
-
-		Optional<Owner> ownerOptional = this.ownerRepository.findByName(ownerName);
-		Optional<EquityAccount> equityAccountOptional = this.equityAccountRepository
-			.findByDescription(equityAccountDescription);
-
-		validateFields(ownerName, equityAccountDescription, ownerOptional, equityAccountOptional);
-
-		Owner owner = ownerOptional.get();
-		EquityAccount equityAccount = equityAccountOptional.get();
+		Owner owner = this.ownerService.findEntityByName(ownerName);
+		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
 		Optional<OwnerEquityAccountInitialValue> ownerAndEquityAccountInitialValueOptional = this.ownerEquityAccountInitialValueRepository
 			.findByOwnerAndEquityAccount(owner, equityAccount);

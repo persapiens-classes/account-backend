@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
+import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
-import org.persapiens.account.persistence.AccountRepository;
+import org.persapiens.account.persistence.CreditAccountRepository;
+import org.persapiens.account.persistence.DebitAccountRepository;
 import org.persapiens.account.persistence.EntryRepository;
-import org.persapiens.account.persistence.EquityAccountRepository;
-import org.persapiens.account.persistence.OwnerRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +26,13 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 
 	private EntryRepository entryRepository;
 
-	private AccountRepository<Account> accountRepository;
+	private CreditAccountRepository creditAccountRepository;
 
-	private OwnerRepository ownerRepository;
+	private DebitAccountRepository debitAccountRepository;
 
-	private EquityAccountRepository equityAccountRepository;
+	private EquityAccountService equityAccountService;
+
+	private OwnerService ownerService;
 
 	@Override
 	protected EntryDTO toDTO(Entry entry) {
@@ -42,11 +44,35 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 				entry.getValue(), entry.getNote());
 	}
 
+	private Account inAccount(String accountDescription) {
+		Optional<DebitAccount> byDescription = this.debitAccountRepository.findByDescription(accountDescription);
+		if (byDescription.isPresent()) {
+			return byDescription.get();
+		}
+		else {
+			return this.equityAccountService.findEntityByDescription(accountDescription);
+		}
+	}
+
+	private Account outAccount(String accountDescription) {
+		Optional<CreditAccount> byDescription = this.creditAccountRepository.findByDescription(accountDescription);
+		if (byDescription.isPresent()) {
+			return byDescription.get();
+		}
+		else {
+			return this.equityAccountService.findEntityByDescription(accountDescription);
+		}
+	}
+
 	private Entry toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		Owner owner = this.ownerService.findEntityByName(entryInsertUpdateDTO.owner());
+		Account inAccount = inAccount(entryInsertUpdateDTO.inAccount());
+		Account outAccount = outAccount(entryInsertUpdateDTO.outAccount());
+
 		return Entry.builder()
-			.inAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.inAccount()).get())
-			.outAccount(this.accountRepository.findByDescription(entryInsertUpdateDTO.outAccount()).get())
-			.owner(this.ownerRepository.findByName(entryInsertUpdateDTO.owner()).get())
+			.inAccount(inAccount)
+			.outAccount(outAccount)
+			.owner(owner)
 			.value(entryInsertUpdateDTO.value())
 			.note(entryInsertUpdateDTO.note())
 			.date(entryInsertUpdateDTO.date())
@@ -63,45 +89,25 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 		return toEntity(entryInsertUpdateDTO);
 	}
 
+	Entry findEntityById(Long id) {
+		Optional<Entry> byId = this.entryRepository.findById(id);
+		if (byId.isPresent()) {
+			return byId.get();
+		}
+		else {
+			throw new BeanNotFoundException("Entry not found by: " + id);
+		}
+	}
+
 	@Override
-	protected Optional<Entry> findByUpdateKey(Long updateKey) {
-		return this.entryRepository.findById(updateKey);
+	protected Entry findByUpdateKey(Long updateKey) {
+		return findEntityById(updateKey);
 	}
 
 	@Override
 	protected Entry setIdToUpdate(Entry t, Entry updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
-	}
-
-	private void validate(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.inAccount()).isPresent()) {
-			throw new BeanExistsException("In account not exists: " + entryInsertUpdateDTO.inAccount());
-		}
-		if (!this.accountRepository.findByDescription(entryInsertUpdateDTO.outAccount()).isPresent()) {
-			throw new AttributeNotFoundException("Out account not exists: " + entryInsertUpdateDTO.outAccount());
-		}
-		if (!this.ownerRepository.findByName(entryInsertUpdateDTO.owner()).isPresent()) {
-			throw new BeanExistsException("Owner not exists: " + entryInsertUpdateDTO.owner());
-		}
-
-		Entry entry = insertDtoToEntity(entryInsertUpdateDTO);
-
-		entry.verifyAttributes();
-	}
-
-	@Override
-	public EntryDTO insert(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		validate(entryInsertUpdateDTO);
-
-		return super.insert(entryInsertUpdateDTO);
-	}
-
-	@Override
-	public EntryDTO update(Long id, EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		validate(entryInsertUpdateDTO);
-
-		return super.update(id, entryInsertUpdateDTO);
 	}
 
 	@Transactional
@@ -115,48 +121,19 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	public EntryDTO findById(Long id) {
-		Optional<Entry> byId = this.entryRepository.findById(id);
-		if (byId.isPresent()) {
-			return toDTO(byId.get());
-		}
-		else {
-			throw new BeanNotFoundException("Entry not found by: " + id);
-		}
-	}
-
-	private Owner validateOwner(String ownerName) {
-		if (StringUtils.isBlank(ownerName)) {
-			throw new IllegalArgumentException("Owner empty!");
-		}
-		Optional<Owner> ownerOptional = this.ownerRepository.findByName(ownerName);
-		if (!ownerOptional.isPresent()) {
-			throw new BeanExistsException("Owner not exists: " + ownerName);
-		}
-		return ownerOptional.get();
-	}
-
-	private EquityAccount validateEquityAccount(String equityAccountDescription) {
-		if (StringUtils.isBlank(equityAccountDescription)) {
-			throw new IllegalArgumentException("Equity account empty!");
-		}
-		Optional<EquityAccount> equityAccountOptional = this.equityAccountRepository
-			.findByDescription(equityAccountDescription);
-		if (!equityAccountOptional.isPresent()) {
-			throw new BeanExistsException("Equity Account not exists: " + equityAccountOptional);
-		}
-		return equityAccountOptional.get();
+		return toDTO(findEntityById(id));
 	}
 
 	public BigDecimal creditSum(String ownerName, String equityAccountDescription) {
-		Owner owner = validateOwner(ownerName);
-		EquityAccount equityAccount = validateEquityAccount(equityAccountDescription);
+		Owner owner = this.ownerService.findEntityByName(ownerName);
+		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
 		return this.entryRepository.creditSum(owner, equityAccount).getValue();
 	}
 
 	public BigDecimal debitSum(String ownerName, String equityAccountDescription) {
-		Owner owner = validateOwner(ownerName);
-		EquityAccount equityAccount = validateEquityAccount(equityAccountDescription);
+		Owner owner = this.ownerService.findEntityByName(ownerName);
+		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
 		return this.entryRepository.debitSum(owner, equityAccount).getValue();
 	}

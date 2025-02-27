@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.persistence.CategoryRepository;
 import org.persapiens.account.persistence.DebitAccountRepository;
 
 import org.springframework.stereotype.Service;
@@ -17,9 +16,8 @@ public class DebitAccountService extends AccountService<DebitAccountDTO, DebitAc
 
 	private CategoryService categoryService;
 
-	public DebitAccountService(DebitAccountRepository debitAccountRepository, CategoryRepository categoryRepository,
-			CategoryService categoryService) {
-		super(debitAccountRepository, categoryRepository);
+	public DebitAccountService(DebitAccountRepository debitAccountRepository, CategoryService categoryService) {
+		super(debitAccountRepository, categoryService);
 		this.debitAccountRepository = debitAccountRepository;
 		this.categoryService = categoryService;
 	}

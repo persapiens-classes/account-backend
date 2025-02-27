@@ -21,7 +21,14 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return new CategoryDTO(entity.getDescription());
 	}
 
+	private void validate(CategoryDTO categoryDto) {
+		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
+			throw new BeanExistsException("Description exists: " + categoryDto.description());
+		}
+	}
+
 	private Category toEntity(CategoryDTO categoryDTO) {
+		validate(categoryDTO);
 		return Category.builder().description(categoryDTO.description()).build();
 	}
 
@@ -35,9 +42,19 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return toEntity(categoryDTO);
 	}
 
+	Category findEntityByDescription(String description) {
+		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
+		if (categoryOptional.isPresent()) {
+			return categoryOptional.get();
+		}
+		else {
+			throw new BeanNotFoundException("Category not found by: " + description);
+		}
+	}
+
 	@Override
-	protected Optional<Category> findByUpdateKey(String updateKey) {
-		return this.categoryRepository.findByDescription(updateKey);
+	protected Category findByUpdateKey(String updateKey) {
+		return findEntityByDescription(updateKey);
 	}
 
 	@Override
@@ -46,40 +63,14 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		return updateEntity;
 	}
 
-	private void validate(CategoryDTO categoryDto) {
-		if (this.categoryRepository.findByDescription(categoryDto.description()).isPresent()) {
-			throw new BeanExistsException("Description exists: " + categoryDto.description());
-		}
-	}
-
-	@Override
-	public CategoryDTO insert(CategoryDTO insertDto) {
-		validate(insertDto);
-
-		return super.insert(insertDto);
-	}
-
-	@Override
-	public CategoryDTO update(String description, CategoryDTO updateDto) {
-		validate(updateDto);
-
-		return super.update(description, updateDto);
-	}
-
 	public CategoryDTO findByDescription(String description) {
-		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
-		if (categoryOptional.isPresent()) {
-			return toDTO(categoryOptional.get());
-		}
-		else {
-			throw new BeanNotFoundException("Bean not found by: " + description);
-		}
+		return toDTO(findEntityByDescription(description));
 	}
 
 	@Transactional
 	public void deleteByDescription(String description) {
 		if (this.categoryRepository.deleteByDescription(description) == 0) {
-			throw new BeanNotFoundException("Bean not found by: " + description);
+			throw new BeanNotFoundException("Category not found by: " + description);
 		}
 	}
 
