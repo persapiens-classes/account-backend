@@ -112,7 +112,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		// invalid fields
 		updateInvalid(creditAccountToUpdate.description(), "credit account updated", "invalid category",
-				HttpStatus.CONFLICT);
+				HttpStatus.NOT_FOUND);
 		updateInvalid(creditAccountToUpdate.description(), creditAccountToUpdate.description(),
 				creditAccountToUpdate.category(), HttpStatus.CONFLICT);
 	}

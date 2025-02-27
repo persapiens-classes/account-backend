@@ -42,8 +42,7 @@ class EntryServiceIT {
 				this.creditAccountDTOFactory.internship().description(),
 				this.equityAccountDTOFactory.savings().description(), BigDecimal.TEN, "");
 
-		Assertions.assertThatThrownBy(() -> this.entryService.insert(entry))
-			.isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatThrownBy(() -> this.entryService.insert(entry)).isInstanceOf(BeanNotFoundException.class);
 	}
 
 	@Test
@@ -52,8 +51,7 @@ class EntryServiceIT {
 				this.equityAccountDTOFactory.savings().description(),
 				this.debitAccountDTOFactory.gasoline().description(), BigDecimal.ZERO, "");
 
-		Assertions.assertThatThrownBy(() -> this.entryService.insert(entry))
-			.isInstanceOf(IllegalArgumentException.class);
+		Assertions.assertThatThrownBy(() -> this.entryService.insert(entry)).isInstanceOf(BeanNotFoundException.class);
 	}
 
 }

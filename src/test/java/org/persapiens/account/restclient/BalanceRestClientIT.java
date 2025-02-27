@@ -74,8 +74,8 @@ class BalanceRestClientIT extends RestClientIT {
 		balanceInvalid(ownerName, "", HttpStatus.BAD_REQUEST);
 
 		// test fields
-		balanceInvalid("invalid owner", equityAccountDescription, HttpStatus.CONFLICT);
-		balanceInvalid(ownerName, "invalid equity account", HttpStatus.CONFLICT);
+		balanceInvalid("invalid owner", equityAccountDescription, HttpStatus.NOT_FOUND);
+		balanceInvalid(ownerName, "invalid equity account", HttpStatus.NOT_FOUND);
 
 		// test OwnerEquityAccountInitialValue
 		balanceInvalid(ownerName, equityAccountDescription, HttpStatus.CONFLICT);
