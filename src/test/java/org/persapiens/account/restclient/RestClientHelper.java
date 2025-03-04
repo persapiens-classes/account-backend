@@ -5,7 +5,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -36,7 +35,6 @@ public class RestClientHelper<T> {
 
 	public RestClient getRestClient() {
 		return RestClient.builder().requestInterceptor(new ClientHttpRequestInterceptor() {
-			@SuppressFBWarnings("DM_DEFAULT_ENCODING")
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 					throws IOException {
 				if (RestClientHelper.this.jwtToken != null && !RestClientHelper.this.jwtToken.isEmpty()) {
