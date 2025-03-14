@@ -1,21 +1,31 @@
 package org.persapiens.account.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
+@SequenceGenerator(sequenceName = "seq_credit_account", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, of = "category")
+@ToString(callSuper = true, of="category")
 @SuperBuilder
-public class CreditAccount extends Account {
+@Getter
+@Setter
+public class CreditAccount extends Account<CreditCategory> {
 
-	/**
-	 * Income transfer. Credit transfer.
-	 */
-	public static final String INCOME_TRANSFER = "income transfer";
+	@ManyToOne
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
+	@NonNull
+	private CreditCategory category;
 
 }
