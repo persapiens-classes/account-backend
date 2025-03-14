@@ -45,7 +45,7 @@ class CreditCategoryRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	void insertEmpty() {
+	void insertCreditCategoryEmpty() {
 		String description = "";
 
 		insertInvalid(description, HttpStatus.BAD_REQUEST);
@@ -139,7 +139,7 @@ class CreditCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void deleteInvalid() {
-		String description = "Invalid category";
+		String description = "Invalid credit category";
 		deleteInvalidCategory("", HttpStatus.FORBIDDEN);
 		deleteInvalidCategory(description, HttpStatus.NOT_FOUND);
 	}
