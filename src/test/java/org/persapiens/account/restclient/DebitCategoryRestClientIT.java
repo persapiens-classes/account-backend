@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CategoryRestClientIT extends RestClientIT {
+class DebitCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertOne() {
@@ -20,7 +20,7 @@ class CategoryRestClientIT extends RestClientIT {
 
 		CategoryDTO category = new CategoryDTO(description);
 
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 
 		// verify insert operation
 		assertThat(categoryRestClient.insert(category)).isNotNull();
@@ -37,7 +37,7 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> categoryRestClient.insert(category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
@@ -55,7 +55,7 @@ class CategoryRestClientIT extends RestClientIT {
 
 		CategoryDTO category = new CategoryDTO(description);
 
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		categoryRestClient.insert(category);
 
 		// verify insert operation
@@ -65,12 +65,12 @@ class CategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void updateOne() {
-		CategoryDTO category = category("Inserted category");
+		CategoryDTO category = debitCategory("Inserted category");
 
 		String originalDescription = category.description();
 		category = new CategoryDTO("Updated category");
 
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		category = categoryRestClient.update(originalDescription, category);
 
 		// verify update operation
@@ -88,7 +88,7 @@ class CategoryRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
 			.isThrownBy(() -> categoryRestClient.update(oldDescription, category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
@@ -96,7 +96,7 @@ class CategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void updateInvalid() {
-		CategoryDTO categoryToUpdate = category("category to update");
+		CategoryDTO categoryToUpdate = debitCategory("category to update");
 
 		// empty id
 		updateInvalid("", "", HttpStatus.FORBIDDEN);
@@ -116,7 +116,7 @@ class CategoryRestClientIT extends RestClientIT {
 	void deleteOne() {
 		// create test environment
 		String description = "Fantastic category";
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		categoryRestClient.insert(new CategoryDTO(description));
 		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(description);
 
@@ -129,7 +129,7 @@ class CategoryRestClientIT extends RestClientIT {
 	}
 
 	private void deleteInvalidCategory(String description, HttpStatus httpStatus) {
-		var categoryRestClient = categoryRestClient();
+		var categoryRestClient = debitCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
 			.isThrownBy(() -> categoryRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));

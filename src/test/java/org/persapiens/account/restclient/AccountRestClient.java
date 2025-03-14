@@ -1,45 +1,45 @@
 package org.persapiens.account.restclient;
 
 import lombok.experimental.SuperBuilder;
-import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.dto.AccountDTO;
 
 @SuperBuilder
-public class DebitAccountRestClient {
+public class AccountRestClient {
 
-	private RestClientHelper<DebitAccountDTO> restClientHelper;
+	private RestClientHelper<AccountDTO> restClientHelper;
 
-	public Iterable<DebitAccountDTO> findAll() {
+	public Iterable<AccountDTO> findAll() {
 		return this.restClientHelper.findAll();
 	}
 
-	public DebitAccountDTO insert(DebitAccountDTO entity) {
+	public AccountDTO insert(AccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
 			.uri(this.restClientHelper.insertUri())
 			.body(entity)
 			.retrieve()
-			.body(DebitAccountDTO.class);
+			.body(AccountDTO.class);
 	}
 
-	public DebitAccountDTO findByDescription(String description) {
+	public AccountDTO findByDescription(String description) {
 		return this.restClientHelper.getRestClient()
 			.get()
 			.uri(this.restClientHelper.findByDescriptionUri(description))
 			.retrieve()
-			.body(DebitAccountDTO.class);
+			.body(AccountDTO.class);
 	}
 
 	public void deleteByDescription(String description) {
 		this.restClientHelper.deleteByDescription(description);
 	}
 
-	public DebitAccountDTO update(String description, DebitAccountDTO entity) {
+	public AccountDTO update(String description, AccountDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.put()
 			.uri(this.restClientHelper.updateUri(description))
 			.body(entity)
 			.retrieve()
-			.body(DebitAccountDTO.class);
+			.body(AccountDTO.class);
 	}
 
 }

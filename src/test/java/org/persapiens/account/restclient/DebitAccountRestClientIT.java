@@ -2,8 +2,8 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.EquityCategoryConstants;
-import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.common.DebitCategoryConstants;
+import org.persapiens.account.dto.AccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ class DebitAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "Uber";
-		String categoryDescription = category(EquityCategoryConstants.TRANSPORT).description();
+		String categoryDescription = debitCategory(DebitCategoryConstants.TRANSPORT).description();
 
-		DebitAccountDTO debitAccount = new DebitAccountDTO(description, categoryDescription);
+		AccountDTO debitAccount = new AccountDTO(description, categoryDescription);
 
 		var debitAccountRestClient = debitAccountRestClient();
 
@@ -37,11 +37,11 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateOne() {
-		DebitAccountDTO debitAccount = debitAccount("Inserted debitAccount",
-				category(EquityCategoryConstants.TRANSPORT).description());
+		AccountDTO debitAccount = debitAccount("Inserted debitAccount",
+				debitCategory(DebitCategoryConstants.TRANSPORT).description());
 
 		String originalDescription = debitAccount.description();
-		debitAccount = new DebitAccountDTO("Updated debitAccount", debitAccount.category());
+		debitAccount = new AccountDTO("Updated debitAccount", debitAccount.category());
 
 		var debitAccountRestClient = debitAccountRestClient();
 
@@ -64,7 +64,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		var debitAccountRestClient = debitAccountRestClient();
 		debitAccountRestClient
-			.insert(new DebitAccountDTO(description, category(EquityCategoryConstants.TRANSPORT).description()));
+			.insert(new AccountDTO(description, debitCategory(DebitCategoryConstants.TRANSPORT).description()));
 		assertThat(debitAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
