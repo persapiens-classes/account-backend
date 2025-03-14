@@ -6,28 +6,24 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
-import org.persapiens.account.dto.AccountDTOInterface;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.AccountRepository;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-@Service
-public abstract class AccountService<D extends AccountDTOInterface, E extends Account>
-		extends CrudService<D, D, D, String, E, Long> {
+public abstract class AccountService<E extends Account<C>, C extends Category>
+		extends CrudService<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
-	private AccountRepository<E> accountRepository;
+	private AccountRepository<E, C> accountRepository;
 
-	private CategoryService categoryService;
+	private CategoryService<C> categoryService;
 
 	protected abstract E createAccount();
 
-	protected abstract D createAccountDTO(String description, String category);
-
 	@Override
-	protected D toDTO(E entity) {
-		return createAccountDTO(entity.getDescription(), entity.getCategory().getDescription());
+	protected AccountDTO toDTO(E entity) {
+		return new AccountDTO(entity.getDescription(), entity.getCategory().getDescription());
 	}
 
 	private String validateAccountDescription(String description) {
@@ -37,9 +33,9 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		return description;
 	}
 
-	private E toEntity(D accountDTO) {
+	private E toEntity(AccountDTO accountDTO) {
 		String description = validateAccountDescription(accountDTO.description());
-		Category category = this.categoryService.findEntityByDescription(accountDTO.category());
+		C category = this.categoryService.findEntityByDescription(accountDTO.category());
 
 		E result = createAccount();
 		result.setDescription(description);
@@ -48,12 +44,12 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 	}
 
 	@Override
-	protected E insertDtoToEntity(D accountDTO) {
+	protected E insertDtoToEntity(AccountDTO accountDTO) {
 		return toEntity(accountDTO);
 	}
 
 	@Override
-	protected E updateDtoToEntity(D accountDTO) {
+	protected E updateDtoToEntity(AccountDTO accountDTO) {
 		return toEntity(accountDTO);
 	}
 
@@ -81,7 +77,7 @@ public abstract class AccountService<D extends AccountDTOInterface, E extends Ac
 		return updateEntity;
 	}
 
-	public D findByDescription(String description) {
+	public AccountDTO findByDescription(String description) {
 		return toDTO(findEntityByDescription(description));
 	}
 

@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +41,17 @@ class BalanceServiceIT {
 		// create test environment
 		OwnerDTO father = this.ownerDTOFactory.father();
 
-		EquityAccountDTO wallet = this.equityAccountDTOFactory.wallet();
+		AccountDTO wallet = this.equityAccountDTOFactory.wallet();
 
-		DebitAccountDTO gasoline = this.debitAccountDTOFactory.gasoline();
+		AccountDTO gasoline = this.debitAccountDTOFactory.gasoline();
 
-		CreditAccountDTO internship = this.creditAccountDTOFactory.internship();
+		AccountDTO internship = this.creditAccountDTOFactory.internship();
 
 		this.ownerEquityAccountInitialValueDTOFactory.ownerEquityAccountInitialValueDTO(father, wallet,
 				new BigDecimal(1000));
 
-		this.entryDTOFactory.entryDTO(father, gasoline, wallet, new BigDecimal(500));
-		this.entryDTOFactory.entryDTO(father, wallet, internship, new BigDecimal(300));
+		this.entryDTOFactory.debitEntryDTO(father, gasoline, wallet, new BigDecimal(500));
+		this.entryDTOFactory.creditEntryDTO(father, wallet, internship, new BigDecimal(300));
 
 		// run the operation to be tested
 		// verify the results

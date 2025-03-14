@@ -1,9 +1,9 @@
 package org.persapiens.account.controller;
 
-import java.math.BigDecimal;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.persapiens.account.domain.Account;
+import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.Entry;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
-@RestController
-@RequestMapping("/entries")
-public class EntryController
-		extends CrudController<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, Entry, Long> {
+public class EntryController <T extends Entry<I, D, O, E>, I extends Account<D>, D extends Category, O extends Account<E>, E extends Category>
+		extends CrudController<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, T, Long> {
 
-	private EntryService entryService;
+	private EntryService<T, I, D, O, E> entryService;
 
 	@GetMapping("/{id}")
 	public EntryDTO findById(@PathVariable(required = true) Long id) {
@@ -40,18 +35,6 @@ public class EntryController
 	public EntryDTO update(@PathVariable(required = true) Long id,
 			@Valid @RequestBody(required = true) EntryInsertUpdateDTO entryDTO) {
 		return this.entryService.update(id, entryDTO);
-	}
-
-	@GetMapping("/creditSum")
-	public BigDecimal creditSum(@RequestParam(required = true) String owner,
-			@RequestParam(required = true) String equityAccount) {
-		return this.entryService.creditSum(owner, equityAccount);
-	}
-
-	@GetMapping("/debitSum")
-	public BigDecimal debitSum(@RequestParam(required = true) String owner,
-			@RequestParam(required = true) String equityAccount) {
-		return this.entryService.debitSum(owner, equityAccount);
 	}
 
 }

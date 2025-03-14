@@ -1,10 +1,9 @@
 package org.persapiens.account.service;
 
 import org.persapiens.account.domain.DebitAccount;
-import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.DebitAccountFactory;
-
+import org.persapiens.account.persistence.DebitCategoryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,18 +14,18 @@ public class DebitAccountDTOFactory {
 	private DebitAccountFactory debitAccountFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private DebitCategoryFactory categoryFactory;
 
-	public DebitAccountDTO debitAccountDTO(DebitAccount debitAccount) {
-		return new DebitAccountDTO(debitAccount.getDescription(), debitAccount.getCategory().getDescription());
+	public AccountDTO debitAccountDTO(DebitAccount debitAccount) {
+		return new AccountDTO(debitAccount.getDescription(), debitAccount.getCategory().getDescription());
 	}
 
-	public DebitAccountDTO debitAccountDTO(String description, String category) {
+	public AccountDTO debitAccountDTO(String description, String category) {
 		return debitAccountDTO(
 				this.debitAccountFactory.debitAccount(description, this.categoryFactory.category(category)));
 	}
 
-	public DebitAccountDTO gasoline() {
+	public AccountDTO gasoline() {
 		return debitAccountDTO(this.debitAccountFactory.gasoline());
 	}
 

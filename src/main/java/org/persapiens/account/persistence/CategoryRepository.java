@@ -5,11 +5,13 @@ import java.util.Optional;
 import org.persapiens.account.domain.Category;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface CategoryRepository extends CrudRepository<Category, Long> {
+@NoRepositoryBean
+public interface CategoryRepository<T extends Category> extends CrudRepository<T, Long> {
 
-	Optional<Category> findByDescription(String description);
+	Optional<T> findByDescription(String description);
 
 	@Transactional
 	long deleteByDescription(String description);

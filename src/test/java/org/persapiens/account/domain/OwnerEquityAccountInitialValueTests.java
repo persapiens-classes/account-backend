@@ -19,7 +19,7 @@ class OwnerEquityAccountInitialValueTests {
 		return OwnerEquityAccountInitialValue.builder()
 			.equityAccount(EquityAccount.builder()
 				.description(categoryDescription)
-				.category(Category.builder().description(INDIVIDUAL_ASSET).build())
+				.category(EquityCategory.builder().description(INDIVIDUAL_ASSET).build())
 				.build())
 			.owner(Owner.builder().name(ownerName).build())
 			.value(value)

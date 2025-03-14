@@ -1,10 +1,9 @@
 package org.persapiens.account.service;
 
 import org.persapiens.account.domain.CreditAccount;
-import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.CreditAccountFactory;
-
+import org.persapiens.account.persistence.CreditCategoryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,18 +14,18 @@ public class CreditAccountDTOFactory {
 	private CreditAccountFactory creditAccountFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private CreditCategoryFactory categoryFactory;
 
-	public CreditAccountDTO creditAccountDTO(CreditAccount creditAccount) {
-		return new CreditAccountDTO(creditAccount.getDescription(), creditAccount.getCategory().getDescription());
+	public AccountDTO creditAccountDTO(CreditAccount creditAccount) {
+		return new AccountDTO(creditAccount.getDescription(), creditAccount.getCategory().getDescription());
 	}
 
-	public CreditAccountDTO creditAccountDTO(String description, String category) {
+	public AccountDTO creditAccountDTO(String description, String category) {
 		return creditAccountDTO(
 				this.creditAccountFactory.creditAccount(description, this.categoryFactory.category(category)));
 	}
 
-	public CreditAccountDTO internship() {
+	public AccountDTO internship() {
 		return creditAccountDTO(this.creditAccountFactory.internship());
 	}
 

@@ -2,16 +2,18 @@ package org.persapiens.account.service;
 
 import java.math.BigDecimal;
 
-import org.persapiens.account.domain.Entry;
-import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.domain.CreditEntry;
+import org.persapiens.account.domain.DebitEntry;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.CreditAccountFactory;
+import org.persapiens.account.persistence.CreditCategoryFactory;
+import org.persapiens.account.persistence.CreditEntryFactory;
 import org.persapiens.account.persistence.DebitAccountFactory;
-import org.persapiens.account.persistence.EntryFactory;
+import org.persapiens.account.persistence.DebitCategoryFactory;
+import org.persapiens.account.persistence.DebitEntryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 
@@ -22,16 +24,28 @@ import org.springframework.stereotype.Component;
 public class EntryDTOFactory {
 
 	@Autowired
-	private EntryService entryService;
+	private DebitEntryService debitEntryService;
 
 	@Autowired
-	private EntryFactory entryFactory;
+	private CreditEntryService creditEntryService;
+
+	@Autowired
+	private DebitEntryFactory debitEntryFactory;
+
+	@Autowired
+	private CreditEntryFactory creditEntryFactory;
 
 	@Autowired
 	private OwnerFactory ownerFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private CreditCategoryFactory creditCategoryFactory;
+
+	@Autowired
+	private DebitCategoryFactory debitCategoryFactory;
+
+	@Autowired
+	private EquityCategoryFactory equityCategoryFactory;
 
 	@Autowired
 	private CreditAccountFactory creditAccountFactory;
@@ -42,26 +56,30 @@ public class EntryDTOFactory {
 	@Autowired
 	private EquityAccountFactory equityAccountFactory;
 
-	public EntryDTO entryDTO(Entry entry) {
-		return this.entryService.toDTO(entry);
+	public EntryDTO debitEntryDTO(DebitEntry entry) {
+		return this.debitEntryService.toDTO(entry);
 	}
 
-	public EntryDTO entryDTO(OwnerDTO owner, DebitAccountDTO inAccount, EquityAccountDTO outAccount, BigDecimal value) {
-		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
+	public EntryDTO creditEntryDTO(CreditEntry entry) {
+		return this.creditEntryService.toDTO(entry);
+	}
+
+	public EntryDTO debitEntryDTO(OwnerDTO owner, AccountDTO inAccount, AccountDTO outAccount, BigDecimal value) {
+		return debitEntryDTO(this.debitEntryFactory.entry(this.ownerFactory.owner(owner.name()),
 				this.debitAccountFactory.debitAccount(inAccount.description(),
-						this.categoryFactory.category(inAccount.category())),
+						this.debitCategoryFactory.category(inAccount.category())),
 				this.equityAccountFactory.equityAccount(outAccount.description(),
-						this.categoryFactory.category(outAccount.category())),
+						this.equityCategoryFactory.category(outAccount.category())),
 				value));
 	}
 
-	public EntryDTO entryDTO(OwnerDTO owner, EquityAccountDTO inAccount, CreditAccountDTO outAccount,
+	public EntryDTO creditEntryDTO(OwnerDTO owner, AccountDTO inAccount, AccountDTO outAccount,
 			BigDecimal value) {
-		return entryDTO(this.entryFactory.entry(this.ownerFactory.owner(owner.name()),
+		return creditEntryDTO(this.creditEntryFactory.entry(this.ownerFactory.owner(owner.name()),
 				this.equityAccountFactory.equityAccount(inAccount.description(),
-						this.categoryFactory.category(inAccount.category())),
+						this.equityCategoryFactory.category(inAccount.category())),
 				this.creditAccountFactory.creditAccount(outAccount.description(),
-						this.categoryFactory.category(outAccount.category())),
+						this.creditCategoryFactory.category(outAccount.category())),
 				value));
 	}
 

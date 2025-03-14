@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
+import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryDTO;
@@ -28,12 +29,12 @@ class EntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String bank = category(CategoryConstants.BANK).description();
+		String bank = equityCategory(EquityCategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
-		return new EntryInsertUpdateDTO(mother, LocalDateTime.now(), savings, internship, new BigDecimal(543),
+		return new EntryInsertUpdateDTO(mother, mother, LocalDateTime.now(), savings, internship, new BigDecimal(543),
 				"saving the internship");
 	}
 
@@ -51,7 +52,7 @@ class EntryRestClientIT extends RestClientIT {
 
 	private void invalidInsert(BigDecimal value, LocalDateTime date, String ownerName, String inAccountDescription,
 			String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
 				outAccountDescription, value, "invalid insert");
 
 		// verify insert operation
@@ -67,9 +68,9 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String bank = category(CategoryConstants.BANK).description();
+		String bank = equityCategory(EquityCategoryConstants.BANK).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
@@ -92,9 +93,9 @@ class EntryRestClientIT extends RestClientIT {
 		var entryRestClient = entryRestClient();
 		EntryDTO entryDTO = entryRestClient.insert(entryInsertDTO);
 
-		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.owner(), entryDTO.date(),
-				entryDTO.inAccount().description(), entryDTO.outAccount().description(), entryDTO.value(),
-				"updated note");
+		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.inOwner(), entryDTO.outOwner(), 
+				entryDTO.date(), entryDTO.inAccount().description(), entryDTO.outAccount().description(),
+				entryDTO.value(), "updated note");
 
 		entryDTO = entryRestClient.update(entryDTO.id(), entryUpdate);
 
@@ -103,7 +104,7 @@ class EntryRestClientIT extends RestClientIT {
 
 	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
 			String inAccountDescription, String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
 				outAccountDescription, value, "invalid update");
 
 		// verify update operation
@@ -119,16 +120,16 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String cash = category(CategoryConstants.CASH).description();
+		String cash = equityCategory(EquityCategoryConstants.CASH).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
 
 		// empty id
 		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);
 		updateInvalid(null, value, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.FORBIDDEN);
 
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, date, inAccountDescription,
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
 				outAccountDescription, value, "valid entry");
 		var entryRestClient = entryRestClient();
 		Long id = entryRestClient.insert(entryInsertUpdateDTO).id();
@@ -193,7 +194,7 @@ class EntryRestClientIT extends RestClientIT {
 	@Test
 	void creditSumInvalid() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
 
 		creditSumInvalid("", "", HttpStatus.BAD_REQUEST);
 		creditSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
@@ -216,7 +217,7 @@ class EntryRestClientIT extends RestClientIT {
 	@Test
 	void debitSumInvalid() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
 
 		debitSumInvalid("", "", HttpStatus.BAD_REQUEST);
 		debitSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);

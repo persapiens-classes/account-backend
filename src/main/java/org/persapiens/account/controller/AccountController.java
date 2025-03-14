@@ -3,7 +3,8 @@ package org.persapiens.account.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
-import org.persapiens.account.dto.AccountDTOInterface;
+import org.persapiens.account.domain.Category;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.service.AccountService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @AllArgsConstructor
-public abstract class AccountController<D extends AccountDTOInterface, E extends Account>
-		extends CrudController<D, D, D, String, E, Long> {
+public class AccountController<E extends Account<T>, T extends Category>
+		extends CrudController<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
-	private AccountService<D, E> accountService;
+	private AccountService<E, T> accountService;
 
 	@GetMapping("/{description}")
-	public D findByDescription(@PathVariable(required = true) String description) {
+	public AccountDTO findByDescription(@PathVariable(required = true) String description) {
 		return this.accountService.findByDescription(description);
 	}
 
@@ -29,8 +30,8 @@ public abstract class AccountController<D extends AccountDTOInterface, E extends
 	}
 
 	@PutMapping("/{description}")
-	public D update(@PathVariable(required = true) String description,
-			@Valid @RequestBody(required = true) D accountDTO) {
+	public AccountDTO update(@PathVariable(required = true) String description,
+			@Valid @RequestBody(required = true) AccountDTO accountDTO) {
 		return this.accountService.update(description, accountDTO);
 	}
 

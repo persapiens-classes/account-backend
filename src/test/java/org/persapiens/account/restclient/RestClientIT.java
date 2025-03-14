@@ -1,10 +1,8 @@
 package org.persapiens.account.restclient;
 
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.CategoryDTO;
-import org.persapiens.account.dto.CreditAccountDTO;
-import org.persapiens.account.dto.DebitAccountDTO;
 import org.persapiens.account.dto.EntryDTO;
-import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.security.LoginResponseDTO;
@@ -62,66 +60,98 @@ class RestClientIT {
 		}
 	}
 
-	CategoryRestClient categoryRestClient() {
+	CategoryRestClient creditCategoryRestClient() {
 		return CategoryRestClient.builder()
-			.restClientHelper(this.<CategoryDTO>authenticatedRestClientHelper("categories"))
+			.restClientHelper(this.<CategoryDTO>authenticatedRestClientHelper("creditCategories"))
 			.build();
 	}
 
-	CategoryDTO category(String description) {
+	CategoryRestClient debitCategoryRestClient() {
+		return CategoryRestClient.builder()
+			.restClientHelper(this.<CategoryDTO>authenticatedRestClientHelper("debitCategories"))
+			.build();
+	}
+
+	CategoryRestClient equityCategoryRestClient() {
+		return CategoryRestClient.builder()
+			.restClientHelper(this.<CategoryDTO>authenticatedRestClientHelper("equityCategories"))
+			.build();
+	}
+
+	CategoryDTO creditCategory(String description) {
 		try {
-			return categoryRestClient().findByDescription(description);
+			return creditCategoryRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
 			CategoryDTO result = new CategoryDTO(description);
-			return categoryRestClient().insert(result);
+			return creditCategoryRestClient().insert(result);
 		}
 	}
 
-	EquityAccountRestClient equityAccountRestClient() {
-		return EquityAccountRestClient.builder()
-			.restClientHelper(this.<EquityAccountDTO>authenticatedRestClientHelper("equityAccounts"))
+	CategoryDTO debitCategory(String description) {
+		try {
+			return debitCategoryRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
+			CategoryDTO result = new CategoryDTO(description);
+			return debitCategoryRestClient().insert(result);
+		}
+	}
+	
+	CategoryDTO equityCategory(String description) {
+		try {
+			return equityCategoryRestClient().findByDescription(description);
+		}
+		catch (HttpClientErrorException error) {
+			CategoryDTO result = new CategoryDTO(description);
+			return equityCategoryRestClient().insert(result);
+		}
+	}
+
+	AccountRestClient equityAccountRestClient() {
+		return AccountRestClient.builder()
+			.restClientHelper(this.<AccountDTO>authenticatedRestClientHelper("equityAccounts"))
 			.build();
 	}
 
-	EquityAccountDTO equityAccount(String description, String categoryDescription) {
+	AccountDTO equityAccount(String description, String categoryDescription) {
 		try {
 			return equityAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			EquityAccountDTO result = new EquityAccountDTO(description, categoryDescription);
+			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return equityAccountRestClient().insert(result);
 		}
 	}
 
-	CreditAccountRestClient creditAccountRestClient() {
-		return CreditAccountRestClient.builder()
-			.restClientHelper(this.<CreditAccountDTO>authenticatedRestClientHelper("creditAccounts"))
+	AccountRestClient creditAccountRestClient() {
+		return AccountRestClient.builder()
+			.restClientHelper(this.<AccountDTO>authenticatedRestClientHelper("creditAccounts"))
 			.build();
 	}
 
-	CreditAccountDTO creditAccount(String description, String categoryDescription) {
+	AccountDTO creditAccount(String description, String categoryDescription) {
 		try {
 			return creditAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			CreditAccountDTO result = new CreditAccountDTO(description, categoryDescription);
+			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return creditAccountRestClient().insert(result);
 		}
 	}
 
-	DebitAccountRestClient debitAccountRestClient() {
-		return DebitAccountRestClient.builder()
-			.restClientHelper(this.<DebitAccountDTO>authenticatedRestClientHelper("debitAccounts"))
+	AccountRestClient debitAccountRestClient() {
+		return AccountRestClient.builder()
+			.restClientHelper(this.<AccountDTO>authenticatedRestClientHelper("debitAccounts"))
 			.build();
 	}
 
-	DebitAccountDTO debitAccount(String description, String categoryDescription) {
+	AccountDTO debitAccount(String description, String categoryDescription) {
 		try {
 			return debitAccountRestClient().findByDescription(description);
 		}
 		catch (HttpClientErrorException error) {
-			DebitAccountDTO result = new DebitAccountDTO(description, categoryDescription);
+			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return debitAccountRestClient().insert(result);
 		}
 	}
