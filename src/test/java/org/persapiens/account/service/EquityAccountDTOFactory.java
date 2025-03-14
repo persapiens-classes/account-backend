@@ -3,8 +3,8 @@ package org.persapiens.account.service;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.dto.AccountDTO;
-import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

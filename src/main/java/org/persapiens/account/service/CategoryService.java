@@ -10,7 +10,8 @@ import org.persapiens.account.persistence.CategoryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-public abstract class CategoryService <C extends Category> extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
+public abstract class CategoryService<C extends Category>
+		extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
 	private CategoryRepository<C> categoryRepository;
 

@@ -5,8 +5,8 @@ import java.util.TreeSet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
+import org.persapiens.account.common.CreditCategoryConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

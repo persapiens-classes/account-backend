@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public class DebitEntry extends Entry <DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
+public class DebitEntry extends Entry<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
 
 	@ManyToOne
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_inAccount"))

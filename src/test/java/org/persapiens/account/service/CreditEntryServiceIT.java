@@ -36,8 +36,7 @@ class CreditEntryServiceIT {
 	@Test
 	void entryWithInvalidInAccount() {
 		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(),
-				this.ownerDTOFactory.father().name(), 
-				LocalDateTime.now(),
+				this.ownerDTOFactory.father().name(), LocalDateTime.now(),
 				this.creditAccountDTOFactory.internship().description(),
 				this.equityAccountDTOFactory.savings().description(), BigDecimal.TEN, "");
 

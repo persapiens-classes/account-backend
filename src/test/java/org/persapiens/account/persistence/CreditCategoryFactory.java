@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.domain.CreditCategory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,5 @@ public class CreditCategoryFactory {
 	public CreditCategory salary() {
 		return category(CreditCategoryConstants.SALARY);
 	}
-
 
 }

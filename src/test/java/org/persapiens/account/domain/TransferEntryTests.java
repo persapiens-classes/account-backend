@@ -1,106 +1,101 @@
 package org.persapiens.account.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class OwnerEquityAccountInitialValueTests {
+class TransferEntryTests {
 
 	private static final String INDIVIDUAL_ASSET = "individual asset";
 
-	private OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(String categoryDescription, String ownerName,
-			BigDecimal value) {
-		return OwnerEquityAccountInitialValue.builder()
-			.equityAccount(EquityAccount.builder()
-				.description(categoryDescription)
+	private static final String ENTRY_DESCRIPTION = "from checking to wallet";
+
+	private TransferEntry entry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
+		return TransferEntry.builder()
+			.note(note)
+			.inOwner(Owner.builder().name(ownerName).build())
+			.outOwner(Owner.builder().name(ownerName).build())
+			.value(value)
+			.date(date)
+			.inAccount(EquityAccount.builder()
+				.description(EquityAccountConstants.CHECKING)
+				.category(EquityCategory.builder().description(EquityCategoryConstants.BANK).build())
+				.build())
+			.outAccount(EquityAccount.builder()
+				.description(EquityAccountConstants.WALLET)
 				.category(EquityCategory.builder().description(INDIVIDUAL_ASSET).build())
 				.build())
-			.owner(Owner.builder().name(ownerName).build())
-			.value(value)
 			.build();
 	}
 
 	@Test
-	void equalOwnerEquityAccountValue() {
-		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-				new BigDecimal(100)))
-			.isEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-					new BigDecimal(100)));
+	void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
+		LocalDateTime now = LocalDateTime.now();
+
+		TransferEntry entryChecking1 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, "other description");
+
+		assertThat(entryChecking1).isEqualTo(entryChecking2);
 	}
 
 	@Test
-	void equalOwnerEquityAccountAndDifferenteValue() {
-		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-				new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-					new BigDecimal(999)));
+	void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
+		LocalDateTime now = LocalDateTime.now();
+
+		TransferEntry entryChecking1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+
+		assertThat(entryChecking1).isNotEqualTo(entryChecking2);
 	}
 
 	@Test
-	void equalOwnerValueAndDifferentEquityAccount() {
-		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-				new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.CHECKING, OwnerConstants.FATHER,
-					new BigDecimal(100)));
-	}
+	void compareToWithDifferentDates() {
+		Set<TransferEntry> entries = new TreeSet<>();
 
-	@Test
-	void equalEquityAccountValueAndDifferentOwner() {
-		assertThat(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.FATHER,
-				new BigDecimal(100)))
-			.isNotEqualTo(ownerEquityAccountInitialValue(EquityAccountConstants.WALLET, OwnerConstants.MOTHER,
-					new BigDecimal(100)));
-	}
+		TransferEntry entryChecking1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				ENTRY_DESCRIPTION);
+		TransferEntry entryChecking2 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				ENTRY_DESCRIPTION);
+		entries.add(entryChecking2);
+		entries.add(entryChecking1);
 
-	@Test
-	void compareToWithDifferentOwners() {
-		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
-
-		OwnerEquityAccountInitialValue initialMother = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
-				OwnerConstants.MOTHER, new BigDecimal(100));
-		initialValues.add(initialMother);
-
-		OwnerEquityAccountInitialValue initialFather = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
-				OwnerConstants.FATHER, new BigDecimal(100));
-		initialValues.add(initialFather);
-
-		assertThat(initialValues.iterator().next()).isEqualTo(initialFather);
+		assertThat(entries.iterator().next()).isEqualTo(entryChecking1);
 	}
 
 	@Test
 	void compareToWithDifferentValues() {
-		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
+		LocalDateTime now = LocalDateTime.now();
 
-		OwnerEquityAccountInitialValue initial999 = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
-				OwnerConstants.FATHER, new BigDecimal(999));
-		initialValues.add(initial999);
+		Set<TransferEntry> entries = new TreeSet<>();
 
-		OwnerEquityAccountInitialValue initial100 = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
-				OwnerConstants.FATHER, new BigDecimal(100));
-		initialValues.add(initial100);
+		TransferEntry entryChecking1 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		entries.add(entryChecking1);
+		TransferEntry entryChecking2 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		entries.add(entryChecking2);
 
-		assertThat(initialValues.iterator().next()).isEqualTo(initial100);
+		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
 	}
 
 	@Test
-	void compareToWithDifferentEquityAccounts() {
-		Set<OwnerEquityAccountInitialValue> initialValues = new TreeSet<>();
+	void compareToWithDifferentOwners() {
+		LocalDateTime now = LocalDateTime.now();
 
-		OwnerEquityAccountInitialValue pocketInitial = ownerEquityAccountInitialValue(EquityAccountConstants.WALLET,
-				OwnerConstants.FATHER, new BigDecimal(100));
-		initialValues.add(pocketInitial);
+		Set<TransferEntry> entries = new TreeSet<>();
 
-		OwnerEquityAccountInitialValue checkingInitial = ownerEquityAccountInitialValue(EquityAccountConstants.CHECKING,
-				OwnerConstants.FATHER, new BigDecimal(100));
-		initialValues.add(checkingInitial);
+		TransferEntry entryChecking1 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER, ENTRY_DESCRIPTION);
+		entries.add(entryChecking1);
+		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		entries.add(entryChecking2);
 
-		assertThat(initialValues.iterator().next()).isEqualTo(checkingInitial);
+		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
 	}
 
 }

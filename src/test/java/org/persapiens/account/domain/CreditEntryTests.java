@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,8 +61,10 @@ class CreditEntryTests {
 	void compareToWithDifferentDates() {
 		Set<CreditEntry> entries = new TreeSet<>();
 
-		CreditEntry entrySalary1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER, SALARY_DESCRIPTION);
-		CreditEntry entrySalary2 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				SALARY_DESCRIPTION);
 		entries.add(entrySalary2);
 		entries.add(entrySalary1);
 

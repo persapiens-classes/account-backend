@@ -6,6 +6,7 @@ import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.domain.TransferEntry;
 import org.persapiens.account.service.TransferEntryService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/transferEntries")
-public class TransferEntryController extends EntryController <TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> {
+public class TransferEntryController
+		extends EntryController<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> {
 
 	private TransferEntryService transferEntryService;
+
 	public TransferEntryController(TransferEntryService transferEntryService) {
 		super(transferEntryService);
 		this.transferEntryService = transferEntryService;

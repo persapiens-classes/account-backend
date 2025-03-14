@@ -35,9 +35,8 @@ class DebitEntryServiceIT {
 
 	@Test
 	void entryWithInvalidOutAccount() {
-		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(), 
-				this.ownerDTOFactory.father().name(), 
-				LocalDateTime.now(),
+		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(),
+				this.ownerDTOFactory.father().name(), LocalDateTime.now(),
 				this.equityAccountDTOFactory.savings().description(),
 				this.debitAccountDTOFactory.gasoline().description(), BigDecimal.ZERO, "");
 

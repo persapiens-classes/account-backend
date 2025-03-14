@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.domain.DebitCategory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,5 @@ public class DebitCategoryFactory {
 	public DebitCategory tax() {
 		return category(DebitCategoryConstants.TAX);
 	}
-
 
 }

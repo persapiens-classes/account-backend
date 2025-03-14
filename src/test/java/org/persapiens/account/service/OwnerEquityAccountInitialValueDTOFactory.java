@@ -6,8 +6,8 @@ import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
-import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 

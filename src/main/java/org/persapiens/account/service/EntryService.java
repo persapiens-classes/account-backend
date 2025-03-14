@@ -14,8 +14,8 @@ import org.persapiens.account.persistence.EntryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-public abstract class EntryService <E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
-	extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
+public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
+		extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
 	private EntryRepository<E, I, J, O, P> entryRepository;
 
@@ -23,12 +23,11 @@ public abstract class EntryService <E extends Entry<E, I, J, O, P>, I extends Ac
 
 	private AccountService<O, P> outAccountService;
 
-	private OwnerService ownerService;	
+	private OwnerService ownerService;
 
 	@Override
 	protected EntryDTO toDTO(E entry) {
-		return new EntryDTO(entry.getId(), entry.getInOwner().getName(), entry.getOutOwner().getName(), 
-				entry.getDate(),
+		return new EntryDTO(entry.getId(), entry.getInOwner().getName(), entry.getOutOwner().getName(), entry.getDate(),
 				new AccountDTO(entry.getInAccount().getDescription(),
 						entry.getInAccount().getCategory().getDescription()),
 				new AccountDTO(entry.getOutAccount().getDescription(),

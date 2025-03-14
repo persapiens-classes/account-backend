@@ -7,7 +7,6 @@ import org.persapiens.account.domain.DebitEntry;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.OwnerDTO;
-import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.CreditAccountFactory;
 import org.persapiens.account.persistence.CreditCategoryFactory;
 import org.persapiens.account.persistence.CreditEntryFactory;
@@ -15,6 +14,7 @@ import org.persapiens.account.persistence.DebitAccountFactory;
 import org.persapiens.account.persistence.DebitCategoryFactory;
 import org.persapiens.account.persistence.DebitEntryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,8 +73,7 @@ public class EntryDTOFactory {
 				value));
 	}
 
-	public EntryDTO creditEntryDTO(OwnerDTO owner, AccountDTO inAccount, AccountDTO outAccount,
-			BigDecimal value) {
+	public EntryDTO creditEntryDTO(OwnerDTO owner, AccountDTO inAccount, AccountDTO outAccount, BigDecimal value) {
 		return creditEntryDTO(this.creditEntryFactory.entry(this.ownerFactory.owner(owner.name()),
 				this.equityAccountFactory.equityAccount(inAccount.description(),
 						this.equityCategoryFactory.category(inAccount.category())),

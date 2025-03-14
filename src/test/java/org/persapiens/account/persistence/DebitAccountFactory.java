@@ -3,8 +3,8 @@ package org.persapiens.account.persistence;
 import java.util.Optional;
 
 import org.persapiens.account.common.DebitAccountConstants;
-import org.persapiens.account.domain.DebitCategory;
 import org.persapiens.account.domain.DebitAccount;
+import org.persapiens.account.domain.DebitCategory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

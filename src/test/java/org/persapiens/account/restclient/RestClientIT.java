@@ -97,7 +97,7 @@ class RestClientIT {
 			return debitCategoryRestClient().insert(result);
 		}
 	}
-	
+
 	CategoryDTO equityCategory(String description) {
 		try {
 			return equityCategoryRestClient().findByDescription(description);

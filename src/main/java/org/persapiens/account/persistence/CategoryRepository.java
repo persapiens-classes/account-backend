@@ -9,7 +9,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @NoRepositoryBean
-public interface CategoryRepository <C extends Category> extends CrudRepository<C, Long> {
+public interface CategoryRepository<C extends Category> extends CrudRepository<C, Long> {
 
 	Optional<C> findByDescription(String description);
 

@@ -11,6 +11,7 @@ import org.persapiens.account.persistence.CreditEntryRepository;
 import org.persapiens.account.persistence.DebitEntryRepository;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
 import org.persapiens.account.persistence.TransferEntryRepository;
+
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 public class BalanceService {
 
 	private DebitEntryRepository debitEntryRepository;
+
 	private CreditEntryRepository creditEntryRepository;
+
 	private TransferEntryRepository transferEntryRepository;
 
 	private OwnerService ownerService;

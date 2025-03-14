@@ -13,16 +13,17 @@ import org.persapiens.account.persistence.DebitEntryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DebitEntryService extends EntryService<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
+public class DebitEntryService
+		extends EntryService<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
 
 	private DebitEntryRepository debitEntryRepository;
 
 	private EquityAccountService equityAccountService;
 
-	private OwnerService ownerService;	
+	private OwnerService ownerService;
 
 	public DebitEntryService(DebitEntryRepository debitEntryRepository, DebitAccountService debitAccountRepository,
-		EquityAccountService equityAccountRepository, OwnerService ownerService) {
+			EquityAccountService equityAccountRepository, OwnerService ownerService) {
 		super(debitEntryRepository, debitAccountRepository, equityAccountRepository, ownerService);
 		this.debitEntryRepository = debitEntryRepository;
 		this.equityAccountService = equityAccountRepository;

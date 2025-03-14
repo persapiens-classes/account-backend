@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
@@ -52,8 +52,8 @@ class TransferEntryRestClientIT extends RestClientIT {
 
 	private void invalidInsert(BigDecimal value, LocalDateTime date, String ownerName, String inAccountDescription,
 			String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
-				outAccountDescription, value, "invalid insert");
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date,
+				inAccountDescription, outAccountDescription, value, "invalid insert");
 
 		// verify insert operation
 		// verify status code error
@@ -93,7 +93,7 @@ class TransferEntryRestClientIT extends RestClientIT {
 		var entryRestClient = transferEntryRestClient();
 		EntryDTO entryDTO = entryRestClient.insert(entryInsertDTO);
 
-		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.inOwner(), entryDTO.outOwner(), 
+		EntryInsertUpdateDTO entryUpdate = new EntryInsertUpdateDTO(entryDTO.inOwner(), entryDTO.outOwner(),
 				entryDTO.date(), entryDTO.inAccount().description(), entryDTO.outAccount().description(),
 				entryDTO.value(), "updated note");
 
@@ -104,8 +104,8 @@ class TransferEntryRestClientIT extends RestClientIT {
 
 	private void updateInvalid(Long id, BigDecimal value, LocalDateTime date, String ownerName,
 			String inAccountDescription, String outAccountDescription, HttpStatus httpStatus) {
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
-				outAccountDescription, value, "invalid update");
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date,
+				inAccountDescription, outAccountDescription, value, "invalid update");
 
 		// verify update operation
 		// verify status code error
@@ -129,8 +129,8 @@ class TransferEntryRestClientIT extends RestClientIT {
 		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);
 		updateInvalid(null, value, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.FORBIDDEN);
 
-		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date, inAccountDescription,
-				outAccountDescription, value, "valid entry");
+		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date,
+				inAccountDescription, outAccountDescription, value, "valid entry");
 		var entryRestClient = transferEntryRestClient();
 		Long id = entryRestClient.insert(entryInsertUpdateDTO).id();
 

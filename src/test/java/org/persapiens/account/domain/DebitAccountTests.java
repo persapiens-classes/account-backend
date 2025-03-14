@@ -5,8 +5,8 @@ import java.util.TreeSet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.common.DebitAccountConstants;
+import org.persapiens.account.common.DebitCategoryConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

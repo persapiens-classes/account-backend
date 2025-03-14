@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
@@ -32,7 +32,8 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balance500() {
 		String uncle = owner(OwnerConstants.UNCLE).name();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS, equityCategory(EquityCategoryConstants.BANK).description())
+		String savings = equityAccount(EquityAccountConstants.SAVINGS,
+				equityCategory(EquityCategoryConstants.BANK).description())
 			.description();
 
 		// initial value 100
@@ -54,8 +55,8 @@ class BalanceRestClientIT extends RestClientIT {
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				debitCategory(DebitCategoryConstants.TRANSPORT).description())
 			.description();
-		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, uncle, date, gasoline, savings, new BigDecimal(200),
-				"");
+		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, uncle, date, gasoline, savings,
+				new BigDecimal(200), "");
 		debitEntryRestClient().insert(entryDebito);
 
 		// executa a operacao a ser testada

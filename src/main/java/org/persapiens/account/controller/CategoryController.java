@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @AllArgsConstructor
-public class CategoryController <C extends Category> extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
+public class CategoryController<C extends Category>
+		extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
 	private CategoryService<C> categoryService;
 

@@ -2,6 +2,7 @@ package org.persapiens.account.service;
 
 import org.persapiens.account.domain.CreditCategory;
 import org.persapiens.account.persistence.CreditCategoryRepository;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,4 +16,5 @@ public class CreditCategoryService extends CategoryService<CreditCategory> {
 	protected CreditCategory createCategory() {
 		return new CreditCategory();
 	}
+
 }

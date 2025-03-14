@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.domain.EquityCategory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

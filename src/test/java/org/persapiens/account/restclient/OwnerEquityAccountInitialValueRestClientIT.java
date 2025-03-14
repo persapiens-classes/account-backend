@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerDTO;

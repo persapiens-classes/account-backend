@@ -1,6 +1,5 @@
 package org.persapiens.account.domain;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,8 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@SuppressFBWarnings({ "CT_CONSTRUCTOR_THROW", "NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR",
-		"RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" })
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @MappedSuperclass
@@ -25,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public abstract class Account <T extends Category> implements Comparable<Account<T>> {
+public abstract class Account<T extends Category> implements Comparable<Account<T>> {
 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ID_SEQUENCE")
 	@Id

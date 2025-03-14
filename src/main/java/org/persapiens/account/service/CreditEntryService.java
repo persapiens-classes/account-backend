@@ -13,16 +13,17 @@ import org.persapiens.account.persistence.CreditEntryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreditEntryService extends EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> {
+public class CreditEntryService
+		extends EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> {
 
 	private CreditEntryRepository creditEntryRepository;
 
 	private EquityAccountService equityAccountService;
 
-	private OwnerService ownerService;	
+	private OwnerService ownerService;
 
-	public CreditEntryService(CreditEntryRepository creditEntryRepository, EquityAccountService equityAccountRepository, 
-		CreditAccountService creditAccountRepository, OwnerService ownerService) {
+	public CreditEntryService(CreditEntryRepository creditEntryRepository, EquityAccountService equityAccountRepository,
+			CreditAccountService creditAccountRepository, OwnerService ownerService) {
 		super(creditEntryRepository, equityAccountRepository, creditAccountRepository, ownerService);
 		this.creditEntryRepository = creditEntryRepository;
 		this.equityAccountService = equityAccountRepository;

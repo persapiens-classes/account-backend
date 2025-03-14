@@ -2,8 +2,7 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CreditCategoryConstants;
-import org.persapiens.account.dto.AccountDTO;
+import org.persapiens.account.dto.CategoryDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -13,161 +12,134 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CreditAccountRestClientIT extends RestClientIT {
+class CreditCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertOne() {
-		String description = "New job";
-		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
+		String description = "Free income";
 
-		AccountDTO creditAccount = new AccountDTO(description, categoryDescription);
+		CategoryDTO category = new CategoryDTO(description);
 
-		var creditAccountRestClient = creditAccountRestClient();
+		var categoryRestClient = creditCategoryRestClient();
 
 		// verify insert operation
-		assertThat(creditAccountRestClient.insert(creditAccount)).isNotNull();
+		assertThat(categoryRestClient.insert(category)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(creditAccountRestClient.findByDescription(description).description())
-			.isEqualTo(creditAccount.description());
+		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(category.description());
 
 		// verify findAll operation
-		assertThat(creditAccountRestClient.findAll()).isNotEmpty();
+		assertThat(categoryRestClient.findAll()).isNotEmpty();
 	}
 
-	private void invalidInsert(String description, String categoryDescription, HttpStatus httpStatus) {
-		AccountDTO creditAccountDto = new AccountDTO(description, categoryDescription);
+	private void insertInvalid(String description, HttpStatus httpStatus) {
+		CategoryDTO category = new CategoryDTO(description);
 
 		// verify insert operation
 		// verify status code error
-		var creditAccountRestClient = creditAccountRestClient();
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> creditAccountRestClient.insert(creditAccountDto))
+		var categoryRestClient = creditCategoryRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> categoryRestClient.insert(category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 	@Test
 	void insertEmpty() {
-		String description = "not empty";
-		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
+		String description = "";
 
-		invalidInsert("", categoryDescription, HttpStatus.BAD_REQUEST);
-		invalidInsert(description, "", HttpStatus.BAD_REQUEST);
+		insertInvalid(description, HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
-	void insertSameCreditAccountTwice() {
-		String description = "repeated credit account";
-		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
+	void insertSameCategoryTwice() {
+		String description = "repeated category";
 
-		AccountDTO creditAccountDto = new AccountDTO(description, categoryDescription);
+		CategoryDTO category = new CategoryDTO(description);
 
-		var creditAccountRestClient = creditAccountRestClient();
-		creditAccountRestClient.insert(creditAccountDto);
+		var categoryRestClient = creditCategoryRestClient();
+		categoryRestClient.insert(category);
 
 		// verify insert operation
 		// verify status code error
-		invalidInsert(description, categoryDescription, HttpStatus.CONFLICT);
+		insertInvalid(description, HttpStatus.CONFLICT);
 	}
 
 	@Test
-	void insertCategoryNotInserted() {
-		String description = "repeated credit account";
-		String categoryDescription = "category not inserted";
+	void updateOne() {
+		CategoryDTO category = creditCategory("Inserted category");
 
-		invalidInsert(description, categoryDescription, HttpStatus.CONFLICT);
+		String originalDescription = category.description();
+		category = new CategoryDTO("Updated category");
+
+		var categoryRestClient = creditCategoryRestClient();
+		category = categoryRestClient.update(originalDescription, category);
+
+		// verify update operation
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> categoryRestClient.findByDescription(originalDescription))
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
+
+		// verify update operation
+		assertThat(categoryRestClient.findByDescription(category.description()).description())
+			.isEqualTo(category.description());
 	}
 
-	private void updateInvalid(String oldDescription, String description, String categoryDescription,
-			HttpStatus httpStatus) {
-		AccountDTO creditAccount = new AccountDTO(description, categoryDescription);
+	private void updateInvalid(String oldDescription, String newDescription, HttpStatus httpStatus) {
+		CategoryDTO category = new CategoryDTO(newDescription);
 
 		// verify update operation
 		// verify status code error
-		var creditAccountRestClient = creditAccountRestClient();
+		var categoryRestClient = creditCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> creditAccountRestClient.update(oldDescription, creditAccount))
+			.isThrownBy(() -> categoryRestClient.update(oldDescription, category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 	@Test
 	void updateInvalid() {
-		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
-		AccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
+		CategoryDTO categoryToUpdate = creditCategory("category to update");
 
 		// empty id
-		updateInvalid("", "", "", HttpStatus.FORBIDDEN);
-		updateInvalid("", "", creditAccountToUpdate.category(), HttpStatus.FORBIDDEN);
-		updateInvalid("", creditAccountToUpdate.description(), "", HttpStatus.FORBIDDEN);
+		updateInvalid("", "", HttpStatus.FORBIDDEN);
+		updateInvalid("", categoryToUpdate.description(), HttpStatus.FORBIDDEN);
 
 		// empty fields
-		updateInvalid(creditAccountToUpdate.description(), "", "", HttpStatus.BAD_REQUEST);
-		updateInvalid(creditAccountToUpdate.description(), "credit account updated", "", HttpStatus.BAD_REQUEST);
-		updateInvalid(creditAccountToUpdate.description(), "", creditAccountToUpdate.category(),
-				HttpStatus.BAD_REQUEST);
+		updateInvalid(categoryToUpdate.description(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid id
-		updateInvalid("invalid credit account", "credit account updated", creditAccountToUpdate.category(),
-				HttpStatus.NOT_FOUND);
+		updateInvalid("invalid category", "valid category description", HttpStatus.NOT_FOUND);
 
-		// invalid fields
-		updateInvalid(creditAccountToUpdate.description(), "credit account updated", "invalid category",
-				HttpStatus.NOT_FOUND);
-		updateInvalid(creditAccountToUpdate.description(), creditAccountToUpdate.description(),
-				creditAccountToUpdate.category(), HttpStatus.CONFLICT);
-	}
-
-	@Test
-	void updateOne() {
-		AccountDTO creditAccount = creditAccount("Inserted creditAccount",
-				creditCategory(CreditCategoryConstants.SALARY).description());
-
-		String originalDescription = creditAccount.description();
-		creditAccount = new AccountDTO("Updated creditAccount", creditAccount.category());
-
-		var creditAccountRestClient = creditAccountRestClient();
-		creditAccount = creditAccountRestClient.update(originalDescription, creditAccount);
-
-		// verify update operation
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> creditAccountRestClient.findByDescription(originalDescription))
-			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
-
-		// verify update operation
-		assertThat(creditAccountRestClient.findByDescription(creditAccount.description()).description())
-			.isEqualTo(creditAccount.description());
+		// invalid field
+		updateInvalid(categoryToUpdate.description(), categoryToUpdate.description(), HttpStatus.CONFLICT);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		String description = "Fantastic creditAccount";
-
-		var creditAccountRestClient = creditAccountRestClient();
-		creditAccountRestClient
-			.insert(new AccountDTO(description, creditCategory(CreditCategoryConstants.SALARY).description()));
-		assertThat(creditAccountRestClient.findByDescription(description).description()).isEqualTo(description);
+		String description = "Fantastic category";
+		var categoryRestClient = creditCategoryRestClient();
+		categoryRestClient.insert(new CategoryDTO(description));
+		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
-		creditAccountRestClient.deleteByDescription(description);
+		categoryRestClient.deleteByDescription(description);
 		// verify the results
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> creditAccountRestClient.findByDescription(description))
+			.isThrownBy(() -> categoryRestClient.findByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
-	private void deleteInvalidCreditAccount(String description, HttpStatus httpStatus) {
-		var creditAccountRestClient = creditAccountRestClient();
+	private void deleteInvalidCategory(String description, HttpStatus httpStatus) {
+		var categoryRestClient = creditCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> creditAccountRestClient.deleteByDescription(description))
+			.isThrownBy(() -> categoryRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 	@Test
 	void deleteInvalid() {
-		String description = "Invalid credit account";
-		deleteInvalidCreditAccount("", HttpStatus.FORBIDDEN);
-		deleteInvalidCreditAccount(description, HttpStatus.NOT_FOUND);
+		String description = "Invalid category";
+		deleteInvalidCategory("", HttpStatus.FORBIDDEN);
+		deleteInvalidCategory(description, HttpStatus.NOT_FOUND);
 	}
 
 }
