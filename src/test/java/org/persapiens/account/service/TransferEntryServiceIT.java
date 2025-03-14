@@ -26,10 +26,10 @@ class TransferEntryServiceIT {
 
 	@Test
 	void transfer10FromFatherToAunt() {
-		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.father().name(),
-				this.ownerDTOFactory.aunt().name(), LocalDateTime.now(),
-				this.equityAccountDTOFactory.checking().description(),
-				this.equityAccountDTOFactory.savings().description(), BigDecimal.TEN, "");
+		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.aunt().name(),
+				this.ownerDTOFactory.father().name(), LocalDateTime.now(),
+				this.equityAccountDTOFactory.savings().description(),
+				this.equityAccountDTOFactory.checking().description(), BigDecimal.TEN, "");
 
 		this.transferEntryService.insert(entry);
 
