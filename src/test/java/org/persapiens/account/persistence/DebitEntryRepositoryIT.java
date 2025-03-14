@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
@@ -16,16 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class EntryRepositoryIT {
+class DebitEntryRepositoryIT {
 
 	@Autowired
-	private EntryFactory entryFactory;
+	private DebitEntryFactory entryFactory;
 
 	@Autowired
 	private OwnerFactory ownerFactory;
-
-	@Autowired
-	private CreditAccountFactory creditAccountFactory;
 
 	@Autowired
 	private DebitAccountFactory debitAccountFactory;
@@ -34,7 +30,7 @@ class EntryRepositoryIT {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Autowired
-	private EntryRepository entryRepository;
+	private DebitEntryRepository entryRepository;
 
 	@BeforeEach
 	void deleteAll() {
@@ -45,23 +41,6 @@ class EntryRepositoryIT {
 	@Test
 	void repositoryNaoEhNulo() {
 		assertThat(this.entryRepository).isNotNull();
-	}
-
-	@Test
-	void credit300() {
-		// create test environment
-		Owner father = this.ownerFactory.father();
-
-		EquityAccount savings = this.equityAccountFactory.savings();
-
-		CreditAccount internship = this.creditAccountFactory.internship();
-
-		this.entryFactory.entry(father, savings, internship, new BigDecimal(300));
-
-		// execute the operation to be tested
-		// verify the results
-		assertThat(this.entryRepository.creditSum(father, savings).getValue())
-			.isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
 	@Test

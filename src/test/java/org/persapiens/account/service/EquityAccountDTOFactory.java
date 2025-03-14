@@ -3,7 +3,7 @@ package org.persapiens.account.service;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.dto.EquityAccountDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class EquityAccountDTOFactory {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
 	public EquityAccountDTO equityAccountDTO(EquityAccount equityAccount) {
 		return new EquityAccountDTO(equityAccount.getDescription(), equityAccount.getCategory().getDescription());

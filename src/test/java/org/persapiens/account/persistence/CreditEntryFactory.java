@@ -3,25 +3,27 @@ package org.persapiens.account.persistence;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.persapiens.account.domain.Account;
-import org.persapiens.account.domain.Entry;
+import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.CreditEntry;
+import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EntryFactory {
+public class CreditEntryFactory {
 
 	@Autowired
-	private EntryRepository entryRepository;
+	private CreditEntryRepository entryRepository;
 
-	public Entry entry(Owner owner, Account inAccount, Account outAccount, BigDecimal value) {
-		Entry entry = Entry.builder()
+	public CreditEntry entry(Owner owner, EquityAccount inAccount, CreditAccount outAccount, BigDecimal value) {
+		CreditEntry entry = CreditEntry.builder()
 			.inAccount(inAccount)
 			.outAccount(outAccount)
 			.date(LocalDateTime.now())
-			.owner(owner)
+			.inOwner(owner)
+			.outOwner(owner)
 			.value(value.setScale(2))
 			.build();
 		this.entryRepository.save(entry);

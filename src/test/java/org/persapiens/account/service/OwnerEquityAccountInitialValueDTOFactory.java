@@ -6,7 +6,7 @@ import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueFactory;
 import org.persapiens.account.persistence.OwnerFactory;
@@ -27,7 +27,7 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(
 			OwnerEquityAccountInitialValue ownerEquityAccountInitialValue) {

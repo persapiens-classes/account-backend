@@ -8,10 +8,10 @@ import org.persapiens.account.dto.DebitAccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EquityAccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.CreditAccountFactory;
 import org.persapiens.account.persistence.DebitAccountFactory;
-import org.persapiens.account.persistence.EntryFactory;
+import org.persapiens.account.persistence.DebitEntryFactory;
 import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 
@@ -25,13 +25,13 @@ public class EntryDTOFactory {
 	private EntryService entryService;
 
 	@Autowired
-	private EntryFactory entryFactory;
+	private DebitEntryFactory entryFactory;
 
 	@Autowired
 	private OwnerFactory ownerFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
 	@Autowired
 	private CreditAccountFactory creditAccountFactory;

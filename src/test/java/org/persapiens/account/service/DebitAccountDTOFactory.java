@@ -2,7 +2,7 @@ package org.persapiens.account.service;
 
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.dto.DebitAccountDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.DebitAccountFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class DebitAccountDTOFactory {
 	private DebitAccountFactory debitAccountFactory;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
 	public DebitAccountDTO debitAccountDTO(DebitAccount debitAccount) {
 		return new DebitAccountDTO(debitAccount.getDescription(), debitAccount.getCategory().getDescription());

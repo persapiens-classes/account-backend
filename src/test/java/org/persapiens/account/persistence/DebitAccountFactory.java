@@ -3,7 +3,7 @@ package org.persapiens.account.persistence;
 import java.util.Optional;
 
 import org.persapiens.account.common.DebitAccountConstants;
-import org.persapiens.account.domain.Category;
+import org.persapiens.account.domain.DebitCategory;
 import org.persapiens.account.domain.DebitAccount;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,9 @@ public class DebitAccountFactory {
 	private DebitAccountRepository debitAccountRepository;
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private DebitCategoryFactory categoryFactory;
 
-	public DebitAccount debitAccount(String description, Category category) {
+	public DebitAccount debitAccount(String description, DebitCategory category) {
 		Optional<DebitAccount> findByDescription = this.debitAccountRepository.findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			DebitAccount debitAccount = DebitAccount.builder().description(description).category(category).build();

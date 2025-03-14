@@ -3,7 +3,7 @@ package org.persapiens.account.service;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
-import org.persapiens.account.persistence.CategoryFactory;
+import org.persapiens.account.persistence.EquityCategoryFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class CategoryDTOFactory {
 
 	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
 	public CategoryDTO categoryDTO(Category category) {
 		return new CategoryDTO(category.getDescription());
