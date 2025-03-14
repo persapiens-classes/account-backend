@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 public class DebitAccount extends Account<DebitCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_debitAccount_category"))
 	@NonNull
 	private DebitCategory category;
 

@@ -23,11 +23,11 @@ import lombok.experimental.SuperBuilder;
 public class CreditEntry extends Entry<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_inAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_creditEntry_inAccount"))
 	private EquityAccount inAccount;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_outAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_creditEntry_outAccount"))
 	private CreditAccount outAccount;
 
 }

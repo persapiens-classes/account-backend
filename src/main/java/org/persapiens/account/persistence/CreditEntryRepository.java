@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface CreditEntryRepository
 		extends EntryRepository<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> {
 
-	@Query("SELECT SUM(e.value) as value FROM Entry e WHERE e.ownerIn = ?1 and e.inAccount = ?2")
+	@Query("SELECT SUM(e.value) as value FROM CreditEntry e WHERE e.inOwner = ?1 and e.inAccount = ?2")
 	EntrySum creditSum(Owner owner, EquityAccount equityAccount);
 
 }

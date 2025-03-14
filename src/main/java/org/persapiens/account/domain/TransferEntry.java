@@ -23,11 +23,11 @@ import lombok.experimental.SuperBuilder;
 public class TransferEntry extends Entry<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_inAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_transferEntry_inAccount"))
 	private EquityAccount inAccount;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_outAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_transferEntry_outAccount"))
 	private EquityAccount outAccount;
 
 }

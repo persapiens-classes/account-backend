@@ -23,11 +23,11 @@ import lombok.experimental.SuperBuilder;
 public class DebitEntry extends Entry<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_inAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_debitEntry_inAccount"))
 	private DebitAccount inAccount;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_outAccount"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_debitEntry_outAccount"))
 	private EquityAccount outAccount;
 
 }

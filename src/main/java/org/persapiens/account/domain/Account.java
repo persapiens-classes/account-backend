@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,7 +13,6 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @MappedSuperclass
 @EqualsAndHashCode(of = { "description" })
 @ToString

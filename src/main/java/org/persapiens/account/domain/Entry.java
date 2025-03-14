@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,11 +32,11 @@ public abstract class Entry<E extends Entry<E, I, J, O, P>, I extends Account<J>
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_inOwner"))
+	@JoinColumn(nullable = false)
 	private Owner inOwner;
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_entry_outOwner"))
+	@JoinColumn(nullable = false)
 	private Owner outOwner;
 
 	public abstract I getInAccount();

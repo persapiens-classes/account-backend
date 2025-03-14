@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 public class EquityAccount extends Account<EquityCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_equityAccount_category"))
 	@NonNull
 	private EquityCategory category;
 

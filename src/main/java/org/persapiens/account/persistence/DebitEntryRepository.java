@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface DebitEntryRepository
 		extends EntryRepository<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> {
 
-	@Query("SELECT SUM(e.value) as value FROM Entry e WHERE e.ownerOut = ?1 and e.outAccount = ?2")
+	@Query("SELECT SUM(e.value) as value FROM DebitEntry e WHERE e.outOwner = ?1 and e.outAccount = ?2")
 	EntrySum debitSum(Owner owner, EquityAccount equityAccount);
 
 }

@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface TransferEntryRepository
 		extends EntryRepository<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> {
 
-	@Query("SELECT SUM(e.value) as value FROM Entry e WHERE e.ownerIn = ?1 and e.inAccount = ?2")
+	@Query("SELECT SUM(e.value) as value FROM TransferEntry e WHERE e.inOwner = ?1 and e.inAccount = ?2")
 	EntrySum creditSum(Owner owner, EquityAccount equityAccount);
 
-	@Query("SELECT SUM(e.value) as value FROM Entry e WHERE e.ownerOut = ?1 and e.outAccount = ?2")
+	@Query("SELECT SUM(e.value) as value FROM TransferEntry e WHERE e.outOwner = ?1 and e.outAccount = ?2")
 	EntrySum debitSum(Owner owner, EquityAccount equityAccount);
 
 }

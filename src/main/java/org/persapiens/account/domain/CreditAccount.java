@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 public class CreditAccount extends Account<CreditCategory> {
 
 	@ManyToOne
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_account_category"))
+	@JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_creditAccount_category"))
 	@NonNull
 	private CreditCategory category;
 
