@@ -3,24 +3,23 @@ package org.persapiens.account.service;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.CategoryDTO;
-import org.persapiens.account.persistence.CategoryRepository;
-
+import org.persapiens.account.persistence.DebitCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class CategoryServiceIT {
+class DebitCategoryServiceIT {
 
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private DebitCategoryRepository categoryRepository;
 
 	@Autowired
-	private CategoryService categoryService;
+	private DebitCategoryService categoryService;
 
 	@Autowired
-	private CategoryDTOFactory categoryDTOFactory;
+	private DebitCategoryDTOFactory categoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -30,7 +29,7 @@ class CategoryServiceIT {
 	@Test
 	void saveOne() {
 		// create test environment
-		CategoryDTO categoryDTO = this.categoryDTOFactory.bank();
+		CategoryDTO categoryDTO = this.categoryDTOFactory.transport();
 
 		// verify the results
 		assertThat(this.categoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
@@ -46,16 +45,6 @@ class CategoryServiceIT {
 
 		// verify the results
 		assertThat(this.categoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
-	}
-
-	@Test
-	void expenseTransfer() {
-		assertThat(this.categoryService.expenseTransfer()).isEqualTo(this.categoryService.expenseTransfer());
-	}
-
-	@Test
-	void incomeTransfer() {
-		assertThat(this.categoryService.incomeTransfer()).isEqualTo(this.categoryService.incomeTransfer());
 	}
 
 }

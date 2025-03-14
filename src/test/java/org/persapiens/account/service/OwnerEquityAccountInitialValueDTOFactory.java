@@ -3,7 +3,7 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
-import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
 import org.persapiens.account.persistence.EquityCategoryFactory;
@@ -37,7 +37,7 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 	}
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner,
-			EquityAccountDTO equityAccount, BigDecimal value) {
+			AccountDTO equityAccount, BigDecimal value) {
 		return ownerEquityAccountInitialValueDTO(this.ownerEquityAccountInitialValueFactory
 			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.name()), this.equityAccountFactory
 				.equityAccount(equityAccount.description(), this.categoryFactory.category(equityAccount.category())),

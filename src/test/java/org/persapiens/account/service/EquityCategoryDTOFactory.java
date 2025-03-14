@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryDTOFactory {
+public class EquityCategoryDTOFactory {
 
 	@Autowired
 	private EquityCategoryFactory categoryFactory;
@@ -20,18 +20,6 @@ public class CategoryDTOFactory {
 
 	public CategoryDTO categoryDTO(String description) {
 		return categoryDTO(this.categoryFactory.category(description));
-	}
-
-	public CategoryDTO transport() {
-		return categoryDTO(EquityCategoryConstants.TRANSPORT);
-	}
-
-	public CategoryDTO tax() {
-		return categoryDTO(EquityCategoryConstants.TAX);
-	}
-
-	public CategoryDTO salary() {
-		return categoryDTO(EquityCategoryConstants.SALARY);
 	}
 
 	public CategoryDTO cash() {
