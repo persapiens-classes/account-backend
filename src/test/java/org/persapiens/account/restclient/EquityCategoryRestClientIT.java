@@ -16,7 +16,7 @@ class EquityCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertOne() {
-		String description = "Free income";
+		String description = "Free equity";
 
 		CategoryDTO category = new CategoryDTO(description);
 

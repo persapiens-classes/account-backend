@@ -14,38 +14,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CreditCategoryServiceIT {
 
 	@Autowired
-	private CreditCategoryRepository categoryRepository;
+	private CreditCategoryRepository creditCategoryRepository;
 
 	@Autowired
-	private CreditCategoryService categoryService;
+	private CreditCategoryService creditCategoryService;
 
 	@Autowired
-	private CreditCategoryDTOFactory categoryDTOFactory;
+	private CreditCategoryDTOFactory creditCategoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
-		assertThat(this.categoryService).isNotNull();
+		assertThat(this.creditCategoryService).isNotNull();
 	}
 
 	@Test
 	void saveOne() {
 		// create test environment
-		CategoryDTO categoryDTO = this.categoryDTOFactory.salary();
+		CategoryDTO categoryDTO = this.creditCategoryDTOFactory.salary();
 
 		// verify the results
-		assertThat(this.categoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
+		assertThat(this.creditCategoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		CategoryDTO categoryDTO = this.categoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
+		CategoryDTO categoryDTO = this.creditCategoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
 
 		// execute the operation to be tested
-		this.categoryService.deleteByDescription(categoryDTO.description());
+		this.creditCategoryService.deleteByDescription(categoryDTO.description());
 
 		// verify the results
-		assertThat(this.categoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
+		assertThat(this.creditCategoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
 	}
 
 }

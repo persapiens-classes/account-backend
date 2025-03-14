@@ -30,17 +30,17 @@ class DebitEntryRepositoryIT {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Autowired
-	private DebitEntryRepository entryRepository;
+	private DebitEntryRepository debitEntryRepository;
 
 	@BeforeEach
 	void deleteAll() {
-		this.entryRepository.deleteAll();
-		assertThat(this.entryRepository.findAll()).isEmpty();
+		this.debitEntryRepository.deleteAll();
+		assertThat(this.debitEntryRepository.findAll()).isEmpty();
 	}
 
 	@Test
 	void repositoryNaoEhNulo() {
-		assertThat(this.entryRepository).isNotNull();
+		assertThat(this.debitEntryRepository).isNotNull();
 	}
 
 	@Test
@@ -56,7 +56,7 @@ class DebitEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.entryRepository.debitSum(father, savings).getValue())
+		assertThat(this.debitEntryRepository.debitSum(father, savings).getValue())
 			.isEqualTo(new BigDecimal(500).setScale(2));
 	}
 

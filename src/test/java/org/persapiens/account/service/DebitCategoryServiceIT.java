@@ -14,38 +14,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DebitCategoryServiceIT {
 
 	@Autowired
-	private DebitCategoryRepository categoryRepository;
+	private DebitCategoryRepository debitCategoryRepository;
 
 	@Autowired
-	private DebitCategoryService categoryService;
+	private DebitCategoryService debitCategoryService;
 
 	@Autowired
-	private DebitCategoryDTOFactory categoryDTOFactory;
+	private DebitCategoryDTOFactory debitCategoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
-		assertThat(this.categoryService).isNotNull();
+		assertThat(this.debitCategoryService).isNotNull();
 	}
 
 	@Test
 	void saveOne() {
 		// create test environment
-		CategoryDTO categoryDTO = this.categoryDTOFactory.transport();
+		CategoryDTO categoryDTO = this.debitCategoryDTOFactory.transport();
 
 		// verify the results
-		assertThat(this.categoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
+		assertThat(this.debitCategoryService.findByDescription(categoryDTO.description())).isEqualTo(categoryDTO);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
-		CategoryDTO categoryDTO = this.categoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
+		CategoryDTO categoryDTO = this.debitCategoryDTOFactory.categoryDTO("UNIQUE CATEGORY");
 
 		// execute the operation to be tested
-		this.categoryService.deleteByDescription(categoryDTO.description());
+		this.debitCategoryService.deleteByDescription(categoryDTO.description());
 
 		// verify the results
-		assertThat(this.categoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
+		assertThat(this.debitCategoryRepository.findByDescription(categoryDTO.description())).isNotPresent();
 	}
 
 }

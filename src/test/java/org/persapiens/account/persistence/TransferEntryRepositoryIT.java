@@ -26,17 +26,17 @@ class TransferEntryRepositoryIT {
 	private EquityAccountFactory equityAccountFactory;
 
 	@Autowired
-	private TransferEntryRepository entryRepository;
+	private TransferEntryRepository transferEntryRepository;
 
 	@BeforeEach
 	void deleteAll() {
-		this.entryRepository.deleteAll();
-		assertThat(this.entryRepository.findAll()).isEmpty();
+		this.transferEntryRepository.deleteAll();
+		assertThat(this.transferEntryRepository.findAll()).isEmpty();
 	}
 
 	@Test
 	void repositoryNaoEhNulo() {
-		assertThat(this.entryRepository).isNotNull();
+		assertThat(this.transferEntryRepository).isNotNull();
 	}
 
 	@Test
@@ -52,7 +52,7 @@ class TransferEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.entryRepository.creditSum(father, savings).getValue())
+		assertThat(this.transferEntryRepository.creditSum(father, savings).getValue())
 			.isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
@@ -69,7 +69,7 @@ class TransferEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.entryRepository.debitSum(father, savings).getValue())
+		assertThat(this.transferEntryRepository.debitSum(father, savings).getValue())
 			.isEqualTo(new BigDecimal(500).setScale(2));
 	}
 

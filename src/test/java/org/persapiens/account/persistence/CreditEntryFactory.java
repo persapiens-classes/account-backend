@@ -21,9 +21,9 @@ public class CreditEntryFactory {
 		CreditEntry entry = CreditEntry.builder()
 			.inAccount(inAccount)
 			.outAccount(outAccount)
-			.date(LocalDateTime.now())
 			.inOwner(owner)
 			.outOwner(owner)
+			.date(LocalDateTime.now())
 			.value(value.setScale(2))
 			.build();
 		this.entryRepository.save(entry);

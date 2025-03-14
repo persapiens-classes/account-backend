@@ -16,20 +16,21 @@ class DebitCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertOne() {
-		String description = "Free income";
+		String description = "Free debit";
 
 		CategoryDTO category = new CategoryDTO(description);
 
-		var categoryRestClient = debitCategoryRestClient();
+		var debitCategoryRestClient = debitCategoryRestClient();
 
 		// verify insert operation
-		assertThat(categoryRestClient.insert(category)).isNotNull();
+		assertThat(debitCategoryRestClient.insert(category)).isNotNull();
 
 		// verify findByDescription operation
-		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(category.description());
+		assertThat(debitCategoryRestClient.findByDescription(description).description())
+			.isEqualTo(category.description());
 
 		// verify findAll operation
-		assertThat(categoryRestClient.findAll()).isNotEmpty();
+		assertThat(debitCategoryRestClient.findAll()).isNotEmpty();
 	}
 
 	private void insertInvalid(String description, HttpStatus httpStatus) {
@@ -37,8 +38,9 @@ class DebitCategoryRestClientIT extends RestClientIT {
 
 		// verify insert operation
 		// verify status code error
-		var categoryRestClient = debitCategoryRestClient();
-		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(() -> categoryRestClient.insert(category))
+		var debitCategoryRestClient = debitCategoryRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class)
+			.isThrownBy(() -> debitCategoryRestClient.insert(category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
@@ -51,12 +53,12 @@ class DebitCategoryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertSameCategoryTwice() {
-		String description = "repeated category";
+		String description = "repeated debit category";
 
 		CategoryDTO category = new CategoryDTO(description);
 
-		var categoryRestClient = debitCategoryRestClient();
-		categoryRestClient.insert(category);
+		var debitCategoryRestClient = debitCategoryRestClient();
+		debitCategoryRestClient.insert(category);
 
 		// verify insert operation
 		// verify status code error
@@ -70,16 +72,16 @@ class DebitCategoryRestClientIT extends RestClientIT {
 		String originalDescription = category.description();
 		category = new CategoryDTO("Updated category");
 
-		var categoryRestClient = debitCategoryRestClient();
-		category = categoryRestClient.update(originalDescription, category);
+		var debitCategoryRestClient = debitCategoryRestClient();
+		category = debitCategoryRestClient.update(originalDescription, category);
 
 		// verify update operation
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient.findByDescription(originalDescription))
+			.isThrownBy(() -> debitCategoryRestClient.findByDescription(originalDescription))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 
 		// verify update operation
-		assertThat(categoryRestClient.findByDescription(category.description()).description())
+		assertThat(debitCategoryRestClient.findByDescription(category.description()).description())
 			.isEqualTo(category.description());
 	}
 
@@ -88,50 +90,50 @@ class DebitCategoryRestClientIT extends RestClientIT {
 
 		// verify update operation
 		// verify status code error
-		var categoryRestClient = debitCategoryRestClient();
+		var debitCategoryRestClient = debitCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient.update(oldDescription, category))
+			.isThrownBy(() -> debitCategoryRestClient.update(oldDescription, category))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
 	@Test
 	void updateInvalid() {
-		CategoryDTO categoryToUpdate = debitCategory("category to update");
+		CategoryDTO debitCategoryToUpdate = debitCategory("category to update");
 
 		// empty id
 		updateInvalid("", "", HttpStatus.FORBIDDEN);
-		updateInvalid("", categoryToUpdate.description(), HttpStatus.FORBIDDEN);
+		updateInvalid("", debitCategoryToUpdate.description(), HttpStatus.FORBIDDEN);
 
 		// empty fields
-		updateInvalid(categoryToUpdate.description(), "", HttpStatus.BAD_REQUEST);
+		updateInvalid(debitCategoryToUpdate.description(), "", HttpStatus.BAD_REQUEST);
 
 		// invalid id
 		updateInvalid("invalid category", "valid category description", HttpStatus.NOT_FOUND);
 
 		// invalid field
-		updateInvalid(categoryToUpdate.description(), categoryToUpdate.description(), HttpStatus.CONFLICT);
+		updateInvalid(debitCategoryToUpdate.description(), debitCategoryToUpdate.description(), HttpStatus.CONFLICT);
 	}
 
 	@Test
 	void deleteOne() {
 		// create test environment
 		String description = "Fantastic category";
-		var categoryRestClient = debitCategoryRestClient();
-		categoryRestClient.insert(new CategoryDTO(description));
-		assertThat(categoryRestClient.findByDescription(description).description()).isEqualTo(description);
+		var debitCategoryRestClient = debitCategoryRestClient();
+		debitCategoryRestClient.insert(new CategoryDTO(description));
+		assertThat(debitCategoryRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
-		categoryRestClient.deleteByDescription(description);
+		debitCategoryRestClient.deleteByDescription(description);
 		// verify the results
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient.findByDescription(description))
+			.isThrownBy(() -> debitCategoryRestClient.findByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND));
 	}
 
 	private void deleteInvalidCategory(String description, HttpStatus httpStatus) {
-		var categoryRestClient = debitCategoryRestClient();
+		var debitCategoryRestClient = debitCategoryRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> categoryRestClient.deleteByDescription(description))
+			.isThrownBy(() -> debitCategoryRestClient.deleteByDescription(description))
 			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
 	}
 
