@@ -7,14 +7,12 @@ import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-@Service
-public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, Category, Long> {
+public abstract class CategoryService <C extends Category> extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
-	private CategoryRepository categoryRepository;
+	private CategoryRepository<C> categoryRepository;
 
 	@Override
 	protected CategoryDTO toDTO(Category entity) {
@@ -27,23 +25,27 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		}
 	}
 
-	private Category toEntity(CategoryDTO categoryDTO) {
+	protected abstract C createCategory();
+
+	private C toEntity(CategoryDTO categoryDTO) {
 		validate(categoryDTO);
-		return Category.builder().description(categoryDTO.description()).build();
+		C result = createCategory();
+		result.setDescription(categoryDTO.description());
+		return result;
 	}
 
 	@Override
-	protected Category insertDtoToEntity(CategoryDTO categoryDTO) {
+	protected C insertDtoToEntity(CategoryDTO categoryDTO) {
 		return toEntity(categoryDTO);
 	}
 
 	@Override
-	protected Category updateDtoToEntity(CategoryDTO categoryDTO) {
+	protected C updateDtoToEntity(CategoryDTO categoryDTO) {
 		return toEntity(categoryDTO);
 	}
 
-	Category findEntityByDescription(String description) {
-		Optional<Category> categoryOptional = this.categoryRepository.findByDescription(description);
+	C findEntityByDescription(String description) {
+		Optional<C> categoryOptional = this.categoryRepository.findByDescription(description);
 		if (categoryOptional.isPresent()) {
 			return categoryOptional.get();
 		}
@@ -53,12 +55,12 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 	}
 
 	@Override
-	protected Category findByUpdateKey(String updateKey) {
+	protected C findByUpdateKey(String updateKey) {
 		return findEntityByDescription(updateKey);
 	}
 
 	@Override
-	protected Category setIdToUpdate(Category t, Category updateEntity) {
+	protected C setIdToUpdate(C t, C updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
 	}
@@ -72,27 +74,6 @@ public class CategoryService extends CrudService<CategoryDTO, CategoryDTO, Categ
 		if (this.categoryRepository.deleteByDescription(description) == 0) {
 			throw new BeanNotFoundException("Category not found by: " + description);
 		}
-	}
-
-	private Category category(String description) {
-		Optional<Category> findByDescricao = this.categoryRepository.findByDescription(description);
-		if (findByDescricao.isEmpty()) {
-			Category result = Category.builder().description(description).build();
-			return this.categoryRepository.save(result);
-		}
-		else {
-			return findByDescricao.get();
-		}
-	}
-
-	@Transactional
-	public Category expenseTransfer() {
-		return category(Category.EXPENSE_TRANSFER_CATEGORY);
-	}
-
-	@Transactional
-	public Category incomeTransfer() {
-		return category(Category.INCOME_TRANSFER_CATEGORY);
 	}
 
 }

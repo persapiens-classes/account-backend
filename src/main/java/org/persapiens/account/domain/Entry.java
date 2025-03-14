@@ -40,8 +40,10 @@ public abstract class Entry <E extends Entry<E, I, J, O, P>, I extends Account<J
 	private Owner outOwner;
 
 	public abstract I getInAccount();
+	public abstract void setInAccount(I newInAccount);
 
 	public abstract O getOutAccount();
+	public abstract void setOutAccount(O newOutAccount);
 
 	@Column(nullable = false)
 	private BigDecimal value;
