@@ -14,15 +14,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TransferEntryTests {
 
-	private static final String INDIVIDUAL_ASSET = "individual asset";
+	private static final String TRANSFER_ASSET = "individual transfer asset";
 
-	private static final String ENTRY_DESCRIPTION = "from checking to wallet";
+	private static final String TRANSFER_DESCRIPTION = "from checking to wallet";
 
-	private TransferEntry entry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
+	private TransferEntry transferEntry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
 		return TransferEntry.builder()
 			.note(note)
-			.inOwner(Owner.builder().name(ownerName).build())
 			.outOwner(Owner.builder().name(ownerName).build())
+			.inOwner(Owner.builder().name(ownerName).build())
 			.value(value)
 			.date(date)
 			.inAccount(EquityAccount.builder()
@@ -31,7 +31,7 @@ class TransferEntryTests {
 				.build())
 			.outAccount(EquityAccount.builder()
 				.description(EquityAccountConstants.WALLET)
-				.category(EquityCategory.builder().description(INDIVIDUAL_ASSET).build())
+				.category(EquityCategory.builder().description(TRANSFER_ASSET).build())
 				.build())
 			.build();
 	}
@@ -40,8 +40,10 @@ class TransferEntryTests {
 	void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
 		LocalDateTime now = LocalDateTime.now();
 
-		TransferEntry entryChecking1 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
-		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, "other description");
+		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+				"other description");
 
 		assertThat(entryChecking1).isEqualTo(entryChecking2);
 	}
@@ -50,8 +52,10 @@ class TransferEntryTests {
 	void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
 		LocalDateTime now = LocalDateTime.now();
 
-		TransferEntry entryChecking1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
-		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(200), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
 
 		assertThat(entryChecking1).isNotEqualTo(entryChecking2);
 	}
@@ -60,10 +64,10 @@ class TransferEntryTests {
 	void compareToWithDifferentDates() {
 		Set<TransferEntry> entries = new TreeSet<>();
 
-		TransferEntry entryChecking1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				ENTRY_DESCRIPTION);
-		TransferEntry entryChecking2 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				ENTRY_DESCRIPTION);
+		TransferEntry entryChecking1 = transferEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 		entries.add(entryChecking1);
 
@@ -76,9 +80,11 @@ class TransferEntryTests {
 
 		Set<TransferEntry> entries = new TreeSet<>();
 
-		TransferEntry entryChecking1 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
 		entries.add(entryChecking1);
-		TransferEntry entryChecking2 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
@@ -90,9 +96,11 @@ class TransferEntryTests {
 
 		Set<TransferEntry> entries = new TreeSet<>();
 
-		TransferEntry entryChecking1 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+				TRANSFER_DESCRIPTION);
 		entries.add(entryChecking1);
-		TransferEntry entryChecking2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, ENTRY_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+				TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
