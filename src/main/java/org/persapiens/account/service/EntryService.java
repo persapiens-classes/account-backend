@@ -14,7 +14,8 @@ import org.persapiens.account.persistence.EntryRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-public abstract class EntryService <E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category> extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
+public abstract class EntryService <E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
+	extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
 	private EntryRepository<E, I, J, O, P> entryRepository;
 
