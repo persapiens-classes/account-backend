@@ -1,6 +1,6 @@
 package org.persapiens.account.service;
 
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryFactory;
@@ -23,23 +23,23 @@ public class CategoryDTOFactory {
 	}
 
 	public CategoryDTO transport() {
-		return categoryDTO(CategoryConstants.TRANSPORT);
+		return categoryDTO(EquityCategoryConstants.TRANSPORT);
 	}
 
 	public CategoryDTO tax() {
-		return categoryDTO(CategoryConstants.TAX);
+		return categoryDTO(EquityCategoryConstants.TAX);
 	}
 
 	public CategoryDTO salary() {
-		return categoryDTO(CategoryConstants.SALARY);
+		return categoryDTO(EquityCategoryConstants.SALARY);
 	}
 
 	public CategoryDTO cash() {
-		return categoryDTO(CategoryConstants.CASH);
+		return categoryDTO(EquityCategoryConstants.CASH);
 	}
 
 	public CategoryDTO bank() {
-		return categoryDTO(CategoryConstants.BANK);
+		return categoryDTO(EquityCategoryConstants.BANK);
 	}
 
 }

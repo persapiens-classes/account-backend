@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
@@ -27,7 +27,7 @@ class EntryTests {
 			.date(date)
 			.inAccount(DebitAccount.builder()
 				.description(DebitAccountConstants.GASOLINE)
-				.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+				.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 				.build())
 			.outAccount(EquityAccount.builder()
 				.description(EquityAccountConstants.WALLET)

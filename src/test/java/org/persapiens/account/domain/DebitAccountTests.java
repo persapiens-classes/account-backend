@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.DebitAccountConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,11 +16,11 @@ class DebitAccountTests {
 	void equalsDescriptionAndCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
-			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+			.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 			.build())
 			.isEqualTo(DebitAccount.builder()
 				.description(DebitAccountConstants.GASOLINE)
-				.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+				.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 				.build());
 	}
 
@@ -28,11 +28,11 @@ class DebitAccountTests {
 	void differentDescriptionAndCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.BUS)
-			.category(Category.builder().description(CategoryConstants.HOUSING).build())
+			.category(Category.builder().description(EquityCategoryConstants.HOUSING).build())
 			.build())
 			.isNotEqualTo(DebitAccount.builder()
 				.description(DebitAccountConstants.GASOLINE)
-				.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+				.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 				.build());
 	}
 
@@ -40,11 +40,11 @@ class DebitAccountTests {
 	void differentDescriptionAndEqualCategory() {
 		assertThat(DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
-			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+			.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 			.build())
 			.isNotEqualTo(DebitAccount.builder()
 				.description(DebitAccountConstants.BUS)
-				.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+				.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 				.build());
 	}
 
@@ -60,17 +60,17 @@ class DebitAccountTests {
 
 		DebitAccount bus = DebitAccount.builder()
 			.description(DebitAccountConstants.BUS)
-			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+			.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 			.build();
 		debitAccounts.add(bus);
 		DebitAccount airplane = DebitAccount.builder()
 			.description(DebitAccountConstants.AIRPLANE)
-			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+			.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 			.build();
 		debitAccounts.add(airplane);
 		DebitAccount gasoline = DebitAccount.builder()
 			.description(DebitAccountConstants.GASOLINE)
-			.category(Category.builder().description(CategoryConstants.TRANSPORT).build())
+			.category(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
 			.build();
 		debitAccounts.add(gasoline);
 

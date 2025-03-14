@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
@@ -28,9 +28,9 @@ class EntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = category(EquityCategoryConstants.SALARY).description();
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String bank = category(CategoryConstants.BANK).description();
+		String bank = category(EquityCategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		return new EntryInsertUpdateDTO(mother, LocalDateTime.now(), savings, internship, new BigDecimal(543),
@@ -67,9 +67,9 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = category(EquityCategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String bank = category(CategoryConstants.BANK).description();
+		String bank = category(EquityCategoryConstants.BANK).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
@@ -119,9 +119,9 @@ class EntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = category(EquityCategoryConstants.SALARY).description();
 		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String cash = category(CategoryConstants.CASH).description();
+		String cash = category(EquityCategoryConstants.CASH).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
 
 		// empty id
@@ -193,7 +193,7 @@ class EntryRestClientIT extends RestClientIT {
 	@Test
 	void creditSumInvalid() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = category(EquityCategoryConstants.SALARY).description();
 
 		creditSumInvalid("", "", HttpStatus.BAD_REQUEST);
 		creditSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
@@ -216,7 +216,7 @@ class EntryRestClientIT extends RestClientIT {
 	@Test
 	void debitSumInvalid() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = category(CategoryConstants.SALARY).description();
+		String salary = category(EquityCategoryConstants.SALARY).description();
 
 		debitSumInvalid("", "", HttpStatus.BAD_REQUEST);
 		debitSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);

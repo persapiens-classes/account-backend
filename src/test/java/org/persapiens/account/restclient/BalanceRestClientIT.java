@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.CreditAccountConstants;
 import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.common.EquityAccountConstants;
@@ -30,7 +30,7 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balance500() {
 		String uncle = owner(OwnerConstants.UNCLE).name();
-		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(CategoryConstants.BANK).description())
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, category(EquityCategoryConstants.BANK).description())
 			.description();
 
 		// initial value 100
@@ -42,7 +42,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 		// credit 600
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
-				category(CategoryConstants.SALARY).description())
+				category(EquityCategoryConstants.SALARY).description())
 			.description();
 		EntryInsertUpdateDTO entryCredito = new EntryInsertUpdateDTO(uncle, date, savings, internship,
 				new BigDecimal(600), "");
@@ -50,7 +50,7 @@ class BalanceRestClientIT extends RestClientIT {
 
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
-				category(CategoryConstants.TRANSPORT).description())
+				category(EquityCategoryConstants.TRANSPORT).description())
 			.description();
 		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, date, gasoline, savings, new BigDecimal(200),
 				"");
@@ -66,7 +66,7 @@ class BalanceRestClientIT extends RestClientIT {
 	@Test
 	void balanceInvalid() {
 		String ownerName = owner(OwnerConstants.AUNT).name();
-		String bank = category(CategoryConstants.BANK).description();
+		String bank = category(EquityCategoryConstants.BANK).description();
 		String equityAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields

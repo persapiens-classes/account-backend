@@ -1,8 +1,8 @@
 package org.persapiens.account.common;
 
-public final class CategoryConstants {
+public final class EquityCategoryConstants {
 
-	private CategoryConstants() {
+	private EquityCategoryConstants() {
 	}
 
 	public static final String TRANSPORT = "transport";

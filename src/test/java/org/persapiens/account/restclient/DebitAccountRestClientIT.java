@@ -2,7 +2,7 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.dto.DebitAccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "Uber";
-		String categoryDescription = category(CategoryConstants.TRANSPORT).description();
+		String categoryDescription = category(EquityCategoryConstants.TRANSPORT).description();
 
 		DebitAccountDTO debitAccount = new DebitAccountDTO(description, categoryDescription);
 
@@ -38,7 +38,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 	@Test
 	void updateOne() {
 		DebitAccountDTO debitAccount = debitAccount("Inserted debitAccount",
-				category(CategoryConstants.TRANSPORT).description());
+				category(EquityCategoryConstants.TRANSPORT).description());
 
 		String originalDescription = debitAccount.description();
 		debitAccount = new DebitAccountDTO("Updated debitAccount", debitAccount.category());
@@ -64,7 +64,7 @@ class DebitAccountRestClientIT extends RestClientIT {
 
 		var debitAccountRestClient = debitAccountRestClient();
 		debitAccountRestClient
-			.insert(new DebitAccountDTO(description, category(CategoryConstants.TRANSPORT).description()));
+			.insert(new DebitAccountDTO(description, category(EquityCategoryConstants.TRANSPORT).description()));
 		assertThat(debitAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation

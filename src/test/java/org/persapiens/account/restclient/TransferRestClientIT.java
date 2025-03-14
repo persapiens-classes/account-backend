@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EquityAccountDTO;
@@ -33,9 +33,9 @@ class TransferRestClientIT extends RestClientIT {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 
 		EquityAccountDTO checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		var transferRestClient = transferRestClient();
 		// execute transfer operation
@@ -56,10 +56,10 @@ class TransferRestClientIT extends RestClientIT {
 		String uncle = owner(OwnerConstants.UNCLE).name();
 
 		String checkings = equityAccount(EquityAccountConstants.CHECKING,
-				category(CategoryConstants.BANK).description())
+				category(EquityCategoryConstants.BANK).description())
 			.description();
 		String investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description())
+				category(EquityCategoryConstants.BANK).description())
 			.description();
 
 		BigDecimal value = new BigDecimal(100);

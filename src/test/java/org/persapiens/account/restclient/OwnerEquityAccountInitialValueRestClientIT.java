@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EquityAccountDTO;
@@ -25,7 +25,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void insertOne() {
 		OwnerDTO mother = owner(OwnerConstants.MOTHER);
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				mother.name(), savings.description(), new BigDecimal(1000).setScale(2));
@@ -57,7 +57,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void insertInvalid() {
 		OwnerDTO mother = owner(OwnerConstants.MOTHER);
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.SAVINGS,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		// null and empty
 		insertInvalid(null, mother.name(), savings.description(), HttpStatus.BAD_REQUEST);
@@ -73,7 +73,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void insertSameOwnerEquityAccountInitialValueTwice() {
 		OwnerDTO uncle = owner(OwnerConstants.UNCLE);
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				uncle.name(), savings.description(), new BigDecimal(1000));
@@ -90,7 +90,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void updateOne() {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		EquityAccountDTO individualAssets = equityAccount(EquityAccountConstants.INDIVIDUAL_ASSETS,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				aunt.name(), individualAssets.description(), new BigDecimal(1000));
@@ -123,7 +123,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void updateInvalid() {
 		OwnerDTO grandmother = owner("grandmother");
 		EquityAccountDTO savings = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		// empty id
 		updateInvalid("", "", new BigDecimal(100), HttpStatus.BAD_REQUEST);
@@ -140,7 +140,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void deleteOne() {
 		OwnerDTO aunt = owner(OwnerConstants.AUNT);
 		EquityAccountDTO investiment = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description());
+				category(EquityCategoryConstants.BANK).description());
 
 		OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValue = new OwnerEquityAccountInitialValueDTO(
 				aunt.name(), investiment.description(), new BigDecimal(1000));
@@ -173,7 +173,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 	void deleteInvalid() {
 		String father = owner(OwnerConstants.FATHER).name();
 		String savings = equityAccount(EquityAccountConstants.INVESTIMENT,
-				category(CategoryConstants.BANK).description())
+				category(EquityCategoryConstants.BANK).description())
 			.description();
 
 		deleteInvalid("", savings, HttpStatus.BAD_REQUEST);

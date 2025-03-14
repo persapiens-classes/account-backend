@@ -2,7 +2,7 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
+import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.dto.CreditAccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "New job";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = category(EquityCategoryConstants.SALARY).description();
 
 		CreditAccountDTO creditAccount = new CreditAccountDTO(description, categoryDescription);
 
@@ -49,7 +49,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertEmpty() {
 		String description = "not empty";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = category(EquityCategoryConstants.SALARY).description();
 
 		invalidInsert("", categoryDescription, HttpStatus.BAD_REQUEST);
 		invalidInsert(description, "", HttpStatus.BAD_REQUEST);
@@ -58,7 +58,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertSameCreditAccountTwice() {
 		String description = "repeated credit account";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = category(EquityCategoryConstants.SALARY).description();
 
 		CreditAccountDTO creditAccountDto = new CreditAccountDTO(description, categoryDescription);
 
@@ -92,7 +92,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateInvalid() {
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = category(EquityCategoryConstants.SALARY).description();
 		CreditAccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
 
 		// empty id
@@ -120,7 +120,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void updateOne() {
 		CreditAccountDTO creditAccount = creditAccount("Inserted creditAccount",
-				category(CategoryConstants.SALARY).description());
+				category(EquityCategoryConstants.SALARY).description());
 
 		String originalDescription = creditAccount.description();
 		creditAccount = new CreditAccountDTO("Updated creditAccount", creditAccount.category());
@@ -145,7 +145,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		var creditAccountRestClient = creditAccountRestClient();
 		creditAccountRestClient
-			.insert(new CreditAccountDTO(description, category(CategoryConstants.SALARY).description()));
+			.insert(new CreditAccountDTO(description, category(EquityCategoryConstants.SALARY).description()));
 		assertThat(creditAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation
