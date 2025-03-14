@@ -8,7 +8,7 @@ import org.persapiens.account.common.EquityCategoryConstants;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CategoryTests {
+class EquityCategoryTests {
 
 	@Test
 	void equalDescriptions() {
