@@ -29,12 +29,12 @@ class TransferEntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
-		String internship = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
+		String cash = equityCategory(EquityCategoryConstants.CASH).description();
+		String wallet = equityAccount(EquityAccountConstants.WALLET, cash).description();
 		String bank = equityCategory(EquityCategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
-		return new EntryInsertUpdateDTO(mother, mother, LocalDateTime.now(), savings, internship, new BigDecimal(543),
+		return new EntryInsertUpdateDTO(mother, mother, LocalDateTime.now(), savings, wallet, new BigDecimal(543),
 				"saving the internship");
 	}
 
@@ -120,8 +120,8 @@ class TransferEntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(100);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
-		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
+		String bank = equityCategory(EquityCategoryConstants.BANK).description();
+		String outAccountDescription = equityAccount(EquityAccountConstants.INVESTMENT, bank).description();
 		String cash = equityCategory(EquityCategoryConstants.CASH).description();
 		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
 

@@ -12,26 +12,26 @@ class EquityCategoryTests {
 
 	@Test
 	void equalDescriptions() {
-		assertThat(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
-			.isEqualTo(Category.builder().description(EquityCategoryConstants.TRANSPORT).build());
+		assertThat(Category.builder().description(EquityCategoryConstants.BANK).build())
+			.isEqualTo(Category.builder().description(EquityCategoryConstants.BANK).build());
 	}
 
 	@Test
 	void differentDescriptions() {
-		assertThat(Category.builder().description(EquityCategoryConstants.TRANSPORT).build())
-			.isNotEqualTo(Category.builder().description(EquityCategoryConstants.HOUSING).build());
+		assertThat(Category.builder().description(EquityCategoryConstants.BANK).build())
+			.isNotEqualTo(Category.builder().description(EquityCategoryConstants.CASH).build());
 	}
 
 	@Test
 	void compareTo() {
 		Set<Category> categories = new TreeSet<>();
 
-		Category transport = Category.builder().description(EquityCategoryConstants.TRANSPORT).build();
-		categories.add(transport);
-		Category housing = Category.builder().description(EquityCategoryConstants.HOUSING).build();
-		categories.add(housing);
+		Category cash = Category.builder().description(EquityCategoryConstants.CASH).build();
+		categories.add(cash);
+		Category bank = Category.builder().description(EquityCategoryConstants.BANK).build();
+		categories.add(bank);
 
-		assertThat(categories.iterator().next()).isEqualTo(housing);
+		assertThat(categories.iterator().next()).isEqualTo(bank);
 	}
 
 }
