@@ -2,23 +2,22 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.DebitAccountConstants;
-import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.DebitAccount;
+import org.persapiens.account.domain.DebitCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class DebitAccountFactory {
 
-	@Autowired
 	private DebitAccountRepository debitAccountRepository;
 
-	@Autowired
-	private CategoryFactory categoryFactory;
+	private DebitCategoryFactory categoryFactory;
 
-	public DebitAccount debitAccount(String description, Category category) {
+	public DebitAccount debitAccount(String description, DebitCategory category) {
 		Optional<DebitAccount> findByDescription = this.debitAccountRepository.findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			DebitAccount debitAccount = DebitAccount.builder().description(description).category(category).build();

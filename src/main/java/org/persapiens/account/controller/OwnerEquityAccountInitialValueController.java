@@ -2,7 +2,6 @@ package org.persapiens.account.controller;
 
 import java.math.BigDecimal;
 
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
@@ -17,13 +16,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/ownerEquityAccountInitialValues")
 public class OwnerEquityAccountInitialValueController extends
 		CrudController<OwnerEquityAccountInitialValueDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
 	private OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
+
+	public OwnerEquityAccountInitialValueController(OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
+		super(ownerEquityAccountInitialValueService);
+
+		this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;
+	}
 
 	@GetMapping("/filter")
 	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(@RequestParam(required = true) String owner,

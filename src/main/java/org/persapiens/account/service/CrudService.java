@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class CrudService<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
 
 	private CrudRepository<E, K> repository;
+
+	protected CrudService(CrudRepository<E, K> repository) {
+		this.repository = repository;
+	}
 
 	protected abstract F toDTO(E entity);
 
@@ -28,11 +31,6 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 			result.add(toDTO(entity));
 		}
 		return result;
-	}
-
-	@Autowired
-	public void setRepository(CrudRepository<E, K> repository) {
-		this.repository = repository;
 	}
 
 	@Transactional

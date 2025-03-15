@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
-import org.persapiens.account.persistence.EntryRepository;
+import org.persapiens.account.persistence.CreditEntryRepository;
+import org.persapiens.account.persistence.DebitEntryRepository;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
+import org.persapiens.account.persistence.TransferEntryRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BalanceService {
 
-	private EntryRepository entryRepository;
+	private DebitEntryRepository debitEntryRepository;
+
+	private CreditEntryRepository creditEntryRepository;
+
+	private TransferEntryRepository transferEntryRepository;
 
 	private OwnerService ownerService;
 
@@ -39,12 +45,18 @@ public class BalanceService {
 		BigDecimal result = ownerAndEquityAccountInitialValueOptional.get().getValue();
 
 		// sum credits of owner and equity account
-		BigDecimal credits = this.entryRepository.creditSum(owner, equityAccount).getValue();
+		BigDecimal credits = this.creditEntryRepository.creditSum(owner, equityAccount);
 
 		// subtract debits of owner and equity account
-		BigDecimal debits = this.entryRepository.debitSum(owner, equityAccount).getValue();
+		BigDecimal debits = this.debitEntryRepository.debitSum(owner, equityAccount);
 
-		return result.add(credits).subtract(debits);
+		// sum transfer credits of owner and equity account
+		BigDecimal transferCredits = this.transferEntryRepository.creditSum(owner, equityAccount);
+
+		// subtract transfer debits of owner and equity account
+		BigDecimal transferDebits = this.transferEntryRepository.debitSum(owner, equityAccount);
+
+		return result.add(credits).subtract(debits).add(transferCredits).subtract(transferDebits);
 	}
 
 }

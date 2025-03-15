@@ -1,17 +1,17 @@
 package org.persapiens.account.service;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.persistence.OwnerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class OwnerDTOFactory {
 
-	@Autowired
 	private OwnerFactory ownerFactory;
 
 	public OwnerDTO ownerDTO(Owner owner) {

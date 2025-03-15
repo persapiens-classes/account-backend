@@ -15,6 +15,6 @@ public final class EquityAccountConstants {
 
 	public static final String CHECKING = "checking";
 
-	public static final String INVESTIMENT = "investiment";
+	public static final String INVESTMENT = "investment";
 
 }

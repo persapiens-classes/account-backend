@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public record EntryInsertUpdateDTO(@NotBlank String owner, @NotNull LocalDateTime date, @NotBlank String inAccount,
+public record EntryInsertUpdateDTO(@NotBlank String inOwner, @NotBlank String outOwner, @NotNull LocalDateTime date, @NotBlank String inAccount,
 		@NotBlank String outAccount, @NotNull @PositiveOrZero BigDecimal value, String note) {
 
 }

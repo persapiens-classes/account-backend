@@ -2,23 +2,22 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.CreditAccountConstants;
-import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.CreditCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class CreditAccountFactory {
 
-	@Autowired
 	private CreditAccountRepository creditAccountRepository;
 
-	@Autowired
-	private CategoryFactory categoryFactory;
+	private CreditCategoryFactory categoryFactory;
 
-	public CreditAccount creditAccount(String description, Category category) {
+	public CreditAccount creditAccount(String description, CreditCategory category) {
 		Optional<CreditAccount> findByDescription = this.creditAccountRepository.findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			CreditAccount creditAccount = CreditAccount.builder().description(description).category(category).build();

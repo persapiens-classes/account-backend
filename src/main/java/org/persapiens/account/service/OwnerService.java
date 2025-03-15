@@ -2,7 +2,6 @@ package org.persapiens.account.service;
 
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
@@ -11,11 +10,16 @@ import org.persapiens.account.persistence.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
 @Service
 public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, String, Owner, Long> {
 
 	private OwnerRepository ownerRepository;
+
+	public OwnerService(OwnerRepository ownerRepository) {
+		super(ownerRepository);
+
+		this.ownerRepository = ownerRepository;
+	}
 
 	@Override
 	protected OwnerDTO toDTO(Owner entity) {

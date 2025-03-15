@@ -3,7 +3,6 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
@@ -15,7 +14,6 @@ import org.persapiens.account.persistence.OwnerEquityAccountInitialValueReposito
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
 @Service
 public class OwnerEquityAccountInitialValueService extends
 		CrudService<OwnerEquityAccountInitialValueDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
@@ -25,6 +23,16 @@ public class OwnerEquityAccountInitialValueService extends
 	private OwnerService ownerService;
 
 	private EquityAccountService equityAccountService;
+
+	public OwnerEquityAccountInitialValueService(
+			OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository,
+			OwnerService ownerService, EquityAccountService equityAccountService) {
+		super(ownerEquityAccountInitialValueRepository);
+
+		this.ownerEquityAccountInitialValueRepository = ownerEquityAccountInitialValueRepository;
+		this.ownerService = ownerService;
+		this.equityAccountService = equityAccountService;
+	}
 
 	@Override
 	protected OwnerEquityAccountInitialValueDTO toDTO(OwnerEquityAccountInitialValue entity) {

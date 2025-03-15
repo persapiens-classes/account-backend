@@ -1,42 +1,40 @@
 package org.persapiens.account.service;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
-import org.persapiens.account.domain.CreditAccount;
-import org.persapiens.account.domain.DebitAccount;
+import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.Entry;
-import org.persapiens.account.domain.EquityAccount;
-import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
-import org.persapiens.account.persistence.CreditAccountRepository;
-import org.persapiens.account.persistence.DebitAccountRepository;
 import org.persapiens.account.persistence.EntryRepository;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
-@Service
-public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, Entry, Long> {
+public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
+		extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
-	private EntryRepository entryRepository;
+	private EntryRepository<E, I, J, O, P> entryRepository;
 
-	private CreditAccountRepository creditAccountRepository;
+	private AccountService<I, J> inAccountService;
 
-	private DebitAccountRepository debitAccountRepository;
-
-	private EquityAccountService equityAccountService;
+	private AccountService<O, P> outAccountService;
 
 	private OwnerService ownerService;
 
+	protected EntryService(EntryRepository<E, I, J, O, P> entryRepository, AccountService<I, J> inAccountService,
+			AccountService<O, P> outAccountService, OwnerService ownerService) {
+		super(entryRepository);
+		this.entryRepository = entryRepository;
+		this.inAccountService = inAccountService;
+		this.outAccountService = outAccountService;
+		this.ownerService = ownerService;
+	}
+
 	@Override
-	protected EntryDTO toDTO(Entry entry) {
-		return new EntryDTO(entry.getId(), entry.getOwner().getName(), entry.getDate(),
+	protected EntryDTO toDTO(E entry) {
+		return new EntryDTO(entry.getId(), entry.getInOwner().getName(), entry.getOutOwner().getName(), entry.getDate(),
 				new AccountDTO(entry.getInAccount().getDescription(),
 						entry.getInAccount().getCategory().getDescription()),
 				new AccountDTO(entry.getOutAccount().getDescription(),
@@ -44,53 +42,33 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 				entry.getValue(), entry.getNote());
 	}
 
-	private Account inAccount(String accountDescription) {
-		Optional<DebitAccount> byDescription = this.debitAccountRepository.findByDescription(accountDescription);
-		if (byDescription.isPresent()) {
-			return byDescription.get();
-		}
-		else {
-			return this.equityAccountService.findEntityByDescription(accountDescription);
-		}
-	}
+	protected abstract E createEntry();
 
-	private Account outAccount(String accountDescription) {
-		Optional<CreditAccount> byDescription = this.creditAccountRepository.findByDescription(accountDescription);
-		if (byDescription.isPresent()) {
-			return byDescription.get();
-		}
-		else {
-			return this.equityAccountService.findEntityByDescription(accountDescription);
-		}
-	}
+	private E toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+		E result = createEntry();
+		result.setInAccount(this.inAccountService.findEntityByDescription(entryInsertUpdateDTO.inAccount()));
+		result.setOutAccount(this.outAccountService.findEntityByDescription(entryInsertUpdateDTO.outAccount()));
+		result.setInOwner(this.ownerService.findEntityByName(entryInsertUpdateDTO.inOwner()));
+		result.setOutOwner(this.ownerService.findEntityByName(entryInsertUpdateDTO.outOwner()));
+		result.setValue(entryInsertUpdateDTO.value());
+		result.setDate(entryInsertUpdateDTO.date());
+		result.setNote(entryInsertUpdateDTO.note());
 
-	private Entry toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
-		Owner owner = this.ownerService.findEntityByName(entryInsertUpdateDTO.owner());
-		Account inAccount = inAccount(entryInsertUpdateDTO.inAccount());
-		Account outAccount = outAccount(entryInsertUpdateDTO.outAccount());
-
-		return Entry.builder()
-			.inAccount(inAccount)
-			.outAccount(outAccount)
-			.owner(owner)
-			.value(entryInsertUpdateDTO.value())
-			.note(entryInsertUpdateDTO.note())
-			.date(entryInsertUpdateDTO.date())
-			.build();
+		return result;
 	}
 
 	@Override
-	protected Entry insertDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	protected E insertDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		return toEntity(entryInsertUpdateDTO);
 	}
 
 	@Override
-	protected Entry updateDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
+	protected E updateDtoToEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		return toEntity(entryInsertUpdateDTO);
 	}
 
-	Entry findEntityById(Long id) {
-		Optional<Entry> byId = this.entryRepository.findById(id);
+	E findEntityById(Long id) {
+		Optional<E> byId = this.entryRepository.findById(id);
 		if (byId.isPresent()) {
 			return byId.get();
 		}
@@ -100,12 +78,12 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 	}
 
 	@Override
-	protected Entry findByUpdateKey(Long updateKey) {
+	protected E findByUpdateKey(Long updateKey) {
 		return findEntityById(updateKey);
 	}
 
 	@Override
-	protected Entry setIdToUpdate(Entry t, Entry updateEntity) {
+	protected E setIdToUpdate(E t, E updateEntity) {
 		updateEntity.setId(t.getId());
 		return updateEntity;
 	}
@@ -122,20 +100,6 @@ public class EntryService extends CrudService<EntryInsertUpdateDTO, EntryInsertU
 
 	public EntryDTO findById(Long id) {
 		return toDTO(findEntityById(id));
-	}
-
-	public BigDecimal creditSum(String ownerName, String equityAccountDescription) {
-		Owner owner = this.ownerService.findEntityByName(ownerName);
-		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
-
-		return this.entryRepository.creditSum(owner, equityAccount).getValue();
-	}
-
-	public BigDecimal debitSum(String ownerName, String equityAccountDescription) {
-		Owner owner = this.ownerService.findEntityByName(ownerName);
-		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
-
-		return this.entryRepository.debitSum(owner, equityAccount).getValue();
 	}
 
 }

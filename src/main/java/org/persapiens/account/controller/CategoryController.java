@@ -1,7 +1,6 @@
 package org.persapiens.account.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.service.CategoryService;
@@ -11,15 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
-@RestController
-@RequestMapping("/categories")
-public class CategoryController extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, Category, Long> {
+public class CategoryController<C extends Category>
+		extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
-	private CategoryService categoryService;
+	private CategoryService<C> categoryService;
+
+	public CategoryController(CategoryService<C> categoryService) {
+		super(categoryService);
+
+		this.categoryService = categoryService;
+	}
 
 	@GetMapping("/{description}")
 	public CategoryDTO findByDescription(@PathVariable(required = true) String description) {

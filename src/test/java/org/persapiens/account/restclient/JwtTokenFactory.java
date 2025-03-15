@@ -4,7 +4,6 @@ import org.persapiens.account.security.LoginRequestDTO;
 import org.persapiens.account.security.LoginResponseDTO;
 import org.persapiens.account.security.UserCredentialsProperties;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 class JwtTokenFactory {
 
-	@Autowired
 	private UserCredentialsProperties userCredentialsProperties;
 
 	private String jwtToken;
+
+	JwtTokenFactory(UserCredentialsProperties userCredentialsProperties) {
+		this.userCredentialsProperties = userCredentialsProperties;
+	}
 
 	String getJwtToken(AuthenticationRestClient authenticationRestClient) {
 		if (this.jwtToken == null) {

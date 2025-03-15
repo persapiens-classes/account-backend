@@ -2,8 +2,8 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
-import org.persapiens.account.dto.CreditAccountDTO;
+import org.persapiens.account.common.CreditCategoryConstants;
+import org.persapiens.account.dto.AccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "New job";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
 
-		CreditAccountDTO creditAccount = new CreditAccountDTO(description, categoryDescription);
+		AccountDTO creditAccount = new AccountDTO(description, categoryDescription);
 
 		var creditAccountRestClient = creditAccountRestClient();
 
@@ -36,7 +36,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	}
 
 	private void invalidInsert(String description, String categoryDescription, HttpStatus httpStatus) {
-		CreditAccountDTO creditAccountDto = new CreditAccountDTO(description, categoryDescription);
+		AccountDTO creditAccountDto = new AccountDTO(description, categoryDescription);
 
 		// verify insert operation
 		// verify status code error
@@ -49,7 +49,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertEmpty() {
 		String description = "not empty";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
 
 		invalidInsert("", categoryDescription, HttpStatus.BAD_REQUEST);
 		invalidInsert(description, "", HttpStatus.BAD_REQUEST);
@@ -58,9 +58,9 @@ class CreditAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertSameCreditAccountTwice() {
 		String description = "repeated credit account";
-		String categoryDescription = category(CategoryConstants.SALARY).description();
+		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
 
-		CreditAccountDTO creditAccountDto = new CreditAccountDTO(description, categoryDescription);
+		AccountDTO creditAccountDto = new AccountDTO(description, categoryDescription);
 
 		var creditAccountRestClient = creditAccountRestClient();
 		creditAccountRestClient.insert(creditAccountDto);
@@ -80,7 +80,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 	private void updateInvalid(String oldDescription, String description, String categoryDescription,
 			HttpStatus httpStatus) {
-		CreditAccountDTO creditAccount = new CreditAccountDTO(description, categoryDescription);
+		AccountDTO creditAccount = new AccountDTO(description, categoryDescription);
 
 		// verify update operation
 		// verify status code error
@@ -92,8 +92,8 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateInvalid() {
-		String categoryDescription = category(CategoryConstants.SALARY).description();
-		CreditAccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
+		String categoryDescription = creditCategory(CreditCategoryConstants.SALARY).description();
+		AccountDTO creditAccountToUpdate = creditAccount("credit account to update", categoryDescription);
 
 		// empty id
 		updateInvalid("", "", "", HttpStatus.FORBIDDEN);
@@ -119,11 +119,11 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateOne() {
-		CreditAccountDTO creditAccount = creditAccount("Inserted creditAccount",
-				category(CategoryConstants.SALARY).description());
+		AccountDTO creditAccount = creditAccount("Inserted creditAccount",
+				creditCategory(CreditCategoryConstants.SALARY).description());
 
 		String originalDescription = creditAccount.description();
-		creditAccount = new CreditAccountDTO("Updated creditAccount", creditAccount.category());
+		creditAccount = new AccountDTO("Updated creditAccount", creditAccount.category());
 
 		var creditAccountRestClient = creditAccountRestClient();
 		creditAccount = creditAccountRestClient.update(originalDescription, creditAccount);
@@ -145,7 +145,7 @@ class CreditAccountRestClientIT extends RestClientIT {
 
 		var creditAccountRestClient = creditAccountRestClient();
 		creditAccountRestClient
-			.insert(new CreditAccountDTO(description, category(CategoryConstants.SALARY).description()));
+			.insert(new AccountDTO(description, creditCategory(CreditCategoryConstants.SALARY).description()));
 		assertThat(creditAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByDescription operation

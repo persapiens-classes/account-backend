@@ -2,7 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.dto.DebitAccountDTO;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.DebitAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ class DebitAccountServiceIT {
 	private DebitAccountDTOFactory debitAccountDTOFactory;
 
 	@Autowired
-	private CategoryDTOFactory categoryDTOFactory;
+	private DebitCategoryDTOFactory categoryDTOFactory;
 
 	@Test
 	void repositoryNotNull() {
@@ -33,7 +33,7 @@ class DebitAccountServiceIT {
 	@Test
 	void saveOne() {
 		// create test environment
-		DebitAccountDTO debitAccountDTO = this.debitAccountDTOFactory.gasoline();
+		AccountDTO debitAccountDTO = this.debitAccountDTOFactory.gasoline();
 
 		// verify the results
 		assertThat(this.debitAccountService.findByDescription(debitAccountDTO.description()))
@@ -43,19 +43,14 @@ class DebitAccountServiceIT {
 	@Test
 	void deleteOne() {
 		// create test environment
-		DebitAccountDTO debitAccountDTO = this.debitAccountDTOFactory.debitAccountDTO("UNIQUE DebitAccount",
-				this.categoryDTOFactory.bank().description());
+		AccountDTO debitAccountDTO = this.debitAccountDTOFactory.debitAccountDTO("UNIQUE DebitAccount",
+				this.categoryDTOFactory.tax().description());
 
 		// execute the operation to be tested
 		this.debitAccountService.deleteByDescription(debitAccountDTO.description());
 
 		// verify the results
 		assertThat(this.debitAccountRepository.findByDescription(debitAccountDTO.description())).isNotPresent();
-	}
-
-	@Test
-	void expenseTransfer() {
-		assertThat(this.debitAccountService.expenseTransfer()).isEqualTo(this.debitAccountService.expenseTransfer());
 	}
 
 }

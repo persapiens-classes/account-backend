@@ -2,8 +2,8 @@ package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CategoryConstants;
-import org.persapiens.account.dto.EquityAccountDTO;
+import org.persapiens.account.common.EquityCategoryConstants;
+import org.persapiens.account.dto.AccountDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -18,9 +18,9 @@ class EquityAccountRestClientIT extends RestClientIT {
 	@Test
 	void insertOne() {
 		String description = "Super bank account";
-		String categoryDescription = category(CategoryConstants.BANK).description();
+		String categoryDescription = equityCategory(EquityCategoryConstants.BANK).description();
 
-		EquityAccountDTO equityAccount = new EquityAccountDTO(description, categoryDescription);
+		AccountDTO equityAccount = new AccountDTO(description, categoryDescription);
 
 		var equityAccountRestClient = equityAccountRestClient();
 		// verify insert operation
@@ -36,11 +36,11 @@ class EquityAccountRestClientIT extends RestClientIT {
 
 	@Test
 	void updateOne() {
-		EquityAccountDTO equityAccount = equityAccount("Inserted equityAccount",
-				category(CategoryConstants.BANK).description());
+		AccountDTO equityAccount = equityAccount("Inserted equityAccount",
+				equityCategory(EquityCategoryConstants.BANK).description());
 
 		String originalDescription = equityAccount.description();
-		equityAccount = new EquityAccountDTO("Updated equityAccount", equityAccount.category());
+		equityAccount = new AccountDTO("Updated equityAccount", equityAccount.category());
 
 		var equityAccountRestClient = equityAccountRestClient();
 		equityAccount = equityAccountRestClient.update(originalDescription, equityAccount);
@@ -62,7 +62,7 @@ class EquityAccountRestClientIT extends RestClientIT {
 
 		var equityAccountRestClient = equityAccountRestClient();
 		equityAccountRestClient
-			.insert(new EquityAccountDTO(description, category(CategoryConstants.BANK).description()));
+			.insert(new AccountDTO(description, equityCategory(EquityCategoryConstants.BANK).description()));
 		assertThat(equityAccountRestClient.findByDescription(description).description()).isEqualTo(description);
 
 		// execute deleteByName operation

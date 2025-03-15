@@ -2,23 +2,22 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.EquityAccountConstants;
-import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class EquityAccountFactory {
 
-	@Autowired
 	private EquityAccountRepository equityAccountRepository;
 
-	@Autowired
-	private CategoryFactory categoryFactory;
+	private EquityCategoryFactory categoryFactory;
 
-	public EquityAccount equityAccount(String description, Category category) {
+	public EquityAccount equityAccount(String description, EquityCategory category) {
 		Optional<EquityAccount> findByDescription = this.equityAccountRepository.findByDescription(description);
 		if (findByDescription.isEmpty()) {
 			EquityAccount equityAccount = EquityAccount.builder().description(description).category(category).build();
@@ -41,8 +40,8 @@ public class EquityAccountFactory {
 		return equityAccount(EquityAccountConstants.CHECKING, this.categoryFactory.cash());
 	}
 
-	public EquityAccount investiment() {
-		return equityAccount(EquityAccountConstants.INVESTIMENT, this.categoryFactory.cash());
+	public EquityAccount investment() {
+		return equityAccount(EquityAccountConstants.INVESTMENT, this.categoryFactory.cash());
 	}
 
 }
