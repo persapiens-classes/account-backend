@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
+import org.persapiens.account.persistence.EquityAccountFactory;
+import org.persapiens.account.persistence.OwnerFactory;
+import org.persapiens.account.persistence.TransferEntryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +27,15 @@ class TransferEntryServiceIT {
 	@Autowired
 	private TransferEntryService transferEntryService;
 
+	@Autowired
+	private TransferEntryRepository transferEntryRepository;
+
+	@Autowired
+	private OwnerFactory ownerFactory;
+
+	@Autowired
+	private EquityAccountFactory equityAccountFactory;
+
 	@Test
 	void transfer10FromFatherToAunt() {
 		EntryInsertUpdateDTO entry = new EntryInsertUpdateDTO(this.ownerDTOFactory.aunt().name(),
@@ -33,12 +45,12 @@ class TransferEntryServiceIT {
 
 		this.transferEntryService.insert(entry);
 
-		assertThat(this.transferEntryService.debitSum(this.ownerDTOFactory.father().name(),
-				this.equityAccountDTOFactory.checking().description()))
+		assertThat(this.transferEntryRepository.debitSum(this.ownerFactory.father(),
+				this.equityAccountFactory.checking()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 
-		assertThat(this.transferEntryService.creditSum(this.ownerDTOFactory.aunt().name(),
-				this.equityAccountDTOFactory.savings().description()))
+		assertThat(this.transferEntryRepository.creditSum(this.ownerFactory.aunt(),
+				this.equityAccountFactory.savings()))
 			.isEqualTo(BigDecimal.TEN.setScale(2));
 	}
 

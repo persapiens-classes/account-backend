@@ -23,10 +23,6 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TransferEntryRestClientIT extends RestClientIT {
 
-	private static final String INVALID_OWNER = "invalid owner";
-
-	private static final String INVALID_EQUITY_ACCOUNT = "invalid equity account";
-
 	private EntryInsertUpdateDTO entry() {
 		String mother = owner(OwnerConstants.MOTHER).name();
 		String cash = equityCategory(EquityCategoryConstants.CASH).description();
@@ -182,52 +178,6 @@ class TransferEntryRestClientIT extends RestClientIT {
 	void deleteInvalid() {
 		long id = 1000;
 		deleteInvalid(id, HttpStatus.NOT_FOUND);
-	}
-
-	private void creditSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
-		// verify delete operation
-		// verify status code error
-		var entryRestClient = transferEntryRestClient();
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient.creditSum(owner, equityAccount))
-			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
-	}
-
-	@Test
-	void creditSumInvalid() {
-		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
-
-		creditSumInvalid("", "", HttpStatus.BAD_REQUEST);
-		creditSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
-		creditSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
-		creditSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
-		creditSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
-		creditSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
-		creditSumInvalid(INVALID_OWNER, salary, HttpStatus.NOT_FOUND);
-	}
-
-	private void debitSumInvalid(String owner, String equityAccount, HttpStatus httpStatus) {
-		// verify delete operation
-		// verify status code error
-		var entryRestClient = transferEntryRestClient();
-		assertThatExceptionOfType(HttpClientErrorException.class)
-			.isThrownBy(() -> entryRestClient.debitSum(owner, equityAccount))
-			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(httpStatus));
-	}
-
-	@Test
-	void debitSumInvalid() {
-		String mother = owner(OwnerConstants.MOTHER).name();
-		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
-
-		debitSumInvalid("", "", HttpStatus.BAD_REQUEST);
-		debitSumInvalid(INVALID_OWNER, "", HttpStatus.NOT_FOUND);
-		debitSumInvalid("", INVALID_EQUITY_ACCOUNT, HttpStatus.BAD_REQUEST);
-		debitSumInvalid(INVALID_OWNER, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
-		debitSumInvalid(mother, "", HttpStatus.BAD_REQUEST);
-		debitSumInvalid(mother, INVALID_EQUITY_ACCOUNT, HttpStatus.NOT_FOUND);
-		debitSumInvalid(INVALID_OWNER, salary, HttpStatus.NOT_FOUND);
 	}
 
 }

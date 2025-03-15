@@ -16,7 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BalanceServiceIT {
 
 	@Autowired
-	private EntryDTOFactory entryDTOFactory;
+	private CreditEntryDTOFactory creditEntryDTOFactory;
+
+	@Autowired
+	private DebitEntryDTOFactory debitEntryDTOFactory;
 
 	@Autowired
 	private OwnerDTOFactory ownerDTOFactory;
@@ -50,8 +53,8 @@ class BalanceServiceIT {
 		this.ownerEquityAccountInitialValueDTOFactory.ownerEquityAccountInitialValueDTO(father, wallet,
 				new BigDecimal(1000));
 
-		this.entryDTOFactory.debitEntryDTO(father, gasoline, wallet, new BigDecimal(500));
-		this.entryDTOFactory.creditEntryDTO(father, wallet, internship, new BigDecimal(300));
+		this.debitEntryDTOFactory.debitEntryDTO(father, gasoline, wallet, new BigDecimal(500));
+		this.creditEntryDTOFactory.creditEntryDTO(father, wallet, internship, new BigDecimal(300));
 
 		// run the operation to be tested
 		// verify the results
