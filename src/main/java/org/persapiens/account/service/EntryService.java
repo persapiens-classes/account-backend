@@ -2,7 +2,6 @@ package org.persapiens.account.service;
 
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.Entry;
@@ -13,7 +12,6 @@ import org.persapiens.account.persistence.EntryRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
 public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
 		extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
@@ -24,6 +22,17 @@ public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Acc
 	private AccountService<O, P> outAccountService;
 
 	private OwnerService ownerService;
+
+	public EntryService(EntryRepository<E, I, J, O, P> entryRepository,
+		AccountService<I, J> inAccountService,
+		AccountService<O, P> outAccountService,
+		OwnerService ownerService) {
+			super(entryRepository);
+		this.entryRepository = entryRepository;
+		this.inAccountService = inAccountService;
+		this.outAccountService = outAccountService;
+		this.ownerService = ownerService;
+	}
 
 	@Override
 	protected EntryDTO toDTO(E entry) {

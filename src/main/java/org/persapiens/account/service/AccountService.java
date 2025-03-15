@@ -2,7 +2,6 @@ package org.persapiens.account.service;
 
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
@@ -11,13 +10,19 @@ import org.persapiens.account.persistence.AccountRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
 public abstract class AccountService<E extends Account<C>, C extends Category>
 		extends CrudService<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
 	private AccountRepository<E, C> accountRepository;
 
 	private CategoryService<C> categoryService;
+
+	public AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService) {
+		super(accountRepository);
+
+		this.accountRepository = accountRepository;
+		this.categoryService = categoryService;
+	}
 
 	protected abstract E createAccount();
 

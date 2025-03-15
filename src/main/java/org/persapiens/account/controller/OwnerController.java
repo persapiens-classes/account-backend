@@ -1,7 +1,6 @@
 package org.persapiens.account.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.dto.OwnerDTO;
 import org.persapiens.account.service.OwnerService;
@@ -14,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/owners")
 public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO, String, Owner, Long> {
 
 	private OwnerService ownerService;
+
+	public OwnerController(OwnerService ownerService) {
+		super(ownerService);
+
+		this.ownerService = ownerService;
+	}
 
 	@GetMapping("/{name}")
 	public OwnerDTO findByName(@PathVariable(required = true) String name) {

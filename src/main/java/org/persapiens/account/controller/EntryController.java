@@ -1,7 +1,6 @@
 package org.persapiens.account.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.domain.Entry;
@@ -15,11 +14,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@AllArgsConstructor
 public class EntryController<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
 		extends CrudController<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
 	private EntryService<E, I, J, O, P> entryService;
+
+	public EntryController(EntryService<E, I, J, O, P> entryService) {
+		super(entryService);
+
+		this.entryService = entryService;
+	}
 
 	@GetMapping("/{id}")
 	public EntryDTO findById(@PathVariable(required = true) Long id) {

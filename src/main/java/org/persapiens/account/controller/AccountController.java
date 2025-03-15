@@ -1,7 +1,6 @@
 package org.persapiens.account.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.AccountDTO;
@@ -13,11 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@AllArgsConstructor
 public abstract class AccountController<E extends Account<C>, C extends Category>
 		extends CrudController<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
 	private AccountService<E, C> accountService;
+
+	public AccountController(AccountService<E, C> accountService) {
+		super(accountService);
+
+		this.accountService = accountService;
+	}
 
 	@GetMapping("/{description}")
 	public AccountDTO findByDescription(@PathVariable(required = true) String description) {

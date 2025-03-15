@@ -2,18 +2,22 @@ package org.persapiens.account.service;
 
 import java.util.Optional;
 
-import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
 public abstract class CategoryService<C extends Category>
 		extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
 	private CategoryRepository<C> categoryRepository;
+
+	public CategoryService(CategoryRepository<C> categoryRepository) {
+		super(categoryRepository);
+
+		this.categoryRepository = categoryRepository;
+	}
 
 	@Override
 	protected CategoryDTO toDTO(Category entity) {
