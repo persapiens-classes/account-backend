@@ -45,16 +45,16 @@ public class BalanceService {
 		BigDecimal result = ownerAndEquityAccountInitialValueOptional.get().getValue();
 
 		// sum credits of owner and equity account
-		BigDecimal credits = this.creditEntryRepository.creditSum(owner, equityAccount).getValue();
+		BigDecimal credits = this.creditEntryRepository.creditSum(owner, equityAccount);
 
 		// subtract debits of owner and equity account
-		BigDecimal debits = this.debitEntryRepository.debitSum(owner, equityAccount).getValue();
+		BigDecimal debits = this.debitEntryRepository.debitSum(owner, equityAccount);
 
 		// sum transfer credits of owner and equity account
-		BigDecimal transferCredits = this.transferEntryRepository.creditSum(owner, equityAccount).getValue();
+		BigDecimal transferCredits = this.transferEntryRepository.creditSum(owner, equityAccount);
 
 		// subtract transfer debits of owner and equity account
-		BigDecimal transferDebits = this.transferEntryRepository.debitSum(owner, equityAccount).getValue();
+		BigDecimal transferDebits = this.transferEntryRepository.debitSum(owner, equityAccount);
 
 		return result.add(credits).subtract(debits).add(transferCredits).subtract(transferDebits);
 	}

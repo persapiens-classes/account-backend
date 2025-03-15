@@ -157,8 +157,10 @@ class TransferEntryRestClientIT extends RestClientIT {
 	void deleteOne() {
 		EntryInsertUpdateDTO entryInsertDTO = entry();
 
-		var entryRestClient = transferEntryRestClient();
-		var id = entryRestClient.insert(entryInsertDTO).id();
+		EntryRestClient entryRestClient = transferEntryRestClient();
+		EntryDTO inserted = entryRestClient.insert(entryInsertDTO);
+
+		long id = inserted.id();
 
 		assertThat(id).isGreaterThan(0);
 

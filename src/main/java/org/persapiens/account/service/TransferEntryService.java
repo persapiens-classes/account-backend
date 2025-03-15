@@ -37,14 +37,14 @@ public class TransferEntryService
 		Owner owner = this.ownerService.findEntityByName(ownerName);
 		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
-		return this.transferEntryRepository.creditSum(owner, equityAccount).getValue();
+		return this.transferEntryRepository.creditSum(owner, equityAccount);
 	}
 
 	public BigDecimal debitSum(String ownerName, String equityAccountDescription) {
 		Owner owner = this.ownerService.findEntityByName(ownerName);
 		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
-		return this.transferEntryRepository.debitSum(owner, equityAccount).getValue();
+		return this.transferEntryRepository.debitSum(owner, equityAccount);
 	}
 
 }

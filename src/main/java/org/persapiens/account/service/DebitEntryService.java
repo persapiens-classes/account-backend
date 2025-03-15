@@ -39,7 +39,7 @@ public class DebitEntryService
 		Owner owner = this.ownerService.findEntityByName(ownerName);
 		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
-		return this.debitEntryRepository.debitSum(owner, equityAccount).getValue();
+		return this.debitEntryRepository.debitSum(owner, equityAccount);
 	}
 
 }

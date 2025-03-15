@@ -56,8 +56,7 @@ class CreditEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.creditEntryRepository.creditSum(father, savings).getValue())
-			.isEqualTo(new BigDecimal(300).setScale(2));
+		assertThat(this.creditEntryRepository.creditSum(father, savings)).isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
 }

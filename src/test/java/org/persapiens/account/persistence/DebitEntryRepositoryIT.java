@@ -56,7 +56,7 @@ class DebitEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.debitEntryRepository.debitSum(father, savings).getValue())
+		assertThat(this.debitEntryRepository.debitSum(father, savings))
 			.isEqualTo(new BigDecimal(500).setScale(2));
 	}
 

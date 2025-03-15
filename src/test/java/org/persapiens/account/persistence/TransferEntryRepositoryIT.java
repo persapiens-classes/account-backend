@@ -52,8 +52,7 @@ class TransferEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.transferEntryRepository.creditSum(father, savings).getValue())
-			.isEqualTo(new BigDecimal(300).setScale(2));
+		assertThat(this.transferEntryRepository.creditSum(father, savings)).isEqualTo(new BigDecimal(300).setScale(2));
 	}
 
 	@Test
@@ -69,8 +68,7 @@ class TransferEntryRepositoryIT {
 
 		// execute the operation to be tested
 		// verify the results
-		assertThat(this.transferEntryRepository.debitSum(father, savings).getValue())
-			.isEqualTo(new BigDecimal(500).setScale(2));
+		assertThat(this.transferEntryRepository.debitSum(father, savings)).isEqualTo(new BigDecimal(500).setScale(2));
 	}
 
 }

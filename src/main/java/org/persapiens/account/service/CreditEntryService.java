@@ -39,7 +39,7 @@ public class CreditEntryService
 		Owner owner = this.ownerService.findEntityByName(ownerName);
 		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
-		return this.creditEntryRepository.creditSum(owner, equityAccount).getValue();
+		return this.creditEntryRepository.creditSum(owner, equityAccount);
 	}
 
 }

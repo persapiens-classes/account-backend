@@ -47,17 +47,17 @@ class BalanceRestClientIT extends RestClientIT {
 		String internship = creditAccount(CreditAccountConstants.INTERNSHIP,
 				creditCategory(CreditCategoryConstants.SALARY).description())
 			.description();
-		EntryInsertUpdateDTO entryCredito = new EntryInsertUpdateDTO(uncle, uncle, date, savings, internship,
+		EntryInsertUpdateDTO creditEntry = new EntryInsertUpdateDTO(uncle, uncle, date, savings, internship,
 				new BigDecimal(600), "");
-		creditEntryRestClient().insert(entryCredito);
+		creditEntryRestClient().insert(creditEntry);
 
 		// debit 200
 		String gasoline = debitAccount(DebitAccountConstants.GASOLINE,
 				debitCategory(DebitCategoryConstants.TRANSPORT).description())
 			.description();
-		EntryInsertUpdateDTO entryDebito = new EntryInsertUpdateDTO(uncle, uncle, date, gasoline, savings,
+		EntryInsertUpdateDTO debitEntry = new EntryInsertUpdateDTO(uncle, uncle, date, gasoline, savings,
 				new BigDecimal(200), "");
-		debitEntryRestClient().insert(entryDebito);
+		debitEntryRestClient().insert(debitEntry);
 
 		// executa a operacao a ser testada
 		var balanceRestClient = balanceRestClient();
