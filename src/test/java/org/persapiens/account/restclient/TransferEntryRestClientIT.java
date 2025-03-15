@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
-import org.persapiens.account.common.CreditAccountConstants;
-import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
@@ -30,7 +28,7 @@ class TransferEntryRestClientIT extends RestClientIT {
 		String bank = equityCategory(EquityCategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
-		return new EntryInsertUpdateDTO(mother, mother, LocalDateTime.now(), savings, wallet, new BigDecimal(543),
+		return new EntryInsertUpdateDTO(mother, mother, LocalDateTime.now(), wallet, savings, new BigDecimal(543),
 				"saving the internship");
 	}
 
@@ -61,25 +59,24 @@ class TransferEntryRestClientIT extends RestClientIT {
 
 	@Test
 	void insertInvalid() {
-		BigDecimal value = new BigDecimal(100);
+		BigDecimal value = new BigDecimal(102);
 		LocalDateTime date = LocalDateTime.now();
-		String ownerName = owner(OwnerConstants.MOTHER).name();
-		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
-		String outAccountDescription = creditAccount(CreditAccountConstants.INTERNSHIP, salary).description();
-		String bank = equityCategory(EquityCategoryConstants.BANK).description();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
+		String mother = owner(OwnerConstants.MOTHER).name();
+		String bank = creditCategory(EquityCategoryConstants.BANK).description();
+		String checking = creditAccount(EquityAccountConstants.CHECKING, bank).description();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
-		invalidInsert(null, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, null, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, date, "", inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, date, ownerName, "", outAccountDescription, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, date, ownerName, inAccountDescription, "", HttpStatus.BAD_REQUEST);
+		invalidInsert(null, date, mother, savings, checking, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, null, mother, savings, checking, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, date, "", savings, checking, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, date, mother, "", checking, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, date, mother, savings, "", HttpStatus.BAD_REQUEST);
 
 		// test fields
-		invalidInsert(value, date, "invalid owner", inAccountDescription, outAccountDescription, HttpStatus.NOT_FOUND);
-		invalidInsert(value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.NOT_FOUND);
-		invalidInsert(value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, "invalid owner", savings, checking, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, mother, "invalid in account", checking, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, mother, savings, "invalid out account", HttpStatus.NOT_FOUND);
 	}
 
 	@Test
@@ -113,40 +110,40 @@ class TransferEntryRestClientIT extends RestClientIT {
 
 	@Test
 	void updateInvalid() {
-		BigDecimal value = new BigDecimal(100);
+		BigDecimal value = new BigDecimal(102);
 		LocalDateTime date = LocalDateTime.now();
 		String ownerName = owner("grandmother").name();
-		String bank = equityCategory(EquityCategoryConstants.BANK).description();
-		String outAccountDescription = equityAccount(EquityAccountConstants.INVESTMENT, bank).description();
 		String cash = equityCategory(EquityCategoryConstants.CASH).description();
-		String inAccountDescription = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
+		String savings = equityAccount(EquityAccountConstants.SAVINGS, cash).description();
+		String bank = equityCategory(EquityCategoryConstants.BANK).description();
+		String investiment = equityAccount(EquityAccountConstants.INVESTMENT, bank).description();
 
 		// empty id
 		updateInvalid(null, null, null, "", "", "", HttpStatus.FORBIDDEN);
-		updateInvalid(null, value, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.FORBIDDEN);
+		updateInvalid(null, value, date, ownerName, savings, investiment, HttpStatus.FORBIDDEN);
 
 		EntryInsertUpdateDTO entryInsertUpdateDTO = new EntryInsertUpdateDTO(ownerName, ownerName, date,
-				inAccountDescription, outAccountDescription, value, "valid entry");
+				savings, investiment, value, "valid entry");
 		var entryRestClient = transferEntryRestClient();
 		Long id = entryRestClient.insert(entryInsertUpdateDTO).id();
 
 		// empty fields
 		updateInvalid(id, null, null, "", "", "", HttpStatus.BAD_REQUEST);
-		updateInvalid(id, null, date, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		updateInvalid(id, value, null, ownerName, inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		updateInvalid(id, value, date, "", inAccountDescription, outAccountDescription, HttpStatus.BAD_REQUEST);
-		updateInvalid(id, value, date, ownerName, "", outAccountDescription, HttpStatus.BAD_REQUEST);
-		updateInvalid(id, value, date, ownerName, inAccountDescription, "", HttpStatus.BAD_REQUEST);
+		updateInvalid(id, null, date, ownerName, savings, investiment, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, null, ownerName, savings, investiment, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, "", savings, investiment, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, ownerName, "", investiment, HttpStatus.BAD_REQUEST);
+		updateInvalid(id, value, date, ownerName, savings, "", HttpStatus.BAD_REQUEST);
 
 		// invalid id
-		updateInvalid(1000000L, value, date, ownerName, inAccountDescription, outAccountDescription,
+		updateInvalid(1000000L, value, date, ownerName, savings, investiment,
 				HttpStatus.NOT_FOUND);
 
 		// invalid fields
-		updateInvalid(id, value, date, "invalid owner", inAccountDescription, outAccountDescription,
+		updateInvalid(id, value, date, "invalid owner", savings, investiment,
 				HttpStatus.NOT_FOUND);
-		updateInvalid(id, value, date, ownerName, "invalid in account", outAccountDescription, HttpStatus.NOT_FOUND);
-		updateInvalid(id, value, date, ownerName, inAccountDescription, "invalid out account", HttpStatus.NOT_FOUND);
+		updateInvalid(id, value, date, ownerName, "invalid in account", investiment, HttpStatus.NOT_FOUND);
+		updateInvalid(id, value, date, ownerName, savings, "invalid out account", HttpStatus.NOT_FOUND);
 	}
 
 	@Test
