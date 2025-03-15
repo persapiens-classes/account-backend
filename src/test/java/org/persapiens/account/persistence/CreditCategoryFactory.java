@@ -2,16 +2,16 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.domain.CreditCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class CreditCategoryFactory {
 
-	@Autowired
 	private CreditCategoryRepository categoryRepository;
 
 	public CreditCategory category(String description) {

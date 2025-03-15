@@ -2,6 +2,7 @@ package org.persapiens.account.service;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerDTO;
@@ -11,22 +12,18 @@ import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class OwnerEquityAccountInitialValueDTOFactory {
 
-	@Autowired
 	private OwnerEquityAccountInitialValueFactory ownerEquityAccountInitialValueFactory;
 
-	@Autowired
 	private OwnerFactory ownerFactory;
 
-	@Autowired
 	private EquityAccountFactory equityAccountFactory;
 
-	@Autowired
 	private EquityCategoryFactory categoryFactory;
 
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(

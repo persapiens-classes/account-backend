@@ -1,17 +1,17 @@
 package org.persapiens.account.service;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.DebitCategoryFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class DebitCategoryDTOFactory {
 
-	@Autowired
 	private DebitCategoryFactory categoryFactory;
 
 	public CategoryDTO categoryDTO(Category category) {

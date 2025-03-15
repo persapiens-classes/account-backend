@@ -2,20 +2,19 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.EquityCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class EquityAccountFactory {
 
-	@Autowired
 	private EquityAccountRepository equityAccountRepository;
 
-	@Autowired
 	private EquityCategoryFactory categoryFactory;
 
 	public EquityAccount equityAccount(String description, EquityCategory category) {

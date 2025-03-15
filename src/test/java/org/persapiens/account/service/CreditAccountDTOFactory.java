@@ -1,20 +1,19 @@
 package org.persapiens.account.service;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.CreditAccountFactory;
 import org.persapiens.account.persistence.CreditCategoryFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class CreditAccountDTOFactory {
 
-	@Autowired
 	private CreditAccountFactory creditAccountFactory;
 
-	@Autowired
 	private CreditCategoryFactory categoryFactory;
 
 	public AccountDTO creditAccountDTO(CreditAccount creditAccount) {

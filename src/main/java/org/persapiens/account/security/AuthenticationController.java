@@ -2,9 +2,7 @@ package org.persapiens.account.security;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ConditionalOnWebApplication
 @AllArgsConstructor
-@NoArgsConstructor
 @RequestMapping("/")
 @RestController
 public class AuthenticationController {
@@ -26,16 +23,6 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 
 	private JwtFactory jwtFactory;
-
-	@Autowired
-	public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-		this.authenticationManager = authenticationManager;
-	}
-
-	@Autowired
-	public void setJwtFactory(JwtFactory jwtFactory) {
-		this.jwtFactory = jwtFactory;
-	}
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> authenticate(@Valid @RequestBody LoginRequestDTO loginRequest) {

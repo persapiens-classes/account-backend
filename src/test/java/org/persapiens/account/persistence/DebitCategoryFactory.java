@@ -2,16 +2,17 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.domain.DebitCategory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
+@AllArgsConstructor
 @Component
 public class DebitCategoryFactory {
 
-	@Autowired
 	private DebitCategoryRepository categoryRepository;
 
 	public DebitCategory category(String description) {

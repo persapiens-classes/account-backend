@@ -2,6 +2,7 @@ package org.persapiens.account.service;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.CreditEntry;
 import org.persapiens.account.domain.DebitEntry;
 import org.persapiens.account.dto.AccountDTO;
@@ -17,43 +18,32 @@ import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.EquityCategoryFactory;
 import org.persapiens.account.persistence.OwnerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class EntryDTOFactory {
 
-	@Autowired
 	private DebitEntryService debitEntryService;
 
-	@Autowired
 	private CreditEntryService creditEntryService;
 
-	@Autowired
 	private DebitEntryFactory debitEntryFactory;
 
-	@Autowired
 	private CreditEntryFactory creditEntryFactory;
 
-	@Autowired
 	private OwnerFactory ownerFactory;
 
-	@Autowired
 	private CreditCategoryFactory creditCategoryFactory;
 
-	@Autowired
 	private DebitCategoryFactory debitCategoryFactory;
 
-	@Autowired
 	private EquityCategoryFactory equityCategoryFactory;
 
-	@Autowired
 	private CreditAccountFactory creditAccountFactory;
 
-	@Autowired
 	private DebitAccountFactory debitAccountFactory;
 
-	@Autowired
 	private EquityAccountFactory equityAccountFactory;
 
 	public EntryDTO debitEntryDTO(DebitEntry entry) {

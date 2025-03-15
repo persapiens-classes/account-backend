@@ -1,17 +1,17 @@
 package org.persapiens.account.service;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.EquityCategoryFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class EquityCategoryDTOFactory {
 
-	@Autowired
 	private EquityCategoryFactory categoryFactory;
 
 	public CategoryDTO categoryDTO(Category category) {

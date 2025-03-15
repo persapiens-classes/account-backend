@@ -2,16 +2,16 @@ package org.persapiens.account.persistence;
 
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.domain.Owner;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class OwnerFactory {
 
-	@Autowired
 	private OwnerRepository ownerRepository;
 
 	public Owner owner(String name) {

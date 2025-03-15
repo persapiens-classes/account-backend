@@ -3,17 +3,17 @@ package org.persapiens.account.persistence;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class OwnerEquityAccountInitialValueFactory {
 
-	@Autowired
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
 	public OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(Owner owner, EquityAccount equityAccount,
