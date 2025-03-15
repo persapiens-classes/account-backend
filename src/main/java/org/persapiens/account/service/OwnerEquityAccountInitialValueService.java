@@ -3,8 +3,6 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import org.persapiens.account.JJWTNativeConfig;
-import org.persapiens.account.controller.OwnerController;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
@@ -26,9 +24,9 @@ public class OwnerEquityAccountInitialValueService extends
 
 	private EquityAccountService equityAccountService;
 
-	public OwnerEquityAccountInitialValueService(OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository,
-		OwnerService ownerService,
-		EquityAccountService equityAccountService, JJWTNativeConfig JJWTNativeConfig, OwnerController ownerController) {
+	public OwnerEquityAccountInitialValueService(
+			OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository,
+			OwnerService ownerService, EquityAccountService equityAccountService) {
 		super(ownerEquityAccountInitialValueRepository);
 
 		this.ownerEquityAccountInitialValueRepository = ownerEquityAccountInitialValueRepository;
