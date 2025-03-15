@@ -19,11 +19,12 @@ class DebitEntryTests {
 
 	private static final String GAS_DESCRIPTION = "buy gas at my gas station";
 
-	private DebitEntry debitEntry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
+	private DebitEntry debitEntry(LocalDateTime date, BigDecimal value, String inOwner,
+		String outOwner, String note) {
 		return DebitEntry.builder()
 			.note(note)
-			.inOwner(Owner.builder().name(ownerName).build())
-			.outOwner(Owner.builder().name(ownerName).build())
+			.inOwner(Owner.builder().name(inOwner).build())
+			.outOwner(Owner.builder().name(outOwner).build())
 			.date(date)
 			.value(value)
 			.inAccount(DebitAccount.builder()
@@ -41,8 +42,10 @@ class DebitEntryTests {
 	void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
 		LocalDateTime now = LocalDateTime.now();
 
-		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
-		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER, "other description");
+		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, "other description");
 
 		assertThat(entryGasoline1).isEqualTo(entryGasoline2);
 	}
@@ -51,8 +54,10 @@ class DebitEntryTests {
 	void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
 		LocalDateTime now = LocalDateTime.now();
 
-		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(200), OwnerConstants.FATHER, GAS_DESCRIPTION);
-		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(200), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 
 		assertThat(entryGasoline1).isNotEqualTo(entryGasoline2);
 	}
@@ -62,9 +67,9 @@ class DebitEntryTests {
 		Set<DebitEntry> entries = new TreeSet<>();
 
 		DebitEntry entryGasoline1 = debitEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				GAS_DESCRIPTION);
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 		DebitEntry entryGasoline2 = debitEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				GAS_DESCRIPTION);
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline2);
 		entries.add(entryGasoline1);
 
@@ -77,23 +82,43 @@ class DebitEntryTests {
 
 		Set<DebitEntry> entries = new TreeSet<>();
 
-		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(1000), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline1);
-		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(1000), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);
 	}
 
 	@Test
-	void compareToWithDifferentOwners() {
+	void compareToWithDifferentInOwners() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Set<DebitEntry> entries = new TreeSet<>();
 
-		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(100), OwnerConstants.MOTHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.MOTHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline1);
-		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER, GAS_DESCRIPTION);
+		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.MOTHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline2);
+
+		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);
+	}
+
+	@Test
+	void compareToWithDifferentOutOwners() {
+		LocalDateTime now = LocalDateTime.now();
+
+		Set<DebitEntry> entries = new TreeSet<>();
+
+		DebitEntry entryGasoline1 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.MOTHER, GAS_DESCRIPTION);
+		entries.add(entryGasoline1);
+		DebitEntry entryGasoline2 = debitEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, GAS_DESCRIPTION);
 		entries.add(entryGasoline2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryGasoline2);

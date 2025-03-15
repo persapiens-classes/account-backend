@@ -19,11 +19,12 @@ class CreditEntryTests {
 
 	private static final String SALARY_DESCRIPTION = "receive my salary";
 
-	private CreditEntry entry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
+	private CreditEntry entry(LocalDateTime date, BigDecimal value, String inOwner,
+		String outOwner, String note) {
 		return CreditEntry.builder()
 			.note(note)
-			.inOwner(Owner.builder().name(ownerName).build())
-			.outOwner(Owner.builder().name(ownerName).build())
+			.inOwner(Owner.builder().name(inOwner).build())
+			.outOwner(Owner.builder().name(outOwner).build())
 			.value(value)
 			.date(date)
 			.inAccount(EquityAccount.builder()
@@ -41,8 +42,10 @@ class CreditEntryTests {
 	void equalOwnerValueDateInAccountOutAccountWithDifferentDescription() {
 		LocalDateTime now = LocalDateTime.now();
 
-		CreditEntry entrySalary1 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, SALARY_DESCRIPTION);
-		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, "other description");
+		CreditEntry entrySalary1 = entry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, "other description");
 
 		assertThat(entrySalary1).isEqualTo(entrySalary2);
 	}
@@ -51,8 +54,10 @@ class CreditEntryTests {
 	void equalOwnerValueDateInAccountOutAccountDescriptionWithDifferentValue() {
 		LocalDateTime now = LocalDateTime.now();
 
-		CreditEntry entrySalary1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER, SALARY_DESCRIPTION);
-		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary1 = entry(now, new BigDecimal(200), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
 
 		assertThat(entrySalary1).isNotEqualTo(entrySalary2);
 	}
@@ -61,10 +66,10 @@ class CreditEntryTests {
 	void compareToWithDifferentDates() {
 		Set<CreditEntry> entries = new TreeSet<>();
 
-		CreditEntry entrySalary1 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				SALARY_DESCRIPTION);
-		CreditEntry entrySalary2 = entry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				SALARY_DESCRIPTION);
+		CreditEntry entrySalary1 = entry(LocalDateTime.now(), new BigDecimal(100),
+			OwnerConstants.FATHER, OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(LocalDateTime.now(), new BigDecimal(100),
+			OwnerConstants.FATHER, OwnerConstants.FATHER, SALARY_DESCRIPTION);
 		entries.add(entrySalary2);
 		entries.add(entrySalary1);
 
@@ -77,23 +82,43 @@ class CreditEntryTests {
 
 		Set<CreditEntry> entries = new TreeSet<>();
 
-		CreditEntry entrySalary1 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary1 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
 		entries.add(entrySalary1);
-		CreditEntry entrySalary2 = entry(now, new BigDecimal(1000), OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(now, new BigDecimal(900), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
 		entries.add(entrySalary2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entrySalary2);
 	}
 
 	@Test
-	void compareToWithDifferentOwners() {
+	void compareToWithDifferentInOwners() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Set<CreditEntry> entries = new TreeSet<>();
 
-		CreditEntry entrySalary1 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary1 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
 		entries.add(entrySalary1);
-		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.FATHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
+		entries.add(entrySalary2);
+
+		assertThat(entries.iterator().next()).isEqualTo(entrySalary2);
+	}
+
+	@Test
+	void compareToWithDifferentOutOwners() {
+		LocalDateTime now = LocalDateTime.now();
+
+		Set<CreditEntry> entries = new TreeSet<>();
+
+		CreditEntry entrySalary1 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.MOTHER, SALARY_DESCRIPTION);
+		entries.add(entrySalary1);
+		CreditEntry entrySalary2 = entry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.FATHER, SALARY_DESCRIPTION);
 		entries.add(entrySalary2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entrySalary2);

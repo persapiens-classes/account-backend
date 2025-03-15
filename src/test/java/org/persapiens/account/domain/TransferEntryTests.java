@@ -18,11 +18,12 @@ class TransferEntryTests {
 
 	private static final String TRANSFER_DESCRIPTION = "from checking to wallet";
 
-	private TransferEntry transferEntry(LocalDateTime date, BigDecimal value, String ownerName, String note) {
+	private TransferEntry transferEntry(LocalDateTime date, BigDecimal value, String inOwner,
+		String outOwner, String note) {
 		return TransferEntry.builder()
 			.note(note)
-			.outOwner(Owner.builder().name(ownerName).build())
-			.inOwner(Owner.builder().name(ownerName).build())
+			.outOwner(Owner.builder().name(inOwner).build())
+			.inOwner(Owner.builder().name(outOwner).build())
 			.value(value)
 			.date(date)
 			.inAccount(EquityAccount.builder()
@@ -41,9 +42,9 @@ class TransferEntryTests {
 		LocalDateTime now = LocalDateTime.now();
 
 		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
-				"other description");
+			OwnerConstants.FATHER, "other description");
 
 		assertThat(entryChecking1).isEqualTo(entryChecking2);
 	}
@@ -53,9 +54,9 @@ class TransferEntryTests {
 		LocalDateTime now = LocalDateTime.now();
 
 		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(200), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 
 		assertThat(entryChecking1).isNotEqualTo(entryChecking2);
 	}
@@ -64,10 +65,10 @@ class TransferEntryTests {
 	void compareToWithDifferentDates() {
 		Set<TransferEntry> entries = new TreeSet<>();
 
-		TransferEntry entryChecking1 = transferEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
-		TransferEntry entryChecking2 = transferEntry(LocalDateTime.now(), new BigDecimal(100), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+		TransferEntry entryChecking1 = transferEntry(LocalDateTime.now(), new BigDecimal(100),
+			OwnerConstants.FATHER, OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
+		TransferEntry entryChecking2 = transferEntry(LocalDateTime.now(), new BigDecimal(100),
+			OwnerConstants.FATHER, OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 		entries.add(entryChecking1);
 
@@ -81,26 +82,42 @@ class TransferEntryTests {
 		Set<TransferEntry> entries = new TreeSet<>();
 
 		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		entries.add(entryChecking1);
 		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(1000), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
 	}
 
 	@Test
-	void compareToWithDifferentOwners() {
+	void compareToWithDifferentInOwners() {
 		LocalDateTime now = LocalDateTime.now();
 
 		Set<TransferEntry> entries = new TreeSet<>();
 
 		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(100), OwnerConstants.MOTHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		entries.add(entryChecking1);
 		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.FATHER,
-				TRANSFER_DESCRIPTION);
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
+		entries.add(entryChecking2);
+
+		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
+	}
+
+	@Test
+	void compareToWithDifferentOutOwners() {
+		LocalDateTime now = LocalDateTime.now();
+
+		Set<TransferEntry> entries = new TreeSet<>();
+
+		TransferEntry entryChecking1 = transferEntry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.MOTHER, TRANSFER_DESCRIPTION);
+		entries.add(entryChecking1);
+		TransferEntry entryChecking2 = transferEntry(now, new BigDecimal(100), OwnerConstants.MOTHER,
+			OwnerConstants.FATHER, TRANSFER_DESCRIPTION);
 		entries.add(entryChecking2);
 
 		assertThat(entries.iterator().next()).isEqualTo(entryChecking2);
