@@ -14,7 +14,7 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 
 	private CrudService<I, U, F, B, E, K> crudService;
 
-	public CrudController(CrudService<I, U, F, B, E, K> service) {
+	protected CrudController(CrudService<I, U, F, B, E, K> service) {
 		this.crudService = service;
 	}
 

@@ -23,11 +23,9 @@ public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Acc
 
 	private OwnerService ownerService;
 
-	public EntryService(EntryRepository<E, I, J, O, P> entryRepository,
-		AccountService<I, J> inAccountService,
-		AccountService<O, P> outAccountService,
-		OwnerService ownerService) {
-			super(entryRepository);
+	protected EntryService(EntryRepository<E, I, J, O, P> entryRepository, AccountService<I, J> inAccountService,
+			AccountService<O, P> outAccountService, OwnerService ownerService) {
+		super(entryRepository);
 		this.entryRepository = entryRepository;
 		this.inAccountService = inAccountService;
 		this.outAccountService = outAccountService;

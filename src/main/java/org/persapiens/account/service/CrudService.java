@@ -11,7 +11,7 @@ public abstract class CrudService<I extends Object, U extends Object, F extends 
 
 	private CrudRepository<E, K> repository;
 
-	public CrudService(CrudRepository<E, K> repository) {
+	protected CrudService(CrudRepository<E, K> repository) {
 		this.repository = repository;
 	}
 

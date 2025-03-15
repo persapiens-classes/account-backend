@@ -17,7 +17,7 @@ public abstract class AccountService<E extends Account<C>, C extends Category>
 
 	private CategoryService<C> categoryService;
 
-	public AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService) {
+	protected AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService) {
 		super(accountRepository);
 
 		this.accountRepository = accountRepository;

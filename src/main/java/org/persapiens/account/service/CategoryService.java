@@ -13,7 +13,7 @@ public abstract class CategoryService<C extends Category>
 
 	private CategoryRepository<C> categoryRepository;
 
-	public CategoryService(CategoryRepository<C> categoryRepository) {
+	protected CategoryService(CategoryRepository<C> categoryRepository) {
 		super(categoryRepository);
 
 		this.categoryRepository = categoryRepository;
