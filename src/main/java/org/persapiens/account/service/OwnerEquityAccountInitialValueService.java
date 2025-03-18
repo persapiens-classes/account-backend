@@ -7,7 +7,9 @@ import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
+import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.dto.OwnerEquityAccountInitialValueInsertDTO;
 import org.persapiens.account.dto.OwnerNameEquityAccountDescription;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
 
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OwnerEquityAccountInitialValueService extends
-		CrudService<OwnerEquityAccountInitialValueDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
+		CrudService<OwnerEquityAccountInitialValueInsertDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
@@ -37,12 +39,14 @@ public class OwnerEquityAccountInitialValueService extends
 	@Override
 	protected OwnerEquityAccountInitialValueDTO toDTO(OwnerEquityAccountInitialValue entity) {
 		return new OwnerEquityAccountInitialValueDTO(entity.getOwner().getName(),
-				entity.getEquityAccount().getDescription(), entity.getValue());
+				new AccountDTO(entity.getEquityAccount().getDescription(),
+						entity.getEquityAccount().getCategory().getDescription()),
+				entity.getValue());
 	}
 
 	@Override
 	protected OwnerEquityAccountInitialValue insertDtoToEntity(
-			OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO) {
+			OwnerEquityAccountInitialValueInsertDTO ownerEquityAccountInitialValueDTO) {
 		Owner owner = this.ownerService.findEntityByName(ownerEquityAccountInitialValueDTO.owner());
 		EquityAccount equityAccount = this.equityAccountService
 			.findEntityByDescription(ownerEquityAccountInitialValueDTO.equityAccount());
