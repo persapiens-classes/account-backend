@@ -27,11 +27,11 @@ INSERT INTO owner_equity_account_initial_value (owner_id, equity_account_id, val
 INSERT INTO owner_equity_account_initial_value (owner_id, equity_account_id, value) VALUES (2, 1, 50);
 INSERT INTO owner_equity_account_initial_value (owner_id, equity_account_id, value) VALUES (2, 3, 100);
 
-INSERT INTO credit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 2, 2, 1, 100, NOW(), 'wife savings salary');
-INSERT INTO credit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 1, 1, 1, 2, 100, NOW(), 'husband wallet internship');
+INSERT INTO credit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 2, 2, 1, 100.50, NOW(), 'wife savings salary');
+INSERT INTO credit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 1, 1, 1, 2, 90, NOW(), 'husband wallet internship');
 
-INSERT INTO debit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 2, 3, 3, 100, NOW(), 'wife airplane checking');
-INSERT INTO debit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 1, 1, 1, 1, 100, NOW(), 'husband gasoline wallet');
+INSERT INTO debit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 2, 3, 3, 80.5, NOW(), 'wife airplane checking');
+INSERT INTO debit_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 1, 1, 1, 1, 10.5, NOW(), 'husband gasoline wallet');
 
-INSERT INTO transfer_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 1, 3, 2, 100, NOW(), 'wife husband checking savings');
+INSERT INTO transfer_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 2, 1, 3, 2, 110, NOW(), 'wife husband checking savings');
 INSERT INTO transfer_entry (id, in_owner_id, out_owner_id, in_account_id, out_account_id, value, date, note) VALUES (NEXT VALUE FOR seq_credit_entry, 1, 2, 1, 3, 10, NOW(), 'husband wife wallet checking');
