@@ -1,4 +1,11 @@
 spring:
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  sql:
+    init:
+      mode: always
   datasource:
     url: jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE
     driverClassName: org.h2.Driver
@@ -6,7 +13,7 @@ spring:
       maximum-pool-size: 3
   h2:
     console:
-      enabled: false  # Desativa o console web do H2 em produção
+      enabled: false  # disable web console
 
 server:
   forward-headers-strategy: native
