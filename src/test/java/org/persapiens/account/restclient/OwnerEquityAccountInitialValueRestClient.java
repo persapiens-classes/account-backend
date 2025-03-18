@@ -1,10 +1,12 @@
 package org.persapiens.account.restclient;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import lombok.experimental.SuperBuilder;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.dto.OwnerEquityAccountInitialValueInsertDTO;
 
 @SuperBuilder
 public class OwnerEquityAccountInitialValueRestClient {
@@ -15,7 +17,7 @@ public class OwnerEquityAccountInitialValueRestClient {
 		return this.restClientHelper.findAll();
 	}
 
-	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueDTO entity) {
+	public OwnerEquityAccountInitialValueDTO insert(OwnerEquityAccountInitialValueInsertDTO entity) {
 		return this.restClientHelper.getRestClient()
 			.post()
 			.uri(this.restClientHelper.insertUri())
@@ -45,12 +47,12 @@ public class OwnerEquityAccountInitialValueRestClient {
 				uriVariables(owner, equityAccount));
 	}
 
-	public OwnerEquityAccountInitialValueDTO update(OwnerEquityAccountInitialValueDTO entity) {
+	public OwnerEquityAccountInitialValueDTO update(String owner, String equityAccount, BigDecimal value) {
 		return this.restClientHelper.getRestClient()
 			.put()
 			.uri(this.restClientHelper.updateUri("?owner={owner}&equityAccount={equityAccount}",
-					uriVariables(entity.owner(), entity.equityAccount())))
-			.body(entity.value())
+					uriVariables(owner, equityAccount)))
+			.body(value)
 			.retrieve()
 			.body(OwnerEquityAccountInitialValueDTO.class);
 	}

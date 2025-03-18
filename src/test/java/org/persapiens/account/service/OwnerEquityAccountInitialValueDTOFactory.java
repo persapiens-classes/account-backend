@@ -29,12 +29,13 @@ public class OwnerEquityAccountInitialValueDTOFactory {
 	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(
 			OwnerEquityAccountInitialValue ownerEquityAccountInitialValue) {
 		return new OwnerEquityAccountInitialValueDTO(ownerEquityAccountInitialValue.getOwner().getName(),
-				ownerEquityAccountInitialValue.getEquityAccount().getDescription(),
+				new AccountDTO(ownerEquityAccountInitialValue.getEquityAccount().getDescription(),
+						ownerEquityAccountInitialValue.getEquityAccount().getCategory().getDescription()),
 				ownerEquityAccountInitialValue.getValue());
 	}
 
-	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner,
-			AccountDTO equityAccount, BigDecimal value) {
+	public OwnerEquityAccountInitialValueDTO ownerEquityAccountInitialValueDTO(OwnerDTO owner, AccountDTO equityAccount,
+			BigDecimal value) {
 		return ownerEquityAccountInitialValueDTO(this.ownerEquityAccountInitialValueFactory
 			.ownerEquityAccountInitialValue(this.ownerFactory.owner(owner.name()), this.equityAccountFactory
 				.equityAccount(equityAccount.description(), this.categoryFactory.category(equityAccount.category())),

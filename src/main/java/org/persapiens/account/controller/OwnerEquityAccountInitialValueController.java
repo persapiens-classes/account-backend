@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
 import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.dto.OwnerEquityAccountInitialValueInsertDTO;
 import org.persapiens.account.dto.OwnerNameEquityAccountDescription;
 import org.persapiens.account.service.OwnerEquityAccountInitialValueService;
 
@@ -19,11 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/ownerEquityAccountInitialValues")
 public class OwnerEquityAccountInitialValueController extends
-		CrudController<OwnerEquityAccountInitialValueDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
+		CrudController<OwnerEquityAccountInitialValueInsertDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
 	private OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
-	public OwnerEquityAccountInitialValueController(OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
+	public OwnerEquityAccountInitialValueController(
+			OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {
 		super(ownerEquityAccountInitialValueService);
 
 		this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;

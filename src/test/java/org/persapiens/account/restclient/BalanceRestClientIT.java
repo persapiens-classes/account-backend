@@ -13,7 +13,7 @@ import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
-import org.persapiens.account.dto.OwnerEquityAccountInitialValueDTO;
+import org.persapiens.account.dto.OwnerEquityAccountInitialValueInsertDTO;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -37,8 +37,8 @@ class BalanceRestClientIT extends RestClientIT {
 			.description();
 
 		// initial value 100
-		OwnerEquityAccountInitialValueDTO initialValue = new OwnerEquityAccountInitialValueDTO(uncle, savings,
-				new BigDecimal(100));
+		OwnerEquityAccountInitialValueInsertDTO initialValue = new OwnerEquityAccountInitialValueInsertDTO(uncle,
+				savings, new BigDecimal(100));
 		ownerEquityAccountInitialValueRestClient().insert(initialValue);
 
 		LocalDateTime date = LocalDateTime.now();
