@@ -142,6 +142,10 @@ class CreditCategoryRestClientIT extends RestClientIT {
 		String description = "Invalid credit category";
 		deleteInvalidCategory("", HttpStatus.FORBIDDEN);
 		deleteInvalidCategory(description, HttpStatus.NOT_FOUND);
+
+		CategoryDTO category = creditCategory("category to delete");
+		creditAccount("credit account with category to delete", category.description());
+		deleteInvalidCategory(category.description(), HttpStatus.CONFLICT);
 	}
 
 }
