@@ -7,6 +7,7 @@ import java.util.Map;
 import org.persapiens.account.service.BeanExistsException;
 import org.persapiens.account.service.BeanNotFoundException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -42,6 +43,11 @@ public class GlobalExceptionHandler {
 			.getFieldErrors()
 			.forEach((error) -> errors.put(error.getField(), error.getDefaultMessage()));
 		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ERROR, exception.getMessage()));
 	}
 
 }
