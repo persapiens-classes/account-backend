@@ -6,11 +6,13 @@ import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.service.AccountService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public abstract class AccountController<E extends Account<C>, C extends Category>
 		extends CrudController<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
@@ -28,6 +30,7 @@ public abstract class AccountController<E extends Account<C>, C extends Category
 		return this.accountService.findByDescription(description);
 	}
 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{description}")
 	public void deleteByDescription(@PathVariable(required = true) String description) {
 		this.accountService.deleteByDescription(description);
