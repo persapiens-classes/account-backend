@@ -6,9 +6,11 @@ import java.util.stream.StreamSupport;
 import jakarta.validation.Valid;
 import org.persapiens.account.service.CrudService;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public abstract class CrudController<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
 
@@ -18,6 +20,7 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 		this.crudService = service;
 	}
 
+	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public F insert(@Valid @RequestBody(required = true) I insertDto) {
 		return this.crudService.insert(insertDto);
