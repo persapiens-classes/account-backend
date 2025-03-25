@@ -27,17 +27,20 @@ public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO
 		this.ownerService = ownerService;
 	}
 
+	@FindOneBeanDoc
 	@GetMapping("/{name}")
 	public OwnerDTO findByName(@PathVariable(required = true) String name) {
 		return this.ownerService.findByName(name);
 	}
 
+	@DeleteBeanDoc
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{name}")
 	public void deleteByName(@PathVariable(required = true) String name) {
 		this.ownerService.deleteByName(name);
 	}
 
+	@UpdateBeanDoc
 	@PutMapping("/{name}")
 	public OwnerDTO update(@PathVariable(required = true) String name,
 			@Valid @RequestBody(required = true) OwnerDTO ownerDTO) {

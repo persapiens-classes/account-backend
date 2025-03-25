@@ -33,12 +33,14 @@ public class OwnerEquityAccountInitialValueController extends
 		this.ownerEquityAccountInitialValueService = ownerEquityAccountInitialValueService;
 	}
 
+	@FindOneBeanDoc
 	@GetMapping("/filter")
 	public OwnerEquityAccountInitialValueDTO findByOwnerAndEquityAccount(@RequestParam(required = true) String owner,
 			@RequestParam(required = true) String equityAccount) {
 		return this.ownerEquityAccountInitialValueService.findByOwnerAndEquityAccount(owner, equityAccount);
 	}
 
+	@DeleteBeanDoc
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping
 	public void deleteByOwnderAndEquityAccount(@RequestParam(required = true) String owner,
@@ -46,6 +48,7 @@ public class OwnerEquityAccountInitialValueController extends
 		this.ownerEquityAccountInitialValueService.deleteByOwnderAndEquityAccount(owner, equityAccount);
 	}
 
+	@UpdateBeanDoc
 	@PutMapping
 	public OwnerEquityAccountInitialValueDTO update(@RequestParam(required = true) String owner,
 			@RequestParam(required = true) String equityAccount, @RequestBody(required = true) BigDecimal value) {

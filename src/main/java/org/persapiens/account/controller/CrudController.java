@@ -20,12 +20,14 @@ public abstract class CrudController<I extends Object, U extends Object, F exten
 		this.crudService = service;
 	}
 
+	@InsertBeanDoc
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
 	public F insert(@Valid @RequestBody(required = true) I insertDto) {
 		return this.crudService.insert(insertDto);
 	}
 
+	@FindAllBeanDoc
 	@GetMapping
 	public List<F> findAll() {
 		return StreamSupport.stream(this.crudService.findAll().spliterator(), false).toList();
