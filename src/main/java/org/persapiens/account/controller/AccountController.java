@@ -25,17 +25,20 @@ public abstract class AccountController<E extends Account<C>, C extends Category
 		this.accountService = accountService;
 	}
 
+	@FindOneBeanDoc
 	@GetMapping("/{description}")
 	public AccountDTO findByDescription(@PathVariable(required = true) String description) {
 		return this.accountService.findByDescription(description);
 	}
 
+	@DeleteBeanDoc
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{description}")
 	public void deleteByDescription(@PathVariable(required = true) String description) {
 		this.accountService.deleteByDescription(description);
 	}
 
+	@UpdateBeanDoc
 	@PutMapping("/{description}")
 	public AccountDTO update(@PathVariable(required = true) String description,
 			@Valid @RequestBody(required = true) AccountDTO accountDTO) {

@@ -27,17 +27,20 @@ public class EntryController<Z extends Entry<Z, N, J, O, P>, N extends Account<J
 		this.entryService = entryService;
 	}
 
+	@FindOneBeanDoc
 	@GetMapping("/{id}")
 	public EntryDTO findById(@PathVariable(required = true) Long id) {
 		return this.entryService.findById(id);
 	}
 
+	@DeleteBeanDoc
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable(required = true) Long id) {
 		this.entryService.deleteById(id);
 	}
 
+	@UpdateBeanDoc
 	@PutMapping("/{id}")
 	public EntryDTO update(@PathVariable(required = true) Long id,
 			@Valid @RequestBody(required = true) EntryInsertUpdateDTO entryDTO) {

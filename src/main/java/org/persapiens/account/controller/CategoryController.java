@@ -24,17 +24,20 @@ public class CategoryController<C extends Category>
 		this.categoryService = categoryService;
 	}
 
+	@FindOneBeanDoc
 	@GetMapping("/{description}")
 	public CategoryDTO findByDescription(@PathVariable(required = true) String description) {
 		return this.categoryService.findByDescription(description);
 	}
 
+	@DeleteBeanDoc
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{description}")
 	public void deleteByDescription(@PathVariable(required = true) String description) {
 		this.categoryService.deleteByDescription(description);
 	}
 
+	@UpdateBeanDoc
 	@PutMapping("/{description}")
 	public CategoryDTO update(@PathVariable(required = true) String description,
 			@Valid @RequestBody(required = true) CategoryDTO categoryDTO) {
