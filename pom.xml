@@ -632,6 +632,10 @@
                                     <hideFields>false</hideFields>
                                     <hideMethods>true</hideMethods>
                                     <blacklistRegexp>.*Builder.*</blacklistRegexp>
+                                    <!-- Remove fields inserted by hibernate enhance -->
+                                    <fieldBlacklistRegexp>^\$?\$?_hibernate_.*</fieldBlacklistRegexp>
+                                    <!-- Remove methods inserted by hibernate enhance -->
+                                    <methodBlacklistRegexp>^\$?\$?_hibernate_.*</methodBlacklistRegexp>
                                 </configuration>
                             </execution>
                         </executions>
