@@ -1,4 +1,4 @@
-FROM caddy:2.9.1-alpine AS updated
+FROM caddy:2.10.0-alpine AS updated
 
 # upgrade libs
 # install openjdk21-jre
