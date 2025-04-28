@@ -174,7 +174,7 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Docker build and push
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         with:
           context: .
           platforms: linux/amd64,linux/arm64
@@ -183,7 +183,7 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Docker build and push with caddy
-        uses: docker/build-push-action@v6.15.0
+        uses: docker/build-push-action@v6.16.0
         with:
           context: .
           platforms: linux/amd64,linux/arm64
