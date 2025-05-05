@@ -21,7 +21,7 @@
         <jjwt.version>0.12.6</jjwt.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
   
-        <decycle-maven-plugin.version>1.2.3</decycle-maven-plugin.version>
+        <decycle-maven-plugin.version>1.2.4</decycle-maven-plugin.version>
 
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <spring-javaformat.version>0.0.43</spring-javaformat.version>
