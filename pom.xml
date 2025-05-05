@@ -17,7 +17,7 @@
     <properties>
         <java.source>21</java.source>
 
-        <springdoc.version>2.8.6</springdoc.version>
+        <springdoc.version>2.8.8</springdoc.version>
         <jjwt.version>0.12.6</jjwt.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
   
