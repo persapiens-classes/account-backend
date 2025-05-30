@@ -23,7 +23,8 @@ COPY --chown=springboot target/*-SNAPSHOT.jar target/application.jar
 RUN java -Djarmode=tools -jar target/application.jar extract --layers --destination target/application \
     && cp -r target/application/dependencies/* ./ \
     && cp -r target/application/application/* ./ \
-    && java -Dspring.aot.enabled=true -Dspring.flyway.enabled=false -XX:ArchiveClassesAtExit=application.jsa -Dspring.context.exit=onRefresh -jar application.jar
+    && export FLYWAY_ENABLED=false \
+    && java -Dspring.aot.enabled=true -XX:ArchiveClassesAtExit=application.jsa -Dspring.context.exit=onRefresh -jar application.jar
 
 
 FROM updated AS final
