@@ -1,20 +1,12 @@
 spring:
   jpa:
     open-in-view: false
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: create
-  sql:
-    init:
-      mode: always
   datasource:
-    url: jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://${POSTGRES_HOSTNAME:postgresdb}/${POSTGRES_DB:postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
     hikari:
       maximum-pool-size: 3
-  h2:
-    console:
-      enabled: false  # disable web console
 
 server:
   forward-headers-strategy: native
