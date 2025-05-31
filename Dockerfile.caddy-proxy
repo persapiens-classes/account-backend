@@ -12,6 +12,9 @@ USER springboot
 
 FROM updated AS builder
 
+ARG FLYWAY_ENABLED=false
+ARG POSTGRES_HOSTNAME=postgresdb
+
 WORKDIR /home/springboot
 
 # copy uber jar
@@ -23,7 +26,6 @@ COPY --chown=springboot target/*-SNAPSHOT.jar target/application.jar
 RUN java -Djarmode=tools -jar target/application.jar extract --layers --destination target/application \
     && cp -r target/application/dependencies/* ./ \
     && cp -r target/application/application/* ./ \
-    && export FLYWAY_ENABLED=false \
     && java -Dspring.aot.enabled=true -XX:ArchiveClassesAtExit=application.jsa -Dspring.context.exit=onRefresh -jar application.jar
 
 
