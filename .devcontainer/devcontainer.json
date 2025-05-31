@@ -16,7 +16,8 @@
 				"vscjava.vscode-java-pack",
 				"vscjava.vscode-java-test",
 				"github.vscode-github-actions",
-				"redhat.vscode-yaml"
+				"redhat.vscode-yaml",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	},
