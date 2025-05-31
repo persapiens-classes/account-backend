@@ -13,7 +13,7 @@ USER springboot
 FROM updated AS builder
 
 ARG FLYWAY_ENABLED=false
-ARG POSTGRES_HOSTNAME=localhost
+ARG POSTGRES_HOSTNAME=postgresdb
 
 WORKDIR /home/springboot
 
