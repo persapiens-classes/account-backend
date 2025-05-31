@@ -196,7 +196,7 @@ jobs:
           push: true
           tags: persapiens/account-backend:temurin-alpine
           build-args: |
-            POSTGRES_HOSTNAME=host.docker.internal
+            POSTGRES_HOSTNAME=172.17.0.1
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
       - name: Docker build and push with caddy
@@ -208,6 +208,6 @@ jobs:
           file: Dockerfile.caddy-proxy
           tags: persapiens/account-backend:caddy-openjdk-alpine
           build-args: |
-            POSTGRES_HOSTNAME=host.docker.internal
+            POSTGRES_HOSTNAME=172.17.0.1
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'persapiens-classes/account-backend' }}
 
