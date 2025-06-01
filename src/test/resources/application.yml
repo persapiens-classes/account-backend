@@ -10,6 +10,8 @@ spring:
     driverClassName: org.h2.Driver
     hikari:
       maximum-pool-size: 3
+  flyway:
+    enabled: false
 
 account:
   user-credentials:
