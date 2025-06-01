@@ -2,14 +2,13 @@ spring:
   jpa:
     open-in-view: false
     show-sql: true
-  sql:
-    init:
-      mode: never
   datasource:
     url: jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE
     driverClassName: org.h2.Driver
     hikari:
       maximum-pool-size: 3
+  flyway:
+    enabled: false
 
 account:
   user-credentials:
