@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
 @Configuration
-@RegisterReflectionForBinding({ 
+@RegisterReflectionForBinding({
 	// types not automatically registered by spring boot
 	BigDecimal.class, LocalDateTime.class,
 	// dtos not automatically registered by spring boot

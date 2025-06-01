@@ -9,12 +9,12 @@ import org.springframework.aot.hint.ExecutableMode;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 
-/**
- * Dtos use these types.
- * Register constructor and public methods of types BigDecimal and LocalDateTime.
- */
 public class DtoRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
+	/**
+	 * Register constructor and public methods of types BigDecimal and LocalDateTime.
+	 * Dtos use these types.
+	 */
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		registerFullReflection(hints, BigDecimal.class);
