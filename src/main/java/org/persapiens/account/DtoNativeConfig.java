@@ -9,11 +9,15 @@ import org.persapiens.account.dto.OwnerEquityAccountInitialValueInsertDTO;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
 @Configuration
-@RegisterReflectionForBinding({ BigDecimal.class, LocalDateTime.class,
+@RegisterReflectionForBinding({ 
+	// types not automatically registered by spring boot
+	BigDecimal.class, LocalDateTime.class,
+	// dtos not automatically registered by spring boot
 	AccountDTO.class, EntryDTO.class, OwnerEquityAccountInitialValueInsertDTO.class })
-
+@ImportRuntimeHints(DtoRuntimeHintsRegistrar.class)
 public class DtoNativeConfig {
 
 }
