@@ -6,7 +6,7 @@ spring:
     url: jdbc:h2:mem:mydb;NON_KEYWORDS=VALUE
     driverClassName: org.h2.Driver
     hikari:
-      maximum-pool-size: 3
+      maximum-pool-size: 2
   flyway:
     enabled: false
 
