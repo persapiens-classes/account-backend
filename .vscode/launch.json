@@ -9,7 +9,7 @@
             "name": "AcccountApplication",
             "request": "launch",
             "mainClass": "org.persapiens.account.AccountApplication",
-            "projectName": "account"
+            "projectName": "account-backend"
         }
     ]
 }
