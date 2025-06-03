@@ -1,12 +1,16 @@
 package org.persapiens.account.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
+import org.persapiens.account.dto.AccountDTO;
+import org.persapiens.account.dto.BalanceDTO;
 import org.persapiens.account.persistence.CreditEntryRepository;
 import org.persapiens.account.persistence.DebitEntryRepository;
 import org.persapiens.account.persistence.OwnerEquityAccountInitialValueRepository;
@@ -30,7 +34,7 @@ public class BalanceService {
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
-	public BigDecimal balance(String ownerName, String equityAccountDescription) {
+	public BalanceDTO balanceByOwnerAndEquityAccount(String ownerName, String equityAccountDescription) {
 		Owner owner = this.ownerService.findEntityByName(ownerName);
 		EquityAccount equityAccount = this.equityAccountService.findEntityByDescription(equityAccountDescription);
 
@@ -41,8 +45,25 @@ public class BalanceService {
 					"OwnerEquityAccountInitialValue not exists: " + ownerName + '-' + equityAccountDescription);
 		}
 
+		// get owner and equity account initial value
+		return balanceByOwnerAndEquityAccountInitialValue(ownerAndEquityAccountInitialValueOptional.get());
+	}
+
+	public List<BalanceDTO> balanceAll() {
+		List<BalanceDTO> result = new ArrayList<>();
+		for (var bean : this.ownerEquityAccountInitialValueRepository.findAll()) {
+			result.add(balanceByOwnerAndEquityAccountInitialValue(bean));
+		}
+		return result;
+	}
+
+	private BalanceDTO balanceByOwnerAndEquityAccountInitialValue(
+			OwnerEquityAccountInitialValue ownerAndEquityAccountInitialValue) {
+		Owner owner = ownerAndEquityAccountInitialValue.getOwner();
+		EquityAccount equityAccount = ownerAndEquityAccountInitialValue.getEquityAccount();
+
 		// get initial value of owner and equity account
-		BigDecimal result = ownerAndEquityAccountInitialValueOptional.get().getValue();
+		BigDecimal result = ownerAndEquityAccountInitialValue.getValue();
 
 		// sum credits of owner and equity account
 		BigDecimal credits = this.creditEntryRepository.creditSum(owner, equityAccount);
@@ -56,7 +77,12 @@ public class BalanceService {
 		// subtract transfer debits of owner and equity account
 		BigDecimal transferDebits = this.transferEntryRepository.debitSum(owner, equityAccount);
 
-		return result.add(credits).subtract(debits).add(transferCredits).subtract(transferDebits);
+		result = result.add(credits).subtract(debits).add(transferCredits).subtract(transferDebits);
+
+		AccountDTO equityAccountDTO = new AccountDTO(equityAccount.getDescription(),
+				equityAccount.getCategory().getDescription());
+
+		return new BalanceDTO(owner.getName(), equityAccountDTO, ownerAndEquityAccountInitialValue.getValue(), result);
 	}
 
 }
