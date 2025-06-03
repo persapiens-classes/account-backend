@@ -63,7 +63,7 @@ public class BalanceService {
 		EquityAccount equityAccount = ownerAndEquityAccountInitialValue.getEquityAccount();
 
 		// get initial value of owner and equity account
-		BigDecimal result = ownerAndEquityAccountInitialValue.getValue();
+		BigDecimal result = ownerAndEquityAccountInitialValue.getInitialValue();
 
 		// sum credits of owner and equity account
 		BigDecimal credits = this.creditEntryRepository.creditSum(owner, equityAccount);
@@ -82,7 +82,8 @@ public class BalanceService {
 		AccountDTO equityAccountDTO = new AccountDTO(equityAccount.getDescription(),
 				equityAccount.getCategory().getDescription());
 
-		return new BalanceDTO(owner.getName(), equityAccountDTO, ownerAndEquityAccountInitialValue.getValue(), result);
+		return new BalanceDTO(owner.getName(), equityAccountDTO, ownerAndEquityAccountInitialValue.getInitialValue(),
+				result);
 	}
 
 }

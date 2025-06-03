@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode(of = { "value", "owner", "equityAccount" })
+@EqualsAndHashCode(of = { "initialValue", "owner", "equityAccount" })
 @ToString
 @SuperBuilder
 @Getter
@@ -32,7 +32,7 @@ public class OwnerEquityAccountInitialValue implements Comparable<OwnerEquityAcc
 	private OwnerEquityAccountInitialValueId id = new OwnerEquityAccountInitialValueId();
 
 	@Column(nullable = false)
-	private BigDecimal value;
+	private BigDecimal initialValue;
 
 	@MapsId("ownerId")
 	@ManyToOne
@@ -46,7 +46,7 @@ public class OwnerEquityAccountInitialValue implements Comparable<OwnerEquityAcc
 
 	@Override
 	public int compareTo(OwnerEquityAccountInitialValue o) {
-		return Comparator.comparing(OwnerEquityAccountInitialValue::getValue)
+		return Comparator.comparing(OwnerEquityAccountInitialValue::getInitialValue)
 			.thenComparing(OwnerEquityAccountInitialValue::getOwner)
 			.thenComparing(OwnerEquityAccountInitialValue::getEquityAccount)
 			.compare(this, o);

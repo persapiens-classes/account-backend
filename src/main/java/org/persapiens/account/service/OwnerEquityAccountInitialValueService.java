@@ -41,7 +41,7 @@ public class OwnerEquityAccountInitialValueService extends
 		return new OwnerEquityAccountInitialValueDTO(entity.getOwner().getName(),
 				new AccountDTO(entity.getEquityAccount().getDescription(),
 						entity.getEquityAccount().getCategory().getDescription()),
-				entity.getValue());
+				entity.getInitialValue());
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class OwnerEquityAccountInitialValueService extends
 		}
 
 		return OwnerEquityAccountInitialValue.builder()
-			.value(ownerEquityAccountInitialValueDTO.initialValue())
+			.initialValue(ownerEquityAccountInitialValueDTO.initialValue())
 			.owner(owner)
 			.equityAccount(equityAccount)
 			.build();
@@ -67,7 +67,7 @@ public class OwnerEquityAccountInitialValueService extends
 
 	@Override
 	protected OwnerEquityAccountInitialValue updateDtoToEntity(BigDecimal value) {
-		return OwnerEquityAccountInitialValue.builder().value(value).build();
+		return OwnerEquityAccountInitialValue.builder().initialValue(value).build();
 	}
 
 	OwnerEquityAccountInitialValue findEntityByOwnerAndEquityAccount(String ownerName,
