@@ -32,7 +32,7 @@ public class OwnerEquityAccountInitialValueFactory {
 			ownerEquityAccountInitialValue = findBy.get();
 		}
 
-		ownerEquityAccountInitialValue.setValue(value.setScale(2));
+		ownerEquityAccountInitialValue.setInitialValue(value.setScale(2));
 
 		return this.ownerEquityAccountInitialValueRepository.save(ownerEquityAccountInitialValue);
 	}

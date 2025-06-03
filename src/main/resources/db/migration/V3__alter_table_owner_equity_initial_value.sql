@@ -1,0 +1,2 @@
+ALTER TABLE owner_equity_account_initial_value
+RENAME COLUMN value TO initial_value;

@@ -15,14 +15,14 @@ class OwnerEquityAccountInitialValueTests {
 	private static final String INDIVIDUAL_ASSET = "individual asset";
 
 	private OwnerEquityAccountInitialValue ownerEquityAccountInitialValue(String categoryDescription, String ownerName,
-			BigDecimal value) {
+			BigDecimal initialValue) {
 		return OwnerEquityAccountInitialValue.builder()
 			.equityAccount(EquityAccount.builder()
 				.description(categoryDescription)
 				.category(EquityCategory.builder().description(INDIVIDUAL_ASSET).build())
 				.build())
 			.owner(Owner.builder().name(ownerName).build())
-			.value(value)
+			.initialValue(initialValue)
 			.build();
 	}
 
