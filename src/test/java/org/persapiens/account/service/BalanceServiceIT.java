@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
 import org.persapiens.account.dto.AccountDTO;
+import org.persapiens.account.dto.BalanceDTO;
 import org.persapiens.account.dto.OwnerDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,9 @@ class BalanceServiceIT {
 
 		// run the operation to be tested
 		// verify the results
-		assertThat(this.balanceService.balance(father.name(), wallet.description()))
-			.isEqualTo(new BigDecimal(800).setScale(2));
+		assertThat(this.balanceService.balanceByOwnerAndEquityAccount(father.name(), wallet.description()))
+			.isEqualTo(new BalanceDTO(father.name(), wallet, new BigDecimal(1000).setScale(2),
+					new BigDecimal(800).setScale(2)));
 	}
 
 }

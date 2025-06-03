@@ -113,4 +113,9 @@ public class OwnerEquityAccountInitialValueService extends
 		}
 	}
 
+	@Transactional
+	public void deleteAll() {
+		this.ownerEquityAccountInitialValueRepository.deleteAll();
+	}
+
 }
