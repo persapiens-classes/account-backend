@@ -9,6 +9,6 @@ import jakarta.validation.constraints.NotNull;
 @Schema(name = "ownerEquityAccountInitialValueInsert",
 		description = "ownerEquityAccountInitialValue for post operation")
 public record OwnerEquityAccountInitialValueInsertDTO(@NotBlank String owner, @NotBlank String equityAccount,
-		@NotNull BigDecimal value) {
+		@NotNull BigDecimal initialValue) {
 
 }

@@ -103,7 +103,7 @@ class OwnerEquityAccountInitialValueRestClientIT extends RestClientIT {
 		OwnerEquityAccountInitialValueDTO updated = ownerEquityAccountInitialValueRestClient.update(inserted.owner(),
 				inserted.equityAccount().description(), new BigDecimal(2000));
 
-		assertThat(updated.value()).isEqualTo(new BigDecimal(2000));
+		assertThat(updated.initialValue()).isEqualTo(new BigDecimal(2000));
 		assertThat(ownerEquityAccountInitialValueRestClient.findAll()).isNotEmpty();
 	}
 

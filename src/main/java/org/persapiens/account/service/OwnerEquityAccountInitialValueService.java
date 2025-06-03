@@ -59,7 +59,7 @@ public class OwnerEquityAccountInitialValueService extends
 		}
 
 		return OwnerEquityAccountInitialValue.builder()
-			.value(ownerEquityAccountInitialValueDTO.value())
+			.value(ownerEquityAccountInitialValueDTO.initialValue())
 			.owner(owner)
 			.equityAccount(equityAccount)
 			.build();

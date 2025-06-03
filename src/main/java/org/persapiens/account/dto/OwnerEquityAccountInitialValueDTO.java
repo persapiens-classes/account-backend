@@ -8,6 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 @Schema(name = "ownerEquityAccountInitialValue")
 public record OwnerEquityAccountInitialValueDTO(@NotBlank String owner, @NotBlank AccountDTO equityAccount,
-		@NotNull BigDecimal value) {
+		@NotNull BigDecimal initialValue) {
 
 }
