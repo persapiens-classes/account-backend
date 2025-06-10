@@ -21,7 +21,8 @@
 				"github.vscode-github-actions",
 				"redhat.vscode-yaml",
 				"ms-azuretools.vscode-docker",
-				"cweijan.vscode-postgresql-client2"
+				"cweijan.vscode-postgresql-client2",
+				"ms-vscode-remote.remote-containers"
 			]
 		}
 	},
