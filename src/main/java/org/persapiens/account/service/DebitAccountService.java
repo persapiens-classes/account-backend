@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DebitAccountService extends AccountService<DebitAccount, DebitCategory> {
 
-	public DebitAccountService(DebitAccountRepository debitAccountRepository, DebitCategoryService categoryService) {
-		super(debitAccountRepository, categoryService);
+	public DebitAccountService(DebitAccountRepository debitAccountRepository, DebitCategoryService debitCategoryService) {
+		super(debitAccountRepository, debitCategoryService);
 	}
 
 	@Override
