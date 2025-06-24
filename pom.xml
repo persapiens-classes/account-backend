@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.3</version>
         <relativePath/>
     </parent>
 
@@ -24,9 +24,9 @@
         <decycle-maven-plugin.version>1.2.4</decycle-maven-plugin.version>
 
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-        <spring-javaformat.version>0.0.46</spring-javaformat.version>
+        <spring-javaformat.version>0.0.47</spring-javaformat.version>
 
-        <checkstyle.version>10.25.0</checkstyle.version>
+        <checkstyle.version>10.25.1</checkstyle.version>
         <checkstyle.configLocation>src/checkconfig/checkstyle/checkstyle.xml</checkstyle.configLocation>
 
         <maven-pmd-plugin.version>3.26.0</maven-pmd-plugin.version>
