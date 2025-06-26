@@ -27,56 +27,53 @@ public class ServiceConfiguration {
 
 	@Bean
 	public CategoryService<CreditCategory> creditCategoryService(CreditCategoryRepository creditCategoryRepository) {
-		return new CategoryService<CreditCategory>(creditCategoryRepository, CreditCategory::new);
+		return new CategoryService<>(creditCategoryRepository, CreditCategory::new);
 	}
 
 	@Bean
 	public CategoryService<DebitCategory> debitCategoryService(DebitCategoryRepository debitCategoryRepository) {
-		return new CategoryService<DebitCategory>(debitCategoryRepository, DebitCategory::new);
+		return new CategoryService<>(debitCategoryRepository, DebitCategory::new);
 	}
 
 	@Bean
 	public CategoryService<EquityCategory> equityCategoryService(EquityCategoryRepository equityCategoryRepository) {
-		return new CategoryService<EquityCategory>(equityCategoryRepository, EquityCategory::new);
+		return new CategoryService<>(equityCategoryRepository, EquityCategory::new);
 	}
 
 	@Bean
 	public AccountService<CreditAccount, CreditCategory> creditAccountService(CreditAccountRepository creditAccountRepository,
 			CategoryService<CreditCategory> creditCategoryService) {
-		return new AccountService<CreditAccount, CreditCategory>(creditAccountRepository, creditCategoryService, CreditAccount::new);
+		return new AccountService<>(creditAccountRepository, creditCategoryService, CreditAccount::new);
 	}
 
 	@Bean
 	public AccountService<DebitAccount, DebitCategory> debitAccountService(DebitAccountRepository debitAccountRepository,
 			CategoryService<DebitCategory> debitCategoryService) {
-		return new AccountService<DebitAccount, DebitCategory>(debitAccountRepository, debitCategoryService, DebitAccount::new);
+		return new AccountService<>(debitAccountRepository, debitCategoryService, DebitAccount::new);
 	}
 
 	@Bean
 	public AccountService<EquityAccount, EquityCategory> equityAccountService(EquityAccountRepository equityAccountRepository,
 			CategoryService<EquityCategory> equityCategoryService) {
-		return new AccountService<EquityAccount, EquityCategory>(equityAccountRepository, equityCategoryService, EquityAccount::new);
+		return new AccountService<>(equityAccountRepository, equityCategoryService, EquityAccount::new);
 	}
 
 	@Bean
 	public EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> creditEntryService(CreditEntryRepository creditEntryRepository,
 			AccountService<EquityAccount, EquityCategory> equityAccountService, AccountService<CreditAccount, CreditCategory> creditAccountService, OwnerService ownerService) {
-		return new EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory>(creditEntryRepository,
-			equityAccountService, creditAccountService, ownerService, CreditEntry::new);
+		return new EntryService<>(creditEntryRepository, equityAccountService, creditAccountService, ownerService, CreditEntry::new);
 	}
 
 	@Bean
 	public EntryService<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory> debitEntryService(DebitEntryRepository debitEntryRepository,
 			AccountService<DebitAccount, DebitCategory> debitAccountService, AccountService<EquityAccount, EquityCategory> equityAccountService, OwnerService ownerService) {
-		return new EntryService<DebitEntry, DebitAccount, DebitCategory, EquityAccount, EquityCategory>(debitEntryRepository,
-			debitAccountService, equityAccountService, ownerService, DebitEntry::new);
+		return new EntryService<>(debitEntryRepository, debitAccountService, equityAccountService, ownerService, DebitEntry::new);
 	}
 
 	@Bean
 	public EntryService<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> transferEntryService(TransferEntryRepository transferEntryRepository,
 			AccountService<EquityAccount, EquityCategory> equityAccountService, OwnerService ownerService) {
-		return new EntryService<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory>(transferEntryRepository,
-			equityAccountService, equityAccountService, ownerService, TransferEntry::new);
+		return new EntryService<>(transferEntryRepository, equityAccountService, equityAccountService, ownerService, TransferEntry::new);
 	}
 
 }
