@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public abstract class CrudController<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
+public class CrudController<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
 
 	private CrudService<I, U, F, B, E, K> crudService;
 

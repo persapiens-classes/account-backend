@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.CreditCategory;
+import org.persapiens.account.domain.CreditEntry;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CreditEntryServiceIT {
 
 	@Autowired
-	private CreditEntryService entryService;
+	private EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> entryService;
 
 	@Autowired
 	private OwnerDTOFactory ownerDTOFactory;

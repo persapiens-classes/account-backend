@@ -1,6 +1,7 @@
 package org.persapiens.account.service;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.persapiens.account.domain.Category;
 import org.persapiens.account.dto.CategoryDTO;
@@ -8,15 +9,17 @@ import org.persapiens.account.persistence.CategoryRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class CategoryService<C extends Category>
+public class CategoryService<C extends Category>
 		extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
 	private CategoryRepository<C> categoryRepository;
+	private Supplier<C> categorySupplier;
 
-	protected CategoryService(CategoryRepository<C> categoryRepository) {
+	protected CategoryService(CategoryRepository<C> categoryRepository, Supplier<C> categorySupplier) {
 		super(categoryRepository);
 
 		this.categoryRepository = categoryRepository;
+		this.categorySupplier = categorySupplier;
 	}
 
 	@Override
@@ -30,7 +33,9 @@ public abstract class CategoryService<C extends Category>
 		}
 	}
 
-	protected abstract C createCategory();
+	private C createCategory() {
+		return this.categorySupplier.get();
+	}
 
 	private C toEntity(CategoryDTO categoryDTO) {
 		validate(categoryDTO);

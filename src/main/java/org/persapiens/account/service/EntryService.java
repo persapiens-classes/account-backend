@@ -1,6 +1,7 @@
 package org.persapiens.account.service;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.persapiens.account.domain.Account;
 import org.persapiens.account.domain.Category;
@@ -12,7 +13,7 @@ import org.persapiens.account.persistence.EntryRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
+public class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
 		extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
 	private EntryRepository<E, I, J, O, P> entryRepository;
@@ -23,13 +24,16 @@ public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Acc
 
 	private OwnerService ownerService;
 
+	private Supplier<E> entrySupplier;
+
 	protected EntryService(EntryRepository<E, I, J, O, P> entryRepository, AccountService<I, J> inAccountService,
-			AccountService<O, P> outAccountService, OwnerService ownerService) {
+			AccountService<O, P> outAccountService, OwnerService ownerService, Supplier<E> entrySupplier) {
 		super(entryRepository);
 		this.entryRepository = entryRepository;
 		this.inAccountService = inAccountService;
 		this.outAccountService = outAccountService;
 		this.ownerService = ownerService;
+		this.entrySupplier = entrySupplier;
 	}
 
 	@Override
@@ -42,7 +46,9 @@ public abstract class EntryService<E extends Entry<E, I, J, O, P>, I extends Acc
 				entry.getValue(), entry.getNote());
 	}
 
-	protected abstract E createEntry();
+	protected E createEntry() {
+		return this.entrySupplier.get();
+	}
 
 	private E toEntity(EntryInsertUpdateDTO entryInsertUpdateDTO) {
 		E result = createEntry();
