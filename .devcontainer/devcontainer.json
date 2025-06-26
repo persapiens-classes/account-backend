@@ -28,7 +28,8 @@
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		8080
+		8080,
+		5432
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "sudo apt update && sudo apt -y install graphviz postgresql-client docker.io"

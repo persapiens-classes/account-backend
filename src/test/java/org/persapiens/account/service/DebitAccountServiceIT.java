@@ -2,6 +2,8 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.DebitAccount;
+import org.persapiens.account.domain.DebitCategory;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.DebitAccountRepository;
 
@@ -17,7 +19,7 @@ class DebitAccountServiceIT {
 	private DebitAccountRepository debitAccountRepository;
 
 	@Autowired
-	private DebitAccountService debitAccountService;
+	private AccountService<DebitAccount, DebitCategory> debitAccountService;
 
 	@Autowired
 	private DebitAccountDTOFactory debitAccountDTOFactory;

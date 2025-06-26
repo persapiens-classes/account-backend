@@ -2,6 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.DebitCategory;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.DebitCategoryRepository;
 
@@ -17,7 +18,7 @@ class DebitCategoryServiceIT {
 	private DebitCategoryRepository debitCategoryRepository;
 
 	@Autowired
-	private DebitCategoryService debitCategoryService;
+	private CategoryService<DebitCategory> debitCategoryService;
 
 	@Autowired
 	private DebitCategoryDTOFactory debitCategoryDTOFactory;

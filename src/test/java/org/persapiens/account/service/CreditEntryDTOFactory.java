@@ -3,7 +3,11 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
+import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.CreditCategory;
 import org.persapiens.account.domain.CreditEntry;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.OwnerDTO;
@@ -20,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreditEntryDTOFactory {
 
-	private CreditEntryService creditEntryService;
+	private EntryService<CreditEntry, EquityAccount, EquityCategory, CreditAccount, CreditCategory> creditEntryService;
 
 	private CreditEntryFactory creditEntryFactory;
 

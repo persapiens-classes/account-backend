@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValueId;
@@ -24,11 +25,11 @@ public class OwnerEquityAccountInitialValueService extends
 
 	private OwnerService ownerService;
 
-	private EquityAccountService equityAccountService;
+	private AccountService<EquityAccount, EquityCategory> equityAccountService;
 
 	public OwnerEquityAccountInitialValueService(
 			OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository,
-			OwnerService ownerService, EquityAccountService equityAccountService) {
+			OwnerService ownerService, AccountService<EquityAccount, EquityCategory> equityAccountService) {
 		super(ownerEquityAccountInitialValueRepository);
 
 		this.ownerEquityAccountInitialValueRepository = ownerEquityAccountInitialValueRepository;

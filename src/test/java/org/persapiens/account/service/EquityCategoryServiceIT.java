@@ -2,6 +2,7 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.dto.CategoryDTO;
 import org.persapiens.account.persistence.EquityCategoryRepository;
 
@@ -17,7 +18,7 @@ class EquityCategoryServiceIT {
 	private EquityCategoryRepository categoryRepository;
 
 	@Autowired
-	private EquityCategoryService categoryService;
+	private CategoryService<EquityCategory> categoryService;
 
 	@Autowired
 	private EquityCategoryDTOFactory categoryDTOFactory;

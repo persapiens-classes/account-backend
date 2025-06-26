@@ -1,6 +1,7 @@
 package org.persapiens.account.service;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.StringUtils;
 import org.persapiens.account.domain.Account;
@@ -10,21 +11,26 @@ import org.persapiens.account.persistence.AccountRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class AccountService<E extends Account<C>, C extends Category>
+public class AccountService<E extends Account<C>, C extends Category>
 		extends CrudService<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
 	private AccountRepository<E, C> accountRepository;
 
 	private CategoryService<C> categoryService;
 
-	protected AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService) {
+	private Supplier<E> accountSupplier;
+
+	protected AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService, Supplier<E> accountSupplier) {
 		super(accountRepository);
 
 		this.accountRepository = accountRepository;
 		this.categoryService = categoryService;
+		this.accountSupplier = accountSupplier;
 	}
 
-	protected abstract E createAccount();
+	protected E createAccount() {
+		return this.accountSupplier.get();
+	}
 
 	@Override
 	protected AccountDTO toDTO(E entity) {

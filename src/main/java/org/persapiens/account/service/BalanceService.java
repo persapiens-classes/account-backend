@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.domain.Owner;
 import org.persapiens.account.domain.OwnerEquityAccountInitialValue;
 import org.persapiens.account.dto.AccountDTO;
@@ -30,7 +31,7 @@ public class BalanceService {
 
 	private OwnerService ownerService;
 
-	private EquityAccountService equityAccountService;
+	private AccountService<EquityAccount, EquityCategory> equityAccountService;
 
 	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 

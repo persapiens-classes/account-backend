@@ -3,6 +3,8 @@ package org.persapiens.account.service;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.domain.TransferEntry;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.EntryDTO;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransferEntryDTOFactory {
 
-	private TransferEntryService transferEntryService;
+	private EntryService<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> transferEntryService;
 
 	private TransferEntryFactory transferEntryFactory;
 
