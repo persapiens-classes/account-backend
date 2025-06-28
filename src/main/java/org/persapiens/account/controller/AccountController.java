@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public abstract class AccountController<E extends Account<C>, C extends Category>
+public class AccountController<E extends Account<C>, C extends Category>
 		extends CrudController<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
 	private AccountService<E, C> accountService;

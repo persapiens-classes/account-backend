@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.EquityAccount;
+import org.persapiens.account.domain.EquityCategory;
+import org.persapiens.account.domain.TransferEntry;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 import org.persapiens.account.persistence.EquityAccountFactory;
 import org.persapiens.account.persistence.OwnerFactory;
@@ -25,7 +28,7 @@ class TransferEntryServiceIT {
 	private EquityAccountDTOFactory equityAccountDTOFactory;
 
 	@Autowired
-	private TransferEntryService transferEntryService;
+	private EntryService<TransferEntry, EquityAccount, EquityCategory, EquityAccount, EquityCategory> transferEntryService;
 
 	@Autowired
 	private TransferEntryRepository transferEntryRepository;

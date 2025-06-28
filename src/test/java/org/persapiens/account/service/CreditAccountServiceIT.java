@@ -2,6 +2,8 @@ package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
 import org.persapiens.account.AccountApplication;
+import org.persapiens.account.domain.CreditAccount;
+import org.persapiens.account.domain.CreditCategory;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.CreditAccountRepository;
 
@@ -17,7 +19,7 @@ class CreditAccountServiceIT {
 	private CreditAccountRepository creditAccountRepository;
 
 	@Autowired
-	private CreditAccountService creditAccountService;
+	private AccountService<CreditAccount, CreditCategory> creditAccountService;
 
 	@Autowired
 	private CreditAccountDTOFactory creditAccountDTOFactory;
