@@ -15,6 +15,10 @@ spring:
 
 server:
   forward-headers-strategy: native
+  tomcat:
+    threads:
+      max: 20
+      min-spare: 5
 
 account:
   user-credentials:
