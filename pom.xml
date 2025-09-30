@@ -375,6 +375,9 @@
 
         <profile>
             <id>pmd</id>
+            <properties>
+                <pmdVersion>7.17.0</pmdVersion>
+            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -384,6 +387,7 @@
                             <version>${maven-pmd-plugin.version}</version>
                             <configuration>
                                 <targetJdk>${java.source}</targetJdk>
+                                <pmdVersion>${pmdVersion}</pmdVersion>
                                 <includeTests>true</includeTests>
                                 <rulesets>
                                     <ruleset>${pmd.ruleset}</ruleset>
@@ -394,6 +398,28 @@
                                 <printFailingErrors>true</printFailingErrors>
                                 <verbose>true</verbose>
                             </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>net.sourceforge.pmd</groupId>
+                                    <artifactId>pmd-core</artifactId>
+                                    <version>${pmdVersion}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>net.sourceforge.pmd</groupId>
+                                    <artifactId>pmd-java</artifactId>
+                                    <version>${pmdVersion}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>net.sourceforge.pmd</groupId>
+                                    <artifactId>pmd-javascript</artifactId>
+                                    <version>${pmdVersion}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>net.sourceforge.pmd</groupId>
+                                    <artifactId>pmd-jsp</artifactId>
+                                    <version>${pmdVersion}</version>
+                                </dependency>
+                            </dependencies>
                         </plugin>
                     </plugins>
                 </pluginManagement>
