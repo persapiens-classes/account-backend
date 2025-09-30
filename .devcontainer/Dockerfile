@@ -9,9 +9,10 @@ ARG GRADLE_VERSION=""
 RUN if [ "${INSTALL_MAVEN}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/sdkman/bin/sdkman-init.sh && sdk install maven \"${MAVEN_VERSION}\""; fi \
     && if [ "${INSTALL_GRADLE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/sdkman/bin/sdkman-init.sh && sdk install gradle \"${GRADLE_VERSION}\""; fi
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+# Install additional OS packages including sudo, graphviz, postgresql-client, and docker.io
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends docker.io graphviz postgresql-client sudo \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
@@ -21,7 +22,9 @@ RUN id -u vscode 2>/dev/null || (\
     groupadd -g 1000 vscode && \
     useradd -m -u 1000 -g 1000 -d /workspaces -s /bin/bash vscode && \
     mkdir -p /workspaces && \
-    chown vscode:vscode /workspaces)
+    chown vscode:vscode /workspaces) \
+    && usermod -aG sudo vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Garante que o usuário padrão seja vscode
 USER vscode
