@@ -32,7 +32,7 @@
 		5432
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt update && sudo apt -y install graphviz postgresql-client docker.io"
+	"postCreateCommand": "echo 'Development environment ready!'"
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

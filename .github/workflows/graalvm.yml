@@ -1,4 +1,4 @@
-name: GraalVM CI
+name: GraalVM CD
 
 on: 
   push:
@@ -10,7 +10,7 @@ jobs:
     name: GraalVM Java ${{ matrix.java }}
     strategy:
       matrix:
-        java: [21]
+        java: [25]
 
     steps:
       - uses: actions/checkout@v5.0.0

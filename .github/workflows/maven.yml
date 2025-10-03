@@ -10,7 +10,7 @@ jobs:
     name: Java ${{ matrix.java }}
     strategy:
       matrix:
-        java: [21]
+        java: [25]
 
     services:    
       postgresdb:
