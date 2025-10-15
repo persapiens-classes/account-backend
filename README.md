@@ -22,7 +22,7 @@ This is the pedagogical example app of the discipline [Qualidade de Software (Pa
 
 This backend API is built with **Spring Boot** and leverages the following technologies:
 
-- **Java 21** (Eclipse Temurin)
+- **Java 25** (Eclipse Temurin)
 - **Spring Boot** (REST API, Dependency Injection, Validation)
 - **Spring Security** (JWT authentication, role-based access)
 - **Spring Data JPA** (Persistence layer)
