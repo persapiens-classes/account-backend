@@ -4,7 +4,7 @@ FROM caddy:2.10.2-alpine AS updated
 # install openjdk25-jre
 # add springboot user
 RUN apk -U upgrade --no-cache \
-    && apk add openjdk25-jre --no-cache  \
+    && apk add openjdk21-jre --no-cache  \
     && adduser -D springboot
 
 USER springboot
