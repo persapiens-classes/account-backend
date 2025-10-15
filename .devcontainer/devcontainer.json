@@ -1,40 +1,44 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/java
 {
-	"name": "Java & PostgreSQL",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2.12.4": {}
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"vscjava.vscode-java-debug",
-				"redhat.java",
-				"vscjava.vscode-maven",
-				"vscjava.vscode-java-dependency",
-				"redhat.fabric8-analytics",
-				"vscjava.vscode-java-pack",
-				"vscjava.vscode-java-test",
-				"github.vscode-github-actions",
-				"redhat.vscode-yaml",
-				"ms-azuretools.vscode-docker",
-				"cweijan.vscode-postgresql-client2",
-				"ms-vscode-remote.remote-containers"
-			]
-		}
-	},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		8080,
-		5432
-	],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt update && sudo apt -y install graphviz postgresql-client docker.io"
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  "name": "Java & PostgreSQL",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2.12.4": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-debug",
+        "redhat.java",
+        "vscjava.vscode-maven",
+        "vscjava.vscode-java-dependency",
+        "redhat.fabric8-analytics",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-java-test",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker",
+        "cweijan.vscode-postgresql-client2",
+        "ms-vscode-remote.remote-containers"
+      ],
+      "settings": {
+        "terminal.integrated.env.linux": {
+          "TERM": "xterm-256color",
+          "COLORTERM": "truecolor",
+          "FORCE_COLOR": "1"
+        }
+      }
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [8080, 5432],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "echo 'Development environment ready!'"
+  // Configure tool-specific properties.
+  // "customizations": {},
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }
