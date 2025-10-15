@@ -42,7 +42,7 @@ public class RestClientHelper<T> {
 				}
 				return execution.execute(request, body);
 			}
-		}).defaultStatusHandler(HttpStatusCode::is4xxClientError, (request, responseException) -> {
+		}).defaultStatusHandler(HttpStatusCode::is4xxClientError, (_, responseException) -> {
 			throw new HttpClientErrorException(responseException.getStatusCode());
 		}).build();
 	}
