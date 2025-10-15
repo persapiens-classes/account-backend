@@ -42,7 +42,7 @@ RUN echo 'export TERM=xterm-256color' >> /workspaces/.bashrc \
     && echo 'parse_git_branch() {' >> /workspaces/.bashrc \
     && echo '    git branch 2> /dev/null | sed -e "/^[^*]/d" -e "s/* \(.*\)/ (\1)/"' >> /workspaces/.bashrc \
     && echo '}' >> /workspaces/.bashrc \
-    && echo 'export PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\]\$ "' >> /workspaces/.bashrc \
+    && echo 'export PS1="\[\033[01;32m\]\u\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]\$(parse_git_branch)\[\033[00m\]\$ "' >> /workspaces/.bashrc \
     && chown vscode:vscode /workspaces/.bashrc
 
 # Ensure that the default user is vscode
