@@ -45,6 +45,8 @@
         <plantuml-maven-plugin.version>0.2.14</plantuml-maven-plugin.version>
 
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
+
+        <byte-buddy.version>1.17.8</byte-buddy.version>
     </properties>
 
     <dependencyManagement>
@@ -272,6 +274,13 @@
 				<groupId>org.hibernate.orm.tooling</groupId>
 				<artifactId>hibernate-enhance-maven-plugin</artifactId>
 				<version>${hibernate.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.bytebuddy</groupId>
+                        <artifactId>byte-buddy</artifactId>
+                        <version>${byte-buddy.version}</version>
+                    </dependency>
+                </dependencies>
 				<executions>
 					<execution>
 						<id>enhance</id>
