@@ -34,7 +34,7 @@ public class AuthenticationController {
 				.expiresIn(this.jwtFactory.getExpirationTime())
 				.build());
 		}
-		catch (BadCredentialsException error) {
+		catch (BadCredentialsException _) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}

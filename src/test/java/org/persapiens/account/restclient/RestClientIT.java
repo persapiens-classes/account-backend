@@ -54,7 +54,7 @@ class RestClientIT {
 		try {
 			return ownerRestClient().findByName(name);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			OwnerDTO result = new OwnerDTO(name);
 			return ownerRestClient().insert(result);
 		}
@@ -82,7 +82,7 @@ class RestClientIT {
 		try {
 			return creditCategoryRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			CategoryDTO result = new CategoryDTO(description);
 			return creditCategoryRestClient().insert(result);
 		}
@@ -92,7 +92,7 @@ class RestClientIT {
 		try {
 			return debitCategoryRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			CategoryDTO result = new CategoryDTO(description);
 			return debitCategoryRestClient().insert(result);
 		}
@@ -102,7 +102,7 @@ class RestClientIT {
 		try {
 			return equityCategoryRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			CategoryDTO result = new CategoryDTO(description);
 			return equityCategoryRestClient().insert(result);
 		}
@@ -118,7 +118,7 @@ class RestClientIT {
 		try {
 			return equityAccountRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return equityAccountRestClient().insert(result);
 		}
@@ -134,7 +134,7 @@ class RestClientIT {
 		try {
 			return creditAccountRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return creditAccountRestClient().insert(result);
 		}
@@ -150,7 +150,7 @@ class RestClientIT {
 		try {
 			return debitAccountRestClient().findByDescription(description);
 		}
-		catch (HttpClientErrorException error) {
+		catch (HttpClientErrorException _) {
 			AccountDTO result = new AccountDTO(description, categoryDescription);
 			return debitAccountRestClient().insert(result);
 		}
