@@ -295,7 +295,7 @@
 					</execution>
 				</executions>
 			</plugin>
-            -->
+
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
