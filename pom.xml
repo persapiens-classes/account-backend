@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0-RC2</version>
+        <version>4.0.0</version>
         <relativePath/>
     </parent>
 
@@ -17,7 +17,7 @@
     <properties>
         <java.source>25</java.source>
 
-        <springdoc.version>3.0.0-RC1</springdoc.version>
+        <springdoc.version>3.0.0</springdoc.version>
         <jjwt.version>0.13.0</jjwt.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
   
@@ -47,6 +47,7 @@
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
         <byte-buddy.version>1.17.8</byte-buddy.version>
+        <hibernate.version>7.1.10.Final</hibernate.version>
     </properties>
 
     <dependencyManagement>
