@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.8</version>
+        <version>4.0.0</version>
         <relativePath/>
     </parent>
 
@@ -17,7 +17,7 @@
     <properties>
         <java.source>25</java.source>
 
-        <springdoc.version>2.8.14</springdoc.version>
+        <springdoc.version>3.0.0</springdoc.version>
         <jjwt.version>0.13.0</jjwt.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
   
@@ -46,7 +46,7 @@
 
         <sonar-maven-plugin.version>5.3.0.6276</sonar-maven-plugin.version>
 
-        <byte-buddy.version>1.18.1</byte-buddy.version>
+        <hibernate.version>7.1.10.Final</hibernate.version>
     </properties>
 
     <dependencyManagement>
@@ -271,16 +271,9 @@
             </plugin>
 
 			<plugin>
-				<groupId>org.hibernate.orm.tooling</groupId>
-				<artifactId>hibernate-enhance-maven-plugin</artifactId>
+				<groupId>org.hibernate.orm</groupId>
+				<artifactId>hibernate-maven-plugin</artifactId>
 				<version>${hibernate.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.bytebuddy</groupId>
-                        <artifactId>byte-buddy</artifactId>
-                        <version>${byte-buddy.version}</version>
-                    </dependency>
-                </dependencies>
 				<executions>
 					<execution>
 						<id>enhance</id>
@@ -288,13 +281,12 @@
 							<goal>enhance</goal>
 						</goals>
 						<configuration>
-							<enableLazyInitialization>true</enableLazyInitialization>
-							<enableDirtyTracking>true</enableDirtyTracking>
 							<enableAssociationManagement>true</enableAssociationManagement>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
