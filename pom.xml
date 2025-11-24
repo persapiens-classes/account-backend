@@ -46,7 +46,6 @@
 
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
 
-        <byte-buddy.version>1.17.8</byte-buddy.version>
         <hibernate.version>7.1.10.Final</hibernate.version>
     </properties>
 
@@ -275,13 +274,6 @@
 				<groupId>org.hibernate.orm</groupId>
 				<artifactId>hibernate-maven-plugin</artifactId>
 				<version>${hibernate.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>net.bytebuddy</groupId>
-                        <artifactId>byte-buddy</artifactId>
-                        <version>${byte-buddy.version}</version>
-                    </dependency>
-                </dependencies>
 				<executions>
 					<execution>
 						<id>enhance</id>
@@ -289,8 +281,6 @@
 							<goal>enhance</goal>
 						</goals>
 						<configuration>
-							<enableLazyInitialization>true</enableLazyInitialization>
-							<enableDirtyTracking>true</enableDirtyTracking>
 							<enableAssociationManagement>true</enableAssociationManagement>
 						</configuration>
 					</execution>
