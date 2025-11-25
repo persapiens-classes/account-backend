@@ -39,7 +39,7 @@ public class SecurityConfig {
 	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter,
-			CorsConfigurationSource corsConfigurationSource) throws Exception {
+			CorsConfigurationSource corsConfigurationSource) {
 		http.csrf((csrf) -> csrf.disable())
 			.cors((cors) -> cors.configurationSource(corsConfigurationSource))
 			.sessionManagement((sm) -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -79,7 +79,7 @@ public class SecurityConfig {
 
 	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
 		return config.getAuthenticationManager();
 	}
 
