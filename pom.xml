@@ -377,7 +377,7 @@
         <profile>
             <id>pmd</id>
             <properties>
-                <pmdVersion>7.18.0</pmdVersion>
+                <pmdVersion>7.19.0</pmdVersion>
             </properties>
             <build>
                 <pluginManagement>
