@@ -46,7 +46,7 @@
 
         <sonar-maven-plugin.version>5.3.0.6276</sonar-maven-plugin.version>
 
-        <hibernate.version>7.1.10.Final</hibernate.version>
+        <hibernate.version>7.1.11.Final</hibernate.version>
     </properties>
 
     <dependencyManagement>
