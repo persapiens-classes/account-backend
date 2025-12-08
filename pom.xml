@@ -44,7 +44,7 @@
         <plantuml-generator-maven-plugin.version>3.0.1</plantuml-generator-maven-plugin.version>
         <plantuml-maven-plugin.version>0.2.14</plantuml-maven-plugin.version>
 
-        <sonar-maven-plugin.version>5.4.0.6343</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
 
         <hibernate.version>7.1.11.Final</hibernate.version>
     </properties>
