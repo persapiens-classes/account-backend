@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v6.0.0
 
       - name: Set up GraalVM ${{ matrix.java }}
-        uses: graalvm/setup-graalvm@v1.4.3
+        uses: graalvm/setup-graalvm@v1.4.4
         with:
           java-version: ${{ matrix.java }}
           distribution: "graalvm-community"
