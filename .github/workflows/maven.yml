@@ -54,7 +54,7 @@ jobs:
         run: ./mvnw -B -Pcheckstyle validate
 
       - name: Checkstyle upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: checkstyle
           path: |
@@ -66,7 +66,7 @@ jobs:
         run: ./mvnw -B -Ppmd validate
 
       - name: Pmd upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: pmd
           path: |
@@ -78,7 +78,7 @@ jobs:
         run: ./mvnw -B -Pcpd validate
 
       - name: Cpd upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: cpd
           path: |
@@ -89,7 +89,7 @@ jobs:
         run: ./mvnw -B -Pplantuml generate-test-sources
 
       - name: Plantuml upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: plantuml
           path: |
@@ -100,7 +100,7 @@ jobs:
         run: ./mvnw -B -Pdecycle -DskipTests verify
 
       - name: Decycle upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: decycle
           path: |
@@ -110,7 +110,7 @@ jobs:
         run: ./mvnw -B -Pduplicate -DskipTests verify
 
       - name: Duplicate upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: duplicate
           path: |
@@ -120,7 +120,7 @@ jobs:
         run: ./mvnw -B -Pspotbugs -DskipTests process-test-classes
 
       - name: Spotbugs upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: spotbugs
           path: |
@@ -132,7 +132,7 @@ jobs:
         run: ./mvnw -B verify
 
       - name: Tests upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: tests
           path: |
@@ -167,7 +167,7 @@ jobs:
         run: ./mvnw -B -DskipTests -Paot clean package
 
       - name: Build with aot upload artifacts
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: aot
           path: |
