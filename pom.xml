@@ -281,6 +281,11 @@
 							<goal>enhance</goal>
 						</goals>
 						<configuration>
+                            <fileSets>
+                                <fileset>
+                                    <directory>org/persapiens/account/domain</directory>
+                                </fileset>
+                            </fileSets>
 							<enableAssociationManagement>true</enableAssociationManagement>
 						</configuration>
 					</execution>
