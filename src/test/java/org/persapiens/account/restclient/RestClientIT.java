@@ -44,6 +44,12 @@ class RestClientIT {
 		return AuthenticationRestClient.builder().restClientHelper(this.<LoginResponseDTO>restClientHelper("")).build();
 	}
 
+	AuthenticationRestClient authenticatedAuthenticationRestClient() {
+		return AuthenticationRestClient.builder()
+			.restClientHelper(this.<LoginResponseDTO>authenticatedRestClientHelper(""))
+			.build();
+	}
+
 	OwnerRestClient ownerRestClient() {
 		return OwnerRestClient.builder()
 			.restClientHelper(this.<OwnerDTO>authenticatedRestClientHelper("owners"))
