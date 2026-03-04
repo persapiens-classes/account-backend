@@ -1,20 +1,4 @@
 package org.persapiens.account.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-public class LoginRequestDTO {
-
-	private String username;
-
-	private String password;
-
+public record LoginRequestDTO(String username, String password) {
 }

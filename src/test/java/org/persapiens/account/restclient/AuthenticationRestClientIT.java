@@ -21,25 +21,24 @@ class AuthenticationRestClientIT extends RestClientIT {
 
 	@Test
 	void loginValid() {
-		LoginRequestDTO loginRequestDTO = LoginRequestDTO.builder()
-			.username(this.userCredentialsProperties.getName())
-			.password(this.userCredentialsProperties.getPassword())
-			.build();
+		LoginRequestDTO loginRequestDTO = new LoginRequestDTO(
+			this.userCredentialsProperties.name(),
+			this.userCredentialsProperties.password());
 
 		var authenticationRestClient = authenticationRestClient();
-		assertThat(authenticationRestClient.login(loginRequestDTO).getToken()).isNotNull();
+		assertThat(authenticationRestClient.login(loginRequestDTO).token()).isNotNull();
 	}
 
 	@Test
 	void loginInvalid() {
 		loginInvalid("", "");
 		loginInvalid("invalid user", "");
-		loginInvalid("", this.userCredentialsProperties.getPassword());
-		loginInvalid("invalid user", this.userCredentialsProperties.getPassword());
+		loginInvalid("", this.userCredentialsProperties.password());
+		loginInvalid("invalid user", this.userCredentialsProperties.password());
 	}
 
 	void loginInvalid(String username, String password) {
-		LoginRequestDTO loginRequestDTO = LoginRequestDTO.builder().username(username).password(password).build();
+		LoginRequestDTO loginRequestDTO = new LoginRequestDTO(username, password);
 
 		var authenticationRestClient = authenticationRestClient();
 		assertThatExceptionOfType(HttpClientErrorException.class)

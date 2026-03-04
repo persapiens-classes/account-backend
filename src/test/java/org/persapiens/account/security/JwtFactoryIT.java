@@ -17,9 +17,7 @@ class JwtFactoryIT {
 
 	@Test
 	void tokenExpired() {
-		JwtProperties newJwtProperties = new JwtProperties();
-		newJwtProperties.setSecretKey(this.jwtProperties.getSecretKey());
-		newJwtProperties.setExpirationTime(0);
+		JwtProperties newJwtProperties = new JwtProperties(this.jwtProperties.secretKey(), 0);
 		JwtFactory jwtFactory = new JwtFactory(newJwtProperties);
 		String token = jwtFactory.generateToken("username");
 		assertThatExceptionOfType(ExpiredJwtException.class)

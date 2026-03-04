@@ -21,15 +21,14 @@ class JwtTokenFactory {
 
 	String getJwtToken(AuthenticationRestClient authenticationRestClient) {
 		if (this.jwtToken == null) {
-			LoginRequestDTO loginRequest = LoginRequestDTO.builder()
-				.username(this.userCredentialsProperties.getName())
-				.password(this.userCredentialsProperties.getPassword())
-				.build();
+			LoginRequestDTO loginRequest = new LoginRequestDTO(
+				this.userCredentialsProperties.name(),
+				this.userCredentialsProperties.password());
 
 			LoginResponseDTO loginResponse = authenticationRestClient.login(loginRequest);
 
 			if (loginResponse != null) {
-				this.jwtToken = loginResponse.getToken();
+				this.jwtToken = loginResponse.token();
 			}
 		}
 		return this.jwtToken;
