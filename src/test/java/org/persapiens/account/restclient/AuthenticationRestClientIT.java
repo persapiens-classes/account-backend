@@ -26,7 +26,10 @@ class AuthenticationRestClientIT extends RestClientIT {
 			this.userCredentialsProperties.password());
 
 		var authenticationRestClient = authenticationRestClient();
-		assertThat(authenticationRestClient.login(loginRequestDTO).token()).isNotNull();
+		var response = authenticationRestClient.login(loginRequestDTO);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().login()).isNotNull();
+		assertThat(response.getBody().expiresIn()).isPositive();
 	}
 
 	@Test

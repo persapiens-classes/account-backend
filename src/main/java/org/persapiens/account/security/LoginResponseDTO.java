@@ -1,4 +1,4 @@
 package org.persapiens.account.security;
 
-public record LoginResponseDTO(String token, long expiresIn) {
+public record LoginResponseDTO(String login, long expiresIn) {
 }

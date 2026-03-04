@@ -1,9 +1,11 @@
 package org.persapiens.account.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -32,10 +34,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
-		final String authHeader = request.getHeader("Authorization");
+		String jwt = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			jwt = Arrays.stream(cookies)
+				.filter((cookie) -> AuthCookie.NAME.equals(cookie.getName()))
+				.map(Cookie::getValue)
+				.findFirst()
+				.orElse(null);
+		}
 
-		// check if jwt authentication using bearer header
-		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+		if (jwt == null || jwt.isBlank()) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -45,7 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 			// user not authenticated yet
 			if (authentication == null) {
-				final String jwt = authHeader.substring(7);
 				// extract username from jwt token
 				final String username = this.jwtFactory.extractUsername(jwt);
 
