@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,11 +53,13 @@ public class AuthenticationController {
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<LoginResponseDTO> me(Authentication authentication) {
-		if (authentication == null || authentication.getName() == null) {
+	public ResponseEntity<LoginResponseDTO> me(
+			@CookieValue(value = AuthCookie.NAME, required = false) String token) {
+		if (token == null || token.isBlank()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		return ResponseEntity.ok(new LoginResponseDTO(authentication.getName(), this.jwtFactory.getExpirationTime()));
+		String username = this.jwtFactory.extractUsername(token);
+		return ResponseEntity.ok(new LoginResponseDTO(username, this.jwtFactory.getExpirationTime()));
 	}
 
 	@PostMapping("/logout")
