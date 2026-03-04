@@ -7,6 +7,7 @@ import org.persapiens.account.security.UserCredentialsProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -21,12 +22,40 @@ class AuthenticationRestClientIT extends RestClientIT {
 
 	@Test
 	void loginValid() {
-		LoginRequestDTO loginRequestDTO = new LoginRequestDTO(
-			this.userCredentialsProperties.name(),
-			this.userCredentialsProperties.password());
+		LoginRequestDTO loginRequestDTO = new LoginRequestDTO(this.userCredentialsProperties.name(),
+				this.userCredentialsProperties.password());
 
 		var authenticationRestClient = authenticationRestClient();
-		assertThat(authenticationRestClient.login(loginRequestDTO).token()).isNotNull();
+		var response = authenticationRestClient.login(loginRequestDTO);
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().login()).isNotNull();
+		assertThat(response.getBody().expiresIn()).isPositive();
+	}
+
+	@Test
+	void meUnauthorized() {
+		var authenticationRestClient = authenticationRestClient();
+		assertThatExceptionOfType(HttpClientErrorException.class).isThrownBy(authenticationRestClient::me)
+			.satisfies((ex) -> assertThat(ex.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN));
+	}
+
+	@Test
+	void meAuthorized() {
+		var authenticationRestClient = authenticatedAuthenticationRestClient();
+		var response = authenticationRestClient.me();
+		assertThat(response.getBody()).isNotNull();
+		assertThat(response.getBody().login()).isEqualTo(this.userCredentialsProperties.name());
+		assertThat(response.getBody().expiresIn()).isPositive();
+	}
+
+	@Test
+	void logoutClearsCookie() {
+		var authenticationRestClient = authenticatedAuthenticationRestClient();
+		var response = authenticationRestClient.logout();
+		String setCookie = response.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+		assertThat(setCookie).isNotNull();
+		assertThat(setCookie).contains("AUTH_TOKEN=");
+		assertThat(setCookie).contains("Max-Age=0");
 	}
 
 	@Test

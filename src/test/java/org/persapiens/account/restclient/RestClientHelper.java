@@ -31,14 +31,14 @@ public class RestClientHelper<T> {
 
 	private int port;
 
-	private String jwtToken;
+	private String authCookie;
 
 	public RestClient getRestClient() {
 		return RestClient.builder().requestInterceptor(new ClientHttpRequestInterceptor() {
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 					throws IOException {
-				if (RestClientHelper.this.jwtToken != null && !RestClientHelper.this.jwtToken.isEmpty()) {
-					request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + RestClientHelper.this.jwtToken);
+				if (RestClientHelper.this.authCookie != null && !RestClientHelper.this.authCookie.isEmpty()) {
+					request.getHeaders().add(HttpHeaders.COOKIE, RestClientHelper.this.authCookie);
 				}
 				return execution.execute(request, body);
 			}

@@ -6,6 +6,7 @@ import java.util.List;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,8 +66,8 @@ class JwtAuthenticationFilterTests {
 	}
 
 	@Test
-	void testAuthorizationHeaderNotBearer() throws ServletException, IOException {
-		given(this.request.getHeader("Authorization")).willReturn("BASIC 12345678");
+	void testMissingCookie() throws ServletException, IOException {
+		given(this.request.getCookies()).willReturn(null);
 
 		runFilterAndCheckFilterChainAndJwtFactory();
 	}
@@ -81,7 +82,7 @@ class JwtAuthenticationFilterTests {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		given(this.request.getHeader("Authorization")).willReturn("Bearer " + token);
+		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
 
 		runFilterAndCheckFilterChainAndJwtFactory();
 	}
@@ -91,7 +92,7 @@ class JwtAuthenticationFilterTests {
 		String token = "valid-jwt-token";
 		String username = "testUser";
 
-		given(this.request.getHeader("Authorization")).willReturn("Bearer " + token);
+		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
 		given(this.jwtFactory.extractUsername(token)).willReturn(username);
 		given(this.userDetailsService.loadUserByUsername(username)).willReturn(this.userDetails);
 		given(this.userDetails.isEnabled()).willReturn(false);
@@ -106,7 +107,7 @@ class JwtAuthenticationFilterTests {
 		String token = "invalid-jwt-token";
 		Exception exception = new JwtException("token error");
 
-		given(this.request.getHeader("Authorization")).willReturn("Bearer " + token);
+		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
 		given(this.jwtFactory.extractUsername(token)).willThrow(exception);
 
 		this.jwtAuthenticationFilter.doFilterInternal(this.request, this.response, this.filterChain);
