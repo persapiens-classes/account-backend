@@ -56,10 +56,10 @@ public class SecurityConfig {
 		PasswordEncoder encoder = passwordEncoder();
 		InMemoryUserDetailsManager result = new InMemoryUserDetailsManager();
 		result.createUser(User.builder()
-			.username(userCredentialsProperties.getName())
-			.password(encoder.encode(userCredentialsProperties.getPassword()))
-			.authorities(userCredentialsProperties.getAuthorities()
-				.toArray(new String[userCredentialsProperties.getAuthorities().size()]))
+			.username(userCredentialsProperties.name())
+			.password(encoder.encode(userCredentialsProperties.password()))
+			.authorities(userCredentialsProperties.authorities()
+				.toArray(new String[userCredentialsProperties.authorities().size()]))
 			.build());
 		return result;
 	}
@@ -97,7 +97,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
-		corsConfiguration.setAllowedOriginPatterns(List.of(corsProperties.getAllowedOriginPatterns()));
+		corsConfiguration.setAllowedOriginPatterns(List.of(corsProperties.allowedOriginPatterns()));
 		corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		corsConfiguration.setAllowedHeaders(List.of("*"));
 		corsConfiguration.setAllowCredentials(true);

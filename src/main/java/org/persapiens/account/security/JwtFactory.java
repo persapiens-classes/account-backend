@@ -21,7 +21,7 @@ public class JwtFactory {
 	private JwtProperties jwtProperties;
 
 	private SecretKey getSignInKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(this.jwtProperties.getSecretKey());
+		byte[] keyBytes = Decoders.BASE64.decode(this.jwtProperties.secretKey());
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
@@ -49,11 +49,11 @@ public class JwtFactory {
 	}
 
 	public String generateToken(String username) {
-		return buildToken(new HashMap<>(), username, this.jwtProperties.getExpirationTime());
+		return buildToken(new HashMap<>(), username, this.jwtProperties.expirationTime());
 	}
 
 	public long getExpirationTime() {
-		return this.jwtProperties.getExpirationTime();
+		return this.jwtProperties.expirationTime();
 	}
 
 }

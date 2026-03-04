@@ -28,11 +28,10 @@ public class AuthenticationController {
 	public ResponseEntity<LoginResponseDTO> authenticate(@Valid @RequestBody LoginRequestDTO loginRequest) {
 		try {
 			this.authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-			return ResponseEntity.ok(LoginResponseDTO.builder()
-				.token(this.jwtFactory.generateToken(loginRequest.getUsername()))
-				.expiresIn(this.jwtFactory.getExpirationTime())
-				.build());
+					new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
+			return ResponseEntity.ok(new LoginResponseDTO(
+				this.jwtFactory.generateToken(loginRequest.username()),
+				this.jwtFactory.getExpirationTime()));
 		}
 		catch (BadCredentialsException _) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
