@@ -13,6 +13,12 @@ public class JJWTRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 		registerSupplierClass(hints, "io.jsonwebtoken.impl.DefaultJwtParserBuilder$Supplier");
 		registerSupplierClass(hints, "io.jsonwebtoken.impl.DefaultJwtHeaderBuilder$Supplier");
 		registerSupplierClass(hints, "io.jsonwebtoken.impl.DefaultClaimsBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultDynamicJwkBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultJwkParserBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultJwkSetBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultJwkSetParserBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultKeyOperationBuilder$Supplier");
+		registerSupplierClass(hints, "io.jsonwebtoken.impl.security.DefaultKeyOperationPolicyBuilder$Supplier");
 
 		registerProviderClass(hints, "io.jsonwebtoken.jackson.io.JacksonSerializer");
 		registerProviderClass(hints, "io.jsonwebtoken.jackson.io.JacksonDeserializer");
