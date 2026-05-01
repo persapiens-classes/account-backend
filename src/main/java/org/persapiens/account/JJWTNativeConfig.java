@@ -21,6 +21,7 @@ import io.jsonwebtoken.security.SignatureAlgorithm;
 
 import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 
 @Configuration
 @RegisterReflectionForBinding({ DefaultClaimsBuilder.class, DefaultJwtParser.class, DefaultJwtHeaderBuilder.class,
@@ -29,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 		DefaultKeyOperationBuilder.class, DefaultKeyOperationPolicyBuilder.class, JwksBridge.class, KeysBridge.class,
 		StandardEncryptionAlgorithms.class, StandardKeyAlgorithms.class, StandardKeyOperations.class,
 		StandardSecureDigestAlgorithms.class, SignatureAlgorithm.class })
+@ImportRuntimeHints(JJWTRuntimeHintsRegistrar.class)
 
 public class JJWTNativeConfig {
 
