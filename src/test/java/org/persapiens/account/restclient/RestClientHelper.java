@@ -31,14 +31,14 @@ public class RestClientHelper<T> {
 
 	private int port;
 
-	private String authCookie;
+	private String bearerToken;
 
 	public RestClient getRestClient() {
 		return RestClient.builder().requestInterceptor(new ClientHttpRequestInterceptor() {
 			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
 					throws IOException {
-				if (RestClientHelper.this.authCookie != null && !RestClientHelper.this.authCookie.isEmpty()) {
-					request.getHeaders().add(HttpHeaders.COOKIE, RestClientHelper.this.authCookie);
+				if (RestClientHelper.this.bearerToken != null && !RestClientHelper.this.bearerToken.isEmpty()) {
+					request.getHeaders().setBearerAuth(RestClientHelper.this.bearerToken);
 				}
 				return execution.execute(request, body);
 			}

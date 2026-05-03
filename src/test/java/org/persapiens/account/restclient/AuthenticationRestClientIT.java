@@ -29,6 +29,7 @@ class AuthenticationRestClientIT extends RestClientIT {
 		var response = authenticationRestClient.login(loginRequestDTO);
 		assertThat(response.getBody()).isNotNull();
 		assertThat(response.getBody().login()).isNotNull();
+		assertThat(response.getBody().token()).isNotBlank();
 		assertThat(response.getBody().expiresIn()).isPositive();
 	}
 
@@ -49,13 +50,10 @@ class AuthenticationRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	void logoutClearsCookie() {
+	void logoutNoCookieHeader() {
 		var authenticationRestClient = authenticatedAuthenticationRestClient();
 		var response = authenticationRestClient.logout();
-		String setCookie = response.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
-		assertThat(setCookie).isNotNull();
-		assertThat(setCookie).contains("AUTH_TOKEN=");
-		assertThat(setCookie).contains("Max-Age=0");
+		assertThat(response.getHeaders().getFirst(HttpHeaders.SET_COOKIE)).isNull();
 	}
 
 	@Test

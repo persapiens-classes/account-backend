@@ -6,7 +6,6 @@ import java.util.List;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +27,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 class JwtAuthenticationFilterTests {
+
+	private static final String BEARER_PREFIX = "Bearer ";
 
 	@Mock
 	private JwtFactory jwtFactory;
@@ -66,8 +68,8 @@ class JwtAuthenticationFilterTests {
 	}
 
 	@Test
-	void testMissingCookie() throws ServletException, IOException {
-		given(this.request.getCookies()).willReturn(null);
+	void testMissingAuthorizationHeader() throws ServletException, IOException {
+		given(this.request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn(null);
 
 		runFilterAndCheckFilterChainAndJwtFactory();
 	}
@@ -82,7 +84,7 @@ class JwtAuthenticationFilterTests {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
+		given(this.request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn(BEARER_PREFIX + token);
 
 		runFilterAndCheckFilterChainAndJwtFactory();
 	}
@@ -92,7 +94,7 @@ class JwtAuthenticationFilterTests {
 		String token = "valid-jwt-token";
 		String username = "testUser";
 
-		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
+		given(this.request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn(BEARER_PREFIX + token);
 		given(this.jwtFactory.extractUsername(token)).willReturn(username);
 		given(this.userDetailsService.loadUserByUsername(username)).willReturn(this.userDetails);
 		given(this.userDetails.isEnabled()).willReturn(false);
@@ -107,7 +109,7 @@ class JwtAuthenticationFilterTests {
 		String token = "invalid-jwt-token";
 		Exception exception = new JwtException("token error");
 
-		given(this.request.getCookies()).willReturn(new Cookie[] { new Cookie(AuthCookie.NAME, token) });
+		given(this.request.getHeader(HttpHeaders.AUTHORIZATION)).willReturn(BEARER_PREFIX + token);
 		given(this.jwtFactory.extractUsername(token)).willThrow(exception);
 
 		this.jwtAuthenticationFilter.doFilterInternal(this.request, this.response, this.filterChain);

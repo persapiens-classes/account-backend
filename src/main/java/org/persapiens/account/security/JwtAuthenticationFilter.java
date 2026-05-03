@@ -1,11 +1,9 @@
 package org.persapiens.account.security;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -18,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -34,15 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
-		String jwt = null;
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			jwt = Arrays.stream(cookies)
-				.filter((cookie) -> AuthCookie.NAME.equals(cookie.getName()))
-				.map(Cookie::getValue)
-				.findFirst()
-				.orElse(null);
-		}
+		String jwt = extractTokenFromAuthorizationHeader(request.getHeader(HttpHeaders.AUTHORIZATION));
 
 		if (jwt == null || jwt.isBlank()) {
 			filterChain.doFilter(request, response);
@@ -75,6 +66,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		catch (Exception exception) {
 			this.handlerExceptionResolver.resolveException(request, response, null, exception);
 		}
+	}
+
+	private String extractTokenFromAuthorizationHeader(String authorizationHeader) {
+		if (authorizationHeader == null || authorizationHeader.isBlank()) {
+			return null;
+		}
+		if (!authorizationHeader.startsWith("Bearer ")) {
+			return null;
+		}
+		return authorizationHeader.substring("Bearer ".length());
 	}
 
 }

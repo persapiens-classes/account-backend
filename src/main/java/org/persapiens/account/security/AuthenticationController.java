@@ -1,18 +1,15 @@
 package org.persapiens.account.security;
 
-import java.time.Duration;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,16 +33,7 @@ public class AuthenticationController {
 					new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
 			String token = this.jwtFactory.generateToken(loginRequest.username());
 			long expiresIn = this.jwtFactory.getExpirationTime();
-			ResponseCookie cookie = ResponseCookie.from(AuthCookie.NAME, token)
-				.httpOnly(true)
-				.secure(true)
-				.sameSite("None")
-				.path("/")
-				.maxAge(Duration.ofMillis(expiresIn))
-				.build();
-			return ResponseEntity.ok()
-				.header("Set-Cookie", cookie.toString())
-				.body(new LoginResponseDTO(loginRequest.username(), expiresIn));
+			return ResponseEntity.ok(new LoginResponseDTO(loginRequest.username(), token, expiresIn));
 		}
 		catch (BadCredentialsException _) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -53,25 +41,16 @@ public class AuthenticationController {
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<LoginResponseDTO> me(
-			@CookieValue(value = AuthCookie.NAME, required = false) String token) {
-		if (token == null || token.isBlank()) {
+	public ResponseEntity<LoginResponseDTO> me(Authentication authentication) {
+		if (authentication == null || authentication.getName() == null || authentication.getName().isBlank()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		String username = this.jwtFactory.extractUsername(token);
-		return ResponseEntity.ok(new LoginResponseDTO(username, this.jwtFactory.getExpirationTime()));
+		return ResponseEntity.ok(new LoginResponseDTO(authentication.getName(), null, this.jwtFactory.getExpirationTime()));
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout() {
-		ResponseCookie cookie = ResponseCookie.from(AuthCookie.NAME, "")
-			.httpOnly(true)
-			.secure(true)
-			.sameSite("None")
-			.path("/")
-			.maxAge(Duration.ZERO)
-			.build();
-		return ResponseEntity.noContent().header("Set-Cookie", cookie.toString()).build();
+		return ResponseEntity.noContent().build();
 	}
 
 }

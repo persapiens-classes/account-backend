@@ -26,7 +26,7 @@ class RestClientIT {
 	<T> RestClientHelper<T> authenticatedRestClientHelper(String endpoint) {
 		RestClientHelper<T> result = restClientHelper(endpoint);
 
-		result.setAuthCookie(this.jwtTokenFactory.getAuthCookie(authenticationRestClient()));
+		result.setBearerToken(this.jwtTokenFactory.getToken(authenticationRestClient()));
 
 		return result;
 	}
