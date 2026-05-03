@@ -1,11 +1,14 @@
 package org.persapiens.account.domain;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_equity_account", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EqualsAndHashCode(callSuper = true, of = "category")
 @ToString(callSuper = true, of = "category")
 @SuperBuilder

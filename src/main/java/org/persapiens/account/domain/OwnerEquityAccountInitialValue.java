@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,6 +23,8 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EqualsAndHashCode(of = { "initialValue", "owner", "equityAccount" })
 @ToString
 @SuperBuilder

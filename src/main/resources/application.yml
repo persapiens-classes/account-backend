@@ -4,6 +4,16 @@ spring:
       enabled: true
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.jcache.internal.JCacheRegionFactory
+        javax:
+          cache:
+            provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+            missing_cache_strategy: create
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOSTNAME:postgresdb}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
