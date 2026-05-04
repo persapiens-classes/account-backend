@@ -1,18 +1,17 @@
 package org.persapiens.account.service;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationTest;
 import org.persapiens.account.domain.DebitAccount;
 import org.persapiens.account.domain.DebitCategory;
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.persistence.DebitAccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@IntegrationTest
 class DebitAccountServiceIT {
 
 	@Autowired

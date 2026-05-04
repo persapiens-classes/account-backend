@@ -2,19 +2,17 @@ package org.persapiens.account.persistence;
 
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationTest;
 import org.persapiens.account.domain.CreditAccount;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.Owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@IntegrationTest
 class CreditEntryRepositoryIT {
 
 	@Autowired
@@ -31,12 +29,6 @@ class CreditEntryRepositoryIT {
 
 	@Autowired
 	private CreditEntryRepository creditEntryRepository;
-
-	@BeforeEach
-	void deleteAll() {
-		this.creditEntryRepository.deleteAll();
-		assertThat(this.creditEntryRepository.findAll()).isEmpty();
-	}
 
 	@Test
 	void repositoryNaoEhNulo() {

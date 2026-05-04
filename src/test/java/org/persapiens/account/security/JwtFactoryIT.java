@@ -2,14 +2,13 @@ package org.persapiens.account.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationWebTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@IntegrationWebTest
 class JwtFactoryIT {
 
 	@Autowired

@@ -1,18 +1,17 @@
 package org.persapiens.account.restclient;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationWebTest;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.dto.AccountDTO;
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@IntegrationWebTest
 class EquityAccountRestClientIT extends RestClientIT {
 
 	@Test
