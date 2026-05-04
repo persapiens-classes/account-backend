@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
@@ -12,6 +12,7 @@ public class HibernateCacheRuntimeHintsRegistrar implements RuntimeHintsRegistra
 		registerPublicConstructors(hints, "org.hibernate.cache.jcache.internal.JCacheRegionFactory");
 		registerPublicConstructors(hints, "com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider");
 		registerPublicConstructors(hints, "com.github.benmanes.caffeine.jcache.copy.JavaSerializationCopier");
+		registerPublicConstructors(hints, "org.persapiens.account.graalvmnative.NoOpCopier");
 
 		hints.resources().registerPattern("META-INF/services/javax.cache.spi.CachingProvider");
 		hints.resources().registerPattern("reference.conf");

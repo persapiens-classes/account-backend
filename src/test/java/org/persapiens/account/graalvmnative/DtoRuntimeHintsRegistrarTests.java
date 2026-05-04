@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

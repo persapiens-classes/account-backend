@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import io.jsonwebtoken.impl.DefaultClaimsBuilder;
 import io.jsonwebtoken.impl.DefaultJwtBuilder;

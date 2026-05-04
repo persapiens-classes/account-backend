@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;

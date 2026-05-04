@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import org.persapiens.account.dto.AccountDTO;
 import org.persapiens.account.dto.CategoryDTO;

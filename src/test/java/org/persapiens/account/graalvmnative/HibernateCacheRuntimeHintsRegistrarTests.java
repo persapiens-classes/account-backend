@@ -1,4 +1,4 @@
-package org.persapiens.account;
+package org.persapiens.account.graalvmnative;
 
 import java.lang.reflect.Constructor;
 
@@ -30,6 +30,10 @@ class HibernateCacheRuntimeHintsRegistrarTests {
 		Constructor<JavaSerializationCopier> javaSerializationCopierConstructor = JavaSerializationCopier.class.getConstructor();
 		assertThat(RuntimeHintsPredicates.reflection().onType(JavaSerializationCopier.class)).accepts(hints);
 		assertThat(RuntimeHintsPredicates.reflection().onConstructorInvocation(javaSerializationCopierConstructor)).accepts(hints);
+
+		Constructor<NoOpCopier> noOpCopierConstructor = NoOpCopier.class.getConstructor();
+		assertThat(RuntimeHintsPredicates.reflection().onType(NoOpCopier.class)).accepts(hints);
+		assertThat(RuntimeHintsPredicates.reflection().onConstructorInvocation(noOpCopierConstructor)).accepts(hints);
 
 		assertThat(RuntimeHintsPredicates.resource().forResource("reference.conf")).accepts(hints);
 		assertThat(RuntimeHintsPredicates.resource().forResource("application.conf")).accepts(hints);
