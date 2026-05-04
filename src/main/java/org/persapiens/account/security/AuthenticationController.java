@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,14 +36,6 @@ public class AuthenticationController {
 		catch (BadCredentialsException _) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-	}
-
-	@GetMapping("/me")
-	public ResponseEntity<LoginResponseDTO> me(Authentication authentication) {
-		if (authentication == null || authentication.getName() == null || authentication.getName().isBlank()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-		return ResponseEntity.ok(new LoginResponseDTO(authentication.getName(), null, this.jwtFactory.getExpirationTime()));
 	}
 
 	@PostMapping("/logout")

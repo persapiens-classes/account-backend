@@ -40,15 +40,6 @@ class AuthenticationRestClientIT extends RestClientIT {
 	}
 
 	@Test
-	void meAuthorized() {
-		var authenticationRestClient = authenticatedAuthenticationRestClient();
-		var response = authenticationRestClient.me();
-		assertThat(response.getBody()).isNotNull();
-		assertThat(response.getBody().login()).isEqualTo(this.userCredentialsProperties.name());
-		assertThat(response.getBody().expiresIn()).isPositive();
-	}
-
-	@Test
 	void logoutNoCookieHeader() {
 		var authenticationRestClient = authenticatedAuthenticationRestClient();
 		var response = authenticationRestClient.logout();
