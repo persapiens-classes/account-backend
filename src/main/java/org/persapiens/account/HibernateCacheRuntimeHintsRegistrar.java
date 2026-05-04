@@ -11,8 +11,11 @@ public class HibernateCacheRuntimeHintsRegistrar implements RuntimeHintsRegistra
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		registerPublicConstructors(hints, "org.hibernate.cache.jcache.internal.JCacheRegionFactory");
 		registerPublicConstructors(hints, "com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider");
+		registerPublicConstructors(hints, "com.github.benmanes.caffeine.jcache.copy.JavaSerializationCopier");
 
 		hints.resources().registerPattern("META-INF/services/javax.cache.spi.CachingProvider");
+		hints.resources().registerPattern("reference.conf");
+		hints.resources().registerPattern("application.conf");
 	}
 
 	private void registerPublicConstructors(RuntimeHints hints, String className) {
