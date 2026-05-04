@@ -1,5 +1,6 @@
 package org.persapiens.account.domain;
 
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,10 +13,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @NoArgsConstructor
 @SequenceGenerator(sequenceName = "seq_owner", name = "ID_SEQUENCE", allocationSize = 1)
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EqualsAndHashCode(of = "name")
 @ToString(of = "name")
 @SuperBuilder

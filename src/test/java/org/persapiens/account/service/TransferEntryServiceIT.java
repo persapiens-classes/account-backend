@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationTest;
 import org.persapiens.account.domain.EquityAccount;
 import org.persapiens.account.domain.EquityCategory;
 import org.persapiens.account.domain.TransferEntry;
@@ -14,11 +14,10 @@ import org.persapiens.account.persistence.OwnerFactory;
 import org.persapiens.account.persistence.TransferEntryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@IntegrationTest
 class TransferEntryServiceIT {
 
 	@Autowired

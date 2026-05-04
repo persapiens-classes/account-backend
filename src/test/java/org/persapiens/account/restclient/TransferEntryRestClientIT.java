@@ -4,21 +4,22 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationWebTest;
+import org.persapiens.account.common.CreditAccountConstants;
+import org.persapiens.account.common.CreditCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
 import org.persapiens.account.common.EquityCategoryConstants;
 import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@IntegrationWebTest
 class TransferEntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
@@ -62,20 +63,21 @@ class TransferEntryRestClientIT extends RestClientIT {
 		BigDecimal value = new BigDecimal(102);
 		LocalDateTime date = LocalDateTime.now();
 		String mother = owner(OwnerConstants.MOTHER).name();
-		String bank = creditCategory(EquityCategoryConstants.BANK).description();
-		String checking = creditAccount(EquityAccountConstants.CHECKING, bank).description();
+		String salary = creditCategory(CreditCategoryConstants.SALARY).description();
+		String work = creditAccount(CreditAccountConstants.WORK, salary).description();
+		String bank = equityCategory(EquityCategoryConstants.BANK).description();
 		String savings = equityAccount(EquityAccountConstants.SAVINGS, bank).description();
 
 		// test blank fields
-		invalidInsert(null, date, mother, savings, checking, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, null, mother, savings, checking, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, date, "", savings, checking, HttpStatus.BAD_REQUEST);
-		invalidInsert(value, date, mother, "", checking, HttpStatus.BAD_REQUEST);
+		invalidInsert(null, date, mother, savings, work, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, null, mother, savings, work, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, date, "", savings, work, HttpStatus.BAD_REQUEST);
+		invalidInsert(value, date, mother, "", work, HttpStatus.BAD_REQUEST);
 		invalidInsert(value, date, mother, savings, "", HttpStatus.BAD_REQUEST);
 
 		// test fields
-		invalidInsert(value, date, "invalid owner", savings, checking, HttpStatus.NOT_FOUND);
-		invalidInsert(value, date, mother, "invalid in account", checking, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, "invalid owner", savings, work, HttpStatus.NOT_FOUND);
+		invalidInsert(value, date, mother, "invalid in account", work, HttpStatus.NOT_FOUND);
 		invalidInsert(value, date, mother, savings, "invalid out account", HttpStatus.NOT_FOUND);
 	}
 

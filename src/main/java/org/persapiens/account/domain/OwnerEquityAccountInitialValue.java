@@ -3,6 +3,7 @@ package org.persapiens.account.domain;
 import java.math.BigDecimal;
 import java.util.Comparator;
 
+import jakarta.persistence.Cacheable;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -17,9 +18,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @NoArgsConstructor
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EqualsAndHashCode(of = { "initialValue", "owner", "equityAccount" })
 @ToString
 @SuperBuilder

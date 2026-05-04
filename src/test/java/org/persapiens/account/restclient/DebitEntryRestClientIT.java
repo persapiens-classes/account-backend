@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
-import org.persapiens.account.AccountApplication;
+import org.persapiens.account.IntegrationWebTest;
 import org.persapiens.account.common.DebitAccountConstants;
 import org.persapiens.account.common.DebitCategoryConstants;
 import org.persapiens.account.common.EquityAccountConstants;
@@ -13,14 +13,13 @@ import org.persapiens.account.common.OwnerConstants;
 import org.persapiens.account.dto.EntryDTO;
 import org.persapiens.account.dto.EntryInsertUpdateDTO;
 
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-@SpringBootTest(classes = AccountApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@IntegrationWebTest
 class DebitEntryRestClientIT extends RestClientIT {
 
 	private EntryInsertUpdateDTO entry() {
