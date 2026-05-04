@@ -11,7 +11,7 @@ RUN if [ "${INSTALL_MAVEN}" = "true" ]; then su vscode -c "umask 0002 && . /usr/
 
 # Install additional OS packages including sudo, graphviz, postgresql-client, and docker.io
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends docker.io graphviz postgresql-client sudo \
+    && apt-get -y install --no-install-recommends docker.io graphviz postgresql-client sudo openssh-client \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment this line to install global node packages.
