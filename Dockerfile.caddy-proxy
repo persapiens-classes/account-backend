@@ -1,4 +1,4 @@
-FROM caddy:2.11.3-alpine AS updated
+FROM caddy:2.11.4-alpine AS updated
 
 # upgrade libs
 # install openjdk25-jre
