@@ -1,4 +1,4 @@
-FROM eclipse-temurin:25.0.2_10-jre-alpine AS updated
+FROM eclipse-temurin:25.0.3_9-jre-alpine AS updated
 
 # upgrade libs
 # add springboot user
