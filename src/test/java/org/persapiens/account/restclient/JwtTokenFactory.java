@@ -26,8 +26,9 @@ class JwtTokenFactory {
 					this.userCredentialsProperties.password());
 
 			ResponseEntity<LoginResponseDTO> loginResponse = authenticationRestClient.login(loginRequest);
-			if (loginResponse.getBody() != null) {
-				this.token = loginResponse.getBody().token();
+			LoginResponseDTO loginResponseBody = loginResponse.getBody();
+			if (loginResponseBody != null) {
+				this.token = loginResponseBody.token();
 			}
 		}
 		return this.token;
