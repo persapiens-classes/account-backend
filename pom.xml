@@ -30,6 +30,7 @@
         <checkstyle.configLocation>src/checkconfig/checkstyle/checkstyle.xml</checkstyle.configLocation>
 
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
+        <pmdVersion>7.26.0</pmdVersion>
         <pmd.ruleset>src/checkconfig/pmd/pmd-ruleset.xml</pmd.ruleset>
         <cpd.excludeFromFailureFile>src/checkconfig/cpd/cpd-exclude.properties</cpd.excludeFromFailureFile>
 
@@ -400,9 +401,6 @@
 
         <profile>
             <id>pmd</id>
-            <properties>
-                <pmdVersion>7.26.0</pmdVersion>
-            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
