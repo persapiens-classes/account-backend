@@ -1,11 +1,9 @@
-version: "3.8"
-
 volumes:
   postgres-data:
 
 services:
   app:
-    container_name: javadev
+    container_name: accountapi
     hostname: codespace
     build:
       context: .
@@ -16,7 +14,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
-      POSTGRES_HOSTNAME: postgresdb
+      POSTGRES_HOSTNAME: accountdb
 
     volumes:
       - ../..:/workspaces:cached
@@ -30,7 +28,7 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
-    container_name: postgresdb
+    container_name: accountdb
     image: postgres:latest
     restart: unless-stopped
     volumes:
@@ -40,7 +38,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
