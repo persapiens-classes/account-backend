@@ -1,6 +1,6 @@
 package org.persapiens.account.security;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -39,11 +39,14 @@ public class JwtFactory {
 	}
 
 	private String buildToken(Map<String, Object> extraClaims, String username, long expiration) {
+		Instant now = Instant.now();
+		Map<String, Object> claims = new HashMap<>(extraClaims);
+		claims.put(Claims.ISSUED_AT, now.getEpochSecond());
+		claims.put(Claims.EXPIRATION, now.plusMillis(expiration).getEpochSecond());
+
 		return Jwts.builder()
-				.claims(extraClaims)
+				.claims(claims)
 				.subject(username)
-				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(getSignInKey())
 				.compact();
 	}

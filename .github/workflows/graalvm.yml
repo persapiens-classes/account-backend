@@ -13,10 +13,10 @@ jobs:
         java: [25]
 
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - name: Set up GraalVM ${{ matrix.java }}
-        uses: graalvm/setup-graalvm@v1.6.2
+        uses: graalvm/setup-graalvm@v1.6.6
         with:
           java-version: ${{ matrix.java }}
           distribution: "graalvm-community"
@@ -72,7 +72,7 @@ jobs:
         run: ./mvnw -B -Pnative -DskipTests=true spring-boot:build-image
 
       - name: Docker Hub login
-        uses: docker/login-action@v4.4.0
+        uses: docker/login-action@v4.6.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
