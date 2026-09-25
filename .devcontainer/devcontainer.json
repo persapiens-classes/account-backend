@@ -6,7 +6,7 @@
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:4.1.0": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:4.1.1": {}
   },
   "customizations": {
     "vscode": {
