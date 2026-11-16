@@ -45,7 +45,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Set up Graphviz
-        uses: ts-graphviz/setup-graphviz@v2.0.2
+        uses: ts-graphviz/setup-graphviz@v2.0.3
 
       - name: Validate
         run: ./mvnw -B clean validate
