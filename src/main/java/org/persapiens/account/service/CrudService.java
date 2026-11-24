@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public abstract class CrudService<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
 
-	private CrudRepository<E, K> repository;
+	private final CrudRepository<E, K> repository;
 
 	protected CrudService(CrudRepository<E, K> repository) {
 		this.repository = repository;

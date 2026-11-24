@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AccountController<E extends Account<C>, C extends Category>
 		extends CrudController<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
-	private AccountService<E, C> accountService;
+	private final AccountService<E, C> accountService;
 
 	protected AccountController(AccountService<E, C> accountService) {
 		super(accountService);

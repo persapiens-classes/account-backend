@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OwnerEquityAccountInitialValueController extends
 		CrudController<OwnerEquityAccountInitialValueInsertDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
-	private OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
+	private final OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService;
 
 	public OwnerEquityAccountInitialValueController(
 			OwnerEquityAccountInitialValueService ownerEquityAccountInitialValueService) {

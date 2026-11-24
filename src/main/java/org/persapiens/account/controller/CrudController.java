@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class CrudController<I extends Object, U extends Object, F extends Object, B extends Object, E extends Object, K extends Object> {
 
-	private CrudService<I, U, F, B, E, K> crudService;
+	private final CrudService<I, U, F, B, E, K> crudService;
 
 	protected CrudController(CrudService<I, U, F, B, E, K> service) {
 		this.crudService = service;

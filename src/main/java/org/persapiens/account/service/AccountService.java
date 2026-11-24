@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService<E extends Account<C>, C extends Category>
 		extends CrudService<AccountDTO, AccountDTO, AccountDTO, String, E, Long> {
 
-	private AccountRepository<E, C> accountRepository;
+	private final AccountRepository<E, C> accountRepository;
 
-	private CategoryService<C> categoryService;
+	private final CategoryService<C> categoryService;
 
-	private Supplier<E> accountSupplier;
+	private final Supplier<E> accountSupplier;
 
 	protected AccountService(AccountRepository<E, C> accountRepository, CategoryService<C> categoryService, Supplier<E> accountSupplier) {
 		super(accountRepository);

@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoryService<C extends Category>
 		extends CrudService<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
-	private CategoryRepository<C> categoryRepository;
-	private Supplier<C> categorySupplier;
+	private final CategoryRepository<C> categoryRepository;
+	private final Supplier<C> categorySupplier;
 
 	protected CategoryService(CategoryRepository<C> categoryRepository, Supplier<C> categorySupplier) {
 		super(categoryRepository);

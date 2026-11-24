@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/owners")
 public class OwnerController extends CrudController<OwnerDTO, OwnerDTO, OwnerDTO, String, Owner, Long> {
 
-	private OwnerService ownerService;
+	private final OwnerService ownerService;
 
 	public OwnerController(OwnerService ownerService) {
 		super(ownerService);

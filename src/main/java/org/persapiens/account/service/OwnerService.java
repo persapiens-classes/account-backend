@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OwnerService extends CrudService<OwnerDTO, OwnerDTO, OwnerDTO, String, Owner, Long> {
 
-	private OwnerRepository ownerRepository;
+	private final OwnerRepository ownerRepository;
 
 	public OwnerService(OwnerRepository ownerRepository) {
 		super(ownerRepository);

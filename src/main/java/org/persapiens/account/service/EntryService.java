@@ -16,15 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class EntryService<E extends Entry<E, I, J, O, P>, I extends Account<J>, J extends Category, O extends Account<P>, P extends Category>
 		extends CrudService<EntryInsertUpdateDTO, EntryInsertUpdateDTO, EntryDTO, Long, E, Long> {
 
-	private EntryRepository<E, I, J, O, P> entryRepository;
+	private final EntryRepository<E, I, J, O, P> entryRepository;
 
-	private AccountService<I, J> inAccountService;
+	private final AccountService<I, J> inAccountService;
 
-	private AccountService<O, P> outAccountService;
+	private final AccountService<O, P> outAccountService;
 
-	private OwnerService ownerService;
+	private final OwnerService ownerService;
 
-	private Supplier<E> entrySupplier;
+	private final Supplier<E> entrySupplier;
 
 	protected EntryService(EntryRepository<E, I, J, O, P> entryRepository, AccountService<I, J> inAccountService,
 			AccountService<O, P> outAccountService, OwnerService ownerService, Supplier<E> entrySupplier) {

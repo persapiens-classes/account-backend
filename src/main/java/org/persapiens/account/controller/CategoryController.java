@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CategoryController<C extends Category>
 		extends CrudController<CategoryDTO, CategoryDTO, CategoryDTO, String, C, Long> {
 
-	private CategoryService<C> categoryService;
+	private final CategoryService<C> categoryService;
 
 	public CategoryController(CategoryService<C> categoryService) {
 		super(categoryService);

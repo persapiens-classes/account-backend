@@ -21,11 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class OwnerEquityAccountInitialValueService extends
 		CrudService<OwnerEquityAccountInitialValueInsertDTO, BigDecimal, OwnerEquityAccountInitialValueDTO, OwnerNameEquityAccountDescription, OwnerEquityAccountInitialValue, OwnerEquityAccountInitialValueId> {
 
-	private OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
+	private final OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository;
 
-	private OwnerService ownerService;
+	private final OwnerService ownerService;
 
-	private AccountService<EquityAccount, EquityCategory> equityAccountService;
+	private final AccountService<EquityAccount, EquityCategory> equityAccountService;
 
 	public OwnerEquityAccountInitialValueService(
 			OwnerEquityAccountInitialValueRepository ownerEquityAccountInitialValueRepository,
