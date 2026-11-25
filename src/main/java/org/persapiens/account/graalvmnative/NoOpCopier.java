@@ -3,7 +3,7 @@ package org.persapiens.account.graalvmnative;
 import com.github.benmanes.caffeine.jcache.copy.Copier;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor 
+@NoArgsConstructor
 public class NoOpCopier implements Copier {
 
 	@Override
