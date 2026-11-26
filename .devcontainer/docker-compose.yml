@@ -5,10 +5,10 @@ services:
   app:
     container_name: accountapi
     hostname: codespace
+    init: true
     build:
       context: .
       dockerfile: Dockerfile
-    privileged: true
     environment:
       # NOTE: POSTGRES_DB/USER/PASSWORD should match values in db container
       POSTGRES_PASSWORD: postgres
